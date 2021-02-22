@@ -1,0 +1,3 @@
+[submodule "guten"]
+	path = guten
+	url = git@github.com:kevinchahine/guten.git
