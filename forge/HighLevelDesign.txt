@@ -1,0 +1,76 @@
+=== Forge: Chess Engine ===
+
+====================== MVC ====================================================
+
+Model:
+	Board
+		- 8x8 array (hopefully good for DNN)
+		- Each element stores a Piece
+		- hash function to be used with chess databases.
+	Pieces
+		- 0=empty, 1=whitepawn, -1=blackpawn, 2=whiteknight, ...
+	Valid Move Generator
+		- valid move generator
+		- threat generator
+
+	Game State Checks (White wins, Black Wins, Draw, Still Playing)
+	
+	TimeControl
+		- timer 
+			- Needs to signal GUIs each second
+			- Incorporate into CL Display also (Use back space to update time)
+
+
+	AI Agent:
+		solvers:
+			- minimax 
+			- negamax
+			- mcts
+
+		evaluation functions:
+			- traditional
+			- dnn
+
+View:
+	*See View.txt
+
+Controller:
+	UCI controller - for input from a UCI GUI
+	Keyboard Controller - for input from a command line 
+		Should support both PGN and Long Algebreic Notation.
+	Database Controller - 
+
+===============================================================================
+
+Program Options:
+	*See program_options.txt
+
+Elo Ratings:
+	Mostly to calculate its elo when versing itself.
+
+Chess Notations:
+	- PGN
+	- Long Algebreic Notation 
+		ex: e2e4, e7e5, e1g1 (white short castling), e7e8q (for promotion)
+
+Machine Learning:
+	For traditional evaluation:
+		- Genetic Algorithm
+		- preferably unsupervised learning
+		- possibly try supervised learning if we want and can find chess data.
+
+	For DNN:
+		- No idea
+
+Multithreading:
+	For traditional evaluation
+		- should work great
+	For DNN:
+		- GPU might be the bottleneck and limit effectiveness of larger numbers of threads.
+			- Consider using Hornet for intense multithreading.
+
+Opening Table Database:
+	Find some chess datasets
+
+
+

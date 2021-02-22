@@ -1,0 +1,14 @@
+=== Forge ===
+=== Goals ===
+
+Reach an elo of 1500
+
+Play using a UCI GUI
+
+Play against another engine
+
+Beat another engine
+
+train against another engine
+
+

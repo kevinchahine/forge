@@ -1,0 +1,17 @@
+=== Forge ===
+=== View ===
+
+View:
+	- UCI View - for output to a UCI GUI
+		% Need to learn pipes (use boost::asio and the boost pipes library)
+
+	- Command Line Display - for output to a command line (using guten)
+		- Should be able to flip display
+		- Color
+		- Show Time control
+		- Show 2 sets of highlights 
+			- danger cells (red and lightred)
+			- moveable cells (yellow and brown)
+		- Show player names (very important)
+
+

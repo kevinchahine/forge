@@ -13,10 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Notes">
+      <UniqueIdentifier>{d6a564c6-9399-474d-9f1c-85498dd3f9b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="HighLevelDesign.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="View.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="ProgramOptions.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="Notation.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="Goals.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -1,0 +1,14 @@
+=== Forge ===
+=== Notation ===
+
+Portable Game Notation (PGN):
+	- Most chess databases store game in pgn
+
+Long Algebraic Notation:
+	- UCI GUIs support this notation
+	- more machine readable
+
+Both:
+	- string no longer than ??? characters
+	- must be parsed
+	- Can PGN be distinguished from LAN by a machine?
