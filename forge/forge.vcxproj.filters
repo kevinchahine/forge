@@ -21,6 +21,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Clock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -38,5 +44,22 @@
     <Text Include="Goals.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="Classes.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="UCI.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="NameSpaces.txt">
+      <Filter>Notes</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Clock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

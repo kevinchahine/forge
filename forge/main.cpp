@@ -16,11 +16,15 @@ Designed to be compatible with a variety of displays including:
 
 */
 
+#include "Clock.h"
+
 #include <iostream>
 #include <thread>
 #include <chrono>
 
 #include <Guten/guten.hpp>
+
+#include <conio.h>	// Only for testing
 
 using namespace std;
 
@@ -31,7 +35,28 @@ int main(int argc, char ** argv)
 		<< guten::color::yellow << "===\n"
 		<< guten::color::red << "=============\n";
 
+	forge::Clock clock;
+	clock.synchronize(
+		chrono::minutes(10),
+		chrono::seconds(5),
+		chrono::minutes(10),
+		chrono::seconds(5)
+	);
+	
+	clock.start();
 
+	while (true)
+	{
+		if (_kbhit()) {
+			char ch = _getch();
+
+			clock.click();
+		}
+
+		cout << clock << '\n';
+			
+		this_thread::sleep_for(chrono::seconds(1));
+	}
 
 	this_thread::sleep_for(chrono::seconds(2));
 	//cin.get();

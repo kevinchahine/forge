@@ -1,6 +1,8 @@
 === Forge ===
 === Notation ===
 
+https://ucichessengine.wordpress.com/
+
 Portable Game Notation (PGN):
 	- Most chess databases store game in pgn
 

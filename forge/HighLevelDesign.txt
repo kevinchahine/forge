@@ -13,12 +13,16 @@ Model:
 		- valid move generator
 		- threat generator
 
-	Game State Checks (White wins, Black Wins, Draw, Still Playing)
+	Game State Checks (White wins, Black Wins, Draw, Tecnical Draw, Still Playing, ...)
 	
 	TimeControl
 		- timer 
 			- Needs to signal GUIs each second
 			- Incorporate into CL Display also (Use back space to update time)
+			
+	Move Numbers:
+		- keeps track of move number (could be important for solver in deciding how much time to use)
+		- maybe make it a part of TimeControl
 
 
 	AI Agent:
@@ -72,5 +76,5 @@ Multithreading:
 Opening Table Database:
 	Find some chess datasets
 
-
-
+GameLogger:
+	- See Classes.txt

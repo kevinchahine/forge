@@ -11,4 +11,4 @@ Beat another engine
 
 train against another engine
 
-
+Train for many days effectively

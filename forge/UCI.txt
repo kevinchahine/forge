@@ -1,0 +1,16 @@
+=== FORGE ===
+=== Universal Chess Interface (UCI) ===
+=== This is gonna be hard ===
+=== But very benificial ===
+
+Procedure:
+Starup:
+1.) Engine startup - prepares to use UCI
+2.) Talk to UCI
+3.) 
+
+
+Game Starts: (Periodic things)
+1.) 
+
+Game Ends:

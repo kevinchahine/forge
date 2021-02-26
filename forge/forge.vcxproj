@@ -135,14 +135,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Clock.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Classes.txt" />
     <Text Include="Goals.txt" />
     <Text Include="HighLevelDesign.txt" />
+    <Text Include="NameSpaces.txt" />
     <Text Include="Notation.txt" />
     <Text Include="ProgramOptions.txt" />
+    <Text Include="UCI.txt" />
     <Text Include="View.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Clock.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
