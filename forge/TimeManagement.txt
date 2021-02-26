@@ -1,0 +1,5 @@
+=== FORGE ===
+=== Time Management ===
+
+How will we manage time to search each move if we are not given limits.
+
