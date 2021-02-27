@@ -5,6 +5,8 @@ https://ucichessengine.wordpress.com/
 
 Portable Game Notation (PGN):
 	- Most chess databases store game in pgn
+	- use pgnlib see /d/Desktop
+		- We need to figure out how we can add it to project
 
 Long Algebraic Notation:
 	- UCI GUIs support this notation
@@ -14,3 +16,7 @@ Both:
 	- string no longer than ??? characters
 	- must be parsed
 	- Can PGN be distinguished from LAN by a machine?
+
+What about?
+	- fen
+	- san

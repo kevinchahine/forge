@@ -84,16 +84,6 @@ namespace forge
 			cout << setw(10) << "whites: " << b.whites() << endl;
 			cout << setw(10) << "blacks: " << b.blacks() << endl;
 
-			//for (int i = 0; i < 8; i++) {
-			//	for (int j = 0; j < 8; j++) {
-			//		cout << b.at(i, j);
-			//	}
-			//	cout << endl;
-			//}
-			//cout << endl;
-			//b.setPiece(0, 0, forge::pieces::blackRook);
-			//b.setPiece(0, 1, forge::pieces::blackKnight);
-
 			b.print();
 		}
 	} // namespace test

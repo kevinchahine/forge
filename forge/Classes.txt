@@ -9,33 +9,10 @@ Match:
 		whiteController
 		blackController
 
-Clock:
-	chrono::milliseconds	whitesTime
-	chrono::milliseconds	blacksTime
-	chrono::milliseconds	increment
-	chrono::time_point		lastClick
-	bool					isWhiteThinking	
-	int						moveNumber			// 0 first game state?? So always a fresh board??
-												// 1 is game state once white plays 1st move??
-												// 2 is game state once black plays 1st move??
-
-	flip() - void
-	whitesTime() - chrono::milliseconds
-	blacksTime() - chrono::milliseconds
-	isWhitePondering() - bool
-	reset(whitesTime, blacksTime, increment) - void
-
 GameLogger (BookKeeper?): (Not used in solver but good for bookeeping)
 	moves					vector<Move>		// a move stored as PGN or LAN
 												// even numbers are whites moves
 												// odds are blacks moves
-
-ChessBoard:
-	Use LeelaChessZeros 0x88 implementation
-	at(int row, int col) - Piece				// 
-
-Piece:
-	val - int8_t
 
 Move : string:
 	toPGN()	- Move
@@ -54,7 +31,6 @@ SolverStatistics:
 	// These values need to be sent to UCI periodically
 	nodes per second searched
 	currmove - Should send the move currently being evaluated to UCI (only the 1st ply)
-
 
 HeuristicBase:
 	eval() - int (units of centipawns)
