@@ -16,15 +16,7 @@ Designed to be compatible with a variety of displays including:
 
 */
 
-#include "Clock.h"
-
-#include <iostream>
-#include <thread>
-#include <chrono>
-
-#include <Guten/guten.hpp>
-
-#include <conio.h>	// Only for testing
+#include "Test.h"	// Contains all necessary includes
 
 using namespace std;
 
@@ -33,32 +25,13 @@ int main(int argc, char ** argv)
 	cout << guten::color::red << "=============\n"
 		<< guten::color::yellow << "=== " << guten::color::lightred << "FORGE "
 		<< guten::color::yellow << "===\n"
-		<< guten::color::red << "=============\n";
+		<< guten::color::red << "=============\n"
+		<< guten::color::white;
 
-	forge::Clock clock;
-	clock.synchronize(
-		chrono::minutes(10),
-		chrono::seconds(5),
-		chrono::minutes(10),
-		chrono::seconds(5)
-	);
-	
-	clock.start();
+	//forge::test::clock();
+	forge::test::board();
 
-	while (true)
-	{
-		if (_kbhit()) {
-			char ch = _getch();
-
-			clock.click();
-		}
-
-		cout << clock << '\n';
-			
-		this_thread::sleep_for(chrono::seconds(1));
-	}
-
-	this_thread::sleep_for(chrono::seconds(2));
-	//cin.get();
+	//this_thread::sleep_for(chrono::seconds(1));
+	cin.get();
 	return 0;
 }

@@ -24,6 +24,9 @@ namespace forge
 		BoardSquare & operator=(const BoardSquare &) = default;
 		BoardSquare & operator=(BoardSquare &&) noexcept = default;
 
+		bool operator==(const BoardSquare & bs) const { return this->m_val == bs.m_val; }
+		bool operator!=(const BoardSquare & bs) const { return this->m_val != bs.m_val; }
+
 		void fromString(const std::string & str);
 
 		// Return coordinates in long algebraic notation
@@ -31,8 +34,9 @@ namespace forge
 
 		// !!! TEst This !!!
 		//BitBoard asBitBoard() const { 
-		//	BitBoard b;
-		//	b.at(m_val) = 1;
+		//	BitBoard b;		// All zeros
+		//	b[m_val] = 1;	// Set only that bit to 1
+		//	return b;		// Return
 		//}
 
 		void setCoord(uint8_t row, uint8_t col)

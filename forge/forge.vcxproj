@@ -140,6 +140,8 @@
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
+    <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +161,8 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="BoardSquare.h" />
+    <ClInclude Include="Piece.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

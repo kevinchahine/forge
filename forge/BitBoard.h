@@ -24,12 +24,25 @@ namespace forge
 	class BitBoard : public std::bitset<64>
 	{
 	public:
+		BitBoard() = default;
+		BitBoard(unsigned long long l) : std::bitset<64>(l) {};
+		BitBoard(const BitBoard & bb) = default;
+		BitBoard(const std::bitset<64> & bset) : std::bitset<64>(bset) {};
+		~BitBoard() = default;
 
-		//std::bitset<64>::reference at(const BoardSquare & square)
-		//{
-		//	return (*this)[square.val()];
-		//}
+		BitBoard & operator=(const BitBoard &) = default;
 
+		std::bitset<64>::reference operator[](size_t i) {
+			return static_cast<bitset<64> &>(*this)[i];
+		}
+
+		std::bitset<64>::reference operator[](int i) {
+			return static_cast<bitset<64> &>(*this)[i];
+		}
+		
+		std::bitset<64>::reference operator[](const BoardSquare & square);
+
+		friend std::ostream & operator<<(std::ostream & os, const BitBoard & bb);
 	private:
 
 	};
