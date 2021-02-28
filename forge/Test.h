@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "Clock.h"
+#include "Move.h"
 
 #include <iostream>
 #include <thread>
@@ -18,5 +19,8 @@ namespace forge
 		void clock();
 
 		void board();
+
+		void move();
+
 	} // namespace test
 } // namespace forge

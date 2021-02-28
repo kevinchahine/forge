@@ -154,6 +154,7 @@
     <Text Include="NameSpaces.txt" />
     <Text Include="Notation.txt" />
     <Text Include="ProgramOptions.txt" />
+    <Text Include="Progress.txt" />
     <Text Include="TimeManagement.txt" />
     <Text Include="UCI.txt" />
     <Text Include="View.txt" />

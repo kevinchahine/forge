@@ -42,10 +42,10 @@ namespace forge
 		{
 			register int8_t v = p.val();
 
-			os << guten::color::push()
-				<< guten::color::setfg(v < 0 ? guten::color::gray : guten::color::lightgreen)
-				<< p.getCh()
-				<< guten::color::pop();
+			os //<< guten::color::push()
+				//<< guten::color::setfg(v < 0 ? guten::color::gray : guten::color::lightgreen)
+				<< p.getCh();
+				//<< guten::color::pop();
 
 			return os;
 		}

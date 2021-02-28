@@ -78,6 +78,9 @@
     <Text Include="Database.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="Progress.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clock.h">

@@ -15,8 +15,14 @@ namespace forge
 		BoardSquare() = default;
 		BoardSquare(uint8_t val) :
 			m_val(val) {}
-		BoardSquare(uint8_t row, uint8_t col) :
+		BoardSquare(int row, int col) :
 			m_val(col | (row << 3)) {}
+		BoardSquare(uint16_t row, uint16_t col) :
+			m_val(col | (row << 3)) {}
+		// file: ['a' - 'h'] (both upper or lower case work)
+		// rank: [ 1  -  8 ]
+		explicit BoardSquare(char file, char rank) :
+			m_val( (tolower(file) - 'a') | ((tolower(rank) - '1') << 3) ) {}
 		BoardSquare(const std::string & coord);
 		BoardSquare(const BoardSquare &) = default;
 		BoardSquare(BoardSquare &&) noexcept = default;
@@ -30,9 +36,9 @@ namespace forge
 		void fromString(const std::string & str);
 
 		// Return coordinates in long algebraic notation
-		std::string asString() const;
+		std::string toString() const;
 
-		// !!! TEst This !!!
+		// !!! Test This !!!
 		//BitBoard asBitBoard() const { 
 		//	BitBoard b;		// All zeros
 		//	b[m_val] = 1;	// Set only that bit to 1

@@ -1,3 +1,7 @@
 === Forge ===
 === DataBase ===
 http://scid.sourceforge.net/
+
+Purpose:
+	- Can use for supervised training
+	- Can be used as opening database

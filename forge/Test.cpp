@@ -86,5 +86,30 @@ namespace forge
 
 			b.print();
 		}
+
+		void move()
+		{
+			forge::Move m;
+
+			cout << "Empty constructor: " << m << endl;
+
+			cout << forge::BoardSquare(1, 2) << endl;
+			cout << forge::BoardSquare(2, 2) << endl;
+			cout << forge::Move{ forge::BoardSquare(1, 2), forge::BoardSquare(2, 2) } << endl;
+
+			cout << forge::BoardSquare(4, 5) << ' ' 
+				<< forge::BoardSquare(6, 7) << ' '
+				<< forge::pieces::whiteQueen << ' '
+				<< forge::Move{ 
+					forge::BoardSquare(4, 5), 
+					forge::BoardSquare(6, 7), 
+					forge::pieces::whiteQueen } 
+			<< endl;
+
+			cout << forge::BoardSquare('e', '2') << ' '
+				<< forge::BoardSquare('e', '4') << ' '
+				<< forge::Move(forge::BoardSquare('e', '2'), forge::BoardSquare('e', '4'))
+				<< endl;
+		}
 	} // namespace test
 } // namespace forge

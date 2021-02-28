@@ -23,7 +23,7 @@ namespace forge
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.
 		// Use methods that move pieces instead
-		void setPiece(uint8_t row, uint8_t col, Piece piece) {	setPiece(BoardSquare{ row, col }, piece); }
+		void setPiece(uint8_t row, uint8_t col, Piece piece) {	setPiece(BoardSquare( (uint16_t)row, (uint16_t)col ), piece); }
 		// If piece == empty, does not remove King.
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.

@@ -30,9 +30,9 @@ namespace forge
 
 	Piece Board::at(int row, int col) const
 	{
-		return this->at(BoardSquare{
-			static_cast<uint8_t>(row),
-			static_cast<uint8_t>(col) });
+		return this->at(BoardSquare(
+			static_cast<uint16_t>(row),
+			static_cast<uint16_t>(col) ));
 	}
 
 	Piece Board::at(BoardSquare square) const
