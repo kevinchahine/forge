@@ -149,6 +149,7 @@
     <Text Include="AI.txt" />
     <Text Include="Classes.txt" />
     <Text Include="Database.txt" />
+    <Text Include="GameStates.txt" />
     <Text Include="Goals.txt" />
     <Text Include="HighLevelDesign.txt" />
     <Text Include="NameSpaces.txt" />
@@ -157,6 +158,7 @@
     <Text Include="Progress.txt" />
     <Text Include="TimeManagement.txt" />
     <Text Include="UCI.txt" />
+    <Text Include="ValidMoveGenerator.txt" />
     <Text Include="View.txt" />
   </ItemGroup>
   <ItemGroup>

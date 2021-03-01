@@ -1,0 +1,24 @@
+=== FORGE ===
+=== VALID MOVE GENERATOR ===
+
+Psudo-legal moves:
+	- Generates list of possible moves, but may leave king under check.
+
+Normal Moves (from whites perspective):
+	- pawn: up1, up2, capture\, capture/
+	- rook: up_x, down_x, left_x, right_x
+	- knight: 0, 1, 2, 3, 4, 5, 6, 7 (see class Move)
+	- bishop: \_x, /_x
+	- queen: rooks and bishop combined
+	- king: up, down, left, right, \, /, \\, //
+
+Special Moves:
+	- pawn promotion
+	- en passent
+	- castling
+
+After generating a move:
+	- Is king being attacked?		(Yes - invalid, No - valid)	
+		But this check is very slow, do we want to do it every time?
+
+	

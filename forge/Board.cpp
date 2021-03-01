@@ -63,7 +63,7 @@ namespace forge
 		return piece;
 	}
 
-	void Board::setPiece(BoardSquare square, Piece piece)
+	void Board::placePiece(BoardSquare square, Piece piece)
 	{
 		if (piece.isEmpty()) {
 			m_whites[square] = 0;
@@ -118,5 +118,95 @@ namespace forge
 				}
 			}
 		}
+	}
+
+	void Board::removePiece(BoardSquare pos)
+	{
+		m_whites.set(pos.val(), 0);
+		m_blacks.set(pos.val(), 0);
+		m_bishops.set(pos.val(), 0);
+		m_rooks.set(pos.val(), 0);
+		m_pawns.set(pos.val(), 0);
+	}
+
+	void Board::placeWhitePawn(BoardSquare pos)
+	{
+		m_whites.set(pos.val(), 1);
+		m_pawns.set(pos.val(), 1);
+	}
+
+	void Board::placeBlackPawn(BoardSquare pos)
+	{
+		m_blacks.set(pos.val(), 1);
+		m_pawns.set(pos.val(), 1);
+	}
+
+	void Board::placeWhiteRook(BoardSquare pos)
+	{
+		m_whites.set(pos.val(), 1);
+		m_rooks.set(pos.val(), 1);
+	}
+
+	void Board::placeBlackRook(BoardSquare pos)
+	{
+		m_blacks.set(pos.val(), 1);
+		m_rooks.set(pos.val(), 1);
+	}
+
+	void Board::placeWhiteKnight(BoardSquare pos)
+	{
+		m_whites.set(pos.val(), 1);
+		// Thats it for knights
+	}
+
+	void Board::placeBlackKnight(BoardSquare pos)
+	{
+		m_blacks.set(pos.val(), 1);
+		// Thats it for knights
+	}
+
+	void Board::placeWhiteBishop(BoardSquare pos)
+	{
+		m_whites.set(pos.val(), 1);
+		m_bishops.set(pos.val(), 1);
+	}
+
+	void Board::placeBlackBishop(BoardSquare pos)
+	{
+		m_blacks.set(pos.val(), 1);
+		m_bishops.set(pos.val(), 1);
+	}
+
+	void Board::placeWhiteQueen(BoardSquare pos)
+	{
+		m_whites.set(pos.val(), 1);
+		m_rooks.set(pos.val(), 1);
+		m_bishops.set(pos.val(), 1);
+	}
+
+	void Board::placeBlackQueen(BoardSquare pos)
+	{
+		m_blacks.set(pos.val(), 1);
+		m_rooks.set(pos.val(), 1);
+		m_bishops.set(pos.val(), 1);
+	}
+
+	void Board::moveWhiteKing(BoardSquare pos)
+	{
+		m_whites.set(m_whiteKing.val(), 0);	// "remove" white king
+		m_whiteKing = pos;
+		m_whites.set(m_whiteKing.val(), 1);	// "place" white king 
+	}
+
+	void Board::moveBlackKing(BoardSquare pos)
+	{
+		m_blacks.set(m_blackKing.val(), 0);	// "remove" black king
+		m_blackKing = pos;
+		m_blacks.set(m_blackKing.val(), 1);	// "place" black king 
+	}
+
+	void Board::reset()
+	{
+		(*this) = Board();
 	}
 } // namespace forge

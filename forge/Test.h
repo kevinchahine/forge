@@ -18,7 +18,11 @@ namespace forge
 	{
 		void clock();
 
+		void boardDefualt();
+
 		void board();
+
+		void placeMethods();
 
 		void move();
 

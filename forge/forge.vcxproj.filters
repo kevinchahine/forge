@@ -81,6 +81,12 @@
     <Text Include="Progress.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="ValidMoveGenerator.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="GameStates.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clock.h">

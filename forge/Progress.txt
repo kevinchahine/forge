@@ -1,15 +1,19 @@
 === FORGE ===
 === PROGRESS ===
 
-DONE - functional, tested, may still have future upgrades
+DONE - functional, tested, may still have future upgrades (requirements)
 ALMOST DONE - Most functionality is done, not completely usable
 STARTED - Some functionality is implemented
 
 BitBoard.............................................................DONE
-Implement Board......................................................ALMOST DONE
+Board................................................................ALMOST DONE
+	- Added remove method
+	- Added place methods for simple piece placement
+	- Added moveKing methods for simple king movements
+
 CL View..............................................................DONE
 Valid Move Generator.................................................
-Move.................................................................STARTED
+Move.................................................................ALMOST DONE
 Clock................................................................DONE
 Notations:
 	- PGN............................................................

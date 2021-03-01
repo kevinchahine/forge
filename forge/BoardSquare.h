@@ -21,8 +21,8 @@ namespace forge
 			m_val(col | (row << 3)) {}
 		// file: ['a' - 'h'] (both upper or lower case work)
 		// rank: [ 1  -  8 ]
-		explicit BoardSquare(char file, char rank) :
-			m_val( (tolower(file) - 'a') | ((tolower(rank) - '1') << 3) ) {}
+		BoardSquare(char file, char rank) :
+			m_val( (tolower(file) - 'a') | ((7 - (tolower(rank) - '1')) << 3) ) {}
 		BoardSquare(const std::string & coord);
 		BoardSquare(const BoardSquare &) = default;
 		BoardSquare(BoardSquare &&) noexcept = default;
@@ -77,28 +77,36 @@ namespace forge
 		}
 
 		// Warning: Only call if row != 0
-		BoardSquare oneUp() const {	return BoardSquare(m_val - 8); }
+		BoardSquare oneUp() const {	return m_val - 8; }
+		BoardSquare up(uint8_t num) const { return m_val - num * 8; }
 
 		// Warning: Only call if row != 7
-		BoardSquare oneDown() const { return BoardSquare(m_val + 8); }
+		BoardSquare oneDown() const { return m_val + 8; }
+		BoardSquare down(uint8_t num) const { return m_val + num * 8; }
 
 		// Warning: Only call if col != 0
 		BoardSquare oneLeft() const { return BoardSquare(m_val - 1); }
+		BoardSquare left(int8_t num) const { return m_val - num * 1; }
 
 		// Warning: Only call if col != 7
 		BoardSquare oneRight() const { return BoardSquare(m_val + 1); }
+		BoardSquare right(int8_t num) const { return m_val + num * 1; }
 
 		// Warning: Only call if row != 0 && col != 7
 		BoardSquare oneUpRight() const { return BoardSquare(m_val - 7); }
+		BoardSquare upRight(int8_t num) const { return m_val - num * 7; }
 
 		// Warning: Only call if row != 0 && col != 0
 		BoardSquare oneUpLeft() const { return BoardSquare(m_val - 9); }
+		BoardSquare upLeft(int8_t num) const { return m_val - num * 9; }
 
 		// Warning: Only call if row != 7 && col != 0
 		BoardSquare oneDownLeft() const { return BoardSquare(m_val + 7); }
+		BoardSquare downLeft(int8_t num) const { return m_val + num * 7; }
 
 		// Warning: Only call if row != 7 && col != 7
 		BoardSquare oneDownRight() const { return BoardSquare(m_val + 9); }
+		BoardSquare downRight(int8_t num) const { return m_val + num * 9; }
 
 		// Warning: Only call if inbounds
 		BoardSquare knight0() const { return BoardSquare(m_val + 2 - 8); }

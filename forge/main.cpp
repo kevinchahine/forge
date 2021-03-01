@@ -29,8 +29,10 @@ int main(int argc, char ** argv)
 		<< guten::color::white;
 
 	//forge::test::clock();
+	//forge::test::boardDefualt();
 	//forge::test::board();
-	forge::test::move();
+	forge::test::placeMethods();
+	//forge::test::move();
 
 	//this_thread::sleep_for(chrono::seconds(1));
 	cin.get();

@@ -35,45 +35,54 @@ namespace forge
 			}
 		}
 
+		void boardDefualt()
+		{
+			forge::Board b;
+
+			b.reset();
+
+			b.print();
+		}
+
 		void board()
 		{
 			forge::Board b;
 
-			b.setPiece(0, 0, pieces::blackRook);
-			b.setPiece(0, 1, pieces::blackKnight);
-			b.setPiece(0, 2, pieces::blackBishop);
-			b.setPiece(0, 3, pieces::blackQueen);
-			b.setPiece(0, 4, pieces::blackKing);
-			b.setPiece(0, 5, pieces::blackBishop);
-			b.setPiece(0, 6, pieces::blackKnight);
-			b.setPiece(0, 7, pieces::blackRook);
+			b.placePiece(0, 0, pieces::blackRook);
+			b.placePiece(0, 1, pieces::blackKnight);
+			b.placePiece(0, 2, pieces::blackBishop);
+			b.placePiece(0, 3, pieces::blackQueen);
+			b.placePiece(0, 4, pieces::blackKing);
+			b.placePiece(0, 5, pieces::blackBishop);
+			b.placePiece(0, 6, pieces::blackKnight);
+			b.placePiece(0, 7, pieces::blackRook);
 			
-			b.setPiece(1, 0, pieces::blackPawn);
-			b.setPiece(1, 1, pieces::blackPawn);
-			b.setPiece(1, 2, pieces::blackPawn);
-			b.setPiece(1, 3, pieces::blackPawn);
-			b.setPiece(1, 4, pieces::blackPawn);
-			b.setPiece(1, 5, pieces::blackPawn);
-			b.setPiece(1, 6, pieces::blackPawn);
-			b.setPiece(1, 7, pieces::blackPawn);
+			b.placePiece(1, 0, pieces::blackPawn);
+			b.placePiece(1, 1, pieces::blackPawn);
+			b.placePiece(1, 2, pieces::blackPawn);
+			b.placePiece(1, 3, pieces::blackPawn);
+			b.placePiece(1, 4, pieces::blackPawn);
+			b.placePiece(1, 5, pieces::blackPawn);
+			b.placePiece(1, 6, pieces::blackPawn);
+			b.placePiece(1, 7, pieces::blackPawn);
 			
-			b.setPiece(6, 0, pieces::whitePawn);
-			b.setPiece(6, 1, pieces::whitePawn);
-			b.setPiece(6, 2, pieces::whitePawn);
-			b.setPiece(6, 3, pieces::whitePawn);
-			b.setPiece(6, 4, pieces::whitePawn);
-			b.setPiece(6, 5, pieces::whitePawn);
-			b.setPiece(6, 6, pieces::whitePawn);
-			b.setPiece(6, 7, pieces::whitePawn);
+			b.placePiece(6, 0, pieces::whitePawn);
+			b.placePiece(6, 1, pieces::whitePawn);
+			b.placePiece(6, 2, pieces::whitePawn);
+			b.placePiece(6, 3, pieces::whitePawn);
+			b.placePiece(6, 4, pieces::whitePawn);
+			b.placePiece(6, 5, pieces::whitePawn);
+			b.placePiece(6, 6, pieces::whitePawn);
+			b.placePiece(6, 7, pieces::whitePawn);
 			
-			b.setPiece(7, 0, pieces::whiteRook);
-			b.setPiece(7, 1, pieces::whiteKnight);
-			b.setPiece(7, 2, pieces::whiteBishop);
-			b.setPiece(7, 3, pieces::whiteQueen);
-			b.setPiece(7, 4, pieces::whiteKing);
-			b.setPiece(7, 5, pieces::whiteBishop);
-			b.setPiece(7, 6, pieces::whiteKnight);
-			b.setPiece(7, 7, pieces::whiteRook);
+			b.placePiece(7, 0, pieces::whiteRook);
+			b.placePiece(7, 1, pieces::whiteKnight);
+			b.placePiece(7, 2, pieces::whiteBishop);
+			b.placePiece(7, 3, pieces::whiteQueen);
+			b.placePiece(7, 4, pieces::whiteKing);
+			b.placePiece(7, 5, pieces::whiteBishop);
+			b.placePiece(7, 6, pieces::whiteKnight);
+			b.placePiece(7, 7, pieces::whiteRook);
 
 			cout << setw(10) << "pawns: " << b.pawns() << endl;
 			cout << setw(10) << "rooks: " << b.rooks() << endl;
@@ -83,6 +92,51 @@ namespace forge
 			cout << setw(10) << "kings: " << b.kings() << endl;
 			cout << setw(10) << "whites: " << b.whites() << endl;
 			cout << setw(10) << "blacks: " << b.blacks() << endl;
+
+			b.print();
+		}
+
+		void placeMethods()
+		{
+			forge::Board b;
+
+			using Square = forge::BoardSquare;
+
+			b.placeBlackRook(Square{ 'a', '8' });
+			b.placeBlackKnight(Square{ 'b', '8' });
+			b.placeBlackBishop(Square{ 'c', '8' });
+			b.placeBlackQueen(Square{ 'd', '8' });
+			b.moveBlackKing(Square{ 'e', '8' });	// Kings already here
+			b.placeBlackBishop(Square{ 'f', '8' });
+			b.placeBlackKnight(Square{ 'g', '8' });
+			b.placeBlackRook(Square{ 'h', '8' });
+
+			b.placeBlackPawn(Square{ 'a', '7' });
+			b.placeBlackPawn(Square{ 'b', '7' });
+			b.placeBlackPawn(Square{ 'c', '7' });
+			b.placeBlackPawn(Square{ 'd', '7' });
+			b.placeBlackPawn(Square{ 'e', '7' });
+			b.placeBlackPawn(Square{ 'f', '7' });
+			b.placeBlackPawn(Square{ 'g', '7' });
+			b.placeBlackPawn(Square{ 'h', '7' });
+
+			b.placeWhitePawn(Square{ 'a', '2' });
+			b.placeWhitePawn(Square{ 'b', '2' });
+			b.placeWhitePawn(Square{ 'c', '2' });
+			b.placeWhitePawn(Square{ 'd', '2' });
+			b.placeWhitePawn(Square{ 'e', '2' });
+			b.placeWhitePawn(Square{ 'f', '2' });
+			b.placeWhitePawn(Square{ 'g', '2' });
+			b.placeWhitePawn(Square{ 'h', '2' });
+
+			b.placeWhiteRook(Square{ 'a', '1' });
+			b.placeWhiteKnight(Square{ 'b', '1' });
+			b.placeWhiteBishop(Square{ 'c', '1' });
+			b.placeWhiteQueen(Square{ 'd', '1' });
+			b.moveWhiteKing(Square{ 'e', '1' });	// Kings already here
+			b.placeWhiteBishop(Square{ 'f', '1' });
+			b.placeWhiteKnight(Square{ 'g', '1' });
+			b.placeWhiteRook(Square{ 'h', '1' });
 
 			b.print();
 		}

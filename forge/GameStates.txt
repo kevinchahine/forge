@@ -1,0 +1,22 @@
+=== FORGE ===
+=== Game States ===
+
+States:
+	- White is thinking (or making a move)
+	- Black is thinking (or making a move)
+	- Draws:
+		- insufficient material
+		- timeout to one player and insufficient material to other
+		- repeated moves
+		- agreed draw
+		- 50-move-rule
+			- no capture is made and no pawn has moved in 50 moves (full moves not half moves)
+
+	- White Wins:
+		- white delivers check mate
+		- black times out, white has sufficient material 
+		- black resigns
+	- Black Wins:
+		- black delivers check mate
+		- white times out, black has sufficient material
+		- white resigns

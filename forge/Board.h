@@ -13,7 +13,7 @@ namespace forge
 	class Board
 	{
 	public:
-		
+
 		void print(std::ostream & os = std::cout) const;
 
 		Piece at(int row, int col) const;
@@ -23,17 +23,64 @@ namespace forge
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.
 		// Use methods that move pieces instead
-		void setPiece(uint8_t row, uint8_t col, Piece piece) {	setPiece(BoardSquare( (uint16_t)row, (uint16_t)col ), piece); }
+		void placePiece(uint8_t row, uint8_t col, Piece piece) {	placePiece(BoardSquare( (uint16_t)row, (uint16_t)col ), piece); }
 		// If piece == empty, does not remove King.
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.
 		// Use methods that move pieces instead
-		void setPiece(BoardSquare square, Piece piece);
+		void placePiece(BoardSquare square, Piece piece);
+
+		// Does not remove Kings
+		// Only call on cells that are guarenteed to have a piece on them (other than kings).
+		// Calling on a cell that is already empty or is occupied by a king
+		//	may have unexpected results
+		void removePiece(BoardSquare pos);
+		
+		// Places a piece at pos
+		// Only call on empty cells
+		// Do not call on a cell that is occupied by a piece
+		// !!! Does not account captures or special moves (castling, promotions, enpassent) !!!
+		void placeWhitePawn(BoardSquare pos);
+		// See comment for placeWhitePawn()
+		void placeBlackPawn(BoardSquare pos);
+		
+		// See comment for placeWhitePawn()
+		void placeWhiteRook(BoardSquare pos);
+		// See comment for placeWhitePawn()
+		void placeBlackRook(BoardSquare pos);
+		
+		// See comment for placeWhitePawn()
+		void placeWhiteKnight(BoardSquare pos);
+		// See comment for placeWhitePawn()
+		void placeBlackKnight(BoardSquare pos);
+		
+		// See comment for placeWhitePawn()
+		void placeWhiteBishop(BoardSquare pos);
+		// See comment for placeWhitePawn()
+		void placeBlackBishop(BoardSquare pos);
+		
+		// See comment for placeWhitePawn()
+		void placeWhiteQueen(BoardSquare pos);
+		// See comment for placeWhitePawn()
+		void placeBlackQueen(BoardSquare pos);
+
+		// Moves White King from its current position to pos
+		// Make sure that pos refers to an empty square.
+		// Moving king to an occupied square can have unexpected results
+		// !!! Does not account captures or or castling !!!
+		void moveWhiteKing(BoardSquare pos);
+		// See comment for moveWhiteKing()
+		void moveBlackKing(BoardSquare pos);
+
+		// Removes all pieces except Kings.
+		// Places Kings in there starting locations.
+		void reset();
 
 		size_t rows() const { return 8; }
 		size_t cols() const { return 8; }
 
 		BitBoard occupied() const { return m_whites | m_blacks; }
+		BitBoard empty() const { return ~occupied(); }
 		BitBoard whites() const { return m_whites; }
 		BitBoard blacks() const { return m_blacks; }
 		BitBoard pawns() const { return m_pawns & pawn_mask; }
@@ -63,18 +110,18 @@ namespace forge
 		}
 
 	private:
-		BitBoard m_whites;			// All White Pieces (Including Kings and Knights)
-		BitBoard m_blacks;			// All Black Pieces (Including Kings and Knights)
-		BitBoard m_bishops;			// Bishops and Queens
-		BitBoard m_rooks;			// Rooks and Queens
+		BitBoard m_whites{ 0b00010000'00000000'00000000'00000000'00000000'00000000'00000000'00000000 };	// All White Pieces (Including Kings and Knights)
+		BitBoard m_blacks{ 1u << 4 };	// All Black Pieces (Including Kings and Knights)
+		BitBoard m_bishops;				// Bishops and Queens
+		BitBoard m_rooks;				// Rooks and Queens
 		// Ranks 1 and 8 have special meaning. Pawn at rank 1 means that
 		// corresponding white pawn on rank 4 can be taken en passant. Rank 8 is the
 		// same for black pawns. Those "fake" pawns are not present in our_pieces_ and
 		// their_pieces_ bitboards.
 		BitBoard m_pawns;			// Pawns (Ranks 1 and 8 represent which pawns can do enpassent)
 		
-		BoardSquare m_whiteKing;
-		BoardSquare m_blackKing;
+		BoardSquare m_whiteKing{ 60 };
+		BoardSquare m_blackKing{ 4 };
 
 		// !!! Still need castiling
 	};
