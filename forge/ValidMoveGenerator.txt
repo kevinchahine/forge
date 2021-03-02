@@ -2,7 +2,7 @@
 === VALID MOVE GENERATOR ===
 
 Psudo-legal moves:
-	- Generates list of possible moves, but may leave king under check.
+	- Generates list of possible moves, but may leave king under attack.
 
 Normal Moves (from whites perspective):
 	- pawn: up1, up2, capture\, capture/

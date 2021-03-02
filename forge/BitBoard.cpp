@@ -10,6 +10,11 @@ namespace forge
 		return (*this)[square.val()];
 	}
 
+	bool BitBoard::operator[](const BoardSquare & square) const
+	{
+		return (*this)[square.val()];
+	}
+
 	std::ostream & operator<<(std::ostream & os, const BitBoard & bb)
 	{
 		for (size_t bit = 0; bit < 64; bit++) {

@@ -24,6 +24,8 @@ namespace forge
 
 		void placeMethods();
 
+		void psuedoValidMoveGenerator();
+
 		void move();
 
 	} // namespace test

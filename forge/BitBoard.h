@@ -35,12 +35,20 @@ namespace forge
 		std::bitset<64>::reference operator[](size_t i) {
 			return static_cast<bitset<64> &>(*this)[i];
 		}
+		bool operator[](size_t i) const {
+			return this->std::bitset<64>::operator[](i);
+		}
 
 		std::bitset<64>::reference operator[](int i) {
 			return static_cast<bitset<64> &>(*this)[i];
 		}
+		bool operator[](int i) const {
+			return this->std::bitset<64>::operator[](i);
+		}
 		
 		std::bitset<64>::reference operator[](const BoardSquare & square);
+
+		bool operator[](const BoardSquare & square) const;
 
 		friend std::ostream & operator<<(std::ostream & os, const BitBoard & bb);
 	private:

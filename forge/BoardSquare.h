@@ -77,35 +77,35 @@ namespace forge
 		}
 
 		// Warning: Only call if row != 0
-		BoardSquare oneUp() const {	return m_val - 8; }
+		BoardSquare upOne() const {	return m_val - 8; }
 		BoardSquare up(uint8_t num) const { return m_val - num * 8; }
 
 		// Warning: Only call if row != 7
-		BoardSquare oneDown() const { return m_val + 8; }
+		BoardSquare downOne() const { return m_val + 8; }
 		BoardSquare down(uint8_t num) const { return m_val + num * 8; }
 
 		// Warning: Only call if col != 0
-		BoardSquare oneLeft() const { return BoardSquare(m_val - 1); }
+		BoardSquare leftOne() const { return BoardSquare(m_val - 1); }
 		BoardSquare left(int8_t num) const { return m_val - num * 1; }
 
 		// Warning: Only call if col != 7
-		BoardSquare oneRight() const { return BoardSquare(m_val + 1); }
+		BoardSquare rightOne() const { return BoardSquare(m_val + 1); }
 		BoardSquare right(int8_t num) const { return m_val + num * 1; }
 
 		// Warning: Only call if row != 0 && col != 7
-		BoardSquare oneUpRight() const { return BoardSquare(m_val - 7); }
+		BoardSquare upRightOne() const { return BoardSquare(m_val - 7); }
 		BoardSquare upRight(int8_t num) const { return m_val - num * 7; }
 
 		// Warning: Only call if row != 0 && col != 0
-		BoardSquare oneUpLeft() const { return BoardSquare(m_val - 9); }
+		BoardSquare upLeftOne() const { return BoardSquare(m_val - 9); }
 		BoardSquare upLeft(int8_t num) const { return m_val - num * 9; }
 
 		// Warning: Only call if row != 7 && col != 0
-		BoardSquare oneDownLeft() const { return BoardSquare(m_val + 7); }
+		BoardSquare downLeftOne() const { return BoardSquare(m_val + 7); }
 		BoardSquare downLeft(int8_t num) const { return m_val + num * 7; }
 
 		// Warning: Only call if row != 7 && col != 7
-		BoardSquare oneDownRight() const { return BoardSquare(m_val + 9); }
+		BoardSquare downRightOne() const { return BoardSquare(m_val + 9); }
 		BoardSquare downRight(int8_t num) const { return m_val + num * 9; }
 
 		// Warning: Only call if inbounds

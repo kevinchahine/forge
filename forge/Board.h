@@ -3,8 +3,11 @@
 #include "BitBoard.h"
 #include "BoardSquare.h"
 #include "Piece.h"
+#include "Move.h"
 
 #include <iostream>
+#include <vector>
+#include <tuple>
 
 namespace forge
 {
@@ -15,10 +18,17 @@ namespace forge
 	public:
 
 		void print(std::ostream & os = std::cout) const;
+		void printMini(std::ostream & os = std::cout) const;
 
 		Piece at(int row, int col) const;
 		Piece at(BoardSquare square) const;
 
+		// Does not remove Kings
+		// Only call on cells that are guarenteed to have a piece on them (other than kings).
+		// Calling on a cell that is already empty or is occupied by a king
+		//	may have unexpected results
+		void removePiece(BoardSquare pos);
+		
 		// If piece == empty, does not remove King.
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.
@@ -30,12 +40,6 @@ namespace forge
 		// Use methods that move pieces instead
 		void placePiece(BoardSquare square, Piece piece);
 
-		// Does not remove Kings
-		// Only call on cells that are guarenteed to have a piece on them (other than kings).
-		// Calling on a cell that is already empty or is occupied by a king
-		//	may have unexpected results
-		void removePiece(BoardSquare pos);
-		
 		// Places a piece at pos
 		// Only call on empty cells
 		// Do not call on a cell that is occupied by a piece
@@ -72,9 +76,22 @@ namespace forge
 		// See comment for moveWhiteKing()
 		void moveBlackKing(BoardSquare pos);
 
+		bool isPawn(BoardSquare pos) const { return pawns()[pos] == 1; }
+		bool isRook(BoardSquare pos) const { return rooks()[pos] == 1; }
+		bool isKnight(BoardSquare pos) const { return knights()[pos] == 1; }
+		bool isBishop(BoardSquare pos) const { return bishops()[pos] == 1; }
+		bool isQueen(BoardSquare pos) const { return queens()[pos] == 1; }
+		bool isKing(BoardSquare pos) const { return kings()[pos] == 1; }
+
 		// Removes all pieces except Kings.
 		// Places Kings in there starting locations.
 		void reset();
+
+		// Places all pieces as they would go at the start of a normal chess game.
+		void placeAllPieces();
+
+		std::vector<std::pair<Move, Board>> generatePsuedoLegalMovesWhite() const;
+		std::vector<std::pair<Move, Board>> generatePsuedoLegalMovesBlack() const;
 
 		size_t rows() const { return 8; }
 		size_t cols() const { return 8; }
@@ -125,4 +142,7 @@ namespace forge
 
 		// !!! Still need castiling
 	};
+	
+	using MoveList = std::vector<std::pair<Move, Board>>;
+
 } // namespace forge

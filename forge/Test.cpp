@@ -141,6 +141,25 @@ namespace forge
 			b.print();
 		}
 
+		void psuedoValidMoveGenerator()
+		{
+			forge::Board b;
+
+			b.placeAllPieces();
+
+			b.print();
+
+			vector<pair<forge::Move, forge::Board>> moves = b.generatePsuedoLegalMovesWhite();
+
+			cout << moves.size() << " legal mvoes generated" << endl;
+
+			for (const auto & elem : moves) {
+				elem.second.printMini();
+				cout << elem.first << "\tPress any key";
+				cin.get();
+			}
+		}
+
 		void move()
 		{
 			forge::Move m;

@@ -31,7 +31,8 @@ int main(int argc, char ** argv)
 	//forge::test::clock();
 	//forge::test::boardDefualt();
 	//forge::test::board();
-	forge::test::placeMethods();
+	//forge::test::placeMethods();
+	forge::test::psuedoValidMoveGenerator();
 	//forge::test::move();
 
 	//this_thread::sleep_for(chrono::seconds(1));
