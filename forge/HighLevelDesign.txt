@@ -1,5 +1,8 @@
 === Forge: Chess Engine ===
 
+Link that explains LC0's design:
+	http://lczero.org/dev/wiki/technical-explanation-of-leela-chess-zero/
+
 ====================== MVC ====================================================
 
 Model:

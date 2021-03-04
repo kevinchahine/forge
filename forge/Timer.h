@@ -19,6 +19,8 @@ namespace forge
 
 		bool is_expired() const;
 
+		bool is_not_expired() const { return !is_expired(); }
+
 		void expires_from_now(const std::chrono::nanoseconds & duration);
 
 		std::chrono::nanoseconds expires_from_now() const;

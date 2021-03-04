@@ -1,0 +1,10 @@
+=== FORGE ===
+=== TRAINING ===
+
+Overfitting:
+	To help prevent overritting, where the same positions are used multiple times on successive
+	training states, consider starting each game with a slightly randomized position.
+	Start each game by making a few random moves by each player, then have the AI's start playing
+	from their. That way the AI's will be forced to train in positions that they may not put themselves
+	in on their own. Also, this is good because it can prepare the AI for opponents that may try to pull
+	very uncommon moves forcing the AI to play in a positions that it is not familiar with.

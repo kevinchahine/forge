@@ -9,14 +9,14 @@ using namespace std;
 
 namespace forge
 {
-	void Clock::start()
-	{
-		whiteTimer.resume();
-
-		blackTimer.pause();
-
-		currState = STATE::START;
-	}
+	///void Clock::start()
+	///{
+	///	whiteTimer.resume();
+	///
+	///	blackTimer.pause();
+	///
+	///	currState = STATE::START;
+	///}
 
 	void Clock::stop()
 	{
@@ -25,6 +25,18 @@ namespace forge
 		blackTimer.pause();
 
 		currState = STATE::STOP;
+	}
+
+	void Clock::resume()
+	{
+		if (isWhitesTurn()) {
+			whiteTimer.resume();
+		}
+		else {
+			blackTimer.resume();
+		}
+
+		currState = STATE::START;
 	}
 	
 	void Clock::resetAll()
@@ -88,7 +100,7 @@ namespace forge
 	{
 		return moveNumber;
 	}
-
+	
 } // namespace forge
 
 ostream & operator<<(ostream & os, const forge::Clock & clock)

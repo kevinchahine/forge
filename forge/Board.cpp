@@ -226,6 +226,25 @@ namespace forge
 		m_blacks.set(m_blackKing.val(), 1);	// "place" black king 
 	}
 
+	void Board::moveKing(BoardSquare pos, bool isWhite)
+	{
+		if (isWhite) { moveWhiteKing(pos); }
+		else { moveBlackKing(pos); }
+	}
+
+	void Board::moveKing(BoardSquare from, BoardSquare to)
+	{
+		// Which king are we moving?
+		if (m_whiteKing == from) {
+			// White king moves
+			m_whiteKing = to;
+		}
+		else {
+			// Black king moves
+			m_blackKing = to;
+		}
+	}
+
 	void Board::reset()
 	{
 		(*this) = Board();
@@ -341,12 +360,95 @@ namespace forge
 
 	MoveList Board::generatePsuedoLegalMovesBlack() const
 	{
-		MoveList moveList;
+		MoveList moves;
 
-		moveList.reserve(35);	// At any point in a chess game there should be about 35 - 38 legal moves
+		moves.reserve(35);	// At any point in a chess game there should be about 35 - 38 legal moves
 
+		BitBoard isOccupied = occupied();
+		BitBoard isEmpty = empty();
 
+		// traverse each cell and look for white pieces
+		for (uint8_t row = 0; row < 8; row++) {
+			for (uint8_t col = 0; col < 8; col++) {
+				// Does this cell contain a white piece?
+				BoardSquare pos(row, col);
 
-		return  moveList;
+				if (m_blacks[pos] == 1) {
+					// Yes this is a black piece.
+					if (isPawn(pos)) {
+						// Can pawn move 1
+						if (pos.row() == 1) {
+							// Promotion time. !!! TODO: Do this promotion
+
+						}
+						else if (isEmpty[pos.downOne()]) {
+							moves.emplace_back(Move{ pos, pos.downOne() }, *this);
+							moves.back().second.removePiece(pos);
+							moves.back().second.placeBlackPawn(pos.downOne());
+
+							// Can it move a second time
+							if (pos.row() == 6 && isEmpty[pos.down(2)]) {
+								moves.emplace_back(Move{ pos, pos.down(2) }, *this);
+								moves.back().second.removePiece(pos);
+								moves.back().second.placeBlackPawn(pos.down(2));
+							}
+						}
+
+						// TODO: Still Need captures
+						// TODO: Still need enpassent
+					}
+					else if (isRook(pos)) {
+						BoardSquare p = pos;
+
+						// --- Ups ---
+						// traverse upward. Make sure we don't go past the top boarder
+						while (p.row() != 0) {
+							p = p.upOne();
+
+							// --- Moves ---
+							// Can Rook move up?
+							if (isEmpty[p]) {
+								moves.emplace_back(Move{ pos, p }, *this);
+								moves.back().second.removePiece(pos);
+								moves.back().second.placeBlackRook(p);
+							}
+							// If rook moves up will it capture a White piece?
+							else if (m_whites[p]) {
+								moves.emplace_back(Move{ pos, p }, *this);
+								moves.back().second.removePiece(pos);	// Pick up Black Rook
+								moves.back().second.removePiece(p);		// Remove captured White Piece
+								moves.back().second.placeBlackRook(p);	// Place Black Rook in its place
+							}
+							else { /* Must be a Black piece */
+								break; // A piece can't jump/capture it's own pieces.
+							}
+						}
+
+						// --- Downs ---
+
+						// --- Lefts ---
+
+						// --- Rights ---
+
+					}
+					else if (isKnight(pos)) {
+					}
+					else if (isBishop(pos)) {
+					}
+					else if (isQueen(pos)) {
+					}
+					else if (isKing(pos)) {
+					}
+					else {
+						// It must be an error.
+						// May cause problems with UCI
+						cout << "Uhhoo" << __FUNCTION__ << " line " << __LINE__ << '\n';
+					}
+				} // if (m_whites
+			} // for (col
+		} // for (row
+
+		moves.shrink_to_fit();
+		return  moves;
 	}
 } // namespace forge

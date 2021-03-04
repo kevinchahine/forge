@@ -19,7 +19,7 @@ namespace forge
 				chrono::seconds(5)
 			);
 			
-			clock.start();
+			clock.click();
 			
 			while (true)
 			{
@@ -183,6 +183,32 @@ namespace forge
 				<< forge::BoardSquare('e', '4') << ' '
 				<< forge::Move(forge::BoardSquare('e', '2'), forge::BoardSquare('e', '4'))
 				<< endl;
+		}
+
+		void randomSolver()
+		{
+			forge::RandomSolver solver;
+
+
+		}
+
+		void chessMatch()
+		{
+			forge::ChessMatch match;
+
+			match.reset();
+
+			match.clock().synchronize(
+				chrono::minutes(5),
+				chrono::minutes(5),
+				chrono::seconds(2),
+				chrono::seconds(2)
+			); // Clock is still paused
+
+			match.setWhiteController<RandomSolver>();
+			match.setBlackController<RandomSolver>();
+
+			match.runGame();
 		}
 	} // namespace test
 } // namespace forge

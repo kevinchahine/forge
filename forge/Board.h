@@ -24,8 +24,9 @@ namespace forge
 		Piece at(BoardSquare square) const;
 
 		// Does not remove Kings
+		// !!! Do not use to remove Kings !!!
 		// Only call on cells that are guarenteed to have a piece on them (other than kings).
-		// Calling on a cell that is already empty or is occupied by a king
+		// !!! Calling on a cell that is already empty or is occupied by a king
 		//	may have unexpected results
 		void removePiece(BoardSquare pos);
 		
@@ -70,11 +71,17 @@ namespace forge
 
 		// Moves White King from its current position to pos
 		// Make sure that pos refers to an empty square.
-		// Moving king to an occupied square can have unexpected results
-		// !!! Does not account captures or or castling !!!
+		// !!! Moving king to an occupied square can have unexpected results
+		// !!! Does not account for captures or castling !!!
 		void moveWhiteKing(BoardSquare pos);
 		// See comment for moveWhiteKing()
 		void moveBlackKing(BoardSquare pos);
+		// See comment for moveWhiteKing()
+		void moveKing(BoardSquare pos, bool isWhite);
+		// Make sure that from is the coordinate of the white or black king
+		// !!!Make sure that to is empty before calling this method!!!
+		// See comment for moveWhiteKing()
+		void moveKing(BoardSquare from, BoardSquare to);
 
 		bool isPawn(BoardSquare pos) const { return pawns()[pos] == 1; }
 		bool isRook(BoardSquare pos) const { return rooks()[pos] == 1; }

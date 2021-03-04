@@ -72,6 +72,13 @@ namespace forge
 			m_val |= (colCoord << 3);	// set col bits to colCoord
 		}
 
+		// Is row coord, the top rank where black's pieces start
+		// and white's pawns promot?
+		bool isTopRank() const { return row() == 0; }
+		// Is row coord, the bottom rank where white's pieces start
+		// and black's pawns promot?
+		bool isBotRank() const { return row() == 7; }
+
 		uint8_t val() const {
 			return m_val;
 		}

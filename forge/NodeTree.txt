@@ -1,0 +1,39 @@
+=== FORGE ===
+=== NODETREE ===
+
+Purpose: To store nodes (mainly Positions) of a search. 
+	As search progresses and new Positions are generated and explored,
+	the NodeTree will grow accomidating those new positions.
+
+Pruning:
+	As branches are fully searched, those branches can be pruned so save memory.
+	Pruning might be necessary as the complete search tree (even a depth limited one)
+	may require an exesive amount of memory and more memory than possible to fit an any computer.
+	ex:
+		branch factor - b = 30	(typically there would be about 35-38 valid moves at most positions)
+		depth limit - d = 25	(based on typical uses of LC0)
+		number of nodes n = b^d ~= 348,678,440,100,000,000,000,000,000,000
+								~= 348 x 10^27
+		bytes per node s ~= 50 bytes
+		size of tree = n * s ~= 17 x 10 ^ 30 bytes
+								~= 16,236,605,127,342,045,307,159 GB
+								~= 14,421,002 YB (Yeta Bytes)
+
+The search can store its data in a tree. This tree can be shared accross threads
+??and even be recycled accross multiple searches??. 
+
+It also provides a memory efficient way to test for repetitions.
+
+Node:
+	Represents a position that is or is to be searched. This position could be possible 
+		outcome of a game.
+	Stores:
+		- a position
+		- child nodes (vector? list? priority_queue?)
+		- Parent Node (very important)
+		- Sibling Node (Actually will be more efficient than using and Node::iterator)
+		- ??? a hash of the position, making comparing positions for equality faster.
+			!!! May be unsafe, because 2 different positions might generate the same hash !!!
+		- ??? A mutex (to know when its safe to prune, and also to prevent multiple threads 
+			from writting to the same data???)
+

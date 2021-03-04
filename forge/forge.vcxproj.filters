@@ -16,33 +16,66 @@
     <Filter Include="Notes">
       <UniqueIdentifier>{d6a564c6-9399-474d-9f1c-85498dd3f9b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Solvers">
+      <UniqueIdentifier>{71baa5db-0655-49bc-861f-d3d6e8b02192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{1fe430c3-6f6e-4ed4-aaca-42c515eed2c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{6f66712a-27ae-4cb9-9939-6a30035a88e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Clock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BitBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BoardSquare.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Piece.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SolverBase.cpp">
+      <Filter>Solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomSolver.cpp">
+      <Filter>Solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerBase.cpp">
+      <Filter>Solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBoard.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="BoardSquare.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Clock.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
     <ClCompile Include="Move.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Piece.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessMatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -87,30 +120,60 @@
     <Text Include="GameStates.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="Training.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="NodeTree.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Clock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BitBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BoardSquare.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Test.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="RandomSolver.h">
+      <Filter>Solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="SolverBase.h">
+      <Filter>Solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerBase.h">
+      <Filter>Solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="BitBoard.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardSquare.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Clock.h">
+      <Filter>Game</Filter>
+    </ClInclude>
     <ClInclude Include="Move.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Piece.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="ChessMatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

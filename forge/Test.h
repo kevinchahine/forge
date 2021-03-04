@@ -3,6 +3,9 @@
 #include "Board.h"
 #include "Clock.h"
 #include "Move.h"
+#include "ChessMatch.h"
+
+#include "RandomSolver.h"
 
 #include <iostream>
 #include <thread>
@@ -27,6 +30,10 @@ namespace forge
 		void psuedoValidMoveGenerator();
 
 		void move();
+
+		void randomSolver();
+
+		void chessMatch();
 
 	} // namespace test
 } // namespace forge
