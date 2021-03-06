@@ -4,7 +4,7 @@
 #include "Clock.h"
 #include "Move.h"
 #include "ChessMatch.h"
-
+#include "MoveGenerator.h"
 #include "RandomSolver.h"
 
 #include <iostream>

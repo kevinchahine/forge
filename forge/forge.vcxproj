@@ -145,6 +145,7 @@
     <ClCompile Include="BoardSquare.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="MoveCounter.cpp" />
+    <ClCompile Include="MoveGenerator.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Position.cpp" />
@@ -181,6 +182,8 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveCounter.h" />
+    <ClInclude Include="MoveGenerator.h" />
+    <ClInclude Include="MoveGeneratorInline.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Position.h" />

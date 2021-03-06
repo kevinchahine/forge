@@ -1,5 +1,7 @@
 #include "Node.h"
 
+#include "MoveGenerator.h"
+
 using namespace std;
 
 namespace forge
@@ -9,12 +11,8 @@ namespace forge
 		MoveList moves;
 
 		// 1.) --- Generate legal moves ---
-		if (m_position.moveCounter().isWhitesTurn()) {
-			moves = m_position.board().generatePsuedoLegalMovesWhite();	// TODO: these should generate positions
-		}
-		else {
-			moves = m_position.board().generatePsuedoLegalMovesBlack();	// TODO: these should generate positions
-		}
+		// Figures out wether white or black is playing and generates moves for them.
+		moves = MoveGenerator::generatePseudoMoves(m_position);	
 
 		// 2.) --- Create children nodes ---
 		m_childrenPtrs.clear();

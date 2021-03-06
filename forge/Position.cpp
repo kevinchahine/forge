@@ -12,8 +12,8 @@ namespace forge
 
 		m_moveCounter.reset();
 	}
-
-	void forge::Position::applyMoveFast(Move move)
+	
+	void Position::applyMoveFast(Move move)
 	{
 		register BoardSquare from = move.from();
 		register BoardSquare to = move.to();
@@ -127,7 +127,7 @@ namespace forge
 		return true;	// TODO: this is wrong
 	}
 
-	void forge::Position::applyMove(const Position & position)
+	void Position::applyMove(const Position & position)
 	{
 		(*this) = position;
 	}

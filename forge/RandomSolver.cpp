@@ -1,4 +1,5 @@
 #include "RandomSolver.h"
+#include "MoveGenerator.h"
 
 #include <random>
 #include <chrono>
@@ -9,7 +10,7 @@ namespace forge
 {
 	Move RandomSolver::getMove(const Position & position)
 	{
-		const auto validMoves = position.board().generatePsuedoLegalMovesWhite();
+		const auto validMoves = MoveGenerator::generatePseudoMovesWhite(position);
 
 		if (validMoves.size() == 0) {
 			cout << "No valid moves were generated\n";

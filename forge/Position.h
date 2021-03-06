@@ -13,6 +13,8 @@ namespace forge
 	class Position
 	{
 	public:
+		// --- Declare Friend Classes ---
+		friend MoveGenerator;
 
 		void reset();
 
@@ -50,4 +52,5 @@ namespace forge
 		// odd numbers - (blacks turn, blacks thinking)
 		MoveCounter m_moveCounter;
 	};
+
 } // namespace forge
