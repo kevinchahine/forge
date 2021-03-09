@@ -207,8 +207,8 @@ namespace forge
 				chrono::seconds(2)
 			); // Clock is still paused
 
-			match.setWhiteController<RandomSolver>();
-			match.setBlackController<RandomSolver>();
+			match.makeWhiteController<RandomSolver>();
+			match.makeBlackController<RandomSolver>();
 
 			match.runGame();
 		}

@@ -140,6 +140,7 @@
     <ClCompile Include="ChessMatch.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="ControllerBase.cpp" />
+    <ClCompile Include="FiftyMoveRule.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Clock.h" />
     <ClInclude Include="BoardSquare.h" />
     <ClInclude Include="ControllerBase.h" />
+    <ClInclude Include="FiftyMoveRule.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveCounter.h" />

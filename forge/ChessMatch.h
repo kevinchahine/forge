@@ -28,12 +28,12 @@ namespace forge
 		const Position & position() const { return m_position; }
 
 		template<typename CONTROLLER_T>
-		void setWhiteController() {
+		void makeWhiteController() {
 			m_whitesController = std::make_unique<CONTROLLER_T>();
 		}
 
 		template<typename CONTROLLER_T>
-		void setBlackController() {
+		void makeBlackController() {
 			m_blacksController = std::make_unique<CONTROLLER_T>();
 		}
 

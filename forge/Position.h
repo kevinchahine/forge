@@ -2,10 +2,12 @@
 
 #include "Board.h"
 #include "MoveCounter.h"
-//#include "Referee.h"
+#include "FiftyMoveRule.h"
 
 namespace forge
 {
+	class MoveGenerator;
+
 	// Stores:
 	//	- board (including pieces, castling rules, and enpassent)
 	//	- referee (50 ply rule, repetitions, calculates game state: Win, Draw, Loose)
@@ -43,7 +45,7 @@ namespace forge
 
 		// If in 50 moves no captures have been made and no pawns moved,
 		// then its a draw.
-		int _50_move_rule = 0;
+		FiftyMoveRule m_fiftyMoveRule;
 
 		// Number of moves played
 		// 0 - no pieces have moved yet. (Whites thinking)

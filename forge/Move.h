@@ -30,9 +30,9 @@ namespace forge
 
 		BoardSquare from() const 
 		{
-			register uint16_t v = (m_val & from_mask).to_ulong();
+			register uint16_t v = (uint16_t) (m_val & from_mask).to_ulong();
 
-			return BoardSquare(v);
+			return BoardSquare((uint8_t) v);
 		}
 		
 		void from(BoardSquare pos) 
@@ -44,9 +44,9 @@ namespace forge
 		
 		BoardSquare to() const 
 		{
-			register uint16_t v = (m_val & to_mask).to_ulong() >> 6;
+			register uint16_t v = (uint16_t) (m_val & to_mask).to_ulong() >> 6;
 
-			return BoardSquare(v);
+			return BoardSquare((uint8_t) v);
 		}
 		
 		void to(BoardSquare pos) 
@@ -58,9 +58,9 @@ namespace forge
 		
 		Piece promotion() const 
 		{
-			register uint16_t v = (m_val & promotion_mask).to_ulong() >> 12;
+			register uint16_t v = (uint16_t) (m_val & promotion_mask).to_ulong() >> 12;
 
-			return Piece(v);
+			return Piece((int8_t) v);
 		}
 		
 		void promotion(BoardSquare piece) 

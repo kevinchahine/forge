@@ -8,7 +8,7 @@ namespace forge
 	{
 		m_board.placeAllPieces();
 
-		_50_move_rule = 0;
+		m_fiftyMoveRule.reset();
 
 		m_moveCounter.reset();
 	}
@@ -24,15 +24,16 @@ namespace forge
 		// Look for captures
 		if (toPiece.isEmpty() == false) {
 			// A capture is being made.
-			_50_move_rule = -1;	// reset 50 move rule
+			m_fiftyMoveRule.pieceCaptured();
 		}
 
 		// Removing toPiece must be done before moving other pieces to this square
 		// Remember that tecnically kings can't be captured
 		// Assuming move is valid, we don't need to check if we are 
-		// removing a King because that would be an invalid move.
+		// removing a King because that would be an invalid move anyway.
 		m_board.removePiece(to);
 
+		// --- PAWNS ---
 		if (fromPiece.isPawn()) {
 			if (fromPiece.isWhite()) {
 				// Is this a promotion?
@@ -56,11 +57,12 @@ namespace forge
 					// TODO: 
 				}
 			}
-			// regular pawn move
-			_50_move_rule = -1;	// reset 50 move rule
+
+			m_fiftyMoveRule.pawnHasMoved();
 			m_board.removePiece(from);
 			m_board.placePiece(to, fromPiece);
 		}
+		// --- KINGS ---
 		else if (fromPiece.isKing()) {
 			// Is this a castling move?
 			// Do we still have castling rights?
@@ -69,13 +71,14 @@ namespace forge
 			// Moving Kings is done a little different than moving other pieces
 			m_board.moveKing(from, to);
 		}
+		// --- ANYTHING ELSE ---
 		else {
 			// Move other pieces
 			m_board.removePiece(from);
 			m_board.placePiece(to, fromPiece);
 		}
 
-		_50_move_rule++;
+		m_fiftyMoveRule.update();
 		++m_moveCounter;
 	}
 

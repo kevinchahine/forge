@@ -70,16 +70,19 @@
       <Filter>AI</Filter>
     </ClCompile>
     <ClCompile Include="ChessMatch.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="FiftyMoveRule.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="GameState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="MoveCounter.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="MoveGenerator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -171,19 +174,22 @@
       <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="ChessMatch.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="GameState.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="FiftyMoveRule.h">
+      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="MoveCounter.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="MoveGenerator.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="MoveGeneratorInline.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
