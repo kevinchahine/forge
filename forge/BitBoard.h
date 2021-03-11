@@ -28,7 +28,7 @@ namespace forge
 		BitBoard(unsigned long long l) : std::bitset<64>(l) {};
 		BitBoard(const BitBoard & bb) = default;
 		BitBoard(const std::bitset<64> & bset) : std::bitset<64>(bset) {};
-		~BitBoard() = default;
+		~BitBoard() noexcept = default;
 
 		BitBoard & operator=(const BitBoard &) = default;
 

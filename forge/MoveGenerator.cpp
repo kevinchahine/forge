@@ -85,7 +85,7 @@ namespace forge
 						generatePawnMovesBlack(position, square, moves);
 					}
 					else if (board.isRook(square)) {
-						generateRookMoves(position, square, true, moves);
+						generateRookMoves(position, square, false, moves);
 					}
 					else if (board.isKnight(square)) {
 					}

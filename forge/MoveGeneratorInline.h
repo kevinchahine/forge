@@ -99,25 +99,6 @@ namespace forge
 		// Use s to traverse board.
 		BoardSquare s = rooksSquare;
 
-		// --- Any Direction ---
-///#ifndef FORGE_ROOK_MOVES
-///#define FORGE_ROOK_MOVES(BOUNDS_CHECK_FUNC, DIRECTION_FUNC)					\
-///		while (s.BOUNDS_CHECK_FUNC() == false) {							\
-///																			\
-///			s = s.DIRECTION_FUNC();											\
-///																			\
-///			if (isEmpty[s]) {												\
-///				moves.emplace_back(Move{ rooksSquare, s }, position);		\
-///				moves.back().position.moveQBNR(rooksSquare, s);				\
-///			}																\
-///			else if (theirs[s]) {											\
-///				moves.emplace_back(Move{ rooksSquare, s }, position);		\
-///				moves.back().position.qbnrCapture(rooksSquare, s);			\
-///			}																\
-///			else { break; }													\
-///		} 
-///#endif 
-		
 		// --- Ups ---
 		// traverse upward. Make sure we don't go past the top boarder
 		s = rooksSquare; 
@@ -130,13 +111,13 @@ namespace forge
 			else if (theirs[s]) {
 				moves.emplace_back(Move{ rooksSquare, s }, position);
 				moves.back().position.qbnrCapture(rooksSquare, s);
+				break;
 			}
 			else { break; }
 		}
 
 		// --- Downs ---
 		// traverse downward. Make sure we don't go past the bottom boarder
-		///FORGE_ROOK_MOVES(isBotRank, downOne);
 		s = rooksSquare; 
 		while (s.isBotRank() == false) {
 				s = s.downOne();											
@@ -147,12 +128,12 @@ namespace forge
 				else if (theirs[s]) {
 					moves.emplace_back(Move{ rooksSquare, s }, position);		
 					moves.back().position.qbnrCapture(rooksSquare, s);			
-				}																
+					break;
+				}
 				else { break; }													
 		}
 
 		// --- Lefts ---
-		///FORGE_ROOK_MOVES(isLeftFile, leftOne);
 		s = rooksSquare;
 		while (s.isLeftFile() == false) {
 			s = s.leftOne();
@@ -163,12 +144,12 @@ namespace forge
 			else if (theirs[s]) {
 				moves.emplace_back(Move{ rooksSquare, s }, position);
 				moves.back().position.qbnrCapture(rooksSquare, s);
+				break;
 			}
 			else { break; }
 		}
 
 		// --- Rights ---
-		///FORGE_ROOK_MOVES(isRightFile, rightOne);
 		s = rooksSquare;
 		while (s.isRightFile() == false) {
 			s = s.rightOne();
@@ -179,6 +160,7 @@ namespace forge
 			else if (theirs[s]) {
 				moves.emplace_back(Move{ rooksSquare, s }, position);
 				moves.back().position.qbnrCapture(rooksSquare, s);
+				break;
 			}
 			else { break; }
 		}
