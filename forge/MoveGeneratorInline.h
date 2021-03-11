@@ -7,6 +7,46 @@
 
 namespace forge
 {
+#ifndef FORGE_TRAVERSE
+#define FORGE_TRAVERSE(START_SQUARE, BOUNDS_CHECK_FUNC, MOVE_FUNC) \
+{ \
+	BoardSquare s = START_SQUARE;	\
+	\
+	while (s.BOUNDS_CHECK_FUNC() == false) { \
+		s = s.MOVE_FUNC(); \
+		if (isEmpty[s]) { \
+			moves.emplace_back(Move{ START_SQUARE, s }, position); \
+			moves.back().position.moveQBNR(START_SQUARE, s); \
+		} \
+		else if (theirs[s]) { \
+			moves.emplace_back(Move{ START_SQUARE, s}, position); \
+			moves.back().position.qbnrCapture(START_SQUARE, s); \
+		} \
+		else { break; } \
+	} \
+} 
+#endif // FORGE_TRAVERSE
+
+#ifndef FORGE_TRAVERSE2
+#define FORGE_TRAVERSE2(START_SQUARE, BOUNDS_CHECK_FUNC1, BOUNDS_CHECK_FUNC2, MOVE_FUNC) \
+{ \
+	BoardSquare s = START_SQUARE;	\
+	\
+	while (s.BOUNDS_CHECK_FUNC1() == false && s.BOUNDS_CHECK_FUNC2() == false) { \
+		s = s.MOVE_FUNC(); \
+		if (isEmpty[s]) { \
+			moves.emplace_back(Move{ START_SQUARE, s }, position); \
+			moves.back().position.moveQBNR(START_SQUARE, s); \
+		} \
+		else if (theirs[s]) { \
+			moves.emplace_back(Move{ START_SQUARE, s}, position); \
+			moves.back().position.qbnrCapture(START_SQUARE, s); \
+		} \
+		else { break; } \
+	} \
+} 
+#endif // FORGE_TRAVERSE2
+
 	inline void MoveGenerator::generatePawnMovesWhite(
 		const Position & position,
 		BoardSquare square,
@@ -96,73 +136,43 @@ namespace forge
 		BitBoard isEmpty = board.empty();
 		BitBoard theirs = (isWhite ? board.blacks() : board.whites()); // Opponents Pieces
 
-		// Use s to traverse board.
-		BoardSquare s = rooksSquare;
-
 		// --- Ups ---
-		// traverse upward. Make sure we don't go past the top boarder
-		s = rooksSquare; 
-		while (s.isTopRank() == false) {
-			s = s.upOne();
-			if (isEmpty[s]) {
-				moves.emplace_back(Move{ rooksSquare, s }, position);
-				moves.back().position.moveQBNR(rooksSquare, s);
-			}
-			else if (theirs[s]) {
-				moves.emplace_back(Move{ rooksSquare, s }, position);
-				moves.back().position.qbnrCapture(rooksSquare, s);
-				break;
-			}
-			else { break; }
-		}
+		FORGE_TRAVERSE(rooksSquare, isTopRank, upOne);
 
 		// --- Downs ---
-		// traverse downward. Make sure we don't go past the bottom boarder
-		s = rooksSquare; 
-		while (s.isBotRank() == false) {
-				s = s.downOne();											
-				if (isEmpty[s]) {
-					moves.emplace_back(Move{ rooksSquare, s }, position);		
-					moves.back().position.moveQBNR(rooksSquare, s);				
-				}																
-				else if (theirs[s]) {
-					moves.emplace_back(Move{ rooksSquare, s }, position);		
-					moves.back().position.qbnrCapture(rooksSquare, s);			
-					break;
-				}
-				else { break; }													
-		}
+		FORGE_TRAVERSE(rooksSquare, isBotRank, downOne);
 
 		// --- Lefts ---
-		s = rooksSquare;
-		while (s.isLeftFile() == false) {
-			s = s.leftOne();
-			if (isEmpty[s]) {
-				moves.emplace_back(Move{ rooksSquare, s }, position);
-				moves.back().position.moveQBNR(rooksSquare, s);
-			}
-			else if (theirs[s]) {
-				moves.emplace_back(Move{ rooksSquare, s }, position);
-				moves.back().position.qbnrCapture(rooksSquare, s);
-				break;
-			}
-			else { break; }
-		}
+		FORGE_TRAVERSE(rooksSquare, isLeftFile, leftOne);
 
 		// --- Rights ---
-		s = rooksSquare;
-		while (s.isRightFile() == false) {
-			s = s.rightOne();
-			if (isEmpty[s]) {
-				moves.emplace_back(Move{ rooksSquare, s }, position);
-				moves.back().position.moveQBNR(rooksSquare, s);
-			}
-			else if (theirs[s]) {
-				moves.emplace_back(Move{ rooksSquare, s }, position);
-				moves.back().position.qbnrCapture(rooksSquare, s);
-				break;
-			}
-			else { break; }
-		}
+		FORGE_TRAVERSE(rooksSquare, isRightFile, rightOne);
 	}
+
+	inline void MoveGenerator::generateBishopMoves(
+		const Position & position, 
+		BoardSquare square, 
+		bool isWhite, 
+		MoveList & moves)
+	{
+		// --- Alias some objects ---
+		// --- (As long as method is inlined, these should be optimized away) ---
+		const Board & board = position.board();
+		BitBoard isEmpty = board.empty();
+		BitBoard theirs = (isWhite ? board.blacks() : board.whites()); // Opponents Pieces
+		
+		// --- Up Rights ---
+		FORGE_TRAVERSE2(square, isTopRank, isRightFile, upRightOne);
+		
+		// --- Up Lefts ---
+		FORGE_TRAVERSE2(square, isTopRank, isLeftFile, upLeftOne);
+
+		// --- Down Lefts ---
+		FORGE_TRAVERSE2(square, isBotRank, isLeftFile, downLeftOne);
+		
+		// --- Down Rights ---
+		FORGE_TRAVERSE2(square, isBotRank, isRightFile, downRightOne);
+
+	}
+
 } // namespace forge

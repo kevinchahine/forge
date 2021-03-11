@@ -43,6 +43,7 @@ namespace forge
 					else if (board.isKnight(square)) {
 					}
 					else if (board.isBishop(square)) {
+						generateBishopMoves(position, square, true, moves);
 					}
 					else if (board.isQueen(square)) {
 					}
@@ -90,6 +91,7 @@ namespace forge
 					else if (board.isKnight(square)) {
 					}
 					else if (board.isBishop(square)) {
+						generateBishopMoves(position, square, false, moves);
 					}
 					else if (board.isQueen(square)) {
 					}
