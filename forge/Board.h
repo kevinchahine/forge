@@ -5,6 +5,9 @@
 #include "Piece.h"
 #include "Move.h"
 
+#include <Guten/Color.h>
+#include <Guten/Matrix.h>
+
 #include <iostream>
 #include <vector>
 #include <tuple>
@@ -22,6 +25,12 @@ namespace forge
 
 		void print(std::ostream & os = std::cout) const;
 		void printMini(std::ostream & os = std::cout) const;
+
+		guten::core::Matrix getMiniBoard(
+			const guten::color::Color & lightPiece = guten::color::white,
+			const guten::color::Color & darkPiece = guten::color::black,
+			const guten::color::Color & lightCell = guten::color::brown,
+			const guten::color::Color & darkCell = guten::color::green) const;
 
 		Piece at(int row, int col) const;
 		Piece at(BoardSquare square) const;
@@ -111,6 +120,8 @@ namespace forge
 		// See comment for moveWhiteKing()
 		void moveKing(BoardSquare from, BoardSquare to);
 
+		void movePiece(BoardSquare from, BoardSquare to);
+
 		bool isPawn(BoardSquare square) const { return pawns()[square] == 1; }
 		bool isRook(BoardSquare square) const { return rooks()[square] == 1; }
 		bool isKnight(BoardSquare square) const { return knights()[square] == 1; }
@@ -159,8 +170,8 @@ namespace forge
 		}
 
 	private:
-		BitBoard m_whites{ 0b00010000'00000000'00000000'00000000'00000000'00000000'00000000'00000000 };	// All White Pieces (Including Kings and Knights)
-		BitBoard m_blacks{ 1u << 4 };	// All Black Pieces (Including Kings and Knights)
+		BitBoard m_whites{ uint64_t(1) << 60 };	// All White Pieces (Including Kings and Knights)
+		BitBoard m_blacks{ uint64_t(1) << 4 };	// All Black Pieces (Including Kings and Knights)
 		BitBoard m_bishops;				// Bishops and Queens
 		BitBoard m_rooks;				// Rooks and Queens
 		// Ranks 1 and 8 have special meaning. Pawn at rank 1 means that

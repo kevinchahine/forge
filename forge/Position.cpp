@@ -12,6 +12,15 @@ namespace forge
 
 		m_moveCounter.reset();
 	}
+
+	void Position::clear()
+	{
+		m_board.reset();
+		
+		m_fiftyMoveRule.reset();
+
+		m_moveCounter.reset();
+	}
 	
 	void Position::applyMoveFast(Move move)
 	{
@@ -134,4 +143,5 @@ namespace forge
 	{
 		(*this) = position;
 	}
+
 } // namespace forge

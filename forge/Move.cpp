@@ -1,5 +1,10 @@
 #include "Move.h"
 
+#include <string>
+#include <sstream>
+
+using namespace std;
+
 namespace forge
 {
 	std::ostream & operator<<(std::ostream & os, const Move & move)
@@ -13,5 +18,20 @@ namespace forge
 		}
 
 		return os;
+	}
+
+	string Move::toLAN() const
+	{
+		stringstream ss;
+
+		ss << from() << to();
+
+		register Piece promo = promotion();
+
+		if (promo.isEmpty() == false) {
+			ss << promo;
+		}
+
+		return ss.str();
 	}
 } // namespace forge

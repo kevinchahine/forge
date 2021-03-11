@@ -30,23 +30,34 @@ namespace forge
 
 	void Board::printMini(std::ostream & os) const
 	{
-		os << guten::color::push();
-		
+		guten::core::Matrix miniBoard = getMiniBoard();
+
+		miniBoard.print(0, os);
+	}
+
+	guten::core::Matrix Board::getMiniBoard(
+		const guten::color::Color & lightPiece, 
+		const guten::color::Color & darkPiece, 
+		const guten::color::Color & lightCell, 
+		const guten::color::Color & darkCell) const
+	{
+		guten::core::Matrix miniBoard;
+		miniBoard.resize(8, 8);
+
 		for (int row = 0; row < this->rows(); row++) {
 			for (int col = 0; col < this->cols(); col++) {
 				const Piece & p = (*this).at(row, col);
 
 				guten::color::Color color;
-				color.setbg(row % 2 == col % 2 ? guten::color::brown : guten::color::green);
-				color.setfg(p.isWhite() ? guten::color::yellow : guten::color::black);
+				color.setbg(row % 2 == col % 2 ? guten::color::yellow : guten::color::green);
+				color.setfg(p.isWhite() ? guten::color::white : guten::color::black);
 
-				os << color << p;
+				miniBoard[row][col].color = color;
+				miniBoard[row][col].character = p.getCh();
 			}
-			os << '\n';
 		}
-		os << '\n';
-
-		os << guten::color::pop();
+		
+		return miniBoard;
 	}
 
 	Piece Board::at(int row, int col) const
@@ -234,6 +245,12 @@ namespace forge
 
 	void Board::moveKing(BoardSquare from, BoardSquare to)
 	{
+#ifdef _DEBUG 
+		if (isKing(from) == false) cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": This method only moves kings\n";
+		if (occupied()[to] == true) cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": 'to' square must be empty when calling this method.\n";
+#endif
 		// Which king are we moving?
 		if (m_whiteKing == from) {
 			// White king moves
@@ -243,6 +260,28 @@ namespace forge
 			// Black king moves
 			m_blackKing = to;
 		}
+	}
+
+	void Board::movePiece(BoardSquare from, BoardSquare to)
+	{
+#ifdef _DEBUG
+		if (isKing(from)) cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": This method can't move kings\n";
+		if (occupied()[to] == true) cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": 'to' square must be empty when calling this method.\n";
+#endif
+
+		m_whites[to] = m_whites[from];
+		m_blacks[to] = m_blacks[from];
+		m_bishops[to] = m_bishops[from];	
+		m_rooks[to] = m_rooks[from];
+		m_pawns[to] = m_pawns[from];
+
+		m_whites.reset(from.val());
+		m_blacks.reset(from.val());
+		m_bishops.reset(from.val());
+		m_rooks.reset(from.val());
+		m_pawns.reset(from.val());
 	}
 
 	void Board::reset()

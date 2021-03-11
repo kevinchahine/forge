@@ -84,6 +84,9 @@
     <ClCompile Include="MoveGenerator.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="MovePositionPair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -190,6 +193,12 @@
     </ClInclude>
     <ClInclude Include="MoveGeneratorInline.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="MovePositionPair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionInline.h">
+      <Filter>Solvers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

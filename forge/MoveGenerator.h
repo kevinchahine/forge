@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Position.h"
+#include "MovePositionPair.h"
 
 #include <vector>
 
 namespace forge
 {
-	using MoveList = std::vector<std::pair<Move, Position>>;
+	using MoveList = std::vector<MovePositionPair>;
 
 	// A Pseudo Legal Move Generator.
 	// Generates legal moves for a given Position but without accounting
@@ -24,12 +25,20 @@ namespace forge
 
 		static MoveList generatePseudoMovesBlack(const Position & position);
 
+		// Generates moves for the player whos turn it is.
+		// Figures out which player is to move based on data in position
+		static MoveList generatePseudoMovesCurr(const Position & position);
+
 	private:
 
 		static void generatePseudoMovesBoth(const Position & position, MoveList & moves);
 
-		// Make sure these remain inlined to prevent overhead asociated with parameters
+		// Make sure these remain inlined to prevent overhead associated function with parameters
 
+		// position - current game state. 
+		// square - coordinate of piece that is moving.
+		// moves - container where generated moves are to be placed
+		// !!!WARNING - Make sure square referes to a piece of the proper type to avoid errors !!!
 		static inline void generatePawnMovesWhite(const Position & position, BoardSquare square, MoveList & moves);
 		static inline void generatePawnMovesBlack(const Position & position, BoardSquare square, MoveList & moves);
 		static inline void generateRookMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);

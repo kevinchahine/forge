@@ -78,6 +78,10 @@ namespace forge
 		// Is row coord, the bottom rank where white's pieces start
 		// and black's pawns promot?
 		bool isBotRank() const { return row() == 7; }
+		// Is col coord the left most file
+		bool isLeftFile() const { return col() == 0; }
+		// Is col coord the right most file
+		bool isRightFile() const { return col() == 7; }
 
 		uint8_t val() const {
 			return m_val;

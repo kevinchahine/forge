@@ -20,6 +20,9 @@ namespace forge
 
 		void reset();
 
+		// Removes all pieces
+		void clear();
+
 		Board & board() { return m_board; }
 		const Board & board() const { return m_board; }
 
@@ -38,6 +41,68 @@ namespace forge
 		// Passing an invalid board may have unexpected results.
 		void applyMove(const Position & position);
 
+		// ----- PAWN MOVES -----
+
+		// Intended to be used from class MoveGenerator to move pieces
+		// efficiently. 
+		// Automatically applies "50 move rule" and increments move counter.
+		// !!! Warning: This method is intended to be more efficient than robust.
+		// Calling incorrectly can cause errors. Follow these rules when calling.
+		//	- 'from' should point to piece of player whos turn it is.
+		//	- move should a simple move: (not a capture, not promotion, not castling, not enpassent)
+		inline void moveWhitePawn(BoardSquare from, BoardSquare to);
+		// *** See comments for moveWhitePawnSimple(...)
+		inline void moveBlackPawn(BoardSquare from, BoardSquare to);
+
+		inline void whitePawnCapture(BoardSquare from, BoardSquare to);
+
+		inline void blackPawnCapture(BoardSquare from, BoardSquare to);
+
+		inline void enPassentWhitePawn(BoardSquare from, BoardSquare to);
+
+		inline void enPassentBlackPawn(BoardSquare from, BoardSquare to);
+
+		// Also accounts for captures
+		inline void promoteWhitePawn(BoardSquare from, BoardSquare to, Piece promotion);
+
+		// Also accounts for captures
+		inline void promoteBlackPawn(BoardSquare from, BoardSquare to, Piece promotion);
+
+		// ----- ROOK MOVES -----
+		// ----- KNIGHT MOVES -----
+		// ----- BISHOP MOVES -----
+		// ----- QUEEN MOVES -----
+
+		// Moves a Queen, Bishop, Knight or Rook of either color.
+		// Make sure:
+		//	- 'to' square is empty when calling this method
+		//	- Not to be used with captures.
+		//	- 'from' square is occupied by a Queen, Bishop, Knight or Rook (not empty)
+		//	- 'from' should point to piece of player whos turn it is.
+		inline void moveQBNR(BoardSquare from, BoardSquare to);
+
+		// Captures a piece with a Queen, Bishop, Knight or Rook of either color.
+		// Make sure:
+		//	- 'to' square is occupied by an piece with color opposite capturing piece
+		//	- 'from' square is occupied by a Queen, Bishop, Knight or Rook (not empty)
+		//	- 'from' 
+		//	- 'from' should point to piece of player whos turn it is.
+		inline void qbnrCapture(BoardSquare from, BoardSquare to);
+
+		// ----- KING MOVES -----
+
+		inline void moveWhiteKing(BoardSquare to);
+
+		inline void moveBlackKing(BoardSquare to);
+
+		inline void whiteKingCapture(BoardSquare to);
+
+		inline void blackKingCapture(BoardSquare to);
+
+		inline void whiteKingCastle(BoardSquare to);
+
+		inline void blackKingCastle(BoardSquare to);
+
 		const MoveCounter & moveCounter() const { return m_moveCounter; }
 
 	protected:
@@ -54,5 +119,6 @@ namespace forge
 		// odd numbers - (blacks turn, blacks thinking)
 		MoveCounter m_moveCounter;
 	};
-
 } // namespace forge
+
+#include "PositionInline.h"

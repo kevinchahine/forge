@@ -2,6 +2,8 @@
 
 #include "Test.h"
 
+#include "Guten/GridView.h"
+
 using namespace std;
 
 namespace forge
@@ -146,8 +148,13 @@ namespace forge
 			forge::Position p;
 			forge::Board & b = p.board();
 
-			b.placeAllPieces();
-
+			///b.placeAllPieces();
+			b.reset();										// remove
+			forge::BoardSquare s{ 5, 4 };					// remove
+			b.placeBlackRook(s);		// remove
+			b.placeBlackRook(s.up(2));		// remove
+			(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
+			
 			b.print();
 
 			forge::MoveList moves = 
@@ -155,11 +162,21 @@ namespace forge
 
 			cout << moves.size() << " legal moves generated" << endl;
 
-			for (const auto & elem : moves) {
-				elem.second.board().printMini();
-				cout << elem.first << "\tPress any key";
-				cin.get();
+			guten::grids::GridView gridView;
+			gridView.setGridCols(8);
+
+			for (int i = 0; i < moves.size(); i++) {
+				const auto & elem = moves.at(i);
+
+				guten::core::Matrix mini = elem.position.board().getMiniBoard();
+
+				gridView.push(mini);
+
+				cout << left << setw(9) << elem.move.toLAN();
 			}
+			cout << '\n';
+
+			gridView.toMatrix().print();
 		}
 
 		void move()
@@ -197,8 +214,12 @@ namespace forge
 		void chessMatch()
 		{
 			forge::ChessMatch match;
-
+			
 			match.reset();
+
+			match.position().clear();												// remove
+			match.position().board().placeWhiteRook(forge::BoardSquare{ 4, 4 });	// remove
+			match.position().board().placeBlackRook(forge::BoardSquare{ 5, 5 });	// remove
 
 			match.clock().synchronize(
 				chrono::minutes(5),

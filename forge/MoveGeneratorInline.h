@@ -8,36 +8,35 @@
 namespace forge
 {
 	inline void MoveGenerator::generatePawnMovesWhite(
-		const Position & position, 
-		BoardSquare square, 
+		const Position & position,
+		BoardSquare square,
 		MoveList & moves)
 	{
 		// --- Alias some objects ---
 		// --- (As long as method is inlined, these should be optimized away) ---
 		const Board & board = position.board();
 		BitBoard isEmpty = board.empty();
-		BitBoard blacks = board.blacks(); 
+		BitBoard blacks = board.blacks();
 
-		// Can pawn move up?
+		// Can pawn move up? 
 		if (isEmpty[square.upOne()]) {
 			// Yes. Up one cell is empty.
 
 			// --- Promotion ---
 			// Can pawn move to top rank?
-			if (square.row() == 1) {
+			if (square.upOne().isTopRank()) {
 				// Promotion time!!! TODO: 
 			}
 			else {
 				// No promotion yet.
 				moves.emplace_back(Move{ square, square.upOne() }, position);
-				moves.back().second.board().removePiece(square);
-				moves.back().second.board().placeWhitePawn(square.upOne());
+
+				moves.back().position.moveWhitePawn(square, square.upOne());
 
 				// Can it move a second time
 				if (square.row() == 6 && isEmpty[square.up(2)]) {
 					moves.emplace_back(Move{ square, square.up(2) }, position);
-					moves.back().second.board().removePiece(square);
-					moves.back().second.board().placeWhitePawn(square.up(2));
+					moves.back().position.moveWhitePawn(square, square.up(2));
 				}
 			}
 		}
@@ -52,31 +51,31 @@ namespace forge
 		MoveList & moves)
 	{
 		// --- Alias some objects ---
-		// --- (As long as method is inlined, these should be optimized away) ---
+		// --- (As long as method is inlined, these declarations should be optimized away) ---
 		const Board & board = position.board();
 		BitBoard isEmpty = board.empty();
 		BitBoard whites = board.whites();
 
-		// Can pawn move down?
+		// Can pawn move down? // Don't need to 
 		if (isEmpty[square.downOne()]) {
 			// Yes. Down one cell is empty.
 
 			// --- Promotion ---
-			// Can pawn move to top rank?
-			if (square.row() == 6) {
+			// Can pawn move to bottom rank?
+			if (square.downOne().isBotRank()) {
 				// Promotion time!!! TODO: 
 			}
 			else {
 				// No promotion yet.
 				moves.emplace_back(Move{ square, square.downOne() }, position);
-				moves.back().second.board().removePiece(square);
-				moves.back().second.board().placeBlackPawn(square.downOne());
+				moves.back().position.moveBlackPawn(square, square.downOne());
 
 				// Can it move a second time
-				if (square.row() == 6 && isEmpty[square.down(2)]) {
+				// - Must be still on row 1 and
+				// - space must be empty
+				if (square.row() == 1 && isEmpty[square.down(2)]) {
 					moves.emplace_back(Move{ square, square.down(2) }, position);
-					moves.back().second.board().removePiece(square);
-					moves.back().second.board().placeBlackPawn(square.down(2));
+					moves.back().position.moveBlackPawn(square, square.down(2));
 				}
 			}
 		}
@@ -86,9 +85,9 @@ namespace forge
 	}
 
 	inline void MoveGenerator::generateRookMoves(
-		const Position & position, 
-		BoardSquare rooksSquare, 
-		bool isWhite, 
+		const Position & position,
+		BoardSquare rooksSquare,
+		bool isWhite,
 		MoveList & moves)
 	{
 		// --- Alias some objects ---
@@ -99,44 +98,89 @@ namespace forge
 
 		// Use s to traverse board.
 		BoardSquare s = rooksSquare;
+
+		// --- Any Direction ---
+///#ifndef FORGE_ROOK_MOVES
+///#define FORGE_ROOK_MOVES(BOUNDS_CHECK_FUNC, DIRECTION_FUNC)					\
+///		while (s.BOUNDS_CHECK_FUNC() == false) {							\
+///																			\
+///			s = s.DIRECTION_FUNC();											\
+///																			\
+///			if (isEmpty[s]) {												\
+///				moves.emplace_back(Move{ rooksSquare, s }, position);		\
+///				moves.back().position.moveQBNR(rooksSquare, s);				\
+///			}																\
+///			else if (theirs[s]) {											\
+///				moves.emplace_back(Move{ rooksSquare, s }, position);		\
+///				moves.back().position.qbnrCapture(rooksSquare, s);			\
+///			}																\
+///			else { break; }													\
+///		} 
+///#endif 
 		
 		// --- Ups ---
 		// traverse upward. Make sure we don't go past the top boarder
-		while (true) {
+		s = rooksSquare; 
+		while (s.isTopRank() == false) {
 			s = s.upOne();
-
-			// --- Moves ---
-			// Can Rook move up to empty space?
 			if (isEmpty[s]) {
-				// Cell is empty so yes.
 				moves.emplace_back(Move{ rooksSquare, s }, position);
-				moves.back().second.board().removePiece(rooksSquare);
-				moves.back().second.board().placeWhiteRook(s);
-
+				moves.back().position.moveQBNR(rooksSquare, s);
 			}
-			// If rook moves up will it capture an opponents piece?
 			else if (theirs[s]) {
-				// It will capture an opponents pieces so yes.
 				moves.emplace_back(Move{ rooksSquare, s }, position);
-				moves.back().second.board().removePiece(rooksSquare);	// Pick up this Rook
-				moves.back().second.board().removePiece(s);		// Remove captured Piece
-				moves.back().second.board().placeWhiteRook(s);	// Place our Rook in its place
+				moves.back().position.qbnrCapture(rooksSquare, s);
 			}
-			else { /* Up is a friendly piece */
-				break; // A piece can't capture/jump it's own pieces.
-			}
-
-			// Have we hit the top row yet?
-			if (s.isTopRank()) {
-				// Yes, we've moved rook to top row, we shouldn't go any further.
-				break;
-			}
+			else { break; }
 		}
 
 		// --- Downs ---
+		// traverse downward. Make sure we don't go past the bottom boarder
+		///FORGE_ROOK_MOVES(isBotRank, downOne);
+		s = rooksSquare; 
+		while (s.isBotRank() == false) {
+				s = s.downOne();											
+				if (isEmpty[s]) {
+					moves.emplace_back(Move{ rooksSquare, s }, position);		
+					moves.back().position.moveQBNR(rooksSquare, s);				
+				}																
+				else if (theirs[s]) {
+					moves.emplace_back(Move{ rooksSquare, s }, position);		
+					moves.back().position.qbnrCapture(rooksSquare, s);			
+				}																
+				else { break; }													
+		}
 
 		// --- Lefts ---
+		///FORGE_ROOK_MOVES(isLeftFile, leftOne);
+		s = rooksSquare;
+		while (s.isLeftFile() == false) {
+			s = s.leftOne();
+			if (isEmpty[s]) {
+				moves.emplace_back(Move{ rooksSquare, s }, position);
+				moves.back().position.moveQBNR(rooksSquare, s);
+			}
+			else if (theirs[s]) {
+				moves.emplace_back(Move{ rooksSquare, s }, position);
+				moves.back().position.qbnrCapture(rooksSquare, s);
+			}
+			else { break; }
+		}
 
 		// --- Rights ---
+		///FORGE_ROOK_MOVES(isRightFile, rightOne);
+		s = rooksSquare;
+		while (s.isRightFile() == false) {
+			s = s.rightOne();
+			if (isEmpty[s]) {
+				moves.emplace_back(Move{ rooksSquare, s }, position);
+				moves.back().position.moveQBNR(rooksSquare, s);
+			}
+			else if (theirs[s]) {
+				moves.emplace_back(Move{ rooksSquare, s }, position);
+				moves.back().position.qbnrCapture(rooksSquare, s);
+			}
+			else { break; }
+		}
 	}
 } // namespace forge
