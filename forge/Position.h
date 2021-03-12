@@ -80,6 +80,7 @@ namespace forge
 		//	- 'from' square is occupied by a Queen, Bishop, Knight or Rook (not empty)
 		//	- 'from' should point to piece of player whos turn it is.
 		inline void moveQBNR(BoardSquare from, BoardSquare to);
+		inline void moveQBNR(Move move);
 
 		// Captures a piece with a Queen, Bishop, Knight or Rook of either color.
 		// Make sure:
@@ -88,6 +89,7 @@ namespace forge
 		//	- 'from' 
 		//	- 'from' should point to piece of player whos turn it is.
 		inline void qbnrCapture(BoardSquare from, BoardSquare to);
+		inline void qbnrCapture(Move move);
 
 		// ----- KING MOVES -----
 

@@ -83,6 +83,15 @@ namespace forge
 		// Is col coord the right most file
 		bool isRightFile() const { return col() == 7; }
 
+		bool isKnight0InBounds() const { return row() >= 1 && col() <= 5; }
+		bool isKnight1InBounds() const { return row() >= 2 && col() <= 6; }
+		bool isKnight2InBounds() const { return row() >= 2 && col() >= 1; }
+		bool isKnight3InBounds() const { return row() >= 1 && col() >= 2; }
+		bool isKnight4InBounds() const { return row() <= 6 && col() >= 2; }
+		bool isKnight5InBounds() const { return row() <= 5 && col() >= 1; }
+		bool isKnight6InBounds() const { return row() <= 5 && col() <= 6; }
+		bool isKnight7InBounds() const { return row() <= 6 && col() <= 5; }
+
 		uint8_t val() const {
 			return m_val;
 		}

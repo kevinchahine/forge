@@ -31,8 +31,6 @@ namespace forge
 
 	private:
 
-		static void generatePseudoMovesBoth(const Position & position, MoveList & moves);
-
 		// Make sure these remain inlined to prevent overhead associated function with parameters
 
 		// position - current game state. 

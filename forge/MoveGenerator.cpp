@@ -41,11 +41,13 @@ namespace forge
 						generateRookMoves(position, square, true, moves);						
 					}
 					else if (board.isKnight(square)) {
+						generateKnightMoves(position, square, true, moves);
 					}
 					else if (board.isBishop(square)) {
 						generateBishopMoves(position, square, true, moves);
 					}
 					else if (board.isQueen(square)) {
+						generateQueenMoves(position, square, true, moves);
 					}
 					else if (board.isKing(square)) {
 					}
@@ -89,11 +91,13 @@ namespace forge
 						generateRookMoves(position, square, false, moves);
 					}
 					else if (board.isKnight(square)) {
+						generateKnightMoves(position, square, false, moves);
 					}
 					else if (board.isBishop(square)) {
 						generateBishopMoves(position, square, false, moves);
 					}
 					else if (board.isQueen(square)) {
+						generateQueenMoves(position, square, false, moves);
 					}
 					else if (board.isKing(square)) {
 					}
@@ -120,9 +124,4 @@ namespace forge
 		}
 	}
 
-	void MoveGenerator::generatePseudoMovesBoth(const Position & position, MoveList & moves)
-	{
-
-	}
-	
 } // namespace forge

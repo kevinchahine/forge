@@ -144,6 +144,11 @@ namespace forge
 		m_moveCounter++;
 	}
 
+	inline void Position::moveQBNR(Move move)
+	{
+		moveQBNR(move.from(), move.to());
+	}
+
 	inline void Position::qbnrCapture(BoardSquare from, BoardSquare to)
 	{
 		m_board.removePiece(to);		// TODO: Do we really need this?
@@ -153,6 +158,11 @@ namespace forge
 		m_fiftyMoveRule.update();
 
 		m_moveCounter++;
+	}
+
+	inline void Position::qbnrCapture(Move move)
+	{
+		qbnrCapture(move.from(), move.to());
 	}
 
 	inline void Position::moveWhiteKing(BoardSquare to)

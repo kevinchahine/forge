@@ -52,8 +52,8 @@ namespace forge
 				color.setbg(row % 2 == col % 2 ? guten::color::yellow : guten::color::green);
 				color.setfg(p.isWhite() ? guten::color::white : guten::color::black);
 
-				miniBoard[row][col].color = color;
-				miniBoard[row][col].character = p.getCh();
+				miniBoard.at(row, col).color = color;
+				miniBoard.at(row, col).character = p.getCh();
 			}
 		}
 		

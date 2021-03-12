@@ -151,11 +151,12 @@ namespace forge
 			///b.placeAllPieces();
 			b.reset();										// remove
 			forge::BoardSquare s{ 5, 4 };					// remove
-			b.placeBlackBishop(s);							// remove
-			//b.placeBlackBishop(s.up(2));						// remove
+			b.placeWhiteKnight(s);
+			//b.placeWhiteQueen(s);							// remove
+			//b.placeBlackBishop(s.up(2));					// remove
 			//b.placeWhitePawn(s.left(2));					// remove
 
-			(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
+			//(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
 			
 			b.print();
 
