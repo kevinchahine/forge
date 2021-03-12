@@ -25,6 +25,9 @@
     <Filter Include="AI">
       <UniqueIdentifier>{6f66712a-27ae-4cb9-9939-6a30035a88e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Views">
+      <UniqueIdentifier>{3f7af21e-0053-41af-8d8b-f764b8066e39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -85,6 +88,12 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="MovePositionPair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -199,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="PositionInline.h">
       <Filter>Solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextView.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

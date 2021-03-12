@@ -154,7 +154,9 @@
     <ClCompile Include="RandomSolver.cpp" />
     <ClCompile Include="SolverBase.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="TextView.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="ViewBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="AI.txt" />
@@ -195,7 +197,9 @@
     <ClInclude Include="RandomSolver.h" />
     <ClInclude Include="SolverBase.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="TextView.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="ViewBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

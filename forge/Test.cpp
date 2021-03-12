@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Test.h"
+#include "TextView.h"
 
 #include "Guten/GridView.h"
 
@@ -151,8 +152,8 @@ namespace forge
 			///b.placeAllPieces();
 			b.reset();										// remove
 			forge::BoardSquare s{ 5, 4 };					// remove
-			b.placeWhiteKnight(s);
-			//b.placeWhiteQueen(s);							// remove
+			b.placeWhiteKnight(s);							// remove
+			//b.placewhiteQueen(s);							// remove
 			//b.placeBlackBishop(s.up(2));					// remove
 			//b.placeWhitePawn(s.left(2));					// remove
 
@@ -220,10 +221,6 @@ namespace forge
 			
 			match.reset();
 
-			match.position().clear();												// remove
-			match.position().board().placeWhiteRook(forge::BoardSquare{ 4, 4 });	// remove
-			match.position().board().placeBlackRook(forge::BoardSquare{ 5, 5 });	// remove
-
 			match.clock().synchronize(
 				chrono::minutes(5),
 				chrono::minutes(5),
@@ -233,6 +230,8 @@ namespace forge
 
 			match.makeWhiteController<RandomSolver>();
 			match.makeBlackController<RandomSolver>();
+
+			match.makeView<TextView>();
 
 			match.runGame();
 		}

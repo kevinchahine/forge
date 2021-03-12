@@ -123,5 +123,4 @@ namespace forge
 			return generatePseudoMovesBlack(position);
 		}
 	}
-
 } // namespace forge

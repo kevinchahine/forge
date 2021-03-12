@@ -7,7 +7,6 @@
 
 namespace forge
 {
-
 #ifndef FORGE_TRAVERSE
 #define FORGE_TRAVERSE(START_SQUARE, BOUNDS_CHECK_FUNC, MOVE_FUNC) \
 { \
@@ -22,6 +21,7 @@ namespace forge
 		else if (theirs[s]) { \
 			moves.emplace_back(Move{ START_SQUARE, s}, position); \
 			moves.back().position.qbnrCapture(START_SQUARE, s); \
+			break; \
 		} \
 		else { break; } \
 	} \
@@ -42,6 +42,7 @@ namespace forge
 		else if (theirs[s]) { \
 			moves.emplace_back(Move{ START_SQUARE, s}, position); \
 			moves.back().position.qbnrCapture(START_SQUARE, s); \
+			break; \
 		} \
 		else { break; } \
 	} \

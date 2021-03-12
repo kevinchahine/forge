@@ -46,6 +46,12 @@ namespace forge
 				m = m_blacksController->getMove(m_position);
 			}
 
+			// Show Board
+			if (m_viewPtr != nullptr) {
+				m_viewPtr->show(Move{ m.from(), m.from() }, m_position);
+				cin.get();
+			}
+
 			cout << m << "\n";
 			m_position.applyMoveSafe(m);
 			
@@ -54,8 +60,12 @@ namespace forge
 			if (true) {
 				m_clock.stop();
 
-				// Display here
-				m_position.board().print();
+				// Show Board
+				if (m_viewPtr != nullptr) {
+					m_viewPtr->show(m, m_position);
+				}
+
+				cout << "Press any key";
 				cin.get();
 				m_clock.resume();
 			}

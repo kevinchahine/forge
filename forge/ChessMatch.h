@@ -5,6 +5,7 @@
 #include "ControllerBase.h"
 #include "GameState.h"
 #include "Position.h"
+#include "ViewBase.h"
 
 #include <memory>
 
@@ -37,6 +38,11 @@ namespace forge
 			m_blacksController = std::make_unique<CONTROLLER_T>();
 		}
 
+		template<typename VIEW_T>
+		void makeView() {
+			m_viewPtr = std::make_unique<VIEW_T>();
+		}
+
 		Clock & clock() { return m_clock; }
 		const Clock & clock() const { return m_clock; }
 
@@ -49,7 +55,7 @@ namespace forge
 		std::unique_ptr<ControllerBase> m_whitesController;
 		std::unique_ptr<ControllerBase> m_blacksController;
 
-		// std::unique_ptr<View> 
+		std::unique_ptr<ViewBase> m_viewPtr;
 
 		Clock m_clock;
 	};

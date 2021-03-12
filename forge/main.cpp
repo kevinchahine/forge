@@ -32,9 +32,9 @@ int main(int argc, char ** argv)
 	//forge::test::boardDefualt();
 	//forge::test::board();
 	//forge::test::placeMethods();
-	forge::test::psuedoValidMoveGenerator();
+	//forge::test::psuedoValidMoveGenerator();
 	//forge::test::move();
-	//forge::test::chessMatch();
+	forge::test::chessMatch();
 
 	//this_thread::sleep_for(chrono::seconds(1));
 	cin.get();
