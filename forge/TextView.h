@@ -11,6 +11,13 @@ namespace forge
 	class TextView : public ViewBase
 	{
 	public:
+		TextView();
+		TextView(const TextView &) = default;
+		TextView(TextView &&) noexcept = default;
+		virtual ~TextView() noexcept = default;
+		TextView & operator=(const TextView &) = default;
+		TextView & operator=(TextView &&) noexcept = default;
+
 		virtual void show(const Position & pos) override;
 
 		// move - move that brought us to this position.

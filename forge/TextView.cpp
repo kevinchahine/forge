@@ -4,6 +4,14 @@ using namespace std;
 
 namespace forge
 {
+	TextView::TextView()
+	{
+		m_img.lightCell = guten::color::yellow;
+		m_img.lightBoarder = guten::color::yellow;
+
+		m_img.lightPiece = guten::color::brown;
+	}
+
 	void TextView::show(const Position & pos)
 	{
 		const Board & b = pos.board();
@@ -62,8 +70,7 @@ namespace forge
 		for (const MovePositionPair & pair : validMoves) {
 			BoardSquare to = pair.move.to();
 
-			cout << pair.move << ' ';
-			m_img.highlight(to.row(), to.col(), guten::color::cyan, guten::color::lightcyan);
+			m_img.highlight(to.row(), to.col(), guten::color::lightcyan, guten::color::cyan);
 		}
 
 		// Highlight moving piece
