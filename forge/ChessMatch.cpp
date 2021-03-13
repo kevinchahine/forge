@@ -1,5 +1,7 @@
 #include "ChessMatch.h"
 
+#include "MoveGenerator.h"
+
 using namespace std;
 
 namespace forge
@@ -48,7 +50,8 @@ namespace forge
 
 			// Show Board
 			if (m_viewPtr != nullptr) {
-				m_viewPtr->show(Move{ m.from(), m.from() }, m_position);
+				cout << '\n';
+				m_viewPtr->show(m_position, MoveGenerator::generatePseudoMovesFor(m_position, m.from()));
 				cin.get();
 			}
 
@@ -62,7 +65,7 @@ namespace forge
 
 				// Show Board
 				if (m_viewPtr != nullptr) {
-					m_viewPtr->show(m, m_position);
+					m_viewPtr->show(m_position, m);
 				}
 
 				cout << "Press any key";

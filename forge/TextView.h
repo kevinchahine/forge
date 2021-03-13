@@ -2,26 +2,24 @@
 
 #include "ViewBase.h"
 
+#include "MoveGenerator.h"
 #include "Guten/CheckerBoard.h"
+#include "MoveList.h"
 
 namespace forge
 {
 	class TextView : public ViewBase
 	{
 	public:
-		// move - move that brought us to this position.
-		// pos - represents the current game.
-		///virtual void setPieces(const Move & move, const Position & pos) override;
-
-		virtual void highlight(const BoardSquare & cell) override;
+		virtual void show(const Position & pos) override;
 
 		// move - move that brought us to this position.
 		// pos - represents the current game.
-		virtual void show(const Move & move, const Position & pos) override;
+		virtual void show(const Position & pos, const Move & move) override;
 
 		// move - move that brought us to this position.
 		// pos - represents the current game.
-		///virtual void show(const Move & move, const Position & pos) override;
+		virtual void show(const Position & pos, const MoveList & validMoves) override;
 
 	private:
 

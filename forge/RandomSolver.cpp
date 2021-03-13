@@ -10,7 +10,7 @@ namespace forge
 {
 	Move RandomSolver::getMove(const Position & position)
 	{
-		const auto validMoves = MoveGenerator::generatePseudoMovesCurr(position);
+		const auto validMoves = MoveGenerator::generatePseudoMoves(position);
 
 		if (validMoves.size() == 0) {
 			cout << "No valid moves were generated\n";

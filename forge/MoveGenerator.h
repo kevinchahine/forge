@@ -2,13 +2,10 @@
 
 #include "Position.h"
 #include "MovePositionPair.h"
-
-#include <vector>
+#include "MoveList.h"
 
 namespace forge
 {
-	using MoveList = std::vector<MovePositionPair>;
-
 	// A Pseudo Legal Move Generator.
 	// Generates legal moves for a given Position but without accounting
 	// for Positions that keep the king attacked.
@@ -21,13 +18,19 @@ namespace forge
 		// pseudo legal moves for that player.
 		static MoveList generatePseudoMoves(const Position & position);
 
-		static MoveList generatePseudoMovesWhite(const Position & position);
+		static MoveList generatePseudoMoves(const Position & position, bool isWhite);
 
-		static MoveList generatePseudoMovesBlack(const Position & position);
+		// Generates all valid moves for the piece at the specified cell.
+		// If that cell is empty, then resulting MoveList will be empty.
+		// Does not account for who's turn it is.
+		static MoveList generatePseudoMovesFor(const Position & position, BoardSquare cell);
 
-		// Generates moves for the player whos turn it is.
-		// Figures out which player is to move based on data in position
-		static MoveList generatePseudoMovesCurr(const Position & position);
+	private:
+		static void generatePseudoMovesFor(
+			const Position & position, 
+			BoardSquare cell, 
+			bool isWhite,
+			MoveList & dst);
 
 	private:
 
