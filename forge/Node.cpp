@@ -27,12 +27,18 @@ namespace forge
 			m_childrenPtrs.push_back(std::move(childPtr));
 		}
 
-		// 3.) --- Fix sibling pointers ---
+		// 3.) --- Assign sibling pointers ---
 		for (size_t i = 0; i < m_childrenPtrs.size() - 1; i++) {
 			unique_ptr<Node> & childPtr = m_childrenPtrs.at(i);
 			unique_ptr<Node> & nextChildPtr = m_childrenPtrs.at(i + 1);
 
-			childPtr->m_siblingPtr = nextChildPtr.get();
+			childPtr->m_nextSiblingPtr = nextChildPtr.get();
+		}
+
+		// 4.) --- Set last childs sibling to nullptr ---
+		if (m_childrenPtrs.empty() == false) {
+			m_childrenPtrs.back()->m_nextSiblingPtr = nullptr;
 		}
 	}
+
 } // namespace forge

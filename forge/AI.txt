@@ -1,6 +1,23 @@
 === FORGE ===
 === AI ===
 
+7 Parts:
+	- Search Algorithm: (Minimax, Negamax, MCTS) (each preferably with iterative-deepening)
+	- Evaluation Function: (Heuristic) (DNN, Linear Combination)
+	- Exit Condition: (timout, depth limit reached, node limit reached, event requented exit, goal reached)
+	- Move Generator: 
+		- pseudo valid move generator (any valid moves not considering own king checks)
+		- move validator (which pseudo legal moves follow the rules)
+	- Game State (Needs node tree to solve draws) 
+		(Basically, is Node a leaf or a branch?)
+		- White wins?
+		- Black wins?
+		- Draw?
+		- Keep playing?
+	- Data Keeper (Sends data to UCI and other views as search progresses)
+		*** See SearchMonitor.txt
+	- Opening Database
+
 Search algorithms:
 	- must have an exit condition that can change as it is searching.
 	
@@ -10,23 +27,9 @@ Exit Condition:
 	- time limit
 	- stop command (from UCI)
 	- or maybe even it decides on its own
+	- all leaf node reached
 
 Search modes:
 	- search for a mate in <x> moves
 	- search for best move
-
-Analysis (Data that comes out of the search):
-	(continuously updated and sent to UCI as engine is searching)
-	- number of nodes searched so far 
-	- selective search depth in plys
-	- search depth in plys 
-	- time searched
-	- nodes per second searched 
-	- pv (the best line found)
-	- multi pv (the <k> best lines found; only in multi pv mode)
-	- score (the engines approximated score in centi pawns)
-	- currently searching move 
-	- currently searching move number (1 is 1st move)
-	- current line searching (along with what CPU is searching it.)
-	- and some other stuff see "engine-interface.txt"
 

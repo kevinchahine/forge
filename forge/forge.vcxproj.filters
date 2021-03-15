@@ -25,8 +25,11 @@
     <Filter Include="AI">
       <UniqueIdentifier>{6f66712a-27ae-4cb9-9939-6a30035a88e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Views">
-      <UniqueIdentifier>{3f7af21e-0053-41af-8d8b-f764b8066e39}</UniqueIdentifier>
+    <Filter Include="Notes\AI">
+      <UniqueIdentifier>{83785567-3bdf-4055-938a-a8d35b544dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{aa819620-fd6d-4794-bf31-b7814df36d41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,17 +90,23 @@
     <ClCompile Include="MoveGenerator.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="MovePositionPair.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="MinimaxSolver.cpp">
+      <Filter>Solvers</Filter>
     </ClCompile>
     <ClCompile Include="ViewBase.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="TextView.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="MoveList.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="MovePositionPair.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="DataMonitor.cpp">
+      <Filter>Solvers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,13 +134,6 @@
     <Text Include="NameSpaces.txt">
       <Filter>Notes</Filter>
     </Text>
-    <Text Include="AI.txt">
-      <Filter>Notes</Filter>
-    </Text>
-    <Text Include="TimeManagement.txt" />
-    <Text Include="Database.txt">
-      <Filter>Notes</Filter>
-    </Text>
     <Text Include="Progress.txt">
       <Filter>Notes</Filter>
     </Text>
@@ -145,6 +147,21 @@
       <Filter>Notes</Filter>
     </Text>
     <Text Include="NodeTree.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="AI.txt">
+      <Filter>Notes\AI</Filter>
+    </Text>
+    <Text Include="Database.txt">
+      <Filter>Notes\AI</Filter>
+    </Text>
+    <Text Include="SearchFramework.txt">
+      <Filter>Notes\AI</Filter>
+    </Text>
+    <Text Include="TimeManagement.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="SearchMonitor.txt">
       <Filter>Notes</Filter>
     </Text>
   </ItemGroup>
@@ -206,20 +223,26 @@
     <ClInclude Include="MoveGeneratorInline.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="MovePositionPair.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PositionInline.h">
+    <ClInclude Include="MinimaxSolver.h">
       <Filter>Solvers</Filter>
     </ClInclude>
-    <ClInclude Include="ViewBase.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="PositionInline.h">
+      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="TextView.h">
-      <Filter>Header Files</Filter>
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewBase.h">
+      <Filter>View</Filter>
     </ClInclude>
     <ClInclude Include="MoveList.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="MovePositionPair.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DataMonitor.h">
+      <Filter>Solvers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

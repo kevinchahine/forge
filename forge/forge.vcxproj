@@ -140,10 +140,12 @@
     <ClCompile Include="ChessMatch.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="ControllerBase.cpp" />
+    <ClCompile Include="DataMonitor.cpp" />
     <ClCompile Include="FiftyMoveRule.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
+    <ClCompile Include="MinimaxSolver.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="MoveCounter.cpp" />
     <ClCompile Include="MoveGenerator.cpp" />
@@ -171,6 +173,8 @@
     <Text Include="Notation.txt" />
     <Text Include="ProgramOptions.txt" />
     <Text Include="Progress.txt" />
+    <Text Include="SearchFramework.txt" />
+    <Text Include="SearchMonitor.txt" />
     <Text Include="TimeManagement.txt" />
     <Text Include="Training.txt" />
     <Text Include="UCI.txt" />
@@ -184,8 +188,10 @@
     <ClInclude Include="Clock.h" />
     <ClInclude Include="BoardSquare.h" />
     <ClInclude Include="ControllerBase.h" />
+    <ClInclude Include="DataMonitor.h" />
     <ClInclude Include="FiftyMoveRule.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="MinimaxSolver.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveCounter.h" />
     <ClInclude Include="MoveGenerator.h" />
