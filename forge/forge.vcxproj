@@ -143,6 +143,7 @@
     <ClCompile Include="DataMonitor.cpp" />
     <ClCompile Include="FiftyMoveRule.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
     <ClCompile Include="MinimaxSolver.cpp" />
@@ -155,7 +156,9 @@
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="RandomSolver.cpp" />
+    <ClCompile Include="SearchMonitor.cpp" />
     <ClCompile Include="SolverBase.cpp" />
+    <ClCompile Include="StopWatch.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="TextView.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -171,6 +174,7 @@
     <Text Include="NameSpaces.txt" />
     <Text Include="NodeTree.txt" />
     <Text Include="Notation.txt" />
+    <Text Include="Optimizations.txt" />
     <Text Include="ProgramOptions.txt" />
     <Text Include="Progress.txt" />
     <Text Include="SearchFramework.txt" />
@@ -191,6 +195,7 @@
     <ClInclude Include="DataMonitor.h" />
     <ClInclude Include="FiftyMoveRule.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="MinimaxSolver.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveCounter.h" />
@@ -203,7 +208,9 @@
     <ClInclude Include="Position.h" />
     <ClInclude Include="PositionInline.h" />
     <ClInclude Include="RandomSolver.h" />
+    <ClInclude Include="SearchMonitor.h" />
     <ClInclude Include="SolverBase.h" />
+    <ClInclude Include="StopWatch.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="TextView.h" />
     <ClInclude Include="Timer.h" />

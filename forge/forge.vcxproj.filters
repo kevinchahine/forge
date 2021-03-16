@@ -31,6 +31,15 @@
     <Filter Include="View">
       <UniqueIdentifier>{aa819620-fd6d-4794-bf31-b7814df36d41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{74e5bdbb-ab67-4b30-8b2e-3b3a8b1dc5b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Move">
+      <UniqueIdentifier>{de155df7-5aed-436b-8a80-98a0e227f6d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Analytics">
+      <UniqueIdentifier>{0fc2b955-390d-4d1f-86c4-a6117b7d819d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,19 +66,7 @@
     <ClCompile Include="BoardSquare.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Clock.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Move.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Piece.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Position.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
@@ -84,12 +81,6 @@
     <ClCompile Include="GameState.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="MoveCounter.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveGenerator.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="MinimaxSolver.cpp">
       <Filter>Solvers</Filter>
     </ClCompile>
@@ -99,14 +90,41 @@
     <ClCompile Include="TextView.cpp">
       <Filter>View</Filter>
     </ClCompile>
+    <ClCompile Include="Clock.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="StopWatch.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCounter.cpp">
+      <Filter>Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveGenerator.cpp">
+      <Filter>Move</Filter>
+    </ClCompile>
     <ClCompile Include="MoveList.cpp">
-      <Filter>Game</Filter>
+      <Filter>Move</Filter>
     </ClCompile>
     <ClCompile Include="MovePositionPair.cpp">
-      <Filter>Game</Filter>
+      <Filter>Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Move</Filter>
     </ClCompile>
     <ClCompile Include="DataMonitor.cpp">
-      <Filter>Solvers</Filter>
+      <Filter>Analytics</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Analytics</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchMonitor.cpp">
+      <Filter>Analytics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +180,9 @@
       <Filter>Notes</Filter>
     </Text>
     <Text Include="SearchMonitor.txt">
+      <Filter>Notes\AI</Filter>
+    </Text>
+    <Text Include="Optimizations.txt">
       <Filter>Notes</Filter>
     </Text>
   </ItemGroup>
@@ -187,19 +208,7 @@
     <ClInclude Include="BoardSquare.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Clock.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Move.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Piece.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Position.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
@@ -214,15 +223,6 @@
     <ClInclude Include="FiftyMoveRule.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="MoveCounter.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveGenerator.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveGeneratorInline.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="MinimaxSolver.h">
       <Filter>Solvers</Filter>
     </ClInclude>
@@ -235,14 +235,44 @@
     <ClInclude Include="ViewBase.h">
       <Filter>View</Filter>
     </ClInclude>
+    <ClInclude Include="Clock.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="StopWatch.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Move</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCounter.h">
+      <Filter>Move</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveGenerator.h">
+      <Filter>Move</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveGeneratorInline.h">
+      <Filter>Move</Filter>
+    </ClInclude>
     <ClInclude Include="MoveList.h">
-      <Filter>Game</Filter>
+      <Filter>Move</Filter>
     </ClInclude>
     <ClInclude Include="MovePositionPair.h">
-      <Filter>Game</Filter>
+      <Filter>Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Analytics</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchMonitor.h">
+      <Filter>Analytics</Filter>
     </ClInclude>
     <ClInclude Include="DataMonitor.h">
-      <Filter>Solvers</Filter>
+      <Filter>Analytics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

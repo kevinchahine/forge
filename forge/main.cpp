@@ -29,6 +29,7 @@ int main(int argc, char ** argv)
 		<< guten::color::white;
 
 	//forge::test::clock();
+	//forge::test::stopWatch();
 	//forge::test::boardDefualt();
 	//forge::test::board();
 	//forge::test::placeMethods();

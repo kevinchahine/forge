@@ -1,0 +1,9 @@
+=== FORGE ===
+=== OPTIMIZATIONS ===
+
+Consider these optimizations:
+	- MoveGenerator outputs vector<unique_ptr<Node>> instead of 
+		vector<MovePositionPair> 
+		Reason: When expanding Nodes, we are having to copy Positions from the MoveList 
+		to the Node itself. 
+	- 

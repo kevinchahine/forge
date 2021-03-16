@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "Clock.h"
+#include "StopWatch.h"
 #include "Move.h"
 #include "ChessMatch.h"
 #include "MoveGenerator.h"
@@ -20,6 +21,8 @@ namespace forge
 	namespace test
 	{
 		void clock();
+
+		void stopWatch();
 
 		void boardDefualt();
 

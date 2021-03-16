@@ -38,6 +38,31 @@ namespace forge
 			}
 		}
 
+		void stopWatch()
+		{
+			StopWatch sw;
+
+			sw.reset(chrono::seconds(8));
+
+			cout << sw << '\n';
+
+			sw.resume();
+
+			this_thread::sleep_for(chrono::seconds(2));
+
+			sw.pause();
+
+			this_thread::sleep_for(chrono::seconds(2));
+
+			sw.resume();
+
+			while (sw.elapsed() < chrono::seconds(20)) {
+				cout << sw << '\n';
+
+				this_thread::sleep_for(chrono::seconds(1));
+			}
+		}
+
 		void boardDefualt()
 		{
 			forge::Board b;

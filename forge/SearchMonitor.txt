@@ -1,0 +1,21 @@
+=== FORGE ===
+=== Search Monitor ===
+
+Purpose:
+	Monitors search as it progresses.
+	Keeps track of data to be sent to UCI as algorithm is searching.
+
+Description:
+	(continuously updated and sent to UCI as engine is searching)
+	- number of nodes searched so far 
+	- selective search depth in plys
+	- search depth in plys 
+	- time searched
+	- nodes per second searched 
+	- pv (the best line found)
+	- multi pv (the <k> best lines found; only in multi pv mode)
+	- score (the engines approximated score in centi pawns)
+	- currently searching move 
+	- currently searching move number (1 is 1st move)
+	- current line searching (along with what CPU is searching it.)
+	- and some other stuff see "engine-interface.txt"

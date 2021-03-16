@@ -23,9 +23,11 @@ namespace forge
 	
 	void Timer::resume()
 	{
-		lastResumed = chrono::high_resolution_clock::now();
+		if (state == STATE::PAUSED) {
+			lastResumed = chrono::high_resolution_clock::now();
 
-		state = STATE::RESUMED;
+			state = STATE::RESUMED;
+		}
 	}
 
 	bool Timer::is_expired() const

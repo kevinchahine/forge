@@ -6,8 +6,26 @@ using namespace std;
 
 namespace forge
 {
+	void Node::reset()
+	{
+		if (m_lock.try_lock()) {
+			m_lock.unlock();
+		}
+		else {
+			cout << "Error: " << __FUNCTION__ << " m_lock was locked when it wan't supposed to be\n";
+			return;
+		}
+
+		m_position.clear();
+		m_nextPtr = nullptr;
+		m_childrenPtrs.clear();
+		m_state = STATE::FRESH;
+	}
+
 	void Node::expand()
 	{
+		m_lock.lock();
+
 		MoveList moves;
 
 		// 1.) --- Generate legal moves ---
@@ -21,8 +39,8 @@ namespace forge
 		for (const auto & move : moves) {
 			unique_ptr<Node> childPtr = make_unique<Node>();
 
-			//m_childrenPtrs.back()->m_position.applyMove(move.second);	// TODO:
-			childPtr->m_parentPtr = this;
+			childPtr->m_move = move.move;
+			childPtr->m_position = move.position;	// TODO: Slow copy
 
 			m_childrenPtrs.push_back(std::move(childPtr));
 		}
@@ -32,13 +50,28 @@ namespace forge
 			unique_ptr<Node> & childPtr = m_childrenPtrs.at(i);
 			unique_ptr<Node> & nextChildPtr = m_childrenPtrs.at(i + 1);
 
-			childPtr->m_nextSiblingPtr = nextChildPtr.get();
+			childPtr->m_nextPtr = nextChildPtr.get();
 		}
 
-		// 4.) --- Set last childs sibling to nullptr ---
+		// 4.) --- Assign last childs m_nextPtr to parent ---
 		if (m_childrenPtrs.empty() == false) {
-			m_childrenPtrs.back()->m_nextSiblingPtr = nullptr;
+			m_childrenPtrs.back()->m_nextPtr = this;
 		}
+
+		m_state = STATE::EXPANDED;
+
+		m_lock.unlock();
+	}
+
+	void Node::prune()
+	{
+		m_lock.lock();
+
+		m_childrenPtrs.clear();
+
+		m_state = STATE::PRUNED;
+
+		m_lock.unlock();
 	}
 
 } // namespace forge
