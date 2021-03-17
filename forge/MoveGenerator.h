@@ -26,6 +26,8 @@ namespace forge
 		static MoveList generatePseudoMovesFor(const Position & position, BoardSquare cell);
 
 	private:
+		// do not call on empty cells
+		// Make sure isWhite cooresponds to the color of the piece at cell
 		static void generatePseudoMovesFor(
 			const Position & position, 
 			BoardSquare cell, 
@@ -42,11 +44,11 @@ namespace forge
 		// !!!WARNING - Make sure square referes to a piece of the proper type to avoid errors !!!
 		static inline void generatePawnMovesWhite(const Position & position, BoardSquare square, MoveList & moves);
 		static inline void generatePawnMovesBlack(const Position & position, BoardSquare square, MoveList & moves);
+		static inline void generatePawnMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 		static inline void generateRookMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 		static inline void generateBishopMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 		static inline void generateKnightMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 		static inline void generateQueenMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
-
 	};
 } // namespace forge
 

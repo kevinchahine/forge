@@ -7,6 +7,7 @@
 #include "ChessMatch.h"
 #include "MoveGenerator.h"
 #include "RandomSolver.h"
+#include "Node.h"
 
 #include <iostream>
 #include <thread>
@@ -37,6 +38,8 @@ namespace forge
 		void randomSolver();
 
 		void chessMatch();
+
+		void nodeIterator();
 
 	} // namespace test
 } // namespace forge

@@ -173,14 +173,15 @@ namespace forge
 		{
 			forge::Position p;
 			forge::Board & b = p.board();
+			
+			p.reset();										
 
 			///b.placeAllPieces();
-			b.reset();										// remove
-			forge::BoardSquare s{ 5, 4 };					// remove
-			b.placeWhiteKnight(s);							// remove
-			//b.placewhiteQueen(s);							// remove
-			//b.placeBlackBishop(s.up(2));					// remove
-			//b.placeWhitePawn(s.left(2));					// remove
+			///forge::BoardSquare s{ 5, 4 };					// remove
+			///b.placeWhiteKnight(s);							// remove
+			///b.placewhiteQueen(s);							// remove
+			///b.placeBlackBishop(s.up(2));					// remove
+			///b.placeWhitePawn(s.left(2));					// remove
 
 			//(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
 			
@@ -259,6 +260,23 @@ namespace forge
 			match.makeView<TextView>();
 
 			match.runGame();
+		}
+
+		void nodeIterator()
+		{
+			Node root;
+			root.position().reset();
+
+			Node::iterator it = root.begin();
+			it.setDepthLimit(3);
+
+			while (it != root.end()) {
+				(*it).position().board().print();
+
+				++it;
+
+				cin.get();
+			}
 		}
 	} // namespace test
 } // namespace forge

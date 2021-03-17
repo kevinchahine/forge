@@ -41,7 +41,6 @@ namespace forge
 		MoveList moves;
 		moves.reserve(35);	// At any point in a chess game there will probably be about 35 - 38 legal moves
 
-		bool isWhite = true;
 		if (position.board().whites()[square] == 1) {
 			generatePseudoMovesFor(position, square, true, moves);
 		}
@@ -64,33 +63,30 @@ namespace forge
 	{
 		// --- Alias some objects ---
 		const Board & board = position.board();
-		BitBoard ours = (isWhite ? board.whites() : board.blacks());
 
-		// Does this cell contain one of our pieces?
-		if (ours[square] == 1) {
-			// Yes this is a black piece.
-			if (board.isPawn(square)) {
-				generatePawnMovesBlack(position, square, moves);
-			}
-			else if (board.isRook(square)) {
-				generateRookMoves(position, square, isWhite, moves);
-			}
-			else if (board.isKnight(square)) {
-				generateKnightMoves(position, square, isWhite, moves);
-			}
-			else if (board.isBishop(square)) {
-				generateBishopMoves(position, square, isWhite, moves);
-			}
-			else if (board.isQueen(square)) {
-				generateQueenMoves(position, square, isWhite, moves);
-			}
-			else if (board.isKing(square)) {
-			}
-			else {
-				// It must be an error.
-				// May cause problems with UCI
-				cout << "Uhhoo" << __FUNCTION__ << " line " << __LINE__ << '\n';
-			}
-		} // if (m_whites
+		// Yes this is a black piece.
+		if (board.isPawn(square)) {
+			generatePawnMoves(position, square, isWhite, moves);
+		}
+		else if (board.isRook(square)) {
+			generateRookMoves(position, square, isWhite, moves);
+		}
+		else if (board.isKnight(square)) {
+			generateKnightMoves(position, square, isWhite, moves);
+		}
+		else if (board.isBishop(square)) {
+			generateBishopMoves(position, square, isWhite, moves);
+		}
+		else if (board.isQueen(square)) {
+			generateQueenMoves(position, square, isWhite, moves);
+		}
+		else if (board.isKing(square)) {
+			// TODO: KING MOVES
+		}
+		else {
+			// It must be an error.
+			// May cause problems with UCI
+			cout << "Uhhoo" << __FUNCTION__ << " line " << __LINE__ << '\n';
+		}
 	}
 } // namespace forge

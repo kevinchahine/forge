@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <mutex>
+#include <limits>
 
 namespace forge
 {
@@ -37,13 +38,94 @@ namespace forge
 		// opposite of expand()
 		void prune();
 
-		std::vector<std::unique_ptr<Node>> & children() { return m_childrenPtrs; }
+		bool isFresh() const { return m_state == STATE::FRESH; }
+		bool isExpanded() const { return m_state == STATE::EXPANDED; }
+		bool isPruned() const { return m_state == STATE::PRUNED; }
+
+		Move & move() { return m_move; }
+		Move move() const { return m_move; }
+
+		Position & position() { return m_position; }
+		const Position & position() const { return m_position; }
+
+		//std::vector<std::unique_ptr<Node>> & children() { return m_childrenPtrs; }
 		const std::vector<std::unique_ptr<Node>> & children() const { return m_childrenPtrs; }
+
+		class iterator : public std::iterator<
+			std::forward_iterator_tag,
+			Node,
+			long,
+			Node*,
+			Node>
+		{
+		public:
+
+			iterator(Node * ptr) : ptr(ptr) {}
+			iterator(Node * ptr, int depth, int depthLimit) :
+				ptr(ptr),
+				depth(depth),
+				depthLimit(depthLimit) {}
+			iterator& operator++();
+			iterator operator++(int) { iterator temp = *this; ++(*this); return temp; }
+			bool operator==(const iterator & it) const { return this->ptr == it.ptr; }
+			bool operator!=(const iterator & it) const { return this->ptr != it.ptr; }
+			Node & operator*();
+
+			void setDepthLimit(int nPlys) { depthLimit = nPlys; }
+
+		protected:
+			bool nextSiblingExists() const { return ptr->m_nextPtr != nullptr; }
+			bool parentExists() const { return ptr->m_parentPtr != nullptr; }
+			bool firstChildExists() const { return ptr->m_childrenPtrs.size(); }
+
+			void goToNextSibling()
+			{
+				ptr = ptr->m_nextPtr;	// go to next sibling
+			}
+
+			void goToParentNoPrune()
+			{
+				
+			}
+
+			void goToParent()
+			{
+				ptr = ptr->m_parentPtr;	// go to parent (might be nullptr)
+				depth--;				// going up one ply
+
+				if (ptr != nullptr) {
+					// *** Now we're at the parent node ***
+					ptr->prune();			// prune children of parent
+				
+					// We've already been here so we need to keep iterating to 
+					// later nodes
+					++(*this);
+				}
+
+			}
+
+			void goToFirstChild()
+			{
+				// One or more children.
+				ptr = ptr->children().front().get();	// Go the 1st child.
+				depth++;								// going down one ply
+			}
+
+		private:
+			Node * ptr = nullptr;
+
+			int depth = 0;
+			
+			int depthLimit = INT_MAX;	// Limitless
+		};
+
+		iterator begin() { return iterator(this); }
+		iterator end() { return iterator(nullptr); }	// TODO: do we need this and does it make sense
 
 	private:
 		// Keep this here for later.
 		// TODO: Consider using shared_mutex so that when two or more threads are searching children
-		//	one thread won't prune them all.
+		//	one thread won't prune the other children.
 		std::mutex m_lock;
 
 		// Stores the move that got us to this position from parent
@@ -55,7 +137,7 @@ namespace forge
 		// Address of parent node
 		// if nullptr then this object is the root of the tree
 		// Do not deallocate
-		///Node * m_parentPtr = nullptr; // TODO: Don't think we need this any more since last child will point to parent anyway
+		Node * m_parentPtr = nullptr;
 		
 		// Address of next child node if one exists
 		// otherwise address of parent

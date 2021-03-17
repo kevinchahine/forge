@@ -126,6 +126,16 @@ namespace forge
 		// TODO: Still need enpassent
 	}
 
+	inline void MoveGenerator::generatePawnMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves)
+	{
+		if (isWhite) {
+			generatePawnMovesWhite(position, square, moves);
+		}
+		else {
+			generatePawnMovesBlack(position, square, moves);
+		}
+	}
+
 	inline void MoveGenerator::generateRookMoves(
 		const Position & position,
 		BoardSquare rooksSquare,
