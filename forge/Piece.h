@@ -40,7 +40,7 @@ namespace forge
 
 		friend std::ostream & operator<<(std::ostream & os, const Piece & p)
 		{
-			register int8_t v = p.val();
+			int8_t v = p.val();
 
 			os //<< guten::color::push()
 				//<< guten::color::setfg(v < 0 ? guten::color::gray : guten::color::lightgreen)

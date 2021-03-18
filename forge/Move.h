@@ -30,42 +30,42 @@ namespace forge
 
 		BoardSquare from() const 
 		{
-			register uint16_t v = (uint16_t) (m_val & from_mask).to_ulong();
+			uint16_t v = (uint16_t) (m_val & from_mask).to_ulong();
 
 			return BoardSquare((uint8_t) v);
 		}
 		
 		void from(BoardSquare pos) 
 		{
-			register std::bitset<16> posBits = pos.val();
+			std::bitset<16> posBits = pos.val();
 
 			m_val = (m_val & ~from_mask) & posBits;
 		}
 		
 		BoardSquare to() const 
 		{
-			register uint16_t v = (uint16_t) (m_val & to_mask).to_ulong() >> 6;
+			uint16_t v = (uint16_t) (m_val & to_mask).to_ulong() >> 6;
 
 			return BoardSquare((uint8_t) v);
 		}
 		
 		void to(BoardSquare pos) 
 		{
-			register std::bitset<16> posBits = pos.val() << 6;
+			std::bitset<16> posBits = pos.val() << 6;
 
 			m_val = (m_val & ~to_mask) & posBits;
 		}
 		
 		Piece promotion() const 
 		{
-			register uint16_t v = (uint16_t) (m_val & promotion_mask).to_ulong() >> 12;
+			uint16_t v = (uint16_t) (m_val & promotion_mask).to_ulong() >> 12;
 
 			return Piece((int8_t) v);
 		}
 		
 		void promotion(BoardSquare piece) 
 		{
-			register std::bitset<16> promotionBits = piece.val() << 12;
+			std::bitset<16> promotionBits = piece.val() << 12;
 
 			m_val = (m_val & ~promotion_mask) & promotionBits;
 		}

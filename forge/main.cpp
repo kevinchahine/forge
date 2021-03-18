@@ -27,7 +27,7 @@ int main(int argc, char ** argv)
 		<< guten::color::yellow << "===\n"
 		<< guten::color::red << "=============\n"
 		<< guten::color::white;
-
+	
 	//forge::test::clock();
 	//forge::test::stopWatch();
 	//forge::test::boardDefualt();
@@ -36,7 +36,9 @@ int main(int argc, char ** argv)
 	//forge::test::psuedoValidMoveGenerator();
 	//forge::test::move();
 	//forge::test::chessMatch();
-	forge::test::nodeIterator();
+	//forge::test::nodeIterator();
+	//forge::test::heuristic();
+	forge::test::solver();
 
 	//this_thread::sleep_for(chrono::seconds(1));
 	cin.get();

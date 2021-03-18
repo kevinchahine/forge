@@ -24,11 +24,11 @@ namespace forge
 	
 	void Position::applyMoveFast(Move move)
 	{
-		register BoardSquare from = move.from();
-		register BoardSquare to = move.to();
-		register Piece promotion = move.promotion();	// If promoting, what will we promot to. Might be empty.
-		register Piece fromPiece = m_board.at(from);	// Piece we are moving from
-		register Piece toPiece = m_board.at(to);		// Piece we are moving to
+		BoardSquare from = move.from();
+		BoardSquare to = move.to();
+		Piece promotion = move.promotion();	// If promoting, what will we promot to. Might be empty.
+		Piece fromPiece = m_board.at(from);	// Piece we are moving from
+		Piece toPiece = m_board.at(to);		// Piece we are moving to
 
 		// Look for captures
 		if (toPiece.isEmpty() == false) {
@@ -96,8 +96,8 @@ namespace forge
 		//cout << __FUNCTION__ << " Not implemented" << endl;
 		applyMoveFast(move);	// TODO: for now
 
-		//register BoardSquare from = move.from();
-		//register BoardSquare to = move.to();
+		//BoardSquare from = move.from();
+		//BoardSquare to = move.to();
 
 		//if (m_board.occupied()[from] == true) {
 		//	if (m_moveCounter.isWhitesTurn()) {
@@ -112,7 +112,7 @@ namespace forge
 		//	}
 
 		//	// Now we know that from cooresponds to a piece of the color the the current player
-		//	register Piece pickedUpPiece = m_board.at(from);
+		//	Piece pickedUpPiece = m_board.at(from);
 
 		//	// If its a King
 		//	if (pickedUpPiece.isKing()) {

@@ -26,7 +26,7 @@ namespace forge
 
 		ss << from() << to();
 
-		register Piece promo = promotion();
+		Piece promo = promotion();
 
 		if (promo.isEmpty() == false) {
 			ss << promo;

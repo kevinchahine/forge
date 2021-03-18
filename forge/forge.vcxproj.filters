@@ -40,6 +40,9 @@
     <Filter Include="Analytics">
       <UniqueIdentifier>{0fc2b955-390d-4d1f-86c4-a6117b7d819d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Heuristics">
+      <UniqueIdentifier>{df6ca5f1-14f2-4f5a-9fca-f2b3e9704596}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -125,6 +128,18 @@
     </ClCompile>
     <ClCompile Include="SearchMonitor.cpp">
       <Filter>Analytics</Filter>
+    </ClCompile>
+    <ClCompile Include="globals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplePieHeuristic.cpp">
+      <Filter>Heuristics</Filter>
+    </ClCompile>
+    <ClCompile Include="HeuristicBase.cpp">
+      <Filter>Heuristics</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomHeuristic.cpp">
+      <Filter>Heuristics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +288,24 @@
     </ClInclude>
     <ClInclude Include="DataMonitor.h">
       <Filter>Analytics</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>Solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="Solvers.hpp">
+      <Filter>Solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplePieHeuristic.h">
+      <Filter>Heuristics</Filter>
+    </ClInclude>
+    <ClInclude Include="HeuristicBase.h">
+      <Filter>Heuristics</Filter>
+    </ClInclude>
+    <ClInclude Include="Heuristics.hpp">
+      <Filter>Heuristics</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomHeuristic.h">
+      <Filter>Heuristics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

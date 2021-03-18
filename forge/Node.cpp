@@ -2,10 +2,16 @@
 
 #include "MoveGenerator.h"
 
+#include <algorithm>
+
 using namespace std;
 
 namespace forge
 {
+	bool compareFitness(const unique_ptr<Node> & a, const unique_ptr<Node> & b) {
+		return a->fitness() < b->fitness();
+	}
+
 	void Node::reset()
 	{
 		///if (m_lock.try_lock()) {
@@ -33,7 +39,7 @@ namespace forge
 		// Figures out wether white or black is playing and generates moves for them.
 		moves = MoveGenerator::generatePseudoMoves(m_position);
 
-		cout << moves.size() << " moves generated\n";
+		///cout << moves.size() << " moves generated\n";
 
 		// 2.) --- Create children nodes ---
 		m_childrenPtrs.clear();
@@ -72,6 +78,31 @@ namespace forge
 	{
 		///m_lock.lock();
 
+		const auto & c = m_childrenPtrs;
+
+		const Node * bestChild = nullptr;
+
+		// Find child with max or min fitness and assign it to this node
+		if (m_position.moveCounter().isWhitesTurn()) {
+			cout << m_position.moveCounter().count << " Whites turn: ";
+			// White is maximizing so find child with highest fitness
+			bestChild = max_element(
+				c.data(), 
+				c.data() + c.size(),
+				compareFitness)->get();		// goes from <unique_ptr *> to <*>
+		}
+		else {
+			cout << m_position.moveCounter().count << " Blacks turn: ";
+			// Black is minimizing so find child with lowest fitness
+			bestChild = min_element(
+				c.data(),
+				c.data() + c.size(),
+				compareFitness)->get();		// goes from <unique_ptr *> to <*>
+		}
+
+		m_fitness = bestChild->fitness();
+		cout << "Fitness: " << m_fitness << '\n';
+
 		m_childrenPtrs.clear();
 
 		m_state = STATE::PRUNED;
@@ -81,10 +112,10 @@ namespace forge
 
 	Node::iterator & Node::iterator::operator++()
 	{
-		cout << depth << ' ' << depthLimit << '\n';
+		///cout << depth << ' ' << depthLimit << '\n';
 		// Did we reach depth limit?
 		if (depth >= depthLimit) {
-			cout << "Limit reached\n";
+			///cout << "Limit reached\n";
 			// We don't want to go down anymore.
 			// Either we should go right or up
 			// We need to either go to next sibling or parent
@@ -99,7 +130,7 @@ namespace forge
 			switch (ptr->m_state)
 			{
 			case STATE::FRESH:
-				cout << "FRESH" << endl;
+				///cout << "FRESH" << endl;
 				ptr->expand();
 
 				// How many children where created?
@@ -119,7 +150,7 @@ namespace forge
 
 				break;
 			case STATE::EXPANDED:
-				cout << "EXPANDED\n";
+				///cout << "EXPANDED\n";
 				// We typically want to go to 1st child
 				if (firstChildExists()) {
 					goToFirstChild();
@@ -139,7 +170,7 @@ namespace forge
 
 				break;
 			case STATE::PRUNED:
-				cout << "PRUNED\n";
+				///cout << "PRUNED\n";
 				// We need to either go to next sibling or parent
 				if (nextSiblingExists()) {
 					goToNextSibling();

@@ -77,6 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)guten\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -91,6 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)guten\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)guten\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,6 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)guten\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ApplePieHeuristic.cpp" />
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ChessMatch.cpp" />
@@ -143,6 +148,8 @@
     <ClCompile Include="DataMonitor.cpp" />
     <ClCompile Include="FiftyMoveRule.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="globals.cpp" />
+    <ClCompile Include="HeuristicBase.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
@@ -155,6 +162,7 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="RandomHeuristic.cpp" />
     <ClCompile Include="RandomSolver.cpp" />
     <ClCompile Include="SearchMonitor.cpp" />
     <ClCompile Include="SolverBase.cpp" />
@@ -186,6 +194,7 @@
     <Text Include="View.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ApplePieHeuristic.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="ChessMatch.h" />
@@ -195,6 +204,9 @@
     <ClInclude Include="DataMonitor.h" />
     <ClInclude Include="FiftyMoveRule.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="HeuristicBase.h" />
+    <ClInclude Include="Heuristics.hpp" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MinimaxSolver.h" />
     <ClInclude Include="Move.h" />
@@ -207,9 +219,11 @@
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PositionInline.h" />
+    <ClInclude Include="RandomHeuristic.h" />
     <ClInclude Include="RandomSolver.h" />
     <ClInclude Include="SearchMonitor.h" />
     <ClInclude Include="SolverBase.h" />
+    <ClInclude Include="Solvers.hpp" />
     <ClInclude Include="StopWatch.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="TextView.h" />

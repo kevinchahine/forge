@@ -177,13 +177,12 @@ namespace forge
 			p.reset();										
 
 			///b.placeAllPieces();
-			///forge::BoardSquare s{ 5, 4 };					// remove
-			///b.placeWhiteKnight(s);							// remove
-			///b.placewhiteQueen(s);							// remove
+			///forge::BoardSquare s{ 5, 4 };				// remove
+			///b.placeWhiteKnight(s);						// remove
+			///b.placewhiteQueen(s);						// remove
 			///b.placeBlackBishop(s.up(2));					// remove
 			///b.placeWhitePawn(s.left(2));					// remove
-
-			//(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
+			///(const_cast<forge::MoveCounter &>(p.moveCounter()))++;	// remove
 			
 			b.print();
 
@@ -237,8 +236,6 @@ namespace forge
 		void randomSolver()
 		{
 			forge::RandomSolver solver;
-
-
 		}
 
 		void chessMatch()
@@ -275,6 +272,46 @@ namespace forge
 
 				++it;
 
+				cin.get();
+			}
+		}
+
+		void heuristic()
+		{
+			Position position;
+			position.reset();
+			
+			unique_ptr<HeuristicBase> ptr =
+				//make_unique<ApplePieHeuristic>();
+				make_unique<RandomHeuristic>();
+
+			while (true) {
+				cout << ptr->eval(position) << ' ';
+				cin.get();
+			}
+		}
+
+		void solver()
+		{
+			Position position;
+			position.reset();
+
+			position.board().print();
+
+			unique_ptr<SolverBase> solverPtr =
+				//make_unique<RandomSolver>();
+				make_unique<MinimaxSolver>();
+
+			solverPtr->makeHeuristic<RandomHeuristic>();
+
+			solverPtr->reset();
+			
+			while (true) {
+				Move m = solverPtr->getMove(position);
+
+				position.applyMoveFast(m);
+
+				position.board().print();
 				cin.get();
 			}
 		}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Position.h"
+#include "HeuristicBase.h"	// for heuristic_t
 
 #include <vector>
 #include <memory>
@@ -48,6 +49,9 @@ namespace forge
 		Position & position() { return m_position; }
 		const Position & position() const { return m_position; }
 
+		heuristic_t & fitness() { return m_fitness; }
+		const heuristic_t & fitness() const { return m_fitness; }
+
 		//std::vector<std::unique_ptr<Node>> & children() { return m_childrenPtrs; }
 		const std::vector<std::unique_ptr<Node>> & children() const { return m_childrenPtrs; }
 
@@ -72,6 +76,8 @@ namespace forge
 			Node & operator*();
 
 			void setDepthLimit(int nPlys) { depthLimit = nPlys; }
+			int getDepth() const { return depth; }
+			bool isLeafNode() const { return depth >= depthLimit; }
 
 		protected:
 			bool nextSiblingExists() const { return ptr->m_nextPtr != nullptr; }
@@ -81,11 +87,6 @@ namespace forge
 			void goToNextSibling()
 			{
 				ptr = ptr->m_nextPtr;	// go to next sibling
-			}
-
-			void goToParentNoPrune()
-			{
-				
 			}
 
 			void goToParent()
@@ -101,7 +102,6 @@ namespace forge
 					// later nodes
 					++(*this);
 				}
-
 			}
 
 			void goToFirstChild()
@@ -143,6 +143,8 @@ namespace forge
 		// otherwise address of parent
 		// Do not deallocate
 		Node * m_nextPtr = nullptr;
+
+		heuristic_t m_fitness = 0.0;
 
 		// Addresses of children nodes
 		std::vector<std::unique_ptr<Node>> m_childrenPtrs;

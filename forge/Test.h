@@ -1,13 +1,17 @@
 #pragma once
 
+#include "globals.h"
+
 #include "Board.h"
 #include "Clock.h"
 #include "StopWatch.h"
 #include "Move.h"
 #include "ChessMatch.h"
 #include "MoveGenerator.h"
-#include "RandomSolver.h"
 #include "Node.h"
+
+#include "Solvers.hpp"
+#include "Heuristics.hpp"
 
 #include <iostream>
 #include <thread>
@@ -40,6 +44,10 @@ namespace forge
 		void chessMatch();
 
 		void nodeIterator();
+
+		void heuristic();
+
+		void solver();
 
 	} // namespace test
 } // namespace forge
