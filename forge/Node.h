@@ -52,9 +52,14 @@ namespace forge
 		heuristic_t & fitness() { return m_fitness; }
 		const heuristic_t & fitness() const { return m_fitness; }
 
+		Move bestMove() const { return m_bestMove; }
+
 		//std::vector<std::unique_ptr<Node>> & children() { return m_childrenPtrs; }
 		const std::vector<std::unique_ptr<Node>> & children() const { return m_childrenPtrs; }
 
+		// Designed to work with Minimax
+		// For MTCS, we may need to implemente a different iterator.
+		// see Node::prune()
 		class iterator : public std::iterator<
 			std::forward_iterator_tag,
 			Node,
@@ -126,7 +131,7 @@ namespace forge
 		// Keep this here for later.
 		// TODO: Consider using shared_mutex so that when two or more threads are searching children
 		//	one thread won't prune the other children.
-		std::mutex m_lock;
+		///std::mutex m_lock;
 
 		// Stores the move that got us to this position from parent
 		Move m_move;
@@ -144,9 +149,15 @@ namespace forge
 		// Do not deallocate
 		Node * m_nextPtr = nullptr;
 
-		heuristic_t m_fitness = 0.0;
+		// Fitness of this position based on a minimax of children
+		heuristic_t m_fitness = 0;
+
+		// Best move cooresponding to child with the best fitness
+		Move m_bestMove;
 
 		// Addresses of children nodes
+		// TODO: Why not store children as a vector<Node> instead?
+		// TODO: Whould it make sorting slower?
 		std::vector<std::unique_ptr<Node>> m_childrenPtrs;
 
 		// Set to true when all children have been fully searched and pruned.

@@ -6,4 +6,7 @@ Consider these optimizations:
 		vector<MovePositionPair> 
 		Reason: When expanding Nodes, we are having to copy Positions from the MoveList 
 		to the Node itself. 
+	- MoveGenerator non-pseudo move generator is slow and can be implemented more efficiently.
+		Instead of generating pseudo legal moves then checking to see if King is attacked,
+		consider only generating move that avoid putting King is check in the 1st place.
 	- 

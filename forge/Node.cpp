@@ -8,24 +8,20 @@ using namespace std;
 
 namespace forge
 {
+	// Used in std::min() and std::max. 
+	// Compares two unique_ptr<Node> based on fitness score of each Node.
 	bool compareFitness(const unique_ptr<Node> & a, const unique_ptr<Node> & b) {
 		return a->fitness() < b->fitness();
 	}
 
 	void Node::reset()
 	{
-		///if (m_lock.try_lock()) {
-		///	m_lock.unlock();
-		///}
-		///else {
-		///	cout << "Error: " << __FUNCTION__ << " m_lock was locked when it wan't supposed to be\n";
-		///	return;
-		///}
-
 		m_position.clear();
 		m_parentPtr = nullptr;
 		m_nextPtr = nullptr;
 		m_childrenPtrs.clear();
+		m_fitness = 0;
+		m_bestMove;
 		m_state = STATE::FRESH;
 	}
 
@@ -76,15 +72,16 @@ namespace forge
 
 	void Node::prune()
 	{
-		///m_lock.lock();
-
 		const auto & c = m_childrenPtrs;
 
 		const Node * bestChild = nullptr;
 
-		// Find child with max or min fitness and assign it to this node
+		// Only makes sense for minimax
+		// Find child with max or min fitness and assign it to this node.
+		// Using min or max will depend on which player is moving.
 		if (m_position.moveCounter().isWhitesTurn()) {
-			cout << m_position.moveCounter().count << " Whites turn: ";
+			// --- White player is moving ---
+
 			// White is maximizing so find child with highest fitness
 			bestChild = max_element(
 				c.data(), 
@@ -92,7 +89,8 @@ namespace forge
 				compareFitness)->get();		// goes from <unique_ptr *> to <*>
 		}
 		else {
-			cout << m_position.moveCounter().count << " Blacks turn: ";
+			// --- Black player is moving ---
+
 			// Black is minimizing so find child with lowest fitness
 			bestChild = min_element(
 				c.data(),
@@ -101,13 +99,11 @@ namespace forge
 		}
 
 		m_fitness = bestChild->fitness();
-		cout << "Fitness: " << m_fitness << '\n';
+		m_bestMove = bestChild->move();
 
 		m_childrenPtrs.clear();
 
 		m_state = STATE::PRUNED;
-
-		///m_lock.unlock();
 	}
 
 	Node::iterator & Node::iterator::operator++()
@@ -199,6 +195,5 @@ namespace forge
 
 		return *ptr;
 	}
-
 	
 } // namespace forge

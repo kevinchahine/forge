@@ -11,32 +11,21 @@ namespace forge
 
 	Move MinimaxSolver::getMove(const Position & position)
 	{
-		if (m_bestLine.empty()) {
-			m_bestLine = solve(position);
-		}
-		
-		if (m_bestLine.size()) {
-			MovePositionPair pair = m_bestLine.front();	// must be a copy not reference
-			
-			m_bestLine.pop_front();
+		Move bestMove = solve(position);
 
-			return pair.move;
-		}
-		else {
-			throw std::exception("No valid moves");
-		}
+		return bestMove;
 	}
 
-	Line MinimaxSolver::solve(const Position & position)
+	Move MinimaxSolver::solve(const Position & position)
 	{
-		Line bestLine;
-
 		m_searchMonitor.start();
-		
+
+		m_nodeTree.reset();
+
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		Node::iterator it = m_nodeTree.begin();
-		it.setDepthLimit(3);
+		it.setDepthLimit(4);
 
 		while (m_searchMonitor.exitConditionReached() == false) {
 			// --- 1.) Get current position to evaluate ---
@@ -49,14 +38,12 @@ namespace forge
 			// --- 3.) Check game state (is this a terminal node) ---
 			// TODO: GAME WILL probably crash when reaching a terminal node since no valid
 			//	moves will be generated
+			// TODO: WE REALLY NEED TO DO THIS NEXT
 
 			// --- 4.) Evaluate this position ---
 			// We only want to evaluate leaf nodes
-			heuristic_t eval = 0;
 			if (it.isLeafNode()) {
-				eval = heuristicPtr->eval(pos);
-
-				(*it).fitness() = eval;
+				(*it).fitness() = heuristicPtr->eval(pos);
 			}
 
 			// --- 5.) Move to next node ---
@@ -68,6 +55,8 @@ namespace forge
 			}
 		}
 
-		return bestLine;
+		cout << m_nodeTree.bestMove() << '\n';
+
+		return m_nodeTree.bestMove();
 	}
 } // namespace forge

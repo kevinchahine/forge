@@ -20,8 +20,8 @@ namespace forge
 	{
 	public:
 		// --- Declare Friend Classes ---
-		class MoveGenerator;
-		friend MoveGenerator;
+		friend class MoveGenerator;
+		friend class GameState;
 
 		void print(std::ostream & os = std::cout) const;
 		void printMini(std::ostream & os = std::cout) const;
@@ -128,6 +128,8 @@ namespace forge
 		bool isBishop(BoardSquare square) const { return bishops()[square] == 1; }
 		bool isQueen(BoardSquare square) const { return queens()[square] == 1; }
 		bool isKing(BoardSquare square) const { return kings()[square] == 1; }
+		bool isWhite(BoardSquare square) const { return whites()[square] == 1; }
+		bool isBlack(BoardSquare square) const { return blacks()[square] == 1; }
 
 		// Removes all pieces except Kings.
 		// Places Kings in there starting locations.
@@ -168,6 +170,9 @@ namespace forge
 
 			return kingsBB;
 		}
+
+		BoardSquare whiteKing() const { return m_whiteKing; }
+		BoardSquare blackKing() const { return m_blackKing; }
 
 	private:
 		BitBoard m_whites{ uint64_t(1) << 60 };	// All White Pieces (Including Kings and Knights)

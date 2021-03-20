@@ -253,11 +253,11 @@ namespace forge
 #endif
 		// Which king are we moving?
 		if (m_whiteKing == from) {
-			// White king moves
+			// We're moving the WHITE king.
 			m_whiteKing = to;
 		}
 		else {
-			// Black king moves
+			// We're moving the BLACK king.
 			m_blackKing = to;
 		}
 	}

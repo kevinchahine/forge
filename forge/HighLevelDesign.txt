@@ -30,8 +30,7 @@ Model:
 
 	AI Agent:
 		solvers:
-			- minimax 
-			- negamax
+			- minimax or negamax
 			- mcts
 
 		evaluation functions:
@@ -42,10 +41,11 @@ View:
 	*See View.txt
 
 Controller:
-	UCI controller - for input from a UCI GUI
+	UCI controller - for input from a UCI GUI. *See UCI.txt
 	Keyboard Controller - for input from a command line 
 		Should support both PGN and Long Algebreic Notation.
 	Database Controller - 
+	AI Controller - 
 
 ===============================================================================
 
@@ -74,7 +74,8 @@ Multithreading:
 		- should work great
 	For DNN:
 		- GPU might be the bottleneck and limit effectiveness of larger numbers of threads.
-			- Consider using Hornet for intense multithreading.
+			- Consider using Hornet for intense multithreading because it can support 2 video cards.
+				Having 2 video cards may reduce the GPU bottleneck if it even exists. 
 
 Opening Table Database:
 	Find some chess datasets

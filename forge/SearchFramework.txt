@@ -1,4 +1,13 @@
 === FORGE ===
 === SEARCH FRAMEWORK ===
 
+Minimax
+	- Alpha Beta Pruning
+	- Multi-threaded Alpha Beta Pruning
+		- Consider Dynamic Tree Splitting (DTS). 
+			Its considered by far the most powerful and scalable approach to multi-threaded 
+			alpha-beta pruning although it is also the most difficult to implement.
+
+Monte Carlo Tree Search (MCTS)
+	https://philippmuens.com/minimax-and-mcts#:~:text=While%20Minimax%20combined%20with%20Alpha-Beta%20pruning%20is%20a,is%20necessary%20due%20to%20its%20reliance%20on%20randomness.
 

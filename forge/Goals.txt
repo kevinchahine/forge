@@ -7,8 +7,22 @@ Play using a UCI GUI
 
 Play against another engine
 
-Beat another engine
+Against atleast one well known professional engine (like Stockfish, LC0, Dragon, DeepBlue)
+	- score atleast 1 win for every 10 losses, or 
+	- draw atleast 9 out of 10 games
 
 train against another engine
 
 Train for many days effectively
+
+??? Effective distrubuted training maybe ??? 
+
+Play using multiple video cards.
+
+Effectively use multi-threaded search algorithm
+
+Implement minimax with alpha-beta pruning using multi-threading
+Implement minimax with alpha-beta pruning using DNN
+Implement MCTS using multi-threading
+Implement MCTS using ???DNN (How would we even do this)???
+

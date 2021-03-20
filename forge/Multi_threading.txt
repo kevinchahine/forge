@@ -1,0 +1,9 @@
+=== FORGE ===
+=== Multi-threading ===
+
+Dynamic tree splitting is claimed to be the best multithreading algorithm because 
+of its scalability when using more cores.
+Although it is the most difficult to implement.
+https://www.chessprogramming.org/Dynamic_Tree_Splitting
+
+??? What does stockfish use for its multi-threading ???

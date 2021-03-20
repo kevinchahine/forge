@@ -208,6 +208,32 @@ namespace forge
 			gridView.toMatrix().print();
 		}
 
+		void isKingAttacked()
+		{
+			//forge::Position pos;
+			//forge::Board & b = pos.board();
+			//
+			//pos.clear();
+			//
+			//forge::BoardSquare k{ 'c', '4' };
+			//b.moveBlackKing(k);
+			//b.placeWhiteRook(k.down(2));
+			//b.placeWhiteBishop(k.downRight(3));
+			//b.placeWhiteQueen(k.upLeft(4));
+			//b.placeWhiteKnight(k.knight2());
+			//b.placeWhitePawn(k.downLeft());
+			//
+			//b.printMini();
+			//
+			//cout << "--- Black King ---\n"
+			//	<< "\tIs Attacked by:\n"
+			//	<< "Rook/Queen: " << MoveGenerator::isKingAttackedStraight(b, b.blackKing()) << '\n'
+			//	<< "Bishop/Queen: " << MoveGenerator::isKingAttackedDiagonal(b, b.blackKing()) << '\n'
+			//	<< "Knights: " << MoveGenerator::isKingAttackedByKnight(b, b.blackKing()) << '\n'
+			//	<< "Pawns: " << MoveGenerator::isKingAttackedByPawn(b, b.blackKing()) << '\n'
+			//	<< '\n';
+		}
+
 		void move()
 		{
 			forge::Move m;
@@ -312,8 +338,25 @@ namespace forge
 				position.applyMoveFast(m);
 
 				position.board().print();
-				cin.get();
+				//cout << "Press any key...";
+				//cin.get();
 			}
+		}
+
+		void gameState()
+		{
+			forge::Position pos;
+			pos.clear();
+
+			pos.board().placeBlackRook(forge::BoardSquare{ 'e', '4' });
+
+			pos.board().print();
+
+			GameState state;
+
+			state(pos);
+
+			cout << state << '\n';
 		}
 	} // namespace test
 } // namespace forge

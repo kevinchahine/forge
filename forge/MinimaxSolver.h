@@ -16,13 +16,11 @@ namespace forge
 
 	protected:
 
-		Line solve(const Position & position);
+		Move solve(const Position & position);
 
 	protected:
 
 		Node m_nodeTree;
-
-		Line m_bestLine;
 
 		SearchMonitor m_searchMonitor;
 	};

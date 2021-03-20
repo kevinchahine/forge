@@ -200,6 +200,12 @@
     <Text Include="Optimizations.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="Multi_threading.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="UCI_Definition.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test.h">

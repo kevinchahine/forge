@@ -8,6 +8,7 @@
 #include "Move.h"
 #include "ChessMatch.h"
 #include "MoveGenerator.h"
+#include "GameState.h"
 #include "Node.h"
 
 #include "Solvers.hpp"
@@ -37,6 +38,8 @@ namespace forge
 
 		void psuedoValidMoveGenerator();
 
+		void isKingAttacked();
+
 		void move();
 
 		void randomSolver();
@@ -48,6 +51,8 @@ namespace forge
 		void heuristic();
 
 		void solver();
+
+		void gameState();
 
 	} // namespace test
 } // namespace forge
