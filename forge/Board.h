@@ -22,6 +22,7 @@ namespace forge
 		// --- Declare Friend Classes ---
 		friend class MoveGenerator;
 		friend class GameState;
+		friend class AttackChecker;
 
 		void print(std::ostream & os = std::cout) const;
 		void printMini(std::ostream & os = std::cout) const;

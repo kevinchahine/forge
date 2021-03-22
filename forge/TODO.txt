@@ -1,0 +1,8 @@
+=== FORGE ===
+=== Some things we still need to do ===
+
+class Position
+	moveQNBR needs to exclude rooks
+	rooks are involved in castling so they need a separate method for themselves
+
+	same for capture methods

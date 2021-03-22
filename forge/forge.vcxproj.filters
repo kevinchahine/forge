@@ -141,6 +141,9 @@
     <ClCompile Include="RandomHeuristic.cpp">
       <Filter>Heuristics</Filter>
     </ClCompile>
+    <ClCompile Include="AttackChecker.cpp">
+      <Filter>Move</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -312,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="RandomHeuristic.h">
       <Filter>Heuristics</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackChecker.h">
+      <Filter>Move</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

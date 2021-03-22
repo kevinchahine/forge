@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ApplePieHeuristic.cpp" />
+    <ClCompile Include="AttackChecker.cpp" />
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ChessMatch.cpp" />
@@ -197,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApplePieHeuristic.h" />
+    <ClInclude Include="AttackChecker.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="ChessMatch.h" />
