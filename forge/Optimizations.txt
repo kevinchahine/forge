@@ -9,4 +9,7 @@ Consider these optimizations:
 	- MoveGenerator non-pseudo move generator is slow and can be implemented more efficiently.
 		Instead of generating pseudo legal moves then checking to see if King is attacked,
 		consider only generating move that avoid putting King is check in the 1st place.
-	- 
+
+	- MoveGenerate:
+		MoveList reserves 35 elements. Maybe increase this to 60+ to prevent reallocating 
+		the vector on push_backs

@@ -52,8 +52,6 @@ namespace forge
 
 		// --- Alias some objects ---
 		const Board & board = position.board();
-		BitBoard isOccupied = board.occupied();
-		BitBoard isEmpty = board.empty();
 		BitBoard ours = (isWhite ? board.whites() : board.blacks());
 
 		// traverse each cell and look for white pieces
@@ -89,6 +87,41 @@ namespace forge
 
 		moves.shrink_to_fit();
 		return moves;
+	}
+
+	MoveList MoveGenerator::generateLegalMoves(const Position & position)
+	{
+		return generateLegalMoves(position, position.moveCounter().isWhitesTurn());
+	}
+
+	MoveList MoveGenerator::generateLegalMoves(const Position & position, bool isWhite)
+	{
+		MoveList moves;
+		moves.reserve(60);	// At any point in a chess game there will probably be about 35 - 38 legal moves
+
+		// --- Alias some objects ---
+		const Board & board = position.board();
+		BitBoard ours = (isWhite ? board.whites() : board.blacks());
+
+		// traverse each cell and look for white pieces
+		for (uint8_t row = 0; row < 8; row++) {
+			for (uint8_t col = 0; col < 8; col++) {
+				BoardSquare square(row, col);
+
+				// Does this cell contain a white piece?
+				if (ours[square] == 1) {
+					generateLegalMovesFor(position, square, isWhite, moves);
+				} // if (m_whites
+			} // for (col
+		} // for (row
+
+		moves.shrink_to_fit();
+		return moves;
+	}
+
+	MoveList MoveGenerator::generateLegalMovesFor(const Position & position, BoardSquare square)
+	{
+		return MoveList();
 	}
 
 	bool MoveGenerator::isKingAttacked(const Position & position, bool isWhiteKing)
@@ -308,4 +341,40 @@ namespace forge
 			cout << "Uhhoo" << __FUNCTION__ << " line " << __LINE__ << '\n';
 		}
 	}
+
+	void MoveGenerator::generateLegalMovesFor(
+		const Position & position, 
+		BoardSquare square, 
+		bool isWhite, 
+		MoveList & moves)
+	{
+		// --- Alias some objects ---
+		const Board & board = position.board();
+
+		// Yes this is a black piece.
+		if (board.isPawn(square)) {
+			generatePawnMoves(position, square, isWhite, moves);
+		}
+		else if (board.isRook(square)) {
+			generateRookMoves(position, square, isWhite, moves);
+		}
+		else if (board.isKnight(square)) {
+			generateKnightMoves(position, square, isWhite, moves);
+		}
+		else if (board.isBishop(square)) {
+			generateBishopMoves(position, square, isWhite, moves);
+		}
+		else if (board.isQueen(square)) {
+			generateQueenMoves(position, square, isWhite, moves);
+		}
+		else if (board.isKing(square)) {
+			// TODO: KING MOVES
+		}
+		else {
+			// It must be an error.
+			// May cause problems with UCI
+			cout << "Uhhoo" << __FUNCTION__ << " line " << __LINE__ << '\n';
+		}
+	}
+
 } // namespace forge

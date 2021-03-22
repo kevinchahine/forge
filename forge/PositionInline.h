@@ -149,7 +149,7 @@ namespace forge
 		moveQBNR(move.from(), move.to());
 	}
 
-	inline void Position::qbnrCapture(BoardSquare from, BoardSquare to)
+	inline void Position::captureWithQBNR(BoardSquare from, BoardSquare to)
 	{
 		m_board.removePiece(to);		// TODO: Do we really need this?
 		m_board.movePiece(from, to);
@@ -160,9 +160,9 @@ namespace forge
 		m_moveCounter++;
 	}
 
-	inline void Position::qbnrCapture(Move move)
+	inline void Position::captureWithQBNR(Move move)
 	{
-		qbnrCapture(move.from(), move.to());
+		captureWithQBNR(move.from(), move.to());
 	}
 
 	inline void Position::moveWhiteKing(BoardSquare to)

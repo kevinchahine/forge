@@ -24,14 +24,20 @@ namespace forge
 		// Generates all valid moves for the piece at the specified cell.
 		// If that cell is empty, then resulting MoveList will be empty.
 		// Does not account for who's turn it is.
-		static MoveList generatePseudoMovesFor(const Position & position, BoardSquare cell);
+		static MoveList generatePseudoMovesFor(const Position & position, BoardSquare square);
+
+		static MoveList generateLegalMoves(const Position & position);
+
+		static MoveList generateLegalMoves(const Position & position, bool isWhite);
+
+		static MoveList generateLegalMovesFor(const Position & position, BoardSquare square);
 
 	public: // ------------------------ IS KING ATTACKED ----------------------
 		static bool isKingAttacked(const Position & position, bool isWhiteKing);
 
 		// Determines if King is being attacked by its opponents pieces
 		// Determines color of King automatically.
-		// WARNING: Make sure 'cell' does not coorespond to an empty square.
+		// WARNING: Make sure 'kingsCell' does not coorespond to an empty square.
 		static bool isKingAttacked(const Board & board, BoardSquare kingsCell);
 
 	private: 
@@ -50,8 +56,16 @@ namespace forge
 		// do not call on empty cells
 		// Make sure isWhite cooresponds to the color of the piece at cell
 		static void generatePseudoMovesFor(
-			const Position & position, 
-			BoardSquare cell, 
+			const Position & position,
+			BoardSquare cell,
+			bool isWhite,
+			MoveList & dst);
+		
+		// do not call on empty cells
+		// Make sure isWhite cooresponds to the color of the piece at cell
+		static void generateLegalMovesFor(
+			const Position & position,
+			BoardSquare cell,
 			bool isWhite,
 			MoveList & dst);
 

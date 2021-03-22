@@ -20,7 +20,7 @@ namespace forge
 		} \
 		else if (theirs[s]) { \
 			moves.emplace_back(Move{ START_SQUARE, s}, position); \
-			moves.back().position.qbnrCapture(START_SQUARE, s); \
+			moves.back().position.captureWithQBNR(START_SQUARE, s); \
 			break; \
 		} \
 		else { break; } \
@@ -41,7 +41,7 @@ namespace forge
 		} \
 		else if (theirs[s]) { \
 			moves.emplace_back(Move{ START_SQUARE, s}, position); \
-			moves.back().position.qbnrCapture(START_SQUARE, s); \
+			moves.back().position.captureWithQBNR(START_SQUARE, s); \
 			break; \
 		} \
 		else { break; } \
@@ -211,7 +211,7 @@ namespace forge
 			}
 			else if (theirs[s.knight0()]) {
 				moves.emplace_back(move, position);
-				moves.back().position.qbnrCapture(move);
+				moves.back().position.captureWithQBNR(move);
 			}
 		}
 		if (square.isKnight1InBounds()) {
@@ -223,7 +223,7 @@ namespace forge
 			}
 			else if (theirs[s.knight1()]) {
 				moves.emplace_back(move, position);
-				moves.back().position.qbnrCapture(move);
+				moves.back().position.captureWithQBNR(move);
 			}
 		}
 		if (square.isKnight2InBounds()) {
@@ -235,7 +235,7 @@ namespace forge
 			}
 			else if (theirs[s.knight2()]) {
 				moves.emplace_back(move, position);
-				moves.back().position.qbnrCapture(move);
+				moves.back().position.captureWithQBNR(move);
 			}
 		}
 		if (square.isKnight3InBounds()) {
@@ -247,7 +247,7 @@ namespace forge
 			}
 			else if (theirs[s.knight3()]) {
 				moves.emplace_back(move, position);
-				moves.back().position.qbnrCapture(move);
+				moves.back().position.captureWithQBNR(move);
 			}
 		}
 		if (square.isKnight4InBounds()) {
@@ -259,7 +259,7 @@ namespace forge
 			}
 			else if (theirs[s.knight4()]) {
 				moves.emplace_back(move, position);
-				moves.back().position.qbnrCapture(move);
+				moves.back().position.captureWithQBNR(move);
 			}
 		}
 		if (square.isKnight5InBounds()) {
@@ -271,7 +271,7 @@ namespace forge
 			}
 			else if (theirs[s.knight5()]) {
 				moves.emplace_back(move, position);
-				moves.back().position.qbnrCapture(move);
+				moves.back().position.captureWithQBNR(move);
 			}
 		}
 		if (square.isKnight6InBounds()) {
@@ -283,7 +283,7 @@ namespace forge
 			}
 			else if (theirs[s.knight6()]) {
 				moves.emplace_back(move, position);
-				moves.back().position.qbnrCapture(move);
+				moves.back().position.captureWithQBNR(move);
 			}
 		}
 		if (square.isKnight7InBounds()) {
@@ -295,7 +295,7 @@ namespace forge
 			}
 			else if (theirs[s.knight7()]) {
 				moves.emplace_back(move, position);
-				moves.back().position.qbnrCapture(move);
+				moves.back().position.captureWithQBNR(move);
 			}
 		}
 	}

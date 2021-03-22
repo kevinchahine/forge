@@ -20,5 +20,15 @@ Special Moves:
 After generating a move:
 	- Is king being attacked?		(Yes - invalid, No - valid)	
 		But this check is very slow, do we want to do it every time?
-
-	
+		
+Quinesectial Move Generation:
+	1.) Is King in Check?
+	Yes.) Only 3 types of moves are valid but it depends on the kind of check:
+		- Move King out of check (always works as long as king can move, otherwise its a loss)
+		- Move piece to square between king and attacker 
+			(only applies if attacker is a ray pieces and theres only 1 attacker)
+		- Capture attacker 
+			(only works with 1 attacker not 2) 
+			(King can only capture attacker if it is not defended)
+	No.) 
+		- 

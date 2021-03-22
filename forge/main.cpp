@@ -34,9 +34,9 @@ int main(int argc, char ** argv)
 	//forge::test::board();
 	//forge::test::placeMethods();
 	//forge::test::psuedoValidMoveGenerator();
-	forge::test::isKingAttacked();
+	//forge::test::isKingAttacked();
 	//forge::test::move();
-	//forge::test::chessMatch();
+	forge::test::chessMatch();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
 	//forge::test::solver();

@@ -25,7 +25,7 @@ namespace forge
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		Node::iterator it = m_nodeTree.begin();
-		it.setDepthLimit(4);
+		it.setDepthLimit(8);
 
 		while (m_searchMonitor.exitConditionReached() == false) {
 			// --- 1.) Get current position to evaluate ---
@@ -55,7 +55,7 @@ namespace forge
 			}
 		}
 
-		cout << m_nodeTree.bestMove() << '\n';
+		//cout << m_nodeTree.bestMove() << '\n';
 
 		return m_nodeTree.bestMove();
 	}
