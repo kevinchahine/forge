@@ -50,28 +50,27 @@ namespace forge
 		// Calling incorrectly can cause errors. Follow these rules when calling.
 		//	- 'from' should point to piece of player whos turn it is.
 		//	- move should a simple move: (not a capture, not promotion, not castling, not enpassent)
+		inline void moveWhitePawn(Move move);
+		// WARNING: do not use for promotions. Use overload instead
 		inline void moveWhitePawn(BoardSquare from, BoardSquare to);
-		// *** See comments for moveWhitePawnSimple(...)
+		// *** See comments for moveWhitePawn(...)
+		inline void moveBlackPawn(Move move);
+		// WARNING: do not use for promotions. Use overload instead
 		inline void moveBlackPawn(BoardSquare from, BoardSquare to);
 
-		inline void whitePawnCapture(BoardSquare from, BoardSquare to);
+		inline void captureWithWhitePawn(Move move);
 
-		inline void blackPawnCapture(BoardSquare from, BoardSquare to);
-
-		inline void enPassentWhitePawn(BoardSquare from, BoardSquare to);
-
-		inline void enPassentBlackPawn(BoardSquare from, BoardSquare to);
-
-		// Also accounts for captures
-		inline void promoteWhitePawn(BoardSquare from, BoardSquare to, Piece promotion);
-
-		// Also accounts for captures
-		inline void promoteBlackPawn(BoardSquare from, BoardSquare to, Piece promotion);
+		inline void captureWithBlackPawn(Move move);
 
 		// ----- ROOK MOVES -----
 		// ----- KNIGHT MOVES -----
 		// ----- BISHOP MOVES -----
 		// ----- QUEEN MOVES -----
+
+		inline void moveRook(BoardSquare from, BoardSquare to);
+		inline void moveRook(Move move);
+		inline void captureWithRook(BoardSquare from, BoardSquare to);
+		inline void captureWithRook(Move move);
 
 		// Moves a Queen, Bishop, Knight or Rook of either color.
 		// Make sure:
@@ -93,18 +92,16 @@ namespace forge
 
 		// ----- KING MOVES -----
 
+		// TODO: Should account for castling
 		inline void moveWhiteKing(BoardSquare to);
 
+		// TODO: Should account for castling
 		inline void moveBlackKing(BoardSquare to);
 
-		inline void whiteKingCapture(BoardSquare to);
+		inline void captureWithWhiteKing(BoardSquare to);
 
-		inline void blackKingCapture(BoardSquare to);
-
-		inline void whiteKingCastle(BoardSquare to);
-
-		inline void blackKingCastle(BoardSquare to);
-
+		inline void captureWithBlackKing(BoardSquare to);
+		
 		const MoveCounter & moveCounter() const { return m_moveCounter; }
 
 	protected:

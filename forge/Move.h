@@ -70,17 +70,36 @@ namespace forge
 			m_val = (m_val & ~promotion_mask) & promotionBits;
 		}
 
+		// Determines if the Move object refers to only part of a move
+		// where either the 'from' or 'to' component is specified
+		// Useful with user interfaces where the user wants to specify their move in 
+		// in 2 steps: One for the coordinate of the piece their moving (from) and
+		// the second for the coordinate their moving to (to).
+		// ex: User is prompted to make a move.
+		// User selects 'e4'
+		// Display highlights 'e4' square and all the legal moves for that piece
+		// User selects 'e5'
+		// Game applies the move 'e4e5'
+		// When isPartial() returns true, to() and from() will be equal.
+		bool isPartial() const { return to() == from(); }
+
 		std::string toPGN() const;
 
+		// Returns Move as a string represented in 'Long Algebreic Notation'
+		// ex: 'e4e5'		piece at e4 will move up to e5
+		// ex: 'e7e8Q'		pawn at e7 will be promoted to Q on e8 (PAWN move only)
+		// ex: 'e7d8Q'		pawn at e7 will be promoted to Q and capture piece on d8 (PAWN capture only)
 		std::string toLAN() const;
 
 		// prints move in long algebraic notation
+		// To print using PGN notation use the .toPGN() method instead
 		friend std::ostream & operator<<(std::ostream & os, const Move & move);
+		friend std::istream & operator>>(std::istream & is, Move & move);
 
 	protected:
 		// bits 0...5	- from [ row (3-bits) ][ col (3-bits) ]
 		// bits 6...11	- to   [ row (3-bits) ][ col (3-bits) ]
-		// bits 12...15 - promotion [ signed ]
+		// bits 12...15 - promotion [ piece val (4-bits) ]
 		std::bitset<16> m_val = 0;
 	};
 } // namespace forge

@@ -14,6 +14,8 @@ namespace forge
 
 		virtual Move getMove(const Position & position) override;
 
+		virtual std::string getName() override;
+
 	protected:
 
 		Move solve(const Position & position);

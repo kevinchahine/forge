@@ -2,6 +2,7 @@
 
 #include "globals.h"
 
+#include "AttackChecker.h"
 #include "Board.h"
 #include "Clock.h"
 #include "StopWatch.h"
@@ -36,9 +37,9 @@ namespace forge
 
 		void placeMethods();
 
-		void psuedoValidMoveGenerator();
+		void legalMoveGenerator();
 
-		void isKingAttacked();
+		void isAttacked();
 
 		void move();
 

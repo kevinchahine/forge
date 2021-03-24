@@ -13,6 +13,8 @@ namespace forge
 
 		virtual Move getMove(const Position & position) = 0;
 
+		virtual std::string getName() = 0;
+
 	protected:
 
 	};

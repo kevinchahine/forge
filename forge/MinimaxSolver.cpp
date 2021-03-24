@@ -1,5 +1,7 @@
 #include "MinimaxSolver.h"
 
+#include <typeinfo>
+
 using namespace std;
 
 namespace forge
@@ -14,6 +16,11 @@ namespace forge
 		Move bestMove = solve(position);
 
 		return bestMove;
+	}
+
+	string MinimaxSolver::getName()
+	{
+		return typeid(*this).name();
 	}
 
 	Move MinimaxSolver::solve(const Position & position)

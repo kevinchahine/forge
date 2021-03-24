@@ -1,52 +1,83 @@
 #include "Position.h"
 
+using namespace std;
+
 namespace forge
 {
-	inline void Position::moveWhitePawn(BoardSquare from, BoardSquare to)
+	inline void Position::moveWhitePawn(Move move)
 	{
 #ifdef _DEBUG 
-		if (m_board.pawns()[from] == false || m_board.whites()[from] == false)
+		if (m_board.pawns()[move.from()] == false || m_board.whites()[move.from()] == false)
 			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
 			<< ": This method only moves white pawns\n";
-		if (m_board.empty()[to] == false) std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+		if (m_board.empty()[move.to()] == false) 
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
 			<< ": 'to' square must be empty when calling this method.\n";
 #endif
-		m_board.removePiece(from);
-		m_board.placeWhitePawn(to);
+		m_board.removePiece(move.from());
+		if (move.to().isTopRank()) m_board.placePiece(move.to(), move.promotion());
+		else m_board.placeWhitePawn(move.to());
 
 		m_fiftyMoveRule.pawnHasMoved();
 		m_fiftyMoveRule.update();
+
+		m_moveCounter++;
+	}
+
+	inline void Position::moveWhitePawn(BoardSquare from, BoardSquare to)
+	{
+#ifdef _DEBUG
+		if (to.isTopRank()) {
+			cout << "Error: " << __FUNCTION__ << " don't use this method for promotions\n";
+		}
+#endif // _DEBUG
+
+		moveWhitePawn(Move{ from, to });
+	}
+
+	inline void Position::moveBlackPawn(Move move)
+	{
+#ifdef _DEBUG 
+		if (m_board.pawns()[move.from()] == false || m_board.blacks()[move.from()] == false)
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": This method only moves black pawns\n";
+		if (m_board.empty()[move.to()] == false) 
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": 'to' square must be empty when calling this method.\n";
+#endif
+
+		m_board.removePiece(move.from());
+		if (move.to().isBotRank()) m_board.placePiece(move.to(), move.promotion());
+		else m_board.placeBlackPawn(move.to());
+
+		m_fiftyMoveRule.pawnHasMoved();
+		m_fiftyMoveRule.update();
+
+		// TODO: Still need enpassent 
 
 		m_moveCounter++;
 	}
 
 	inline void Position::moveBlackPawn(BoardSquare from, BoardSquare to)
 	{
-#ifdef _DEBUG 
-		if (m_board.pawns()[from] == false || m_board.blacks()[from] == false)
-			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
-			<< ": This method only moves black pawns\n";
-		if (m_board.empty()[to] == false) std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
-			<< ": 'to' square must be empty when calling this method.\n";
-#endif
+#ifdef _DEBUG
+		if (to.isTopRank()) {
+			cout << "Error: " << __FUNCTION__ << " don't use this method for promotions\n";
+		}
+#endif // _DEBUG
 
-		m_board.removePiece(from);
-		m_board.placeBlackPawn(to);
-
-		m_fiftyMoveRule.pawnHasMoved();
-		m_fiftyMoveRule.update();
-
-		m_moveCounter++;
+		moveBlackPawn(Move{ from, to });
 	}
 
-	inline void Position::whitePawnCapture(BoardSquare from, BoardSquare to)
+	inline void Position::captureWithWhitePawn(Move move)
 	{
 		// 1.) Capture piece first 
-		m_board.removePiece(to);
+		m_board.removePiece(move.to());
 
 		// 2.) Move Pawn
-		m_board.removePiece(from);
-		m_board.placeWhitePawn(to);
+		m_board.removePiece(move.from());
+		if (move.to().isTopRank()) m_board.placePiece(move.to(), move.promotion());
+		else m_board.placeWhitePawn(move.to());
 
 		// 3.) Update rules
 		m_fiftyMoveRule.pawnHasMoved();
@@ -56,14 +87,15 @@ namespace forge
 		m_moveCounter++;
 	}
 
-	inline void Position::blackPawnCapture(BoardSquare from, BoardSquare to)
+	inline void Position::captureWithBlackPawn(Move move)
 	{
 		// 1.) Capture piece first 
-		m_board.removePiece(to);
+		m_board.removePiece(move.to());
 
 		// 2.) Move Pawn
-		m_board.removePiece(from);
-		m_board.placeBlackPawn(to);
+		m_board.removePiece(move.from());
+		if (move.to().isBotRank()) m_board.placePiece(move.to(), move.promotion());
+		else m_board.placeBlackPawn(move.to());
 
 		// 3.) Update rules
 		m_fiftyMoveRule.pawnHasMoved();
@@ -72,67 +104,37 @@ namespace forge
 
 		m_moveCounter++;
 	}
-
-	inline void Position::enPassentWhitePawn(BoardSquare from, BoardSquare to)
+	
+	inline void Position::moveRook(BoardSquare from, BoardSquare to)
 	{
-		// 1.) Capture piece first 
-		m_board.removePiece(to.downOne());
+		// TODO: Don't forget Castling
+		m_board.movePiece(from, to);
 
-		// 2.) Move Pawn
-		m_board.removePiece(from);
-		m_board.placeWhitePawn(to);
+		m_fiftyMoveRule.update();
 
-		// 3.) Update rules
-		m_fiftyMoveRule.pawnHasMoved();
+		m_moveCounter++;
+	}
+
+	inline void Position::moveRook(Move move)
+	{
+		moveRook(move.from(), move.to());
+	}
+
+	inline void Position::captureWithRook(BoardSquare from, BoardSquare to)
+	{
+		// TODO: Don't forget castling
+		m_board.removePiece(to);		// TODO: Do we really need this?
+		m_board.movePiece(from, to);
+
 		m_fiftyMoveRule.pieceCaptured();
 		m_fiftyMoveRule.update();
 
 		m_moveCounter++;
 	}
 
-	inline void Position::enPassentBlackPawn(BoardSquare from, BoardSquare to)
+	inline void Position::captureWithRook(Move move)
 	{
-		// 1.) Capture piece first 
-		m_board.removePiece(to.upOne());
-
-		// 2.) Move Pawn
-		m_board.removePiece(from);
-		m_board.placeBlackPawn(to);
-
-		// 3.) Update rules
-		m_fiftyMoveRule.pawnHasMoved();
-		m_fiftyMoveRule.pieceCaptured();
-		m_fiftyMoveRule.update();
-
-		m_moveCounter++;
-	}
-
-	inline void Position::promoteWhitePawn(BoardSquare from, BoardSquare to, Piece promotion)
-	{
-		// 1.) Remove piece incase a capture was made
-		m_board.removePiece(to);
-
-		m_board.removePiece(from);
-		m_board.placePiece(to, promotion);
-
-		m_fiftyMoveRule.pawnHasMoved();
-		m_fiftyMoveRule.update();
-
-		m_moveCounter++;
-	}
-
-	inline void Position::promoteBlackPawn(BoardSquare from, BoardSquare to, Piece promotion)
-	{
-		// 1.) Remove piece incase a capture was made
-		m_board.removePiece(to);
-
-		m_board.removePiece(from);
-		m_board.placePiece(to, promotion);
-
-		m_fiftyMoveRule.pawnHasMoved();
-		m_fiftyMoveRule.update();
-
-		m_moveCounter++;
+		captureWithRook(move.from(), move.to());
 	}
 
 	inline void Position::moveQBNR(BoardSquare from, BoardSquare to)
@@ -183,7 +185,7 @@ namespace forge
 		m_moveCounter++;
 	}
 	
-	inline void Position::whiteKingCapture(BoardSquare to)
+	inline void Position::captureWithWhiteKing(BoardSquare to)
 	{
 		m_board.removePiece(to);
 		m_board.moveWhiteKing(to);
@@ -194,7 +196,7 @@ namespace forge
 		m_moveCounter++;
 	}
 
-	inline void Position::blackKingCapture(BoardSquare to)
+	inline void Position::captureWithBlackKing(BoardSquare to)
 	{
 		m_board.removePiece(to);
 		m_board.moveBlackKing(to);

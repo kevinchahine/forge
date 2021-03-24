@@ -4,32 +4,32 @@
 
 namespace forge
 {
-	// Purpose: To determine if a piece is being attacked
+	// Purpose: Determines if a piece is being attacked by opponent pieces
 	class AttackChecker
 	{
-	public: // ------------------------ IS KING ATTACKED ----------------------
-		static bool isKingAttacked(const Position & position, bool isWhiteKing);
-
-		// Determines if King is being attacked by its opponents pieces
-		// Determines color of King automatically.
-		// WARNING: Make sure 'kingsCell' does not coorespond to an empty square.
-		static bool isKingAttacked(const Board & board, BoardSquare kingsCell);
-
-		// TODO: This could be usefull maybe
-		// Only applies
-		//static bool isSquareAttacked(const Position & position, BoardSquare & square, bool isAttackedByWhite);
+	public: 
+		// Determines if square is being attacked by its opponents pieces
+		// Determines color of piece automatically.
+		// ex: If square points to a white piece, then isAttacked() will determine
+		//	if any black pieces are attacking that square.
+		// WARNING: Make sure 'square' cooresponds to an occupied square and
+		//	not to an empty square.
+		static bool isAttacked(const Board & board, BoardSquare square);
 
 	private:
-		// Determine if 'cell' is being attacked from some direction.
+		// Determine if 'square' is being attacked by an opponents Rook or Queen
 		// Determines the color of attacking player by the color of the piece at cell.
-		// WARNING: Make sure 'cell' does not coorespond to an empty square.
-		static bool isKingAttackedStraight(const Board & board, BoardSquare kingsSquare);
+		// WARNING: Make sure 'square' does not coorespond to an empty square.
+		static bool isAttackedByRook(const Board & board, BoardSquare square);
+		// Determine if 'square' is being attacked by an opponents Bishop or Queen
 		// * See comments of isStraightAttack()
-		static bool isKingAttackedDiagonal(const Board & board, BoardSquare kingsSquare);
+		static bool isAttackedByBishop(const Board & board, BoardSquare square);
 		// * See comments of isStraightAttack()
-		static bool isKingAttackedByKnight(const Board & board, BoardSquare kingsSquare);
+		// Determine if 'square' is being attacked by an opponents Knight
+		static bool isAttackedByKnight(const Board & board, BoardSquare square);
+		// Determine if 'square' is being attacked by an opponents Pawn
 		// * See comments of isStraightAttack()
-		static bool isKingAttackedByPawn(const Board & board, BoardSquare kingsSquare);
+		static bool isKingAttackedByPawn(const Board & board, BoardSquare square);
 
 	};
 } // namespace forge

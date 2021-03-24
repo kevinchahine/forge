@@ -16,9 +16,6 @@
     <Filter Include="Notes">
       <UniqueIdentifier>{d6a564c6-9399-474d-9f1c-85498dd3f9b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Solvers">
-      <UniqueIdentifier>{71baa5db-0655-49bc-861f-d3d6e8b02192}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{1fe430c3-6f6e-4ed4-aaca-42c515eed2c7}</UniqueIdentifier>
     </Filter>
@@ -43,6 +40,9 @@
     <Filter Include="Heuristics">
       <UniqueIdentifier>{df6ca5f1-14f2-4f5a-9fca-f2b3e9704596}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Controllers">
+      <UniqueIdentifier>{96ce3abc-ba0d-490d-9584-da9f78655775}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,15 +50,6 @@
     </ClCompile>
     <ClCompile Include="Test.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SolverBase.cpp">
-      <Filter>Solvers</Filter>
-    </ClCompile>
-    <ClCompile Include="RandomSolver.cpp">
-      <Filter>Solvers</Filter>
-    </ClCompile>
-    <ClCompile Include="ControllerBase.cpp">
-      <Filter>Solvers</Filter>
     </ClCompile>
     <ClCompile Include="BitBoard.cpp">
       <Filter>Game</Filter>
@@ -83,9 +74,6 @@
     </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="MinimaxSolver.cpp">
-      <Filter>Solvers</Filter>
     </ClCompile>
     <ClCompile Include="ViewBase.cpp">
       <Filter>View</Filter>
@@ -143,6 +131,21 @@
     </ClCompile>
     <ClCompile Include="AttackChecker.cpp">
       <Filter>Move</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerBase.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="MinimaxSolver.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomSolver.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="SolverBase.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardController.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,15 +217,6 @@
     <ClInclude Include="Test.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="RandomSolver.h">
-      <Filter>Solvers</Filter>
-    </ClInclude>
-    <ClInclude Include="SolverBase.h">
-      <Filter>Solvers</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllerBase.h">
-      <Filter>Solvers</Filter>
-    </ClInclude>
     <ClInclude Include="BitBoard.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -246,9 +240,6 @@
     </ClInclude>
     <ClInclude Include="FiftyMoveRule.h">
       <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="MinimaxSolver.h">
-      <Filter>Solvers</Filter>
     </ClInclude>
     <ClInclude Include="PositionInline.h">
       <Filter>Game</Filter>
@@ -298,12 +289,6 @@
     <ClInclude Include="DataMonitor.h">
       <Filter>Analytics</Filter>
     </ClInclude>
-    <ClInclude Include="globals.h">
-      <Filter>Solvers</Filter>
-    </ClInclude>
-    <ClInclude Include="Solvers.hpp">
-      <Filter>Solvers</Filter>
-    </ClInclude>
     <ClInclude Include="ApplePieHeuristic.h">
       <Filter>Heuristics</Filter>
     </ClInclude>
@@ -318,6 +303,27 @@
     </ClInclude>
     <ClInclude Include="AttackChecker.h">
       <Filter>Move</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerBase.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="MinimaxSolver.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomSolver.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="SolverBase.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Solvers.hpp">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardController.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -39,139 +39,120 @@ namespace forge
 	}
 #endif
 
-	bool AttackChecker::isKingAttacked(const Position & position, bool isWhiteKing)
-	{
-		// TODO: Currently ignores 3 fold repetition (draw by repetition)
-		bool isAttacked = false;
-
-		// --- White just moved (and now its Black's turn) ---
-		if (isWhiteKing) {
-			// See if White's King is attacked
-			isAttacked = isKingAttacked(position.board(), position.board().m_whiteKing);
-		}
-		// --- Black just moved (and now its White's turn) ---
-		else if (position.moveCounter().isWhitesTurn()) {
-			// See if Black's King is attacked
-			isAttacked = isKingAttacked(position.board(), position.board().m_blackKing);
-		}
-
-		return isAttacked;
-	}
-
-	bool AttackChecker::isKingAttacked(const Board & board, BoardSquare kingsSquare)
+	bool AttackChecker::isAttacked(const Board & board, BoardSquare square)
 	{
 		// 1.) --- Look for straight attacks (from Rooks and Queens) ---
-		if (isKingAttackedStraight(board, kingsSquare)) return true;
+		if (isAttackedByRook(board, square)) return true;
 
 		// 2.) --- Look for diagonal attacks (from Bishops and Queens) ---
-		if (isKingAttackedDiagonal(board, kingsSquare)) return true;
+		if (isAttackedByBishop(board, square)) return true;
 
 		// 3.) --- Look for knight attacks (from Knights) ---
-		if (isKingAttackedByKnight(board, kingsSquare)) return true;
+		if (isAttackedByKnight(board, square)) return true;
 
 		// 4.) --- Look for Pawn attacks (from Pawns) ---
-		if (isKingAttackedByPawn(board, kingsSquare)) return true;
+		if (isKingAttackedByPawn(board, square)) return true;
 
 		// 5.) --- King is not attacked ---
 		return false;
 	}
 
-	bool AttackChecker::isKingAttackedStraight(const Board & board, BoardSquare kingsSquare)
+	bool AttackChecker::isAttackedByRook(const Board & board, BoardSquare square)
 	{
-		bool isWhite = board.isWhite(kingsSquare);
+		bool isWhite = board.isWhite(square);
 		BitBoard theirs = (isWhite ? board.blacks() : board.whites());
 		BitBoard ours = (isWhite ? board.whites() : board.blacks());
 
 		// --- Search Up ---
-		FORGE_FIND_STRAIGHT_ATTACK(kingsSquare, upOne, isTopRank);
+		FORGE_FIND_STRAIGHT_ATTACK(square, upOne, isTopRank);
 
 		// --- Search Down ---
-		FORGE_FIND_STRAIGHT_ATTACK(kingsSquare, downOne, isBotRank);
+		FORGE_FIND_STRAIGHT_ATTACK(square, downOne, isBotRank);
 
 		// --- Search Left ---
-		FORGE_FIND_STRAIGHT_ATTACK(kingsSquare, leftOne, isLeftFile);
+		FORGE_FIND_STRAIGHT_ATTACK(square, leftOne, isLeftFile);
 
 		// --- Search Right ---
-		FORGE_FIND_STRAIGHT_ATTACK(kingsSquare, rightOne, isRightFile);
+		FORGE_FIND_STRAIGHT_ATTACK(square, rightOne, isRightFile);
 
 		// No attacks from up down left or right
 		return false;
 	}
 
-	bool AttackChecker::isKingAttackedDiagonal(const Board & board, BoardSquare kingsSquare)
+	bool AttackChecker::isAttackedByBishop(const Board & board, BoardSquare square)
 	{
 		BoardSquare c;
-		bool isWhite = board.isWhite(kingsSquare);
+		bool isWhite = board.isWhite(square);
 		BitBoard theirs = (isWhite ? board.blacks() : board.whites());
 		BitBoard ours = (isWhite ? board.whites() : board.blacks());
 
 		// --- Search Up Right ---
-		FORGE_FIND_DIAGONAL_ATTACK(kingsSquare, upRightOne, isTopRank, isRightFile);
+		FORGE_FIND_DIAGONAL_ATTACK(square, upRightOne, isTopRank, isRightFile);
 
 		// --- Search Up Left ---
-		FORGE_FIND_DIAGONAL_ATTACK(kingsSquare, upLeftOne, isTopRank, isLeftFile);
+		FORGE_FIND_DIAGONAL_ATTACK(square, upLeftOne, isTopRank, isLeftFile);
 
 		// --- Search Down Left ---
-		FORGE_FIND_DIAGONAL_ATTACK(kingsSquare, downLeftOne, isBotRank, isLeftFile);
+		FORGE_FIND_DIAGONAL_ATTACK(square, downLeftOne, isBotRank, isLeftFile);
 
 		// --- Search Down Right ---
-		FORGE_FIND_DIAGONAL_ATTACK(kingsSquare, downRightOne, isBotRank, isRightFile);
+		FORGE_FIND_DIAGONAL_ATTACK(square, downRightOne, isBotRank, isRightFile);
 
 		return false;
 	}
 
-	bool AttackChecker::isKingAttackedByKnight(const Board & board, BoardSquare kingsSquare)
+	bool AttackChecker::isAttackedByKnight(const Board & board, BoardSquare square)
 	{
-		bool isWhite = board.isWhite(kingsSquare);
+		bool isWhite = board.isWhite(square);
 		BitBoard theirs = (isWhite ? board.blacks() : board.whites());
 		BitBoard ours = (isWhite ? board.whites() : board.blacks());
 
 		BoardSquare c;
 
-		if (kingsSquare.isKnight0InBounds()) {
-			c = kingsSquare.knight0();
+		if (square.isKnight0InBounds()) {
+			c = square.knight0();
 			if (board.occupied()[c] && theirs[c] && board.knights()[c]) {
 				return true;
 			}
 		}
-		if (kingsSquare.isKnight1InBounds()) {
-			c = kingsSquare.knight1();
+		if (square.isKnight1InBounds()) {
+			c = square.knight1();
 			if (board.occupied()[c] && theirs[c] && board.knights()[c]) {
 				return true;
 			}
 		}
-		if (kingsSquare.isKnight2InBounds()) {
-			c = kingsSquare.knight2();
+		if (square.isKnight2InBounds()) {
+			c = square.knight2();
 			if (board.occupied()[c] && theirs[c] && board.knights()[c]) {
 				return true;
 			}
 		}
-		if (kingsSquare.isKnight3InBounds()) {
-			c = kingsSquare.knight3();
+		if (square.isKnight3InBounds()) {
+			c = square.knight3();
 			if (board.occupied()[c] && theirs[c] && board.knights()[c]) {
 				return true;
 			}
 		}
-		if (kingsSquare.isKnight4InBounds()) {
-			c = kingsSquare.knight4();
+		if (square.isKnight4InBounds()) {
+			c = square.knight4();
 			if (board.occupied()[c] && theirs[c] && board.knights()[c]) {
 				return true;
 			}
 		}
-		if (kingsSquare.isKnight5InBounds()) {
-			c = kingsSquare.knight5();
+		if (square.isKnight5InBounds()) {
+			c = square.knight5();
 			if (board.occupied()[c] && theirs[c] && board.knights()[c]) {
 				return true;
 			}
 		}
-		if (kingsSquare.isKnight6InBounds()) {
-			c = kingsSquare.knight6();
+		if (square.isKnight6InBounds()) {
+			c = square.knight6();
 			if (board.occupied()[c] && theirs[c] && board.knights()[c]) {
 				return true;
 			}
 		}
-		if (kingsSquare.isKnight7InBounds()) {
-			c = kingsSquare.knight7();
+		if (square.isKnight7InBounds()) {
+			c = square.knight7();
 			if (board.occupied()[c] && theirs[c] && board.knights()[c]) {
 				return true;
 			}
@@ -180,39 +161,43 @@ namespace forge
 		return false;
 	}
 
-	bool AttackChecker::isKingAttackedByPawn(const Board & board, BoardSquare kingsSquare)
+	bool AttackChecker::isKingAttackedByPawn(const Board & board, BoardSquare square)
 	{
-		bool isWhite = board.isWhite(kingsSquare);
+		bool isWhite = board.isWhite(square);
 
 		BoardSquare c;
 
 		if (isWhite) {
+			// Piece is WHITE and attacking pawns are BLACK.
+			// Pawns will move DOWN.
 			BitBoard theirs = board.blacks();
 
-			if (kingsSquare.isTopRank() == false && kingsSquare.isRightFile() == false) {
-				c = kingsSquare.upRightOne();
+			if (square.isTopRank() == false && square.isRightFile() == false) {
+				c = square.upRightOne();
 				if (board.occupied()[c] && theirs[c] && board.pawns()[c]) {
 					return true;
 				}
 			}
-			if (kingsSquare.isTopRank() == false && kingsSquare.isLeftFile() == false) {
-				c = kingsSquare.upLeftOne();
+			if (square.isTopRank() == false && square.isLeftFile() == false) {
+				c = square.upLeftOne();
 				if (board.occupied()[c] && theirs[c] && board.pawns()[c]) {
 					return true;
 				}
 			}
 		}
 		else {
+			// Piece is BLACK and attacking pawns are WHITE.
+			// Pawns will move UP.
 			BitBoard theirs = board.whites();
 
-			if (kingsSquare.isBotRank() == false && kingsSquare.isRightFile() == false) {
-				c = kingsSquare.downRightOne();
+			if (square.isBotRank() == false && square.isRightFile() == false) {
+				c = square.downRightOne();
 				if (board.occupied()[c] && theirs[c] && board.pawns()[c]) {
 					return true;
 				}
 			}
-			if (kingsSquare.isBotRank() == false && kingsSquare.isLeftFile() == false) {
-				c = kingsSquare.downLeftOne();
+			if (square.isBotRank() == false && square.isLeftFile() == false) {
+				c = square.downLeftOne();
 				if (board.occupied()[c] && theirs[c] && board.pawns()[c]) {
 					return true;
 				}

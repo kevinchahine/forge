@@ -13,3 +13,10 @@ Consider these optimizations:
 	- MoveGenerate:
 		MoveList reserves 35 elements. Maybe increase this to 60+ to prevent reallocating 
 		the vector on push_backs
+
+	- MoveList:
+		pushIfLegal*() methods are very short and simple and will be called very often.
+		consider making them inline
+
+		When using Quinesential move generator, we don't want to call pushIfLegal*() methods
+		anymore because the Quinesential move generator will only generate legal move anyway.

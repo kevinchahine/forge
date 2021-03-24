@@ -12,6 +12,8 @@ namespace forge
 	public:
 		virtual Move getMove(const Position & position) override;
 
+		virtual std::string getName() override;
+
 	protected:
 		std::default_random_engine m_randomEngine{ static_cast<unsigned int>(time(nullptr)) };
 	};

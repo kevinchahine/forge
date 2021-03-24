@@ -151,6 +151,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="HeuristicBase.cpp" />
+    <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="HeuristicBase.h" />
     <ClInclude Include="Heuristics.hpp" />
+    <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MinimaxSolver.h" />
     <ClInclude Include="Move.h" />

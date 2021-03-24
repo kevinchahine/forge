@@ -23,9 +23,16 @@ namespace forge
 			cout << "ChessMatch needs a controller for white" << endl;
 			return GameState();
 		}
+		else {
+			cout << "White controller: " << m_whitesController->getName() << '\n';
+		}
+
 		if (m_blacksController == nullptr) {
 			cout << "ChessMatch needs a controller for white" << endl;
 			return GameState();
+		}
+		else {
+			cout << "Black controller: " << m_blacksController->getName() << '\n';
 		}
 
 		// clock should have already been reset, syncronized and should now be paused.
@@ -51,7 +58,7 @@ namespace forge
 			// Show Board
 			if (m_viewPtr != nullptr) {
 				cout << '\n';
-				m_viewPtr->show(m_position, MoveGenerator::generatePseudoMovesFor(m_position, m.from()));
+				m_viewPtr->show(m_position, MoveGenerator::generateLegalMovesFor(m_position, m.from()));
 				cin.get();
 			}
 

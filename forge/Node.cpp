@@ -33,7 +33,7 @@ namespace forge
 
 		// 1.) --- Generate legal moves ---
 		// Figures out wether white or black is playing and generates moves for them.
-		moves = MoveGenerator::generatePseudoMoves(m_position);
+		moves = MoveGenerator::generateLegalMoves(m_position);
 
 		///cout << moves.size() << " moves generated\n";
 

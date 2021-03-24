@@ -5,6 +5,8 @@
 
 #include "Guten/GridView.h"
 
+#include <sstream>
+
 using namespace std;
 
 namespace forge
@@ -14,26 +16,26 @@ namespace forge
 		void clock()
 		{
 			forge::Clock clock;
-			
+
 			clock.synchronize(
 				chrono::minutes(10),
 				chrono::seconds(5),
 				chrono::minutes(10),
 				chrono::seconds(5)
 			);
-			
+
 			clock.click();
-			
+
 			while (true)
 			{
 				if (_kbhit()) {
 					char ch = _getch();
-			
+
 					clock.click();
 				}
-			
+
 				cout << clock << '\n';
-					
+
 				this_thread::sleep_for(chrono::seconds(1));
 			}
 		}
@@ -84,7 +86,7 @@ namespace forge
 			b.placePiece(0, 5, pieces::blackBishop);
 			b.placePiece(0, 6, pieces::blackKnight);
 			b.placePiece(0, 7, pieces::blackRook);
-			
+
 			b.placePiece(1, 0, pieces::blackPawn);
 			b.placePiece(1, 1, pieces::blackPawn);
 			b.placePiece(1, 2, pieces::blackPawn);
@@ -93,7 +95,7 @@ namespace forge
 			b.placePiece(1, 5, pieces::blackPawn);
 			b.placePiece(1, 6, pieces::blackPawn);
 			b.placePiece(1, 7, pieces::blackPawn);
-			
+
 			b.placePiece(6, 0, pieces::whitePawn);
 			b.placePiece(6, 1, pieces::whitePawn);
 			b.placePiece(6, 2, pieces::whitePawn);
@@ -102,7 +104,7 @@ namespace forge
 			b.placePiece(6, 5, pieces::whitePawn);
 			b.placePiece(6, 6, pieces::whitePawn);
 			b.placePiece(6, 7, pieces::whitePawn);
-			
+
 			b.placePiece(7, 0, pieces::whiteRook);
 			b.placePiece(7, 1, pieces::whiteKnight);
 			b.placePiece(7, 2, pieces::whiteBishop);
@@ -169,25 +171,26 @@ namespace forge
 			b.print();
 		}
 
-		void psuedoValidMoveGenerator()
+		void legalMoveGenerator()
 		{
 			forge::Position p;
 			forge::Board & b = p.board();
-			
-			p.reset();										
+
+			p.reset();
+			p.clear();
 
 			///b.placeAllPieces();
-			///forge::BoardSquare s{ 5, 4 };				// remove
-			///b.placeWhiteKnight(s);						// remove
-			///b.placewhiteQueen(s);						// remove
-			///b.placeBlackBishop(s.up(2));					// remove
-			///b.placeWhitePawn(s.left(2));					// remove
-			///(const_cast<forge::MoveCounter &>(p.moveCounter()))++;	// remove
-			
+			forge::BoardSquare s{ 5, 4 };				
+			b.placeWhiteKnight(s);						
+			b.placeWhiteQueen(s.right());						
+			b.placeBlackBishop(s.up(2));				
+			b.placeWhitePawn(s.left(2));				
+			(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
+
 			b.print();
 
-			forge::MoveList moves = 
-				forge::MoveGenerator::generatePseudoMoves(p);
+			forge::MoveList moves =
+				forge::MoveGenerator::generateLegalMoves(p);
 
 			cout << moves.size() << " legal moves generated" << endl;
 
@@ -199,39 +202,57 @@ namespace forge
 
 				guten::core::Matrix mini = elem.position.board().getMiniBoard();
 
-				gridView.push(mini);
+				guten::core::Matrix miniText;
+				guten::Size sz = mini.size();
+				sz.height += 2;
+				miniText.resize(sz);
+				mini.copyTo(miniText, guten::Point{ 2, 0 });
 
-				cout << left << setw(9) << elem.move.toLAN();
+				{
+					stringstream ss;
+					ss << elem.move.toLAN();
+					guten::draw::putText(miniText, ss.str(), guten::Point{ 0, 0 });
+				}
+
+				{
+					stringstream ss;
+					ss << (AttackChecker::isAttacked(elem.position.board(), elem.position.board().blackKing()) ?
+						"Illegal" : "Legal");
+					guten::draw::putText(miniText, ss.str(), guten::Point{ 1, 0 });
+				}
+
+				gridView.push(miniText);
 			}
 			cout << '\n';
 
 			gridView.toMatrix().print();
 		}
 
-		void isKingAttacked()
+		void isAttacked()
 		{
-			//forge::Position pos;
-			//forge::Board & b = pos.board();
-			//
-			//pos.clear();
-			//
-			//forge::BoardSquare k{ 'c', '4' };
-			//b.moveBlackKing(k);
+			forge::Position pos;
+			forge::Board & b = pos.board();
+
+			pos.clear();
+
+			forge::BoardSquare k{ 'c', '4' };
+			b.moveBlackKing(k);
 			//b.placeWhiteRook(k.down(2));
-			//b.placeWhiteBishop(k.downRight(3));
-			//b.placeWhiteQueen(k.upLeft(4));
-			//b.placeWhiteKnight(k.knight2());
+			//b.placeWhiteBishop(k.downLeft(2));
+			//b.placeWhiteQueen(k.down(2));
+			//b.placeWhiteKnight(k.knight7());
 			//b.placeWhitePawn(k.downLeft());
-			//
-			//b.printMini();
-			//
-			//cout << "--- Black King ---\n"
-			//	<< "\tIs Attacked by:\n"
-			//	<< "Rook/Queen: " << MoveGenerator::isKingAttackedStraight(b, b.blackKing()) << '\n'
-			//	<< "Bishop/Queen: " << MoveGenerator::isKingAttackedDiagonal(b, b.blackKing()) << '\n'
-			//	<< "Knights: " << MoveGenerator::isKingAttackedByKnight(b, b.blackKing()) << '\n'
-			//	<< "Pawns: " << MoveGenerator::isKingAttackedByPawn(b, b.blackKing()) << '\n'
-			//	<< '\n';
+
+			b.printMini();
+
+			cout << "--- Black King ---\n"
+				<< "\tIs Attacked by:\n"
+				//<< "Rook/Queen: " << AttackChecker::isAttackedByRook(b, b.blackKing()) << '\n'
+				//<< "Bishop/Queen: " << AttackChecker::isAttackedByBishop(b, b.blackKing()) << '\n'
+				//<< "Knights: " << AttackChecker::isAttackedByKnight(b, b.blackKing()) << '\n'
+				//<< "Pawns: " << AttackChecker::isKingAttackedByPawn(b, b.blackKing()) << '\n'
+				<< "Is King Attacked: " << AttackChecker::isAttacked(b, b.blackKing()) << '\n'
+				<< '\n';
 		}
 
 		void move()
@@ -244,13 +265,13 @@ namespace forge
 			cout << forge::BoardSquare(2, 2) << endl;
 			cout << forge::Move{ forge::BoardSquare(1, 2), forge::BoardSquare(2, 2) } << endl;
 
-			cout << forge::BoardSquare(4, 5) << ' ' 
+			cout << forge::BoardSquare(4, 5) << ' '
 				<< forge::BoardSquare(6, 7) << ' '
 				<< forge::pieces::whiteQueen << ' '
-				<< forge::Move{ 
-					forge::BoardSquare(4, 5), 
-					forge::BoardSquare(6, 7), 
-					forge::pieces::whiteQueen } 
+				<< forge::Move{
+					forge::BoardSquare(4, 5),
+					forge::BoardSquare(6, 7),
+					forge::pieces::whiteQueen }
 			<< endl;
 
 			cout << forge::BoardSquare('e', '2') << ' '
@@ -267,7 +288,7 @@ namespace forge
 		void chessMatch()
 		{
 			forge::ChessMatch match;
-			
+
 			match.reset();
 
 			match.clock().synchronize(
@@ -306,7 +327,7 @@ namespace forge
 		{
 			Position position;
 			position.reset();
-			
+
 			unique_ptr<HeuristicBase> ptr =
 				//make_unique<ApplePieHeuristic>();
 				make_unique<RandomHeuristic>();
@@ -331,7 +352,7 @@ namespace forge
 			solverPtr->makeHeuristic<RandomHeuristic>();
 
 			solverPtr->reset();
-			
+
 			while (true) {
 				Move m = solverPtr->getMove(position);
 
