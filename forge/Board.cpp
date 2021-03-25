@@ -88,7 +88,7 @@ namespace forge
 			// Was the piece infact white or black?
 			if (blacks()[square]) {
 				// It should be black
-				piece.flip();	// Change color to black;
+				piece.flipColor();	// Change color to black;
 			}
 		}
 

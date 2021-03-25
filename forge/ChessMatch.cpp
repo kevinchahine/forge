@@ -35,6 +35,14 @@ namespace forge
 			cout << "Black controller: " << m_blacksController->getName() << '\n';
 		}
 
+		// --- Set up board ---
+		m_position.reset();
+
+		// --- Show board before playing ---
+		if (m_viewPtr != nullptr) {
+			m_viewPtr->show(m_position);
+		}
+
 		// clock should have already been reset, syncronized and should now be paused.
 		// Start the clock by clicking it.
 		m_clock.click();
@@ -43,23 +51,35 @@ namespace forge
 		{
 			Move m;
 
+			// --- CONTROLLER ---
 			// Who's turn is it?
+			ControllerBase * currPlayer = nullptr;
+
 			if (m_position.moveCounter().isWhitesTurn()) {
 				// White's turn
 				cout << "Whites turn...";
-				m = m_whitesController->getMove(m_position);
+				currPlayer = m_whitesController.get();
 			}
 			else {
 				// Black's turn
 				cout << "Blacks turn...";
-				m = m_blacksController->getMove(m_position);
+				currPlayer = m_blacksController.get();
 			}
 
-			// Show Board
-			if (m_viewPtr != nullptr) {
-				cout << '\n';
-				m_viewPtr->show(m_position, MoveGenerator::generateLegalMovesFor(m_position, m.from()));
-				cin.get();
+			m = currPlayer->getMove(m_position);
+
+			// --- VIEW ---
+			// Show Board with highlights of legal moves but only if move was a partial move.
+			if (m.isPartial()) {
+				if (m_viewPtr != nullptr) {
+					m_viewPtr->show(m_position, MoveGenerator::generateLegalMovesFor(m_position, m.from()));
+				}
+
+				// Prompt again for complete move
+				Move toMove = currPlayer->getMove(m_position);
+
+				m = Move{ m.from(), toMove.from(), toMove.promotion() };
+				// Now we have the complete move
 			}
 
 			cout << m << "\n";
@@ -75,8 +95,6 @@ namespace forge
 					m_viewPtr->show(m_position, m);
 				}
 
-				cout << "Press any key";
-				cin.get();
 				m_clock.resume();
 			}
 

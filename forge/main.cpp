@@ -28,12 +28,13 @@ int main(int argc, char ** argv)
 		<< guten::color::red << "=============\n"
 		<< guten::color::white;
 	
+	forge::test::keyboardController();
 	//forge::test::clock();
 	//forge::test::stopWatch();
 	//forge::test::boardDefualt();
 	//forge::test::board();
 	//forge::test::placeMethods();
-	forge::test::legalMoveGenerator();
+	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();

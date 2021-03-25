@@ -14,6 +14,6 @@ namespace forge
 		virtual std::string getName() override;
 
 	protected:
-
+		Move currMove;
 	};
 } // namespace forge

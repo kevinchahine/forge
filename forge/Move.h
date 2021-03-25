@@ -82,8 +82,9 @@ namespace forge
 		// Game applies the move 'e4e5'
 		// When isPartial() returns true, to() and from() will be equal.
 		bool isPartial() const { return to() == from(); }
+		bool isPromotion() const { return promotion() != pieces::empty; }
 
-		std::string toPGN() const;
+		//std::string toPGN(const Board & board) const;
 
 		// Returns Move as a string represented in 'Long Algebreic Notation'
 		// ex: 'e4e5'		piece at e4 will move up to e5
@@ -94,6 +95,17 @@ namespace forge
 		// prints move in long algebraic notation
 		// To print using PGN notation use the .toPGN() method instead
 		friend std::ostream & operator<<(std::ostream & os, const Move & move);
+
+		// Converts stream characters in LAN format to a Move.
+		// If only the first coordinate is specified, then move will be interpreted as a partial move
+		// Parses token until a space character is reached or new line
+		// Case insensitive
+		// Do not put space between 'to' and 'from' coordinates
+		// ex:	e4		# partial move
+		//		e4e5	# to and from are both specified
+		//		a7a8q	# pawn promotes to a Queen on a8
+		//		e4 e5	# Bad, will only extract 'e4' from stream as a partial move.
+		// WARNING: Does not support PGN because PGN requires a Board to remove ambiguities
 		friend std::istream & operator>>(std::istream & is, Move & move);
 
 	protected:

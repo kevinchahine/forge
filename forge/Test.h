@@ -12,7 +12,7 @@
 #include "GameState.h"
 #include "Node.h"
 
-#include "Solvers.hpp"
+#include "Controllers.hpp"
 #include "Heuristics.hpp"
 
 #include <iostream>
@@ -27,6 +27,8 @@ namespace forge
 {
 	namespace test
 	{
+		void keyboardController();
+
 		void clock();
 
 		void stopWatch();

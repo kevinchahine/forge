@@ -14,7 +14,7 @@ namespace forge
 		bool isBlacksTurn() const { return !isWhitesTurn(); }
 
 		const MoveCounter & operator++() { count++; return *this; }
-		const MoveCounter & operator++(int) { auto temp = *this; count++; return temp; }
+		MoveCounter operator++(int) { auto temp = *this; count++; return temp; }
 
 	public:
 		int count = 0;

@@ -4,10 +4,11 @@
 #include <bitset>
 
 #include "Position.h"
+#include "Node.h"
 
 namespace forge
 {
-	// Purpose: Represents a game state and calculates the game state of a Position
+	// Purpose: Represents a game state and calculates the game state of a Position.
 	//	To calculate the game state of a Position, the Position history is needed.
 	// Game States:
 	//	- continue
@@ -37,6 +38,8 @@ namespace forge
 
 		//void operator()(const Position & position, /* Move History */);	// TODO:
 		//void operator()(const ChessMatch & match);						// TODO:
+
+		void operator()(const Node * node);
 
 		friend std::ostream & operator<<(std::ostream & os, const GameState & gs);
 

@@ -1,15 +1,24 @@
 #include "KeyboardController.h"
 
-void forge::KeyboardController::reset()
+namespace forge
 {
-}
+	void KeyboardController::reset()
+	{
+		currMove = Move();
+	}
 
-Move forge::KeyboardController::getMove(const Position & position)
-{
-	return Move();
-}
+	Move KeyboardController::getMove(const Position & position)
+	{
+		cin >> currMove;
 
-std::string forge::KeyboardController::getName()
-{
-	return std::string();
-}
+		// Consider validating move before returning.
+		// Consider PGN moves here since we have the Position
+
+		return currMove;
+	}
+
+	string KeyboardController::getName()
+	{
+		return typeid(*this).name();
+	}
+} // namespace forge

@@ -13,6 +13,21 @@ namespace forge
 {
 	namespace test
 	{
+		void keyboardController()
+		{
+			ChessMatch match;
+
+			match.makeWhiteController<KeyboardController>();
+			match.makeBlackController<KeyboardController>();
+
+			match.makeView<TextView>();
+
+			//cout << "You entered " << m << ' ' 
+			//	<< (m.isPartial() ? "partial" : "full") << ' '
+			//	<< (m.isPromotion() ? "promotion" : "") << " move" << '\n';
+			match.runGame();
+		}
+
 		void clock()
 		{
 			forge::Clock clock;

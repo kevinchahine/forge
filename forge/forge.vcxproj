@@ -206,6 +206,7 @@
     <ClInclude Include="Clock.h" />
     <ClInclude Include="BoardSquare.h" />
     <ClInclude Include="ControllerBase.h" />
+    <ClInclude Include="Controllers.hpp" />
     <ClInclude Include="DataMonitor.h" />
     <ClInclude Include="FiftyMoveRule.h" />
     <ClInclude Include="GameState.h" />

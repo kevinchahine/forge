@@ -325,5 +325,8 @@
     <ClInclude Include="KeyboardController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Controllers.hpp">
+      <Filter>Controllers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

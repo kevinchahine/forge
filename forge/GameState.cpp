@@ -42,4 +42,9 @@ namespace forge
 	{
 	}
 
+	void GameState::operator()(const Node * node)
+	{
+		// Check 50 move rule (draw by repetition) 
+	}
+
 } // namespace forge

@@ -29,6 +29,7 @@ namespace forge
 	public:
 		Piece() : m_val(EMPTY) {}
 		Piece(int8_t value) : m_val(value) {}
+		Piece(char ch, bool isWhite = true) { setCh(ch, isWhite); }
 		Piece(const Piece &) = default;
 		Piece(Piece &&) noexcept = default;
 		virtual ~Piece() noexcept = default;
@@ -42,12 +43,21 @@ namespace forge
 		{
 			int8_t v = p.val();
 
-			os //<< guten::color::push()
-				//<< guten::color::setfg(v < 0 ? guten::color::gray : guten::color::lightgreen)
-				<< p.getCh();
-				//<< guten::color::pop();
+			os << guten::color::push()
+				<< guten::color::setfg(v < 0 ? guten::color::gray : guten::color::lightgreen)
+				<< p.getCh()
+				<< guten::color::pop();
 
 			return os;
+		}
+		friend std::istream & operator>>(std::istream & is, Piece & p) {
+			char ch;
+
+			is >> ch;
+
+			p.setCh(ch);
+
+			return is;
 		}
 
 		int8_t val() const { return m_val; }
@@ -72,6 +82,10 @@ namespace forge
 			return pieceValToChar[abs(this->m_val)];
 		}
 
+		// Set piece based on character
+		// Piece color is set to white by default
+		void setCh(char ch, bool isWhite = true);
+		
 		bool isWhite() const { return m_val > 0; }
 		bool isBlack() const { return m_val < 0; }
 		bool isEmpty() const { return m_val == EMPTY; }
@@ -85,7 +99,9 @@ namespace forge
 		// Flips color of piece:
 		// black -> white
 		// white -> black
-		void flip() { m_val = -m_val; }
+		void flipColor() { m_val = -m_val; }
+		void makeWhite() { m_val = (m_val > 0 ? m_val : -m_val); }
+		void makeBlack() { m_val = (m_val < 0 ? m_val : -m_val); }
 
 	protected:
 		int8_t m_val = 0;
