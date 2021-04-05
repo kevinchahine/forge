@@ -52,7 +52,8 @@ namespace forge
 		heuristic_t & fitness() { return m_fitness; }
 		const heuristic_t & fitness() const { return m_fitness; }
 
-		Move bestMove() const { return m_bestMove; }
+		const Node & bestMove() const { return *m_bestChildPtr; }
+		///Node & bestMove() { return *m_bestChildPtr; }
 
 		//std::vector<std::unique_ptr<Node>> & children() { return m_childrenPtrs; }
 		const std::vector<std::unique_ptr<Node>> & children() const { return m_childrenPtrs; }
@@ -153,7 +154,7 @@ namespace forge
 		heuristic_t m_fitness = 0;
 
 		// Best move cooresponding to child with the best fitness
-		Move m_bestMove;
+		const Node * m_bestChildPtr = nullptr;	// Move m_bestMove;
 
 		// Addresses of children nodes
 		// TODO: Why not store children as a vector<Node> instead?

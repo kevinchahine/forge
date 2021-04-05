@@ -1,0 +1,11 @@
+=== FORGE ===
+=== BUGS ===
+
+ValidMoveGenerator:
+	- Pawns captures aren't generated..........................................FIXED
+	- No simple pawn promotions generated......................................FIXED
+	- No pawn promotions with captures generated...............................FIXED
+	- No enpassent moves generated.............................................
+	- No castling moves generated..............................................
+	- Black pawn promotions are wonky..........................................FIXED
+	- Game state still needs MoveHistory.......................................NEXT

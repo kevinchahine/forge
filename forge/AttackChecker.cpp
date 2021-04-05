@@ -51,10 +51,20 @@ namespace forge
 		if (isAttackedByKnight(board, square)) return true;
 
 		// 4.) --- Look for Pawn attacks (from Pawns) ---
-		if (isKingAttackedByPawn(board, square)) return true;
+		if (isAttackedByPawn(board, square)) return true;
 
-		// 5.) --- King is not attacked ---
+		// 5.) --- Look for King attacks ---
+		if (isAttackedByKing(board, square)) return true;
+
+		// 6.) --- Piece at square is not being attacked ---
 		return false;
+	}
+
+	bool AttackChecker::isKingAttacked(const Board & board, bool isWhiteKing)
+	{
+		BoardSquare kingSquare = (isWhiteKing ? board.whiteKing() : board.blackKing());
+
+		return isAttacked(board, kingSquare);
 	}
 
 	bool AttackChecker::isAttackedByRook(const Board & board, BoardSquare square)
@@ -161,7 +171,7 @@ namespace forge
 		return false;
 	}
 
-	bool AttackChecker::isKingAttackedByPawn(const Board & board, BoardSquare square)
+	bool AttackChecker::isAttackedByPawn(const Board & board, BoardSquare square)
 	{
 		bool isWhite = board.isWhite(square);
 
@@ -205,5 +215,16 @@ namespace forge
 		}
 
 		return false;
+	}
+
+	bool AttackChecker::isAttackedByKing(const Board & board, BoardSquare square)
+	{
+		BoardSquare theirKing = (board.isWhite(square) ? board.blackKing() : board.whiteKing());
+
+		// Calc distance between square and their king
+		int8_t vertDist = abs((int8_t)square.row() - (int8_t)theirKing.row());
+		int8_t horiDist = abs((int8_t)square.col() - (int8_t)theirKing.col());
+
+		return vertDist <= 1 && horiDist <= 1;
 	}
 } // namespace forge

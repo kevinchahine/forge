@@ -20,3 +20,17 @@ Consider these optimizations:
 
 		When using Quinesential move generator, we don't want to call pushIfLegal*() methods
 		anymore because the Quinesential move generator will only generate legal move anyway.
+
+	- GameState:
+		For draw by repetition, place count variables in each Node that say how many times 
+		a position has been reached in its history.
+
+		Looking for insufficient material only needs to be performed after a capture or 
+		promotion has been made. If no capture or promotion has been made, then we shouldn't
+		check for insufficient material. 
+
+	- Tree Search Algorithms:
+		When searching endgames that are very drauwus (likely to lead to a draw), consider
+		terminating search early with an evaluation of 0 (meaning draw). Because searching
+		a drauss endgame can take as much resources as a win or loss, 
+		How to know if a game is leading to a draw.

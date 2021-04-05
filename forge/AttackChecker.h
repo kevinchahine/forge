@@ -16,6 +16,8 @@ namespace forge
 		//	not to an empty square.
 		static bool isAttacked(const Board & board, BoardSquare square);
 
+		static bool isKingAttacked(const Board & board, bool isWhiteKing);
+
 	private:
 		// Determine if 'square' is being attacked by an opponents Rook or Queen
 		// Determines the color of attacking player by the color of the piece at cell.
@@ -29,7 +31,10 @@ namespace forge
 		static bool isAttackedByKnight(const Board & board, BoardSquare square);
 		// Determine if 'square' is being attacked by an opponents Pawn
 		// * See comments of isStraightAttack()
-		static bool isKingAttackedByPawn(const Board & board, BoardSquare square);
+		static bool isAttackedByPawn(const Board & board, BoardSquare square);
+		// Determine if 'square' is being attacked by an opponents Pawn
+		// * See comments of isStraightAttack()
+		static bool isAttackedByKing(const Board & board, BoardSquare square);
 
 	};
 } // namespace forge

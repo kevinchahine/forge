@@ -254,11 +254,11 @@ namespace forge
 		// Which king are we moving?
 		if (m_whiteKing == from) {
 			// We're moving the WHITE king.
-			m_whiteKing = to;
+			moveWhiteKing(to);
 		}
 		else {
 			// We're moving the BLACK king.
-			m_blackKing = to;
+			moveBlackKing(to);
 		}
 	}
 
@@ -277,11 +277,11 @@ namespace forge
 		m_rooks[to] = m_rooks[from];
 		m_pawns[to] = m_pawns[from];
 
-		m_whites.reset(from.val());
-		m_blacks.reset(from.val());
-		m_bishops.reset(from.val());
-		m_rooks.reset(from.val());
-		m_pawns.reset(from.val());
+		m_whites.reset(from.val());		// clear 1 bit
+		m_blacks.reset(from.val());		// clear 1 bit
+		m_bishops.reset(from.val());	// clear 1 bit
+		m_rooks.reset(from.val());		// clear 1 bit
+		m_pawns.reset(from.val());		// clear 1 bit
 	}
 
 	void Board::reset()
@@ -297,8 +297,8 @@ namespace forge
 		m_rooks =	0b10001001'00000000'00000000'00000000'00000000'00000000'00000000'10001001;
 		m_pawns =	0b00000000'11111111'00000000'00000000'00000000'00000000'11111111'00000000;
 
-		m_whiteKing = BoardSquare{ 0, 4 };
-		m_blackKing = BoardSquare{ 7, 4 };
+		m_blackKing = BoardSquare{ 0, 4 };
+		m_whiteKing = BoardSquare{ 7, 4 };
 		
 		return;
 	}

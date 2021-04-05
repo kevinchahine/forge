@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="AI.txt" />
+    <Text Include="Bugs.txt" />
     <Text Include="Classes.txt" />
     <Text Include="Database.txt" />
     <Text Include="GameStates.txt" />

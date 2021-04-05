@@ -21,7 +21,7 @@ namespace forge
 		m_nextPtr = nullptr;
 		m_childrenPtrs.clear();
 		m_fitness = 0;
-		m_bestMove;
+		m_bestChildPtr = nullptr;
 		m_state = STATE::FRESH;
 	}
 
@@ -51,12 +51,14 @@ namespace forge
 		}
 
 		// 3.) --- Assign sibling pointers ---
-		for (size_t i = 0; i < m_childrenPtrs.size() - 1; i++) {
-			unique_ptr<Node> & childPtr = m_childrenPtrs.at(i);
-			unique_ptr<Node> & nextChildPtr = m_childrenPtrs.at(i + 1);
+		if (m_childrenPtrs.size()) {
+			for (size_t i = 0; i < m_childrenPtrs.size() - 1; i++) {
+				unique_ptr<Node> & childPtr = m_childrenPtrs.at(i);
+				unique_ptr<Node> & nextChildPtr = m_childrenPtrs.at(i + 1);
 
-			childPtr->m_parentPtr = this;
-			childPtr->m_nextPtr = nextChildPtr.get();
+				childPtr->m_parentPtr = this;
+				childPtr->m_nextPtr = nextChildPtr.get();
+			}
 		}
 
 		// 4.) --- Assign last childs m_nextPtr to parent ---
@@ -74,7 +76,7 @@ namespace forge
 	{
 		const auto & c = m_childrenPtrs;
 
-		const Node * bestChild = nullptr;
+		const Node * p_bestChild = nullptr;
 
 		// Only makes sense for minimax
 		// Find child with max or min fitness and assign it to this node.
@@ -83,7 +85,7 @@ namespace forge
 			// --- White player is moving ---
 
 			// White is maximizing so find child with highest fitness
-			bestChild = max_element(
+			p_bestChild = max_element(
 				c.data(), 
 				c.data() + c.size(),
 				compareFitness)->get();		// goes from <unique_ptr *> to <*>
@@ -92,14 +94,14 @@ namespace forge
 			// --- Black player is moving ---
 
 			// Black is minimizing so find child with lowest fitness
-			bestChild = min_element(
+			p_bestChild = min_element(
 				c.data(),
 				c.data() + c.size(),
 				compareFitness)->get();		// goes from <unique_ptr *> to <*>
 		}
 
-		m_fitness = bestChild->fitness();
-		m_bestMove = bestChild->move();
+		m_fitness = p_bestChild->fitness();
+		m_bestChildPtr = p_bestChild;
 
 		m_childrenPtrs.clear();
 
@@ -123,6 +125,7 @@ namespace forge
 			}
 		}
 		else {
+			// --- Depth Limit has not been reached ---
 			switch (ptr->m_state)
 			{
 			case STATE::FRESH:
@@ -187,7 +190,7 @@ namespace forge
 	{
 		switch (ptr->m_state)
 		{
-		case STATE::FRESH:		/*ptr->expand();	*/		break;
+		case STATE::FRESH:		/*ptr->expand();	*/	break;
 		case STATE::EXPANDED:							break;
 		case STATE::PRUNED:								break;
 		default:	throw std::exception("New State");	break;

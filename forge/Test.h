@@ -27,6 +27,8 @@ namespace forge
 {
 	namespace test
 	{
+		void boardSquare();
+
 		void keyboardController();
 
 		void clock();
@@ -38,6 +40,8 @@ namespace forge
 		void board();
 
 		void placeMethods();
+
+		void moveKings();
 
 		void legalMoveGenerator();
 
@@ -54,6 +58,8 @@ namespace forge
 		void heuristic();
 
 		void solver();
+
+		void insufficientMaterial();
 
 		void gameState();
 

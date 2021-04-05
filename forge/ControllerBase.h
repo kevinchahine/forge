@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Position.h"
+#include "MovePositionPair.h"
+#include "MoveList.h"
 
 #include <iostream>
 
@@ -11,7 +12,7 @@ namespace forge
 	public:
 		virtual void reset();
 
-		virtual Move getMove(const Position & position) = 0;
+		virtual MovePositionPair getMove(const Position & position) = 0;
 
 		virtual std::string getName() = 0;
 

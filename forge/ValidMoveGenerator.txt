@@ -1,6 +1,9 @@
 === FORGE ===
 === VALID MOVE GENERATOR ===
 
+Perft:
+	https://www.chessprogramming.org/Perft
+
 Psudo-legal moves:
 	- Generates list of possible moves, but may leave king under attack.
 

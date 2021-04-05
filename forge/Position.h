@@ -10,8 +10,12 @@ namespace forge
 
 	// Stores:
 	//	- board (including pieces, castling rules, and enpassent)
-	//	- referee (50 ply rule, repetitions, calculates game state: Win, Draw, Loose)
-	//	- Not time control
+	//	- 50 ply rule
+	//	- move counter (tells whos turn it is)
+	// Does not store:
+	//	- time control
+	//	- info about repetitions (Need game history for that)
+	//	- game state: Win, Draw, Loose	(Need game history for that)
 	class Position
 	{
 	public:
@@ -23,22 +27,14 @@ namespace forge
 		// Removes all pieces
 		void clear();
 
-		Board & board() { return m_board; }
-		const Board & board() const { return m_board; }
-
-		// Makes a move.
-		// returns whether move was valid or invalid
-		void applyMoveFast(Move move);
-
-		bool applyMoveSafe(Move move);
-
 		// If the final position of a move is already known, then this
 		// could be a more efficient alternative to applyMove(Move)
-		// Works great for search algorithms because they can store the 
+		// Works great for search algorithms because they already generate and store the 
 		// resulting positions of each move.
 		// Simply copies position to *this
 		// !!! Does not check for valid or invalid moves. 
 		// Passing an invalid board may have unexpected results.
+		// TODO: Shouldn't we just use the assignment operator
 		void applyMove(const Position & position);
 
 		// ----- PAWN MOVES -----
@@ -102,7 +98,14 @@ namespace forge
 
 		inline void captureWithBlackKing(BoardSquare to);
 		
+		Board & board() { return m_board; }
+		const Board & board() const { return m_board; }
+		const FiftyMoveRule & fiftyMoveRule() const { return m_fiftyMoveRule; }
 		const MoveCounter & moveCounter() const { return m_moveCounter; }
+
+		// Only compares board.
+		bool operator==(const Position & rhs) const { return this->m_board == rhs.m_board; }
+		bool operator!=(const Position & rhs) const { return !(*this == rhs); }
 
 	protected:
 		Board m_board;

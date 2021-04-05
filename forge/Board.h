@@ -175,6 +175,19 @@ namespace forge
 		BoardSquare whiteKing() const { return m_whiteKing; }
 		BoardSquare blackKing() const { return m_blackKing; }
 
+		bool operator==(const Board & rhs) const { 
+			return 
+				(m_whites == rhs.m_whites) && 
+				(m_blacks == rhs.m_blacks) && 
+				(m_bishops == rhs.m_bishops) &&
+				(m_rooks == rhs.m_rooks) &&
+				(m_pawns == rhs.m_pawns) &&				// includes enpassent
+				(m_whiteKing == rhs.m_whiteKing) &&
+				(m_blackKing == rhs.m_blackKing);
+				// TODO: Don't forget Castling
+		}
+		bool operator!=(const Board & rhs) const { return !(*this == rhs); }
+
 	private:
 		BitBoard m_whites{ uint64_t(1) << 60 };	// All White Pieces (Including Kings and Knights)
 		BitBoard m_blacks{ uint64_t(1) << 4 };	// All Black Pieces (Including Kings and Knights)
@@ -189,7 +202,7 @@ namespace forge
 		BoardSquare m_whiteKing{ 60 };
 		BoardSquare m_blackKing{ 4 };
 
-		// !!! Still need castiling
+		// TODO: Still need castiling
 	};
 	
 

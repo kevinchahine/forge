@@ -15,12 +15,10 @@ namespace forge
 	while (s.BOUNDS_CHECK_FUNC() == false) { \
 		s = s.DIRECTION_FUNC(); \
 		if (isEmpty[s]) { \
-			moves.emplace_back(Move{ START_SQUARE, s }, position); \
-			moves.back().position.MOVE_PIECE_FUNC(START_SQUARE, s); \
+			moves.pushIfLegalQBNMove(position, Move{ START_SQUARE, s}); \
 		} \
 		else if (theirs[s]) { \
-			moves.emplace_back(Move{ START_SQUARE, s}, position); \
-			moves.back().position.CAPTURE_WITH_PIECE_FUNC(START_SQUARE, s); \
+			moves.pushIfLegalQBNCapture(position, Move{ START_SQUARE, s}); \
 			break; \
 		} \
 		else { break; } \
@@ -57,29 +55,71 @@ namespace forge
 		const Board & board = position.board();
 		BitBoard isEmpty = board.empty();
 		BitBoard blacks = board.blacks();
+		BoardSquare & s = square;			// Just a shorter alias
 
+		// --- Moves (No captures) ---
 		// Can pawn move up? 
-		if (isEmpty[square.upOne()]) {
+		// Don't need bounds check here, because pawns will never legally be on top rank
+		if (isEmpty[s.upOne()]) {	
 			// Yes. Up one cell is empty.
 
 			// --- Promotion ---
-			// Can pawn move to top rank?
-			if (square.upOne().isTopRank()) {
-				// TODO: Promotion time!!! 
-				cout << __FUNCTION__ << "Promotion time not implemented\n";
+			// Can pawn promote?
+			if (s.upOne().isTopRank()) {
+				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne(), pieces::whiteQueen });
+				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne(), pieces::whiteRook });
+				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne(), pieces::whiteBishop });
+				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne(), pieces::whiteKnight }); 
 			}
 			else {
 				// No promotion yet.
-				moves.pushIfLegalWhitePawnMove(position, Move{ square, square.upOne() });
+				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne() });
 
 				// Can it move a second time
-				if (square.row() == 6 && isEmpty[square.up(2)]) {
-					moves.pushIfLegalWhitePawnMove(position, Move{ square, square.up(2) });
+				if (s.row() == 6 && isEmpty[s.up(2)]) {
+					moves.pushIfLegalWhitePawnMove(position, Move{ s, s.up(2) });
 				}
 			}
 		}
 
-		// TODO: Still Need captures. Don't forget a capture can lead to a pomotion also.
+		// --- Captures (and Promotions) ---
+
+		// Can pawn capture up left?
+		// Don't need bounds check for rank because pawns will never be on top rank.
+		if (s.isLeftFile() == false && blacks[s.upLeftOne()]) {
+			// Yes Capture.
+
+			// Would this capture result in a promotion?
+			if (s.upLeftOne().isTopRank()) {
+				// Yes promotion and capture
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upLeftOne(), pieces::whiteQueen });
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upLeftOne(), pieces::whiteRook });
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upLeftOne(), pieces::whiteBishop });
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upLeftOne(), pieces::whiteKnight });
+			}
+			else {
+				// No promotion. Only capture
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upLeftOne() });
+			}
+		}
+
+		// Can pawn capture up right?
+		// Don't need bounds check for rank because pawns will never be on top rank.
+		if (s.isRightFile() == false && blacks[s.upRightOne()]) {
+			// Would this capture result in a promotion?
+			if (s.upRightOne().isTopRank()) {
+				// Yes promotion and capture
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upRightOne(), pieces::whiteQueen });
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upRightOne(), pieces::whiteRook });
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upRightOne(), pieces::whiteBishop });
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upRightOne(), pieces::whiteKnight });
+			}
+			else {
+				// No promotion without capture
+				moves.pushIfLegalWhitePawnCapture(position, Move{ s, s.upRightOne() });
+			}
+		}
+
 		// TODO: Still need enpassent
 	}
 
@@ -93,33 +133,78 @@ namespace forge
 		const Board & board = position.board();
 		BitBoard isEmpty = board.empty();
 		BitBoard whites = board.whites();
+		BoardSquare & s = square;			// Just a shorter alias
 
+		// --- Moves and Promotios (No captures) ---
 		// Can pawn move down?
-		if (isEmpty[square.downOne()]) {
+		// Don't need bounds check here, because pawns will never legally be on bottom rank
+		if (isEmpty[s.downOne()]) {
 			// Yes. Down one cell is empty.
 
 			// --- Promotion ---
-			// Can pawn move to bottom rank?
-			if (square.downOne().isBotRank()) {
-				// TODO: Promotion time!!! 
-				cout << __FUNCTION__ << "Promotion time not implemented\n";
+			// Can pawn promote?
+			if (s.downOne().isBotRank()) {
+				// Yes promote pawn
+				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne(), pieces::blackQueen });
+				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne(), pieces::blackRook });
+				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne(), pieces::blackBishop });
+				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne(), pieces::blackKnight });
 			}
 			else {
 				// No promotion yet.
-				moves.pushIfLegalBlackPawnMove(position, Move{ square, square.downOne() });
-				
+				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne() });
+
 				// Can it move a second time
-				if (square.row() == 1 && isEmpty[square.down(2)]) {
-					moves.pushIfLegalBlackPawnMove(position, Move{ square, square.down(2) });
+				if (s.row() == 1 && isEmpty[s.down(2)]) {
+					moves.pushIfLegalBlackPawnMove(position, Move{ s, s.down(2) });
 				}
 			}
 		}
 
-		// TODO: Still Need captures. Don't forget a capture can lead to a pomotion also.
+		// --- Captures and Promotions ---
+
+		// Can pawn capture down right?
+		// Don't need bounds check for rank because pawns will never be on bottom rank.
+		BoardSquare to = s.downLeftOne();
+		if (s.isLeftFile() == false && whites[to]) {
+			// Would this capture result in a promotion?
+			if (to.isBotRank()) {
+				// Yes promotion and capture
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to, pieces::blackQueen });
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to, pieces::blackRook });
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to, pieces::blackBishop });
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to, pieces::blackKnight });
+			}
+			else {
+				// No promotion. Only a capture
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to });
+			}
+		}
+
+		to = s.downRightOne();
+		if (s.isRightFile() == false && whites[to]) {
+			// Would this capture result in a promotion?
+			if (to.isBotRank()) {
+				// Yes promotion and capture
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to, pieces::blackQueen });
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to, pieces::blackRook });
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to, pieces::blackBishop });
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to, pieces::blackKnight });
+			}
+			else {
+				// No promotion. Only a capture
+				moves.pushIfLegalBlackPawnCapture(position, Move{ s, to });
+			}
+		}
+
 		// TODO: Still need enpassent
 	}
 
-	inline void MoveGenerator::generatePawnMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves)
+	inline void MoveGenerator::generatePawnMoves(
+		const Position & position, 
+		BoardSquare square, 
+		bool isWhite, 
+		MoveList & moves)
 	{
 		if (isWhite) {
 			generatePawnMovesWhite(position, square, moves);
@@ -302,5 +387,67 @@ namespace forge
 
 		generateBishopMoves(position, square, isWhite, moves);
 	}
+
+	inline void MoveGenerator::generateKingMoves(
+		const Position & position,
+		BoardSquare square,
+		bool isWhite,
+		MoveList & moves)
+	{
+		const Board & board = position.board();
+		BitBoard theirs = (isWhite ? board.blacks() : board.whites());
+
+#ifndef FORGE_KING
+#define FORGE_KING(ORIGIN, DEST) \
+			if (board.occupied()[DEST]) { \
+				if (theirs[DEST]) { \
+					moves.pushIfLegalKingCapture(position, Move{ ORIGIN, DEST }); \
+				} \
+			} \
+			else { \
+				moves.pushIfLegalKingMove(position, Move{ ORIGIN, DEST }); \
+			} 
+#endif
+
+		// --- UP MOVES ---
+		if (square.isTopRank() == false) {
+			// *** We can move up one ***
+			FORGE_KING(square, square.upOne());
+
+			if (square.isLeftFile() == false) {
+				// *** We can move left ***
+				FORGE_KING(square, square.upLeftOne());
+			}
+			if (square.isRightFile() == false) {
+				// *** we can move right ***
+				FORGE_KING(square, square.upRightOne());
+			}
+		}
+
+		// --- MIDDLE MOVES ---
+		if (square.isLeftFile() == false) {
+			// *** We can move left ***
+			FORGE_KING(square, square.leftOne());
+		}
+		if (square.isRightFile() == false) {
+			// *** We can move right ***
+			FORGE_KING(square, square.rightOne());
+		}
+
+		// --- DOWN MOVES ---
+		if (square.isBotRank() == false) {
+			// *** We can move down ***
+			FORGE_KING(square, square.downOne());
+
+			if (square.isLeftFile() == false) {
+				// *** We can move left ***
+				FORGE_KING(square, square.downLeftOne());
+			}
+			if (square.isRightFile() == false) {
+				// *** we can move right ***
+				FORGE_KING(square, square.downRightOne());
+			}
+		}
+}
 
 } // namespace forge

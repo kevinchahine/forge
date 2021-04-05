@@ -8,7 +8,7 @@ using namespace std;
 
 namespace forge
 {
-	Move RandomSolver::getMove(const Position & position)
+	MovePositionPair RandomSolver::getMove(const Position & position)
 	{
 		const auto validMoves = MoveGenerator::generateLegalMoves(position);
 
@@ -19,7 +19,7 @@ namespace forge
 
 		uniform_int_distribution<size_t> dist(0, validMoves.size() - 1);
 
-		return validMoves.at(dist(m_randomEngine)).move;
+		return validMoves.at(dist(m_randomEngine));
 	}
 
 	string RandomSolver::getName()

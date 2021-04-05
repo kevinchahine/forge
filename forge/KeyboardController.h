@@ -9,11 +9,19 @@ namespace forge
 	public:
 		virtual void reset() override;
 
-		virtual Move getMove(const Position & position) override;
+		virtual MovePositionPair getMove(const Position & position) override;
 
 		virtual std::string getName() override;
 
+	private:
+		
+		// returns true if 'move' is found in 'legalMoves'
+		// 'legalMoves' must contain all valid moves for the current player
+		// for this method to work properly
+		static MoveList::const_iterator findMatchingMove(Move move, const MoveList & legalMoves);
+
 	protected:
-		Move currMove;
+		// Initialized to a full move. Initial value is irrelevant
+		Move m_move{ BoardSquare{ 'a', '1' }, BoardSquare{ 'a', '2' } };	
 	};
 } // namespace forge

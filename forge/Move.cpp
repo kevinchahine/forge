@@ -2,6 +2,7 @@
 
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -22,55 +23,162 @@ namespace forge
 
 	istream & operator>>(std::istream & is, Move & move)
 	{
-		char fromFile;			// 'a' - 'h'
-		char fromRank;			// '1' - '8'
-		char toFile;			// 'a' - 'h'
-		char toRank;			// '1' - '8'
+		/*
+		good inputs:
+		a4
+		a4a5
+		a7a8q
+		a8q
+		q			ok just specifying a promotion
 
-		BoardSquare from;
-		BoardSquare to;
-		Piece promotion;
+		ok inputs (won't cause problems):
+		a4a4
 
-		// --- 'from' coordinate (both chars are needed) ---
-		is >> fromFile >> fromRank;
-		from = BoardSquare{ fromFile, fromRank };
+		bad inputs:
+		a			not a full coordinate
+		4			not a full coordinate
+		a4a			"
+		aq			"
+		a4q			a4 isn't a promotional rank
+		*/
 
-		// --- 'to' coordinate (optional) ---
-		// initialize with 'from' coordinates incase they arn't given
+		string input;
+		getline(is, input);
 
-		char nextCh = is.peek();
-		if (isalpha(nextCh) || isdigit(nextCh)) {
-			is >> toFile;
+		// Make lower case
+		transform(input.begin(), input.end(), input.begin(), tolower);
 
-			nextCh = is.peek();
-			if (isalpha(nextCh) || isdigit(nextCh)) {
-				is >> toRank;
+		if (size_t sz = input.size(); sz == 0 || sz > 5) {
+			move.setInvalid();
+			return is;
+		}
+
+		// *** At this point we know that input is between 1 and 5 characters long ***
+
+		if (input.size() == 1) {
+			// Must be a promotion nothing else.
+			move.promotion(input.at(0));
+		}
+		else if (input.size() == 2) {
+			// Must be a partial move.
+			// Either 'to' or 'from' component.
+			char file = input.at(0);
+			char rank = input.at(1);
+
+			move.promotion(pieces::empty);
+			move.to(file, rank);
+			move.from(move.to());	// Make it a partial move
+		}
+		else if (input.size() == 3) {
+			// Must be partial move.
+			// Must be 'to' component and a promotion.
+			char file = input.at(0);
+			char rank = input.at(1);
+			char prom = input.at(2);
+
+			move.to(file, rank);
+
+			if (move.isValid()) {
+				move.promotion(prom);
+
+				if (move.isValid()) {
+					move.from(move.to());
+				}
 			}
+		}
+		else if (input.size() == 4) {
+			// File rank file rank, nothing else
+			char fromFile = input.at(0);
+			char fromRank = input.at(1);
+			char toFile = input.at(2);
+			char toRank = input.at(3);
+
+			move.promotion(pieces::empty);
+
+			move.from(fromFile, fromRank);
 			
-			to = BoardSquare{ toFile, toRank };
+			if (move.isValid()) {
+				move.to(toFile, toRank);
+			}
+		}
+		else if (input.size() == 5) {
+			// File rank file rank, nothing else
+			char fromFile = input.at(0);
+			char fromRank = input.at(1);
+			char toFile = input.at(2);
+			char toRank = input.at(3);
+			char prom = input.at(4);
 
-			// --- 'promotion' (optional) ---
-			nextCh = is.peek();
-			if (isalpha(nextCh)) {
-				is >> promotion;
+			move.promotion(prom);
 
-				// Set color of piece
-				if (to.isTopRank()) {
-					promotion.makeWhite();
-				}
-				else if (to.isBotRank()) {
-					promotion.makeBlack();
+			if (move.isValid()) {
+				move.from(fromFile, fromRank);
+
+				if (move.isValid()) {
+					move.to(toFile, toRank);
 				}
 			}
 		}
-		else {
-			// No 'to' coordinate
-			to = from;
-		}
-
-		move = Move{ from, to, promotion };
 
 		return is;
+	}
+
+	void Move::from(char file, char rank)
+	{
+		file = tolower(file);
+		rank = tolower(rank);
+
+		if (file >= 'a' && file <= 'h' && rank >= '1' && rank <= '8') {
+			this->from(BoardSquare{ file, rank });
+		}
+		else {
+			this->setInvalid();
+		}
+	}
+
+	void Move::to(char file, char rank)
+	{
+		file = tolower(file);
+		rank = tolower(rank);
+
+		if (file >= 'a' && file <= 'h' && rank >= '1' && rank <= '8') {
+			this->to(BoardSquare{ file, rank });
+		}
+		else {
+			this->setInvalid();
+		}
+	}
+
+	void Move::promotion(char promotionCh)
+	{
+		Piece p;
+
+		switch (promotionCh)
+		{
+		case 'q':	p = pieces::whiteQueen;		break;
+		case 'r':	p = pieces::whiteRook;		break;
+		case 'b':	p = pieces::whiteBishop;	break;
+		case 'n':	p = pieces::whiteKnight;	break;
+		default:
+#ifdef _DEBUG
+			cout << "Error: " << __FUNCTION__ << " " << promotionCh
+				<< " is not a promotion pieces\n";
+			this->isInvalid();
+#endif
+		}
+
+		// Set color of piece
+		if (this->to().isTopRank()) {
+			p.makeWhite();
+		}
+		else if (this->to().isBotRank()) {
+			p.makeBlack();
+		}
+		else {
+			this->setInvalid();
+		}
+
+		this->promotion(p);
 	}
 
 	string Move::toLAN() const

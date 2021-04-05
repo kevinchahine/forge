@@ -116,7 +116,7 @@ namespace forge
 			generateQueenMoves(position, square, isWhite, moves);
 		}
 		else if (board.isKing(square)) {
-			// TODO: KING MOVES
+			generateKingMoves(position, square, isWhite, moves);
 		}
 		else {
 			// It must be an error.

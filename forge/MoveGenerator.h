@@ -32,7 +32,7 @@ namespace forge
 
 	private:
 
-		// Make sure these remain inlined to prevent overhead associated function with parameters
+		// Make sure these remain inlined to prevent overhead associated with passing function parameters
 
 		// position - current game state. 
 		// square - coordinate of piece that is moving.
@@ -45,6 +45,8 @@ namespace forge
 		static inline void generateBishopMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 		static inline void generateKnightMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 		static inline void generateQueenMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
+		static inline void generateKingMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
+
 	};
 } // namespace forge
 

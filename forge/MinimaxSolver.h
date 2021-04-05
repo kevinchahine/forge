@@ -12,13 +12,13 @@ namespace forge
 	public:
 		virtual void reset() override;
 
-		virtual Move getMove(const Position & position) override;
+		virtual MovePositionPair getMove(const Position & position) override;
 
 		virtual std::string getName() override;
 
 	protected:
 
-		Move solve(const Position & position);
+		MovePositionPair solve(const Position & position);
 
 	protected:
 

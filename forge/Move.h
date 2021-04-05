@@ -18,7 +18,7 @@ namespace forge
 		Move(BoardSquare from, BoardSquare to) :
 			m_val((to.val() << 6) | from.val()) {}
 		Move(BoardSquare from, BoardSquare to, Piece promotion) :
-			m_val((promotion.val() << 12) | (to.val() << 6) | (from.val())) {}
+			m_val((promotion.val().to_ulong() << 12) | (to.val() << 6) | (from.val())) {}
 		// Constructs move based on string
 		// string can be stored in PGN or LAN notation
 		Move(std::string notation);
@@ -27,6 +27,9 @@ namespace forge
 		~Move() noexcept = default;
 		Move & operator=(const Move &) = default;
 		Move & operator=(Move &&) noexcept = default;
+
+		bool operator==(const Move & rhs) const { return m_val == rhs.m_val; }
+		bool operator!=(const Move & rhs) const { return !(*this == rhs); }
 
 		BoardSquare from() const 
 		{
@@ -37,11 +40,19 @@ namespace forge
 		
 		void from(BoardSquare pos) 
 		{
-			std::bitset<16> posBits = pos.val();
+			std::bitset<16> posBits = pos.val() /*<< 0*/;
 
-			m_val = (m_val & ~from_mask) & posBits;
+			m_val = (m_val & ~from_mask) | posBits;
 		}
 		
+		// Sets to component using file and rank as characters
+		// Make sure file is lower case
+		// file = { 'a' - 'h' }
+		// rank = { '1' - '8' }
+		// If file or rank are out of bounds, sets this object to invalid.
+		// !!! Only use characters not integers
+		void from(char file, char rank);
+
 		BoardSquare to() const 
 		{
 			uint16_t v = (uint16_t) (m_val & to_mask).to_ulong() >> 6;
@@ -53,22 +64,49 @@ namespace forge
 		{
 			std::bitset<16> posBits = pos.val() << 6;
 
-			m_val = (m_val & ~to_mask) & posBits;
+			m_val = (m_val & ~to_mask) | posBits;
 		}
+
+		// Sets to component using file and rank as characters
+		// Make sure file is lower case
+		// file = { 'a' - 'h' }
+		// rank = { '1' - '8' }
+		// If file or rank are out of bounds, sets this object to invalid.
+		// !!! Only use characters not integers
+		void to(char file, char rank);
 		
 		Piece promotion() const 
 		{
 			uint16_t v = (uint16_t) (m_val & promotion_mask).to_ulong() >> 12;
 
-			return Piece((int8_t) v);
+			return Piece((uint8_t) v);
 		}
 		
-		void promotion(BoardSquare piece) 
+		// Make sure piece is of the correct color
+		// and is any of:
+		//	- Queen
+		//	- Rook
+		//	- Bishop
+		//	- Knight
+		//	- Empty (Optional: Should be empty if Move does not represent a pawn promotion)
+		// and None of:
+		//	- King
+		//	- Pawn
+		void promotion(Piece piece) 
 		{
-			std::bitset<16> promotionBits = piece.val() << 12;
+			std::bitset<16> promotionBits = piece.val().to_ulong() << 12;
 
-			m_val = (m_val & ~promotion_mask) & promotionBits;
+			m_val = (m_val & ~promotion_mask) | promotionBits;
 		}
+
+		// Sets promotion component to one cooresponding to 
+		// 'promotionCh'. 
+		// Move will be set to invalid if 'promotionCh' does not
+		// coorespond to a QRBN piece or if 'to' component doesn't
+		// point to a promotional rank.
+		// Color of promotion is determined automatically based on 'to'
+		// component
+		void promotion(char promotionCh);
 
 		// Determines if the Move object refers to only part of a move
 		// where either the 'from' or 'to' component is specified
@@ -83,6 +121,18 @@ namespace forge
 		// When isPartial() returns true, to() and from() will be equal.
 		bool isPartial() const { return to() == from(); }
 		bool isPromotion() const { return promotion() != pieces::empty; }
+
+		// Used to determine if a specifed move has been set to invalid.
+		// Does not consider most cases of valid or invalid moves.
+		// A Move object must be set to invalid by calling .setInvalid() 
+		//	usually when user enters and invalid move.
+		bool isInvalid() const { return promotion().isPawn(); }
+		bool isValid() const { return !isInvalid(); }
+
+		// Used to identify a move as invalid by setting promotion component to a pawn.
+		// When changing an Move set to invalid, be sure to set the promotion component
+		// as well.
+		void setInvalid() { promotion(pieces::whitePawn); }
 
 		//std::string toPGN(const Board & board) const;
 

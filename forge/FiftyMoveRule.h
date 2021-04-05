@@ -14,17 +14,19 @@ namespace forge
 
 		// Call when a pawn has moved
 		// Includes:
-		//	- simple moves
+		//	- simple moves (pawn push)
 		//	- captures
 		//	- en passent
 		//	- and promotions
 		void pawnHasMoved() { reset(); }
 
-		// Call when any piece has been captured
+		// Call when any piece has been captured.
+		// Remember to call update() once before the end of this turn.
 		void pieceCaptured() { reset(); }
 		
 		// Call this method whenever a move is made, even after calling
-		// pawnHasMoved() or pieceCaptured()
+		// pawnHasMoved() or pieceCaptured().
+		// Call this method exactly once every turn.
 		void update() { halfMoveCount++; }
 
 		// Returns true iff no:

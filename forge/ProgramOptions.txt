@@ -1,10 +1,13 @@
 === Forge === 
 === Program Options ===
 
+sortme: These should go under switches or options
+	--network-train
+
 switches:
 	--train	= default false	(Can't have this and play else show error)
 	--play = default true	(Can't have this and train else show error)
-	--uci = default false	(If true, tells engine to listen for commands from a a UCI gui )
+	--uci = default false	(If true, tells engine to listen for commands from a UCI gui )
 
 options:
 	--orientation = [ 

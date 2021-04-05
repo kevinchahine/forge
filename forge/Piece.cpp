@@ -4,6 +4,29 @@ using namespace std;
 
 namespace forge
 {
+	char Piece::getCh() const
+	{
+		// Look up table
+		// converts piece value to a printable character
+		// index - piece value
+		// output - character 
+		static const uint8_t pieceValToChar[] = {
+			' ',	// 0  Empty
+			'K',	// 1  White
+			'Q',	// 2  White
+			'B',	// 3  White
+			'N',	// 4  White
+			'R',	// 5  White
+			'p',	// 6  White
+		};
+
+		Piece p = *this;
+
+		p.makeWhite();
+
+		return pieceValToChar[p.m_val.to_ulong()];
+	}
+
 	void Piece::setCh(char ch, bool isWhite)
 	{
 		ch = tolower(ch);
@@ -26,7 +49,7 @@ namespace forge
 		// What color should the piece be?
 		if (!isWhite) {
 			// It should be black
-			m_val = -m_val;
+			this->makeBlack();
 		}
 	}
 } // namespace forge

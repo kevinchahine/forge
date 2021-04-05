@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <bitset>
 
 #include <Guten/Color.h>
 #include <Guten/iocolor.h>
@@ -10,25 +11,25 @@ namespace forge
 	class Piece
 	{
 	public:
-		static const int8_t EMPTY = 0;
+		static const uint8_t EMPTY = 0b0000;
 
-		static const int8_t WHITE_KING = 1;
-		static const int8_t WHITE_QUEEN = 2;
-		static const int8_t WHITE_BISHOP = 3;
-		static const int8_t WHITE_KNIGHT = 4;
-		static const int8_t WHITE_ROOK = 5;
-		static const int8_t WHITE_PAWN = 6;
+		static const uint8_t WHITE_KING		= 0b0001;
+		static const uint8_t BLACK_KING		= 0b1001;
+		static const uint8_t WHITE_QUEEN	= 0b0010;
+		static const uint8_t BLACK_QUEEN	= 0b1010;
+		static const uint8_t WHITE_BISHOP	= 0b0011;
+		static const uint8_t BLACK_BISHOP	= 0b1011;
+		static const uint8_t WHITE_KNIGHT	= 0b0100;
+		static const uint8_t BLACK_KNIGHT	= 0b1100;
+		static const uint8_t WHITE_ROOK		= 0b0101;
+		static const uint8_t BLACK_ROOK		= 0b1101;
+		static const uint8_t WHITE_PAWN		= 0b0110;
+		static const uint8_t BLACK_PAWN		= 0b1110;
 
-		static const int8_t BLACK_KING = -WHITE_KING;
-		static const int8_t BLACK_QUEEN = -WHITE_QUEEN;
-		static const int8_t BLACK_BISHOP = -WHITE_BISHOP;
-		static const int8_t BLACK_KNIGHT = -WHITE_KNIGHT;
-		static const int8_t BLACK_ROOK = -WHITE_ROOK;
-		static const int8_t BLACK_PAWN = -WHITE_PAWN;
 
 	public:
 		Piece() : m_val(EMPTY) {}
-		Piece(int8_t value) : m_val(value) {}
+		Piece(uint8_t value) : m_val(value) {}
 		Piece(char ch, bool isWhite = true) { setCh(ch, isWhite); }
 		Piece(const Piece &) = default;
 		Piece(Piece &&) noexcept = default;
@@ -41,10 +42,8 @@ namespace forge
 
 		friend std::ostream & operator<<(std::ostream & os, const Piece & p)
 		{
-			int8_t v = p.val();
-
 			os << guten::color::push()
-				<< guten::color::setfg(v < 0 ? guten::color::gray : guten::color::lightgreen)
+				<< guten::color::setfg(p.isBlack() ? guten::color::gray : guten::color::lightgreen)
 				<< p.getCh()
 				<< guten::color::pop();
 
@@ -60,35 +59,19 @@ namespace forge
 			return is;
 		}
 
-		int8_t val() const { return m_val; }
-		int8_t & val() { return m_val; }
+		std::bitset<8> val() const { return m_val; }
+		std::bitset<8> & val() { return m_val; }
 
-		char getCh() const
-		{
-			// Look up table
-			// converts piece value to a printable character
-			// index - piece value
-			// output - character 
-			static const int8_t pieceValToChar[] = {
-				' ',	// 0  Empty
-				'K',	// 1  White
-				'Q',	// 2  White
-				'B',	// 3  White
-				'N',	// 4  White
-				'R',	// 5  White
-				'p',	// 6  White
-			};
-
-			return pieceValToChar[abs(this->m_val)];
-		}
+		char getCh() const;
 
 		// Set piece based on character
 		// Piece color is set to white by default
 		void setCh(char ch, bool isWhite = true);
 		
-		bool isWhite() const { return m_val > 0; }
-		bool isBlack() const { return m_val < 0; }
+		bool isWhite() const { return m_val[3] == 0; }
+		bool isBlack() const { return !isWhite(); }
 		bool isEmpty() const { return m_val == EMPTY; }
+		bool isOccupied() const { return !isEmpty(); }
 		bool isKing() const { return (m_val == WHITE_KING) || (m_val == BLACK_KING); }
 		bool isQueen() const { return (m_val == WHITE_QUEEN) || (m_val == BLACK_QUEEN); }
 		bool isRook() const { return (m_val == WHITE_ROOK) || (m_val == BLACK_ROOK); }
@@ -99,12 +82,12 @@ namespace forge
 		// Flips color of piece:
 		// black -> white
 		// white -> black
-		void flipColor() { m_val = -m_val; }
-		void makeWhite() { m_val = (m_val > 0 ? m_val : -m_val); }
-		void makeBlack() { m_val = (m_val < 0 ? m_val : -m_val); }
+		void flipColor() { m_val.flip(3); }
+		void makeWhite() { m_val[3] = 0; }
+		void makeBlack() { m_val[3] = 1; }
 
 	protected:
-		int8_t m_val = 0;
+		std::bitset<8> m_val = 0;
 	};
 
 	namespace pieces {

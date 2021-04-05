@@ -26,3 +26,6 @@ Implement minimax with alpha-beta pruning using DNN
 Implement MCTS using multi-threading
 Implement MCTS using ???DNN (How would we even do this)???
 
+Networking:
+	- distributed training. train accross multiple computers on a network
+	- play on a network. Would need this processes to run on both computers

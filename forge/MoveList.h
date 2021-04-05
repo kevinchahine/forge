@@ -40,6 +40,13 @@ namespace forge
 		void pushIfLegalBlackPawnCapture(const Position & currPos, Move move);
 
 		// * See comment for pushIfLegalQBNMove
+		// Accounts for promotions involving captures also
+		void pushIfLegalWhitePawnPromotion(const Position & currPos, Move move);
+		// * See comment for pushIfLegalQBNMove
+		// Accounts for promotions involving captures also
+		void pushIfLegalBlackPawnPromotion(const Position & currPos, Move move);
+
+		// * See comment for pushIfLegalQBNMove
 		void pushIfLegalRookMove(const Position & currPos, Move move);
 		// * See comment for pushIfLegalQBNMove
 		void pushIfLegalRookCapture(const Position & currPos, Move move);
@@ -48,6 +55,8 @@ namespace forge
 		void pushIfLegalKingMove(const Position & currPos, Move move);
 		// * See comment for pushIfLegalQBNMove
 		void pushIfLegalKingCapture(const Position & currPos, Move move);
+
+		void print(std::ostream & os = std::cout) const;
 
 	private:
 	};

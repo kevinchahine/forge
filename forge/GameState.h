@@ -28,20 +28,22 @@ namespace forge
 	//		- by timeout (with insufficient material)
 	//		- by 50 move rule
 	//		- by insufficient material (even with time on the clock)
+	// *** Draws by insufficient material follow USCF rules
 	class GameState
 	{
 	public:
+		void reset() { (*this) = GameState(); }
 
 		// Calculates and sets game state
-		// Might also need move history to calculate 3 fold repetition
-		void operator()(const Position & position);
-
-		//void operator()(const Position & position, /* Move History */);	// TODO:
-		//void operator()(const ChessMatch & match);						// TODO:
-
-		void operator()(const Node * node);
+		//void operator()(const ChessMatch & match);	// TODO:
+		void operator()(Node * node);
 
 		friend std::ostream & operator<<(std::ostream & os, const GameState & gs);
+
+	private:
+		bool isDrawByRepetition(const Node * node) const;
+
+		bool isInsufficientMaterial(const Board & board) const;
 
 	public:
 		enum class PLAYER : bool {
@@ -58,7 +60,7 @@ namespace forge
 			AGREEMENT,			// (DRAW only) Where both players agree on a draw 
 			RESIGNATION,		// (WIN only) where one player resigns
 			CHECKMATE,			// (WIN only)
-			CANT_MOVE,			// (DRAW only) No pieces can move but King is not being attacked
+			STALEMATE,			// (DRAW only) No pieces can move but King is not being attacked
 			REPETITION,			// (DRAW only) 3 fold repetition
 			FIFTY_MOVE_RULE,	// (DRAW only) 50 moves have passed without captures or pawn moves
 			INSUFFICIENT_MATERIAL_ONLY,	// (DRAW only) Neither players have enough pieces to administer checkmate

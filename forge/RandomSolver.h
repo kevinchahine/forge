@@ -10,7 +10,7 @@ namespace forge
 	class RandomSolver : public SolverBase
 	{
 	public:
-		virtual Move getMove(const Position & position) override;
+		virtual MovePositionPair getMove(const Position & position) override;
 
 		virtual std::string getName() override;
 

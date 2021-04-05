@@ -19,7 +19,7 @@ namespace forge
 			m_val(col | (row << 3)) {}
 		BoardSquare(uint16_t row, uint16_t col) :
 			m_val(col | (row << 3)) {}
-		// file: ['a' - 'h'] (both upper or lower case work)
+		// file: ['a' - 'h'] (case insensitive)
 		// rank: [ 1  -  8 ]
 		BoardSquare(char file, char rank) :
 			m_val( (tolower(file) - 'a') | ((7 - (tolower(rank) - '1')) << 3) ) {}
@@ -29,6 +29,8 @@ namespace forge
 		virtual ~BoardSquare() noexcept = default;
 		BoardSquare & operator=(const BoardSquare &) = default;
 		BoardSquare & operator=(BoardSquare &&) noexcept = default;
+		//BoardSquare & operator++(int) { ++m_val; }
+		//BoardSquare operator++() { }
 
 		bool operator==(const BoardSquare & bs) const { return this->m_val == bs.m_val; }
 		bool operator!=(const BoardSquare & bs) const { return this->m_val != bs.m_val; }
@@ -62,15 +64,32 @@ namespace forge
 
 		void row(uint8_t rowCoord)
 		{
-			m_val &= ~row_mask;		// clear row bits
-			m_val |= rowCoord;		// set row bits to rowCoord
+#ifdef _DEBUG
+			if (rowCoord >= 8) {
+				std::cout << "Error: " << __FUNCTION__ << " rowCoord = " << rowCoord
+					<< " must be in range [0, 7]\n";
+			}
+#endif 
+			m_val &= ~row_mask;			// clear row bits
+			m_val |= (rowCoord << 3);	// set row bits to rowCoord
 		}
 
 		void col(uint8_t colCoord)
 		{
-			m_val &= ~col_mask;		// clear col bits
-			m_val |= (colCoord << 3);	// set col bits to colCoord
+#ifdef _DEBUG
+			if (colCoord >= 8) {
+				std::cout << "Error: " << __FUNCTION__ << " colCoord = " << colCoord
+					<< " must be in range [0, 7]\n";
+			}
+#endif 
+			m_val &= ~col_mask;			// clear col bits
+			m_val |= (colCoord << 0);	// set col bits to colCoord
 		}
+
+		// Returns true iff square refers to a light square. ex: a1, a3, a5
+		bool isLightSquare() const { return (row() & 0b0001) == (col() & 0b0001); }	// '& 0b1' is same as 'modulus 2'
+		// Returns true iff square referse to a dark square. ex: a2, a4, a6
+		bool isDarkSquare() const { return !isLightSquare(); }
 
 		// Is row coord, the top rank where black's pieces start
 		// and white's pawns promot?

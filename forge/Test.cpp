@@ -13,6 +13,21 @@ namespace forge
 {
 	namespace test
 	{
+		void boardSquare()
+		{
+			BoardSquare cell;
+
+			for (int r = 0; r < 8; r++) {
+				for (int c = 0; c < 8; c++) {
+					cell.row(r);
+					cell.col(c);
+
+					cout << cell << " is a " << (cell.isLightSquare() ? "light" : "dark")
+						<< " square\n";
+				}
+			}
+		}
+
 		void keyboardController()
 		{
 			ChessMatch match;
@@ -21,6 +36,9 @@ namespace forge
 			match.makeBlackController<KeyboardController>();
 
 			match.makeView<TextView>();
+
+			match.position().clear();
+			match.position().board().placeBlackPawn(BoardSquare{ 'b', '3' });
 
 			//cout << "You entered " << m << ' ' 
 			//	<< (m.isPartial() ? "partial" : "full") << ' '
@@ -186,6 +204,18 @@ namespace forge
 			b.print();
 		}
 
+		void moveKings()
+		{
+			ChessMatch m;
+			m.position().clear();
+
+			m.makeWhiteController<KeyboardController>();
+			m.makeBlackController<KeyboardController>();
+			m.makeView<TextView>();
+
+			m.runGame();
+		}
+
 		void legalMoveGenerator()
 		{
 			forge::Position p;
@@ -265,7 +295,7 @@ namespace forge
 				//<< "Rook/Queen: " << AttackChecker::isAttackedByRook(b, b.blackKing()) << '\n'
 				//<< "Bishop/Queen: " << AttackChecker::isAttackedByBishop(b, b.blackKing()) << '\n'
 				//<< "Knights: " << AttackChecker::isAttackedByKnight(b, b.blackKing()) << '\n'
-				//<< "Pawns: " << AttackChecker::isKingAttackedByPawn(b, b.blackKing()) << '\n'
+				//<< "Pawns: " << AttackChecker::isAttackedByPawn(b, b.blackKing()) << '\n'
 				<< "Is King Attacked: " << AttackChecker::isAttacked(b, b.blackKing()) << '\n'
 				<< '\n';
 		}
@@ -293,6 +323,12 @@ namespace forge
 				<< forge::BoardSquare('e', '4') << ' '
 				<< forge::Move(forge::BoardSquare('e', '2'), forge::BoardSquare('e', '4'))
 				<< endl;
+
+			Move m1;
+			m1.from(BoardSquare{ 'f', '5' });
+			m1.to(BoardSquare{ 'e', '4' });
+			m1.promotion(pieces::whiteQueen);
+			cout << "m1 = " << m1 << '\n';
 		}
 
 		void randomSolver()
@@ -369,14 +405,34 @@ namespace forge
 			solverPtr->reset();
 
 			while (true) {
-				Move m = solverPtr->getMove(position);
+				MovePositionPair pair = solverPtr->getMove(position);
 
-				position.applyMoveFast(m);
+				position = pair.position;
 
 				position.board().print();
 				//cout << "Press any key...";
 				//cin.get();
 			}
+		}
+
+		void insufficientMaterial()
+		{
+			Node n;
+			Position & pos = n.position();
+			pos.clear();
+
+			//pos.applyMoveFast(Move{ pos.board().whiteKing(), pos.board().whiteKing().upOne() });
+			//pos.board().placeBlackPawn(BoardSquare('a', '2'));
+			//pos.board().placeWhiteBishop(BoardSquare('e', '5'));
+			//pos.board().placeWhiteKnight(BoardSquare('e', '4'));
+			//pos.board().placeWhiteKnight(BoardSquare('d', '4'));
+			//pos.board().placeRook(BoardSquare('e', '4'), true);
+			pos.board().print();
+
+			GameState gs;
+			gs(&n);
+
+			cout << "Game state: " << gs << '\n';
 		}
 
 		void gameState()
@@ -390,7 +446,7 @@ namespace forge
 
 			GameState state;
 
-			state(pos);
+			//state(pos);
 
 			cout << state << '\n';
 		}

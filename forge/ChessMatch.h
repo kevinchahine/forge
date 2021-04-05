@@ -50,6 +50,7 @@ namespace forge
 		GameState calcGameState() const;
 
 	private:
+		// TODO: Replace this with a GameHistory to that we can look for draw by repetition
 		Position m_position;
 
 		std::unique_ptr<ControllerBase> m_whitesController;

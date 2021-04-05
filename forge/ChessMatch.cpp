@@ -36,7 +36,7 @@ namespace forge
 		}
 
 		// --- Set up board ---
-		m_position.reset();
+		///m_position.reset();	// TODO: uncomment this
 
 		// --- Show board before playing ---
 		if (m_viewPtr != nullptr) {
@@ -49,8 +49,6 @@ namespace forge
 
 		while (true)
 		{
-			Move m;
-
 			// --- CONTROLLER ---
 			// Who's turn is it?
 			ControllerBase * currPlayer = nullptr;
@@ -66,25 +64,27 @@ namespace forge
 				currPlayer = m_blacksController.get();
 			}
 
-			m = currPlayer->getMove(m_position);
+			MovePositionPair pair = currPlayer->getMove(m_position);
 
 			// --- VIEW ---
 			// Show Board with highlights of legal moves but only if move was a partial move.
-			if (m.isPartial()) {
+			if (pair.move.isPartial()) {
 				if (m_viewPtr != nullptr) {
-					m_viewPtr->show(m_position, MoveGenerator::generateLegalMovesFor(m_position, m.from()));
+					m_viewPtr->show(m_position, MoveGenerator::generateLegalMovesFor(
+						m_position, pair.move.from()));
 				}
 
-				// Prompt again for complete move
-				Move toMove = currPlayer->getMove(m_position);
-
-				m = Move{ m.from(), toMove.from(), toMove.promotion() };
-				// Now we have the complete move
+				// Prompt AGAIN for COMPLETE move
+				pair = currPlayer->getMove(m_position);
 			}
-
-			cout << m << "\n";
-			m_position.applyMoveSafe(m);
 			
+			// Apply the move. 
+			m_position = pair.position; // Its just that simple.
+			
+			// Check the game state
+			GameState state;
+			//state()
+
 			// If displaying board, pause clock to prevent loosing time from next player.
 			// If player is a computer, a few milliseconds lost can be a big deal. 
 			if (true) {
@@ -92,14 +92,17 @@ namespace forge
 
 				// Show Board
 				if (m_viewPtr != nullptr) {
-					m_viewPtr->show(m_position, m);
+					m_viewPtr->show(m_position, pair.move);
 				}
 
 				m_clock.resume();
 			}
 
-			m_clock.click();
-		}
+			m_clock.click(); // Next players turn
+
+
+
+		} // end while(true)
 
 		return GameState();
 	}
@@ -116,6 +119,7 @@ namespace forge
 
 			// Can white's king move?
 			// TODO:
+
 		}
 		else {
 			// blacks turn.
