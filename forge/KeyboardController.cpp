@@ -8,7 +8,7 @@ namespace forge
 {
 	void KeyboardController::reset()
 	{
-		m_move = Move();
+		m_move = Move{ BoardSquare{ 'a', '1' }, BoardSquare{ 'a', '2' } };
 	}
 
 	MovePositionPair KeyboardController::getMove(const Position & position)
@@ -32,7 +32,7 @@ namespace forge
 		cout << "\nYour legal moves: ";
 		legalMoves.print();
 
-		// Where are our pieces. (Pieces of player who is making the move).
+		// Where are 'our' pieces? (Pieces of player who is making the move).
 		BitBoard ours = (
 			position.moveCounter().isWhitesTurn() ?
 			position.board().whites() :

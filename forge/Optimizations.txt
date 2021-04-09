@@ -14,6 +14,12 @@ Consider these optimizations:
 		MoveList reserves 35 elements. Maybe increase this to 60+ to prevent reallocating 
 		the vector on push_backs
 
+	- MoveGenerator (cache):
+		Consider making cache of legal moves that way if legal moves for the same Board
+		(not Position) is needed, it can be found in cache.
+		Maybe to increase number of lists storable, we can save legal moves as just as
+		a single Position and a vector<Move>
+
 	- MoveList:
 		pushIfLegal*() methods are very short and simple and will be called very often.
 		consider making them inline
@@ -24,6 +30,8 @@ Consider these optimizations:
 	- GameState:
 		For draw by repetition, place count variables in each Node that say how many times 
 		a position has been reached in its history.
+		Might not improve performance because it means we have 1 more variable to copy
+		when copying Positions.
 
 		Looking for insufficient material only needs to be performed after a capture or 
 		promotion has been made. If no capture or promotion has been made, then we shouldn't
@@ -34,3 +42,9 @@ Consider these optimizations:
 		terminating search early with an evaluation of 0 (meaning draw). Because searching
 		a drauss endgame can take as much resources as a win or loss, 
 		How to know if a game is leading to a draw.
+
+	- GameHistory (or even Node tree):
+		For evaluating draw by repetition, each position in GameHistory is compared to 
+		some current position for equality. This equality consists of comparing
+		two Boards and current player. See if theres a more efficient way of comparing
+		the equality of moves based the changes.

@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "AttackChecker.h"
+#include "MoveGenerator.h"
 
 using namespace std;
 
@@ -41,21 +42,52 @@ namespace forge
 
 	void GameState::operator()(Node * node)
 	{
-		reset();
-
-		const Position & position = node->position();
-		const Board & board = position.board();
-
-		// Who's turn is it anyway?
-		bool isWhitesTurn = position.moveCounter().isWhitesTurn();
-
 		// Make sure that children nodes have been generated
 		if (node->isExpanded() == false) {
 			node->expand();	// generate children Nodes
 		}
 
+		function<bool()> drawByRepetition = [&]() {
+			return GameState::isDrawByRepetition(node);
+		};
+
+		calcGameState(
+			node->children().size(),		// Number of legal moves
+			node->position(),				// current position
+			std::move(drawByRepetition));	// calculates draw by repetition using a Node tree
+	}
+
+	void GameState::operator()(const GameHistory & history)
+	{
+		// Calculate number of legal moves
+		MoveList legals = MoveGenerator::generateLegalMoves(history.current());
+
+		function<bool()> drawByRepetition = [&]() {
+			return GameState::isDrawByRepetition(history);
+		};
+		
+		calcGameState(
+			legals.size(),					// Number of legal moves
+			history.current(),				// current position
+			std::move(drawByRepetition));	// calculates draw by repetition using a GameHistory
+	}
+
+	void GameState::calcGameState(
+		int nLegalMoves, 
+		const Position & currPos,
+		std::function<bool()>&& drawByRepetition)
+	{
+		// Blank out all values
+		reset();
+
+		const Position & position = currPos;
+		const Board & board = position.board();
+
+		// Who's turn is it anyway?
+		bool isWhitesTurn = position.moveCounter().isWhitesTurn();
+
 		// --- Player can't move (WINS or DRAWS) ---
-		if (node->children().empty()) {
+		if (nLegalMoves == 0) {
 			// There are no valid moves for current player. It is either a WIN or DRAW
 			if (isWhitesTurn) {
 				// --- WHITE'S TURN ---
@@ -105,12 +137,12 @@ namespace forge
 		}
 
 		// --- Draw by Repetition (Position has been reached 3 times) ---
-		// Search up Node tree to see if we can see this position 3 times.
-		//if (isDrawByRepetition(node)) {
-		//	this->state = STATE::DRAW;
-		//	this->reason = REASON::REPETITION;
-		//	return;
-		//}
+		// Simply call this function that will figure out draw by repetition
+		if (drawByRepetition()) {
+			this->state = STATE::DRAW;
+			this->reason = REASON::REPETITION;
+			return;
+		}
 
 		// --- Insufficient Material ---
 		if (isInsufficientMaterial(board)) {
@@ -120,7 +152,7 @@ namespace forge
 		}
 	}
 
-	bool GameState::isDrawByRepetition(const Node * node) const
+	bool GameState::isDrawByRepetition(const Node * node)
 	{
 		const Position & currPos = node->position();
 
@@ -140,7 +172,26 @@ namespace forge
 		return false;	// did not find 3 matches
 	}
 
-	bool GameState::isInsufficientMaterial(const Board & board) const
+	bool GameState::isDrawByRepetition(const GameHistory & history)
+	{
+		const Position & currPos = history.current();
+
+		GameHistory::const_iterator it = history.begin();
+		GameHistory::const_iterator end = history.end();
+		
+		if (history.size()) {
+			--end;
+		}
+
+		// Try to find 3 positions that match currPos
+		auto nMatches = count(it, end, currPos);
+
+		// 3 (or more) matches means draw by repetition.
+		// We should only ever find 3 or less.
+		return nMatches >= 3;
+	}
+
+	bool GameState::isInsufficientMaterial(const Board & board)
 	{
 		// Sufficient material:
 		//  - atleast 1 pawn (either side)

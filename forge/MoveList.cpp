@@ -2,6 +2,8 @@
 
 #include "AttackChecker.h"
 
+#include <algorithm>
+
 using namespace std;
 
 #ifdef _DEBUG
@@ -252,5 +254,13 @@ namespace forge
 		}
 
 		cout << '\n';
+	}
+
+	MoveList::const_iterator MoveList::find(Move move) const
+	{
+		std::function<bool(const MovePositionPair &)> equalMoves =
+			[&](const MovePositionPair & pair) -> bool { return pair.move == move; };
+
+		return std::find_if(this->begin(), this->end(), equalMoves);
 	}
 } // namespace forge

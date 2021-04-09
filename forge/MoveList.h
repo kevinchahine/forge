@@ -58,6 +58,8 @@ namespace forge
 
 		void print(std::ostream & os = std::cout) const;
 
+		MoveList::const_iterator find(Move move) const;
+
 	private:
 	};
 

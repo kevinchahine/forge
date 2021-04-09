@@ -6,12 +6,19 @@ using namespace std;
 
 namespace forge
 {
+	ChessMatch::ChessMatch()
+	{
+		reset();
+	}
+
 	void ChessMatch::reset()
 	{
-		m_position.reset();
+		m_history.clear();
+		m_history.emplace_back();
+		m_history.back().reset();
 
-		m_whitesController.reset();
-		m_blacksController.reset();
+		if (m_whitesController != nullptr) m_whitesController->reset();
+		if (m_blacksController != nullptr) m_blacksController->reset();
 
 		m_clock.resetAll();
 	}
@@ -36,16 +43,18 @@ namespace forge
 		}
 
 		// --- Set up board ---
-		///m_position.reset();	// TODO: uncomment this
+		reset();
 
 		// --- Show board before playing ---
 		if (m_viewPtr != nullptr) {
-			m_viewPtr->show(m_position);
+			m_viewPtr->show(this->position());
 		}
 
 		// clock should have already been reset, syncronized and should now be paused.
 		// Start the clock by clicking it.
 		m_clock.click();
+
+		GameState gstate;
 
 		while (true)
 		{
@@ -53,7 +62,7 @@ namespace forge
 			// Who's turn is it?
 			ControllerBase * currPlayer = nullptr;
 
-			if (m_position.moveCounter().isWhitesTurn()) {
+			if (this->position().moveCounter().isWhitesTurn()) {
 				// White's turn
 				cout << "Whites turn...";
 				currPlayer = m_whitesController.get();
@@ -63,27 +72,34 @@ namespace forge
 				cout << "Blacks turn...";
 				currPlayer = m_blacksController.get();
 			}
-
-			MovePositionPair pair = currPlayer->getMove(m_position);
+			
+			MovePositionPair pair = currPlayer->getMove(this->position());
 
 			// --- VIEW ---
 			// Show Board with highlights of legal moves but only if move was a partial move.
 			if (pair.move.isPartial()) {
 				if (m_viewPtr != nullptr) {
-					m_viewPtr->show(m_position, MoveGenerator::generateLegalMovesFor(
-						m_position, pair.move.from()));
+					MoveList legals = 
+						MoveGenerator::generateLegalMovesFor(this->position(), pair.move.from());
+
+					m_viewPtr->show(this->position(), legals);
 				}
 
 				// Prompt AGAIN for COMPLETE move
-				pair = currPlayer->getMove(m_position);
+				pair = currPlayer->getMove(this->position());
 			}
 			
 			// Apply the move. 
-			m_position = pair.position; // Its just that simple.
+			// TODO: Make sure move was legal
+			// if (legals.find(move)) ???
+			m_history.emplace_back(pair.position); // Its just that simple.
 			
 			// Check the game state
-			GameState state;
-			//state()
+			gstate(m_history);
+			if (gstate.state != GameState::STATE::CONTINUE) {
+				cout << "Game over: " << gstate << '\n';
+				break;
+			}
 
 			// If displaying board, pause clock to prevent loosing time from next player.
 			// If player is a computer, a few milliseconds lost can be a big deal. 
@@ -92,43 +108,16 @@ namespace forge
 
 				// Show Board
 				if (m_viewPtr != nullptr) {
-					m_viewPtr->show(m_position, pair.move);
+					m_viewPtr->show(m_history.current(), pair.move);
 				}
 
 				m_clock.resume();
 			}
 
 			m_clock.click(); // Next players turn
-
-
-
 		} // end while(true)
 
-		return GameState();
+		return gstate;
 	}
 
-	GameState ChessMatch::calcGameState() const
-	{
-		GameState gState;
-
-		gState.state = GameState::STATE::CONTINUE;
-
-		// Whos turn is it?
-		if (m_position.moveCounter().isWhitesTurn()) {
-			// white's turn.
-
-			// Can white's king move?
-			// TODO:
-
-		}
-		else {
-			// blacks turn.
-
-			// Can black's king move?
-			// TODO:
-
-		}
-
-		return gState;
-	}
 } // namespace forge

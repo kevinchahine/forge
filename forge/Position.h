@@ -104,7 +104,12 @@ namespace forge
 		const MoveCounter & moveCounter() const { return m_moveCounter; }
 
 		// Only compares board.
-		bool operator==(const Position & rhs) const { return this->m_board == rhs.m_board; }
+		bool operator==(const Position & rhs) const 
+		{ 
+			return 
+				(m_moveCounter.isWhitesTurn() == rhs.m_moveCounter.isWhitesTurn()) && 
+				(m_board == rhs.m_board); 
+		}
 		bool operator!=(const Position & rhs) const { return !(*this == rhs); }
 
 	protected:

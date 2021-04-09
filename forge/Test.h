@@ -63,5 +63,7 @@ namespace forge
 
 		void gameState();
 
+		void drawByRepetition();
+
 	} // namespace test
 } // namespace forge

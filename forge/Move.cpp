@@ -65,9 +65,7 @@ namespace forge
 			char file = input.at(0);
 			char rank = input.at(1);
 
-			move.promotion(pieces::empty);
-			move.to(file, rank);
-			move.from(move.to());	// Make it a partial move
+			move = Move(BoardSquare{ file, rank }, BoardSquare{ file, rank }, pieces::empty);
 		}
 		else if (input.size() == 3) {
 			// Must be partial move.

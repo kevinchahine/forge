@@ -3,6 +3,7 @@
 #include "Board.h"
 #include "Clock.h"
 #include "ControllerBase.h"
+#include "GameHistory.h"
 #include "GameState.h"
 #include "Position.h"
 #include "ViewBase.h"
@@ -17,6 +18,13 @@ namespace forge
 	class ChessMatch
 	{
 	public:
+		ChessMatch();
+		ChessMatch(const ChessMatch &) = default;
+		ChessMatch(ChessMatch &&) noexcept = default;
+		~ChessMatch() noexcept = default;
+		ChessMatch & operator=(const ChessMatch &) = default;
+		ChessMatch & operator=(ChessMatch &&) noexcept = default;
+
 		// After calling reset() its good to set time controls for Clock. See Clock.h
 		void reset();
 
@@ -25,18 +33,28 @@ namespace forge
 		// Blocking call.
 		GameState runGame();
 
-		Position & position() { return m_position; }
-		const Position & position() const { return m_position; }
+		Position & position() { return m_history.current(); }
+		const Position & position() const { return m_history.current(); }
 
 		template<typename CONTROLLER_T>
 		void makeWhiteController() {
 			m_whitesController = std::make_unique<CONTROLLER_T>();
 		}
 
+		void setWhiteController(std::unique_ptr<ControllerBase> && whiteController) { m_whitesController = std::move(whiteController); }
+
+		std::unique_ptr<ControllerBase> & getWhiteController() { return m_whitesController; }
+		const std::unique_ptr<ControllerBase> & getWhiteController() const { return m_whitesController; }
+
 		template<typename CONTROLLER_T>
 		void makeBlackController() {
 			m_blacksController = std::make_unique<CONTROLLER_T>();
 		}
+		
+		void setBlackController(std::unique_ptr<ControllerBase> && blackController) { m_blacksController = std::move(blackController); }
+
+		std::unique_ptr<ControllerBase> & getBlackController() { return m_blacksController; }
+		const std::unique_ptr<ControllerBase> & getBlackController() const { return m_blacksController; }
 
 		template<typename VIEW_T>
 		void makeView() {
@@ -47,11 +65,7 @@ namespace forge
 		const Clock & clock() const { return m_clock; }
 
 	private:
-		GameState calcGameState() const;
-
-	private:
-		// TODO: Replace this with a GameHistory to that we can look for draw by repetition
-		Position m_position;
+		GameHistory m_history;
 
 		std::unique_ptr<ControllerBase> m_whitesController;
 		std::unique_ptr<ControllerBase> m_blacksController;

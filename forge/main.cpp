@@ -29,7 +29,7 @@ int main(int argc, char ** argv)
 		<< guten::color::white;
 	
 	//forge::test::boardSquare();
-	forge::test::keyboardController();
+	//forge::test::keyboardController();
 	//forge::test::clock();
 	//forge::test::stopWatch();
 	//forge::test::boardDefualt();
@@ -45,7 +45,7 @@ int main(int argc, char ** argv)
 	//forge::test::solver();
 	//forge::test::insufficientMaterial();
 	//forge::test::gameState();
-
+	forge::test::drawByRepetition();
 
 	//this_thread::sleep_for(chrono::seconds(1));
 	cin.get();

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <bitset>
 
+#include "GameHistory.h"
 #include "Position.h"
 #include "Node.h"
 
@@ -37,13 +38,27 @@ namespace forge
 		// Calculates and sets game state
 		//void operator()(const ChessMatch & match);	// TODO:
 		void operator()(Node * node);
+		void operator()(const GameHistory & history);
 
 		friend std::ostream & operator<<(std::ostream & os, const GameState & gs);
 
 	private:
-		bool isDrawByRepetition(const Node * node) const;
+		// Calculates state of game as in: white wins, black wins, draw or continue.
+		// params:
+		//	- nLegalMoves - Number of legal moves at currPos
+		//	- currPos - current position game
+		//	- drawByRepetition - function that calculates a draw by repetition.
+		//		Function will need to contain in some way all the moves or positions
+		//		that lead to currPos, and return true if currPos has been found in 
+		//		game history atleast 3 times (actually 2 times not counting 'currPos'
+		//		itself.
+		void calcGameState(int nLegalMoves, const Position & currPos, std::function<bool()> && drawByRepetition);
 
-		bool isInsufficientMaterial(const Board & board) const;
+		static bool isDrawByRepetition(const Node * node);
+
+		static bool isDrawByRepetition(const GameHistory & history);
+
+		static bool isInsufficientMaterial(const Board & board);
 
 	public:
 		enum class PLAYER : bool {

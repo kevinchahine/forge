@@ -148,6 +148,7 @@
     <ClCompile Include="ControllerBase.cpp" />
     <ClCompile Include="DataMonitor.cpp" />
     <ClCompile Include="FiftyMoveRule.cpp" />
+    <ClCompile Include="GameHistory.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="HeuristicBase.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="RandomHeuristic.cpp" />
     <ClCompile Include="RandomSolver.cpp" />
+    <ClCompile Include="ReplayController.cpp" />
     <ClCompile Include="SearchMonitor.cpp" />
     <ClCompile Include="SolverBase.cpp" />
     <ClCompile Include="StopWatch.cpp" />
@@ -210,6 +212,7 @@
     <ClInclude Include="Controllers.hpp" />
     <ClInclude Include="DataMonitor.h" />
     <ClInclude Include="FiftyMoveRule.h" />
+    <ClInclude Include="GameHistory.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="HeuristicBase.h" />
@@ -229,6 +232,7 @@
     <ClInclude Include="PositionInline.h" />
     <ClInclude Include="RandomHeuristic.h" />
     <ClInclude Include="RandomSolver.h" />
+    <ClInclude Include="ReplayController.h" />
     <ClInclude Include="SearchMonitor.h" />
     <ClInclude Include="SolverBase.h" />
     <ClInclude Include="Solvers.hpp" />
