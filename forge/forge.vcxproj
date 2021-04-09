@@ -198,6 +198,7 @@
     <Text Include="UCI.txt" />
     <Text Include="UCI_Definition.txt" />
     <Text Include="ValidMoveGenerator.txt" />
+    <Text Include="Versions.txt" />
     <Text Include="View.txt" />
   </ItemGroup>
   <ItemGroup>

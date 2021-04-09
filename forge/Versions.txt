@@ -1,0 +1,56 @@
+=== FORGE ===
+=== Versions ===
+
+v0.0
+	Basic incomplete Chess engine with Random Solver as AI agent
+	Supports:
+		- Legal move generator that supports:
+			- Simple piece moves
+			- Simple piece captures
+			- Pawn moves
+			- Captures by pawns
+			- Pawn promotions
+			Not support:
+			- Enpassent
+			- Castling
+		- Board Representation
+		- ChessMatch
+		- 50 move rule
+		- Draw by repetition
+		- Checkmate
+		- Stalemate
+		- Views:
+			- TextView
+		- Controller/AiSolvers:
+			- KeyboardController
+			- ReplayController
+
+v0.1
+	
+v1.0
+	Complete Chess engine
+
+v2.0
+	Support for AI Agents
+		- Minimax algorithm with basic evaluation function
+		- MCTS algorithm with no evaluation function
+	
+v3.0 
+	UCI Support
+
+v4.0
+	Optimized Search Algorithms
+		- Adds Alpha-beta pruning to Minimax
+		- Adds Evaluation function to each Node of Minimax to evaluate better moves 1st
+		- Adds Evaluation function to MCTS to encourage evaluating better moves 1st
+
+v5.0
+	Deep Neural Network and Machine Learning
+		- Adds DNN evaluation function for both Minimax and MCTS using tensorflow
+		- Adds training algorithm for machine learning
+
+v6.0 
+	Support for Multi-threaded Search algorithms
+		- Multi-threaded Minimax 
+		- Multi-threaded MCTS
+

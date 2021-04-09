@@ -217,6 +217,9 @@
     <Text Include="Bugs.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="Versions.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test.h">
