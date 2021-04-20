@@ -8,9 +8,9 @@ using namespace std;
 
 namespace forge
 {
-	// Used in std::min() and std::max. 
-	// Compares two unique_ptr<Node> based on fitness score of each Node.
-	bool compareFitness(const unique_ptr<Node> & a, const unique_ptr<Node> & b) {
+	// Used for std::min_element() and std::max_element. 
+	// Compares two shared_ptr<Node> based on fitness score of each Node.
+	bool compareFitness(const shared_ptr<Node> & a, const shared_ptr<Node> & b) {
 		return a->fitness() < b->fitness();
 	}
 
@@ -42,19 +42,22 @@ namespace forge
 		m_childrenPtrs.reserve(moves.size());
 
 		for (const auto & move : moves) {
-			unique_ptr<Node> childPtr = make_unique<Node>();
+			// -- Create new Node --
+			m_childrenPtrs.emplace_back(make_shared<Node>());
 
-			childPtr->m_move = move.move;
-			childPtr->m_position = move.position;	// TODO: Slow copy
+			// -- Alias --
+			Node & child = *m_childrenPtrs.back();
 
-			m_childrenPtrs.push_back(std::move(childPtr));
+			// -- Assign proper values --
+			child.m_move = move.move;
+			child.m_position = move.position;	// TODO: Optimize: Slow copy
 		}
 
 		// 3.) --- Assign sibling pointers ---
 		if (m_childrenPtrs.size()) {
 			for (size_t i = 0; i < m_childrenPtrs.size() - 1; i++) {
-				unique_ptr<Node> & childPtr = m_childrenPtrs.at(i);
-				unique_ptr<Node> & nextChildPtr = m_childrenPtrs.at(i + 1);
+				shared_ptr<Node> & childPtr = m_childrenPtrs.at(i);
+				shared_ptr<Node> & nextChildPtr = m_childrenPtrs.at(i + 1);
 
 				childPtr->m_parentPtr = this;
 				childPtr->m_nextPtr = nextChildPtr.get();
@@ -76,7 +79,7 @@ namespace forge
 	{
 		const auto & c = m_childrenPtrs;
 
-		const Node * p_bestChild = nullptr;
+		vector<shared_ptr<Node>>::const_iterator it;
 
 		// Only makes sense for minimax
 		// Find child with max or min fitness and assign it to this node.
@@ -84,24 +87,41 @@ namespace forge
 		if (m_position.moveCounter().isWhitesTurn()) {
 			// --- White player is moving ---
 
-			// White is maximizing so find child with highest fitness
-			p_bestChild = max_element(
-				c.data(), 
-				c.data() + c.size(),
-				compareFitness)->get();		// goes from <unique_ptr *> to <*>
+			// White is maximizing so find child with highest fitness.
+			// !!! If children vector is empty, then max_element will return iterator to end.
+			// TODO: Optimize: Try using pointers for range instead of iterators
+			it = max_element(
+				c.begin(),		// c.data(), 
+				c.end(),		// c.data() + c.size(),
+				compareFitness);
 		}
 		else {
 			// --- Black player is moving ---
 
 			// Black is minimizing so find child with lowest fitness
-			p_bestChild = min_element(
-				c.data(),
-				c.data() + c.size(),
-				compareFitness)->get();		// goes from <unique_ptr *> to <*>
+			// *See comments for max_element call above.
+			// TODO: Optimize: Try using pointers for range instead of iterators
+			it = min_element(
+				c.begin(),			// c.data(),
+				c.end(),			// c.data() + c.size(),
+				compareFitness);	
 		}
 
-		m_fitness = p_bestChild->fitness();
-		m_bestChildPtr = p_bestChild;
+		// Assign pointer to best child if it exists.
+		
+		if (it != c.end()) {
+		m_bestChildPtr = (it != c.end() ? *it : nullptr);	// m_bestChildPtr = p_bestChild;
+		m_fitness = m_bestChildPtr->fitness();
+		}
+		else {
+#ifdef _DEBUG
+			cout << guten::color::push()
+				<< guten::color::lightred.inverted()
+				<< "Error: " << __FUNCTION__ << " line " << __LINE__ 
+				<< ": No best child was found. Do any children exist. " << '\n'
+				<< guten::color::pop();
+#endif // _DEBUG
+		}
 
 		m_childrenPtrs.clear();
 

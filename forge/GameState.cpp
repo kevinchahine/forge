@@ -40,11 +40,11 @@ namespace forge
 		return os;
 	}
 
-	void GameState::operator()(Node * node)
+	void GameState::operator()(Node & node)
 	{
 		// Make sure that children nodes have been generated
-		if (node->isExpanded() == false) {
-			node->expand();	// generate children Nodes
+		if (node.isExpanded() == false) {
+			node.expand();	// generate children Nodes
 		}
 
 		function<bool()> drawByRepetition = [&]() {
@@ -52,8 +52,8 @@ namespace forge
 		};
 
 		calcGameState(
-			node->children().size(),		// Number of legal moves
-			node->position(),				// current position
+			node.children().size(),			// Number of legal moves
+			node.position(),				// current position
 			std::move(drawByRepetition));	// calculates draw by repetition using a Node tree
 	}
 
@@ -152,24 +152,30 @@ namespace forge
 		}
 	}
 
-	bool GameState::isDrawByRepetition(const Node * node)
+	bool GameState::isDrawByRepetition(const Node & node)
 	{
-		const Position & currPos = node->position();
+		const Position & currPos = node.position();
 
-		const Node * nPtr = node;
+		const Node * nPtr = &node;
 		uint8_t matches = 0;
 		
+		// Skip current Node 
+		nPtr = &nPtr->parent();	
+
 		while (nPtr != nullptr) {
 			if (nPtr->position() == currPos) {
 				matches++;
 
 				if (matches >= 3) {
-					return true;	// 3 matches found
+					return true;	// 3 matches found (DRAW by repetition)
 				}
 			}
+
+			// Jump to parent of this node.
+			nPtr = &nPtr->parent();
 		}
 
-		return false;	// did not find 3 matches
+		return false;	// did not find 3 matches (No DRAW)
 	}
 
 	bool GameState::isDrawByRepetition(const GameHistory & history)

@@ -43,8 +43,8 @@ namespace forge
 
 		void setWhiteController(std::unique_ptr<ControllerBase> && whiteController) { m_whitesController = std::move(whiteController); }
 
-		std::unique_ptr<ControllerBase> & getWhiteController() { return m_whitesController; }
-		const std::unique_ptr<ControllerBase> & getWhiteController() const { return m_whitesController; }
+		std::unique_ptr<ControllerBase> & whiteController() { return m_whitesController; }
+		const std::unique_ptr<ControllerBase> & whiteController() const { return m_whitesController; }
 
 		template<typename CONTROLLER_T>
 		void makeBlackController() {
@@ -53,8 +53,8 @@ namespace forge
 		
 		void setBlackController(std::unique_ptr<ControllerBase> && blackController) { m_blacksController = std::move(blackController); }
 
-		std::unique_ptr<ControllerBase> & getBlackController() { return m_blacksController; }
-		const std::unique_ptr<ControllerBase> & getBlackController() const { return m_blacksController; }
+		std::unique_ptr<ControllerBase> & blackController() { return m_blacksController; }
+		const std::unique_ptr<ControllerBase> & blackController() const { return m_blacksController; }
 
 		template<typename VIEW_T>
 		void makeView() {

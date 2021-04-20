@@ -64,12 +64,12 @@ namespace forge
 
 			if (this->position().moveCounter().isWhitesTurn()) {
 				// White's turn
-				cout << "Whites turn...";
+				cout << "Whites turn...\n";
 				currPlayer = m_whitesController.get();
 			}
 			else {
 				// Black's turn
-				cout << "Blacks turn...";
+				cout << "Blacks turn...\n";
 				currPlayer = m_blacksController.get();
 			}
 			
@@ -109,6 +109,8 @@ namespace forge
 				// Show Board
 				if (m_viewPtr != nullptr) {
 					m_viewPtr->show(m_history.current(), pair.move);
+					cout << "Press any key...";
+					cin.get();	// remove this
 				}
 
 				m_clock.resume();

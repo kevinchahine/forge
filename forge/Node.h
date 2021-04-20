@@ -44,19 +44,23 @@ namespace forge
 		bool isPruned() const { return m_state == STATE::PRUNED; }
 
 		Move & move() { return m_move; }
-		Move move() const { return m_move; }
+		const Move & move() const { return m_move; }
 
 		Position & position() { return m_position; }
 		const Position & position() const { return m_position; }
 
+		Node & parent() { return *m_parentPtr; }
+		const Node & parent() const { return *m_parentPtr; }
+
 		heuristic_t & fitness() { return m_fitness; }
 		const heuristic_t & fitness() const { return m_fitness; }
 
-		const Node & bestMove() const { return *m_bestChildPtr; }
+		// TODO: Make it std::shared_ptr<const Node>
+		const std::shared_ptr<Node> & bestMovePtr() const { return m_bestChildPtr; }
 		///Node & bestMove() { return *m_bestChildPtr; }
 
-		//std::vector<std::unique_ptr<Node>> & children() { return m_childrenPtrs; }
-		const std::vector<std::unique_ptr<Node>> & children() const { return m_childrenPtrs; }
+		//std::vector<std::shared_ptr<Node>> & children() { return m_childrenPtrs; }
+		const std::vector<std::shared_ptr<Node>> & children() const { return m_childrenPtrs; }
 
 		// Designed to work with Minimax
 		// For MTCS, we may need to implemente a different iterator.
@@ -154,12 +158,14 @@ namespace forge
 		heuristic_t m_fitness = 0;
 
 		// Best move cooresponding to child with the best fitness
-		const Node * m_bestChildPtr = nullptr;	// Move m_bestMove;
+		// TODO: Make it std::shared_ptr<const Node>
+		std::shared_ptr<Node> m_bestChildPtr = nullptr;
+		//const Node * m_bestChildPtr = nullptr;	// Move m_bestMove;
 
 		// Addresses of children nodes
 		// TODO: Why not store children as a vector<Node> instead?
 		// TODO: Whould it make sorting slower?
-		std::vector<std::unique_ptr<Node>> m_childrenPtrs;
+		std::vector<std::shared_ptr<Node>> m_childrenPtrs;
 
 		// Set to true when all children have been fully searched and pruned.
 		// Set from the pruneChildren() method

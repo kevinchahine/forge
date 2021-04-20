@@ -36,9 +36,12 @@ namespace forge
 		void reset() { (*this) = GameState(); }
 
 		// Calculates and sets game state
-		//void operator()(const ChessMatch & match);	// TODO:
-		void operator()(Node * node);
+		void operator()(Node & node);
 		void operator()(const GameHistory & history);
+		//void operator()(const ChessMatch & match);	// TODO:
+
+		bool isGameOver() const { return state != STATE::CONTINUE; }
+		bool isGameOn() const { return state == STATE::CONTINUE; }
 
 		friend std::ostream & operator<<(std::ostream & os, const GameState & gs);
 
@@ -54,7 +57,7 @@ namespace forge
 		//		itself.
 		void calcGameState(int nLegalMoves, const Position & currPos, std::function<bool()> && drawByRepetition);
 
-		static bool isDrawByRepetition(const Node * node);
+		static bool isDrawByRepetition(const Node & node);
 
 		static bool isDrawByRepetition(const GameHistory & history);
 

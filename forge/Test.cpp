@@ -349,8 +349,19 @@ namespace forge
 				chrono::seconds(2)
 			); // Clock is still paused
 
-			match.makeWhiteController<RandomSolver>();
-			match.makeBlackController<RandomSolver>();
+			auto whiteController =
+				//make_unique<RandomSolver>();
+				make_unique<MinimaxSolver>();
+
+			auto blackController =
+				//make_unique<RandomSolver>();
+				make_unique<MinimaxSolver>();
+			
+			whiteController->makeHeuristic<RandomHeuristic>();
+			blackController->makeHeuristic<RandomHeuristic>();
+
+			match.whiteController() = std::move(whiteController);
+			match.blackController() = std::move(blackController);
 
 			match.makeView<TextView>();
 
@@ -430,7 +441,7 @@ namespace forge
 			pos.board().print();
 
 			GameState gs;
-			gs(&n);
+			gs(n);
 
 			cout << "Game state: " << gs << '\n';
 		}

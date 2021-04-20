@@ -8,7 +8,7 @@ using namespace std;
 
 #ifdef _DEBUG
 void printError(forge::Move m, const string & funcName) {
-	cout << "Great illegal move found :p, " << m << " in " << funcName << "\n";
+	///cout << "Great illegal move found :p, " << m << " in " << funcName << "\n";
 }
 #elif
 #define printError(MOVE, FUNCNAME)
