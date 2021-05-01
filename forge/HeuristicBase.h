@@ -18,11 +18,11 @@ namespace forge
 		template<typename T>
 		std::unique_ptr<T> cloneAs() const;
 
-		std::vector<double> & weights() { return m_weights; }
-		const std::vector<double> & weights() const { return m_weights; }
+		std::vector<heuristic_t> & weights() { return m_weights; }
+		const std::vector<heuristic_t> & weights() const { return m_weights; }
 
 	protected:
-		std::vector<double> m_weights;
+		std::vector<heuristic_t> m_weights;
 	};
 
 	template<typename T>

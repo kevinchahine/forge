@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ApplePieHeuristic.cpp" />
+    <ClCompile Include="ApplePieWeights.cpp" />
     <ClCompile Include="AttackChecker.cpp" />
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="Board.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="PositionTable.cpp" />
     <ClCompile Include="RandomHeuristic.cpp" />
     <ClCompile Include="RandomSolver.cpp" />
     <ClCompile Include="ReplayController.cpp" />
@@ -175,6 +177,8 @@
     <ClCompile Include="TextView.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ViewBase.cpp" />
+    <ClCompile Include="WeightsArchive.cpp" />
+    <ClCompile Include="WeightsBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="AI.txt" />
@@ -204,6 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApplePieHeuristic.h" />
+    <ClInclude Include="ApplePieWeights.h" />
     <ClInclude Include="AttackChecker.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Board.h" />
@@ -232,6 +237,7 @@
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PositionInline.h" />
+    <ClInclude Include="PositionTable.h" />
     <ClInclude Include="RandomHeuristic.h" />
     <ClInclude Include="RandomSolver.h" />
     <ClInclude Include="ReplayController.h" />
@@ -243,6 +249,8 @@
     <ClInclude Include="TextView.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ViewBase.h" />
+    <ClInclude Include="WeightsArchive.h" />
+    <ClInclude Include="WeightsBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

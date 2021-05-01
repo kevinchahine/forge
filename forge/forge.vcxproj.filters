@@ -39,6 +39,9 @@
     <Filter Include="Controllers">
       <UniqueIdentifier>{96ce3abc-ba0d-490d-9584-da9f78655775}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Weights">
+      <UniqueIdentifier>{9c487543-8ab1-476b-8ba4-28a7774c09f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -148,6 +151,18 @@
     </ClCompile>
     <ClCompile Include="ReplayController.cpp">
       <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="WeightsBase.cpp">
+      <Filter>Weights</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplePieWeights.cpp">
+      <Filter>Weights</Filter>
+    </ClCompile>
+    <ClCompile Include="WeightsArchive.cpp">
+      <Filter>Weights</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionTable.cpp">
+      <Filter>Weights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,6 +359,18 @@
     </ClInclude>
     <ClInclude Include="ReplayController.h">
       <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="WeightsBase.h">
+      <Filter>Weights</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplePieWeights.h">
+      <Filter>Weights</Filter>
+    </ClInclude>
+    <ClInclude Include="WeightsArchive.h">
+      <Filter>Weights</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionTable.h">
+      <Filter>Weights</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

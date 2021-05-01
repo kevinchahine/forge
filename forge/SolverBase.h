@@ -18,7 +18,7 @@ namespace forge
 		void makeHeuristic();
 
 		template<typename T>
-		void makeHeuristic(const std::vector<double> & weights);
+		void makeHeuristic(const std::vector<heuristic_t> & weights);
 
 	protected:
 		std::unique_ptr<HeuristicBase> heuristicPtr;
@@ -34,7 +34,7 @@ namespace forge
 	}
 
 	template<typename T>
-	inline void SolverBase::makeHeuristic(const std::vector<double>& weights)
+	inline void SolverBase::makeHeuristic(const std::vector<heuristic_t>& weights)
 	{
 		static_assert(std::is_base_of<HeuristicBase, T>::value,
 			"HeuristicBase is not a base class of type T");
