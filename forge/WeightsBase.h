@@ -1,5 +1,8 @@
 #pragma once
 
+#include "HeuristicBase.h"
+#include "WeightsArchive.h"
+
 #include <iostream>
 #include <vector>
 
@@ -9,12 +12,14 @@ namespace forge
 	{
 	public:
 		WeightsBase() = default;
-		//WeightsBase(size_t nWeights) : std::vector<int>(nWeights) {}
 		WeightsBase(const WeightsBase &) = default;
 		WeightsBase(WeightsBase &&) noexcept = default;
 		virtual ~WeightsBase() noexcept = default;
 		WeightsBase & operator=(const WeightsBase &) = default;
 		WeightsBase & operator=(WeightsBase &&) noexcept = default;
+
+		virtual void serialize(WeightsArchive & ar) const = 0;
+		virtual void parse(WeightsArchive & ar) = 0;
 
 	};
 } // namespace forge

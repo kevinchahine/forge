@@ -9,45 +9,48 @@ namespace forge
 	class ApplePieWeights : public WeightsBase
 	{
 	public:
-		ApplePieWeights() : WeightsBase{ 100 } {}	// TODO: Just For now
+		ApplePieWeights() = default;
 		ApplePieWeights(const ApplePieWeights &) = default;
 		ApplePieWeights(ApplePieWeights &&) noexcept = default;
 		virtual ~ApplePieWeights() noexcept = default;
 		ApplePieWeights & operator=(const ApplePieWeights &) = default;
 		ApplePieWeights & operator=(ApplePieWeights &&) noexcept = default;
 
-		///// --- Material ---
-		///heuristic_t queenWeight() const { return (*this)[0]; }
-		///heuristic_t rookWeight() const { return (*this)[1]; }
-		///heuristic_t bishopWeight() const { return (*this)[2]; }
-		///heuristic_t knightWeight() const { return (*this)[3]; }
-		///heuristic_t pawnWeight() const { return (*this)[4]; }
-		///heuristic_t bishopPair() const { return (*this)[5]; }
-		///heuristic_t oppositeBishop() const { return (*this)[6]; }
-		///
-		///// --- Mobility ---
-		///heuristic_t queenMobility() const { return (*this)[7]; }
-		///heuristic_t rookMobility() const { return (*this)[8]; }
-		///heuristic_t bishopMobility() const { return (*this)[9]; }
-		///heuristic_t knightMobility() const { return (*this)[10]; }
-		///heuristic_t pawnMobility() const { return (*this)[11]; }
-		///heuristic_t kingMobility() const { return (*this)[12]; }
-		///
-		///// --- Piece Square Table Bonus (pstb) ---
-		///heuristic_t queenPSTB(BoardSquare cell) const { return (*this)[13 + cell.val()]; }
-		///heuristic_t rookPSTB(BoardSquare cell) const { return (*this)[13 + 64 + cell.val()]; }
-		///heuristic_t bishopPSTB(BoardSquare cell) const { return (*this)[13 + 64 + cell.val()]; }
-		///heuristic_t knightPSTB(BoardSquare cell) const { return (*this)[13 + 64 + cell.val()]; }
-		///heuristic_t pawnPSTB(BoardSquare cell) const { return (*this)[13 + 64 + cell.val()]; }
-		///heuristic_t kingPSTB(BoardSquare cell) const { return (*this)[13 + 64 + cell.val()]; }
-		///
-		///// --- Defended Pieces ---
-		///heuristic_t queensDefended() const { return (*this)[13 + cell.val()]; }
-		///heuristic_t rooksDefended() const { return (*this)[13 + 64 + cell.val()]; }
-		///heuristic_t bishopsDefended() const { return (*this)[13 + 64 + cell.val()]; }
-		///heuristic_t knightsDefended() const { return (*this)[13 + 64 + cell.val()]; }
-		///heuristic_t pawnsDefended() const { return (*this)[13 + 64 + cell.val()]; }
-		///heuristic_t kingsDefended() const { return (*this)[13 + 64 + cell.val()]; }
+		virtual void serialize(WeightsArchive & ar) const override;
+		virtual void parse(WeightsArchive & ar) override;
+
+		// --- Material ---
+		heuristic_t queenWeight = 0;
+		heuristic_t rookWeight = 0;
+		heuristic_t bishopWeight = 0;
+		heuristic_t knightWeight = 0;
+		heuristic_t pawnWeight = 0;
+		heuristic_t bishopPair = 0;
+		heuristic_t oppositeBishop = 0;
+		
+		// --- Mobility ---
+		heuristic_t queenMobility = 0;
+		heuristic_t rookMobility = 0;
+		heuristic_t bishopMobility = 0;
+		heuristic_t knightMobility = 0;
+		heuristic_t pawnMobility = 0;
+		heuristic_t kingMobility = 0;
+		
+		// --- Piece Square Table Bonus  = 0;
+		heuristic_t queenPSTB = 0;
+		heuristic_t rookPSTB = 0;
+		heuristic_t bishopPSTB = 0;
+		heuristic_t knightPSTB = 0;
+		heuristic_t pawnPSTB = 0;
+		heuristic_t kingPSTB = 0;
+		
+		// --- Defended Pieces ---
+		heuristic_t queensDefended = 0;
+		heuristic_t rooksDefended = 0;
+		heuristic_t bishopsDefended = 0;
+		heuristic_t knightsDefended = 0;
+		heuristic_t pawnsDefended = 0;
+		heuristic_t kingsDefended = 0;
 
 		// --- Attacking Pieces ---
 	}; // class ApplePieWeights

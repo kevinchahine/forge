@@ -12,7 +12,7 @@ namespace forge
 	public:
 
 		void serialize(WeightsArchive & ar) const;
-		void parse(const WeightsArchive & ar);
 
+		void parse(WeightsArchive & ar);
 	};
 } // namespace forge
