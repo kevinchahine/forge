@@ -3,10 +3,18 @@
 === This is gonna be hard ===
 === But very benificial ===
 
+Questions:
+	1.) Can threads be killed by the same process that created them?
+		How?
+
+	2.) 
+
 Procedure:
 Starup:
-1.) Engine startup - prepares to use UCI
-2.) Talk to UCI
+1.) Engine startup 
+2.) Read from cin using getline.
+		2.1) If input equals "uci", then switch engine to UCI mode.
+		2.2) 
 3.) 
 
 

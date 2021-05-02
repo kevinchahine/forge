@@ -4,31 +4,41 @@
 v0.0
 	Basic incomplete Chess engine with Random Solver as AI agent
 	Supports:
-		- Legal move generator that supports:
-			- Simple piece moves
-			- Simple piece captures
-			- Pawn moves
-			- Captures by pawns
-			- Pawn promotions
-			Not support:
-			- Enpassent
-			- Castling
-		- Board Representation
-		- ChessMatch
-		- 50 move rule
-		- Draw by repetition
-		- Checkmate
-		- Stalemate
-		- Views:
-			- TextView
-		- Controller/AiSolvers:
-			- KeyboardController
-			- ReplayController
-
-v0.1
-	
+		- Legal move generator that supports:..................................DONE
+			- Simple piece moves...............................................DONE
+			- Simple piece captures............................................DONE
+			- Pawn moves.......................................................DONE
+			- Captures by pawns................................................DONE
+			- Pawn promotions..................................................DONE
+			Not supported:.....................................................SKIPPED
+			- Enpassent........................................................SKIPPED
+			- Castling.........................................................SKIPPED
+		- Board Representation.................................................DONE
+		- ChessMatch...........................................................DONE
+		- 50 move rule.........................................................DONE
+		- Draw by repetition...................................................DONE
+		- Checkmate............................................................DONE
+		- Stalemate............................................................DONE
+		- Views................................................................DONE
+			- TextView.........................................................DONE
+		- Controller/AiSolve...................................................DONE
+			- KeyboardController...............................................DONE
+			- RandomSolver.....................................................DONE
+				
 v1.0
-	Complete Chess engine
+	Complete Chess engine:
+		- Enpassent............................................................
+		- Castling.............................................................
+		- Weights and Heuristics:..............................................IN PROGRESS
+			- Weights Class Heirarchy..........................................
+				- Store weights in a variety of data structures................
+				- serialize/parse with WeightsArchive..........................
+			- Heuristic Class Heirarchy........................................
+			- WeightsArchive...................................................
+				- convert to a vector<heuristic_t> for ML......................
+				- convert from a vector<heuristic_t> for ML....................
+				- Stream insertion operator (for logging and IPC)..............
+				- Stream extraction operator (for logging and IPC).............
 
 v2.0
 	Support for AI Agents
@@ -54,3 +64,9 @@ v6.0
 		- Multi-threaded Minimax 
 		- Multi-threaded MCTS
 
+Unscheduled Features (Assign these to a version):
+	- ReplayController.................................................
+	- Machine Learning (Optimizer) for Traditional Heuristics
+		Use Tensorflows optimizer for NNs
+	- Distributed Training Algorithm
+	- Network Controller for remote gameplay

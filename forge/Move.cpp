@@ -181,6 +181,8 @@ namespace forge
 
 	string Move::toLAN() const
 	{
+		// TODO: Nullmoves should be "0000"
+
 		stringstream ss;
 
 		ss << from() << to();
