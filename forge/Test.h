@@ -14,6 +14,7 @@
 
 #include "Controllers.hpp"
 #include "Heuristics.hpp"
+#include "Weights.hpp"
 
 #include <iostream>
 #include <thread>
@@ -21,7 +22,7 @@
 
 #include <Guten/guten.hpp>
 
-#include <conio.h>	// Only for testing
+#include <conio.h>	// Only for testing (Only Windows compatible)
 
 namespace forge
 {
@@ -65,5 +66,9 @@ namespace forge
 
 		void drawByRepetition();
 
+		namespace weights
+		{
+			void applePie();
+		} // namespace weights
 	} // namespace test
 } // namespace forge

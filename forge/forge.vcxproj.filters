@@ -164,6 +164,12 @@
     <ClCompile Include="PositionTable.cpp">
       <Filter>Weights</Filter>
     </ClCompile>
+    <ClCompile Include="IWeightsArchive.cpp">
+      <Filter>Weights</Filter>
+    </ClCompile>
+    <ClCompile Include="OWeightsArchive.cpp">
+      <Filter>Weights</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -370,6 +376,15 @@
       <Filter>Weights</Filter>
     </ClInclude>
     <ClInclude Include="PositionTable.h">
+      <Filter>Weights</Filter>
+    </ClInclude>
+    <ClInclude Include="Weights.hpp">
+      <Filter>Weights</Filter>
+    </ClInclude>
+    <ClInclude Include="OWeightsArchive.h">
+      <Filter>Weights</Filter>
+    </ClInclude>
+    <ClInclude Include="IWeightsArchive.h">
       <Filter>Weights</Filter>
     </ClInclude>
   </ItemGroup>

@@ -225,11 +225,11 @@ namespace forge
 			p.clear();
 
 			///b.placeAllPieces();
-			forge::BoardSquare s{ 5, 4 };				
-			b.placeWhiteKnight(s);						
-			b.placeWhiteQueen(s.right());						
-			b.placeBlackBishop(s.up(2));				
-			b.placeWhitePawn(s.left(2));				
+			forge::BoardSquare s{ 5, 4 };
+			b.placeWhiteKnight(s);
+			b.placeWhiteQueen(s.right());
+			b.placeBlackBishop(s.up(2));
+			b.placeWhitePawn(s.left(2));
 			(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
 
 			b.print();
@@ -356,7 +356,7 @@ namespace forge
 			auto blackController =
 				//make_unique<RandomSolver>();
 				make_unique<MinimaxSolver>();
-			
+
 			whiteController->makeHeuristic<RandomHeuristic>();
 			blackController->makeHeuristic<RandomHeuristic>();
 
@@ -493,7 +493,7 @@ namespace forge
 
 			cout << "White: " << white.size() << '\n'
 				<< "Black: " << black.size() << '\n';
-			
+
 			match.setWhiteController(std::move(whitePtr));
 			match.setBlackController(std::move(blackPtr));
 
@@ -504,5 +504,71 @@ namespace forge
 
 			match.runGame();
 		}
+
+		namespace weights
+		{
+			void applePie()
+			{
+				ApplePieWeights w;
+
+				// --- Material ---
+				w.queenWeight = 1;
+				w.rookWeight = 2;
+				w.bishopWeight = 3; 
+				w.knightWeight = 4;
+				w.pawnWeight = 5;
+				w.bishopPair = 6;
+				w.oppositeBishop = 7;
+
+				// --- Mobility ---
+				w.queenMobility = 8;
+				w.rookMobility = 9;
+				w.bishopMobility = 10;
+				w.knightMobility = 11;
+				w.pawnMobility = 12;
+				w.kingMobility = 13;
+					
+				// --- Piece Square Table Bonus ---
+				w.queenPSTB = { {
+					1, 1, 1, 1, 1, 1, 1, 1, 
+					2, 2, 2, 2, 2, 2, 2, 2,
+					3, 3, 3, 3, 3, 3, 3, 3, 
+					4, 4, 4, 4, 4, 4, 4, 4, 
+					5, 5, 5, 5, 5, 5, 5, 5, 
+					6, 6, 6, 6, 6, 6, 6, 6, 
+					7, 7, 7, 7, 7, 7, 7, 7, 
+					8, 8, 8, 8, 8, 8, 8, 8, } };
+				w.rookPSTB = w.queenPSTB;
+				w.bishopPSTB = w.queenPSTB;
+				w.knightPSTB = w.queenPSTB;
+				w.pawnPSTB = w.queenPSTB;
+				w.kingPSTB = w.queenPSTB;
+
+				// --- Defended Pieces ---
+				w.queensDefended = 20;
+				w.rooksDefended = 21;
+				w.bishopsDefended = 22;
+				w.knightsDefended = 23;
+				w.pawnsDefended = 24;
+				w.kingsDefended = 25;
+
+				WeightsArchive ar;
+				w.serialize(ar);
+				
+				auto v = ar.to<vector<heuristic_t>>();
+
+				cout << "Weights: ";
+				for (const auto & elem : v) {
+					cout << elem << '\t';
+				}
+				
+				ApplePieWeights w2;
+
+				w2.parse(ar);
+
+				cout << "\nAre w and w2 equal? " << (w == w2) << '\n';
+			}
+		} // namespace weights
 	} // namespace test
 } // namespace forge
+

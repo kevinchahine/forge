@@ -18,6 +18,8 @@ namespace forge
 		WeightsBase & operator=(const WeightsBase &) = default;
 		WeightsBase & operator=(WeightsBase &&) noexcept = default;
 
+		bool operator==(const WeightsBase & rhs) const;
+
 		virtual void serialize(WeightsArchive & ar) const = 0;
 		virtual void parse(WeightsArchive & ar) = 0;
 

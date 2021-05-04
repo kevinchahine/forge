@@ -153,6 +153,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="HeuristicBase.cpp" />
+    <ClCompile Include="IWeightsArchive.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="MovePositionPair.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="OWeightsArchive.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PositionTable.cpp" />
@@ -224,6 +226,7 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="HeuristicBase.h" />
     <ClInclude Include="Heuristics.hpp" />
+    <ClInclude Include="IWeightsArchive.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MinimaxSolver.h" />
@@ -234,6 +237,7 @@
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="MovePositionPair.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="OWeightsArchive.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PositionInline.h" />
@@ -249,6 +253,7 @@
     <ClInclude Include="TextView.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ViewBase.h" />
+    <ClInclude Include="Weights.hpp" />
     <ClInclude Include="WeightsArchive.h" />
     <ClInclude Include="WeightsBase.h" />
   </ItemGroup>

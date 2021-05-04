@@ -19,16 +19,31 @@ namespace forge
 	class WeightsArchive : public std::deque<heuristic_t>
 	{
 	public:
-		// TODO: Add the & operator overload. Match it up with Boost::Serialization
+		// Serialize data from object into archive
+		template <typename T>
+		friend WeightsArchive & operator<<(const WeightsArchive & ar, T & data)
+		{
+			data.serialize(ar);
 
-		// Copies weights from WeightsArchive into a container of type
-		// CONTAINER_T.
+			return ar;
+		}
+
+		// Parse data from archive to object
+		template <typename T>
+		friend WeightsArchive & operator>>(WeightsArchive & ar, T & data)
+		{
+			data.parse(ar);
+
+			return ar;
+		}
+
+		// Copies weights into a container of type CONTAINER_T.
 		// Typically CONTAINER_T would be a vector<heuristic_t>
 		template<typename CONTAINER_T>
 		CONTAINER_T to() const;
 
 		// Copies weights from a container of type
-		// CONTAINER_T to WeightsArchive. Contents of this
+		// CONTAINER_T to WeightsArchive. Original contents of this
 		// WeightsArchive are deleted before the copy is made
 		// Typically CONTAINER_T would be a vector<heuristic_t>
 		template<typename CONTAINER_T>
@@ -36,7 +51,7 @@ namespace forge
 
 		// TODO: Still need stream insersion and extraction operators. 
 		// Usefull for storing weights in a file or transfering through IPC.
-		// Use Boost to convert the deque into and from text data.
+		// Use Boost to convert the deque to and from a stream using Serialization.
 		// Maybe we should just make a serialize method thats compatible with boost::serialization
 		///friend std::ostream & operator<<(std::ostream & os, const WeightsArchive & ar);
 		///friend std::istream & operator>>(std::istream & is, WeightsArchive & ar);
@@ -45,12 +60,13 @@ namespace forge
 	template<typename CONTAINER_T>
 	CONTAINER_T WeightsArchive::to() const
 	{
+		// TODO: Make these work
 		// Make sure CONTAINER_T has a push_back and reserve method
-		static_assert(std::is_invocable<CONTAINER_T::push_back, int>(), "CONTAINER_T must to have a push_back method");;
-		static_assert(std::is_invocable<CONTAINER_T::reserve>(), "CONTAINER_T must have a reserve method");
+		///static_assert(std::is_invocable<CONTAINER_T::push_back, int>(), "CONTAINER_T must to have a push_back method");
+		///static_assert(std::is_invocable<CONTAINER_T::reserve>(), "CONTAINER_T must have a reserve method");
 
 		CONTAINER_T cont;
-		cont.resize(this->size());
+		cont.reserve(this->size());
 
 		copy(this->begin(), this->end(), back_inserter(cont));
 
@@ -60,12 +76,22 @@ namespace forge
 	template<typename CONTAINER_T>
 	void WeightsArchive::from(const CONTAINER_T & data)
 	{
+		// TODO: Make these work
 		// Make sure CONTAINER_T has a push_back and reserve method
-		static_assert(std::is_invocable<CONTAINER_T::begin>(), "CONTAINER_T must have a begin method");
-		static_assert(std::is_invocable<CONTAINER_T::end>(), "CONTAINER_T must have an end method");
+		///static_assert(std::is_invocable<CONTAINER_T::begin>(), "CONTAINER_T must have a begin method");
+		///static_assert(std::is_invocable<CONTAINER_T::end>(), "CONTAINER_T must have an end method");
 
 		this->clear();
 
 		copy(data.begin(), data.end(), back_inserter(*this));// static_cast<&std::deque<heuristic_t>>(*this)));
 	}
+
+	///template<typename T>
+	///WeightsArchive & operator<<(WeightsArchive & ar, T & data)
+	///{
+	///	data.serialize(ar);
+	///
+	///	return ar;
+	///}
+
 } // namespace forge

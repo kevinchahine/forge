@@ -3,6 +3,7 @@
 #include "MoveGenerator.h"
 
 #include <algorithm>
+#include <functional>
 
 namespace forge
 {

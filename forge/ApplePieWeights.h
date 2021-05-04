@@ -2,6 +2,7 @@
 
 #include "WeightsBase.h"
 #include "ApplePieHeuristic.h"
+#include "PositionTable.h"
 
 namespace forge
 {
@@ -15,6 +16,8 @@ namespace forge
 		virtual ~ApplePieWeights() noexcept = default;
 		ApplePieWeights & operator=(const ApplePieWeights &) = default;
 		ApplePieWeights & operator=(ApplePieWeights &&) noexcept = default;
+
+		bool operator==(const ApplePieWeights & rhs) const;
 
 		virtual void serialize(WeightsArchive & ar) const override;
 		virtual void parse(WeightsArchive & ar) override;
@@ -36,13 +39,13 @@ namespace forge
 		heuristic_t pawnMobility = 0;
 		heuristic_t kingMobility = 0;
 		
-		// --- Piece Square Table Bonus  = 0;
-		heuristic_t queenPSTB = 0;
-		heuristic_t rookPSTB = 0;
-		heuristic_t bishopPSTB = 0;
-		heuristic_t knightPSTB = 0;
-		heuristic_t pawnPSTB = 0;
-		heuristic_t kingPSTB = 0;
+		// --- Piece Square Table Bonus ---
+		PositionTable queenPSTB;
+		PositionTable rookPSTB;
+		PositionTable bishopPSTB;
+		PositionTable knightPSTB;
+		PositionTable pawnPSTB;
+		PositionTable kingPSTB;
 		
 		// --- Defended Pieces ---
 		heuristic_t queensDefended = 0;
@@ -53,5 +56,7 @@ namespace forge
 		heuristic_t kingsDefended = 0;
 
 		// --- Attacking Pieces ---
+
+
 	}; // class ApplePieWeights
 } // namespace forge

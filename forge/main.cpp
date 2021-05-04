@@ -39,13 +39,14 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();
 	//forge::test::move();
-	forge::test::chessMatch();
+	//forge::test::chessMatch();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
 	//forge::test::solver();
 	//forge::test::insufficientMaterial();
 	//forge::test::gameState();
 	//forge::test::drawByRepetition();
+	forge::test::weights::applePie();
 
 	//this_thread::sleep_for(chrono::seconds(1));
 	cin.get();
