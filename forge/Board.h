@@ -172,6 +172,30 @@ namespace forge
 			return kingsBB;
 		}
 
+		// Returns the bitboard for the specified piece type
+		// Piece type can come from class forge::Piece and be of type
+		// forge::Piece::piece_t.
+		template<Piece::piece_t>
+		BitBoard bitBoardFor() const
+		{
+			static_assert(false, "Don't use this method. Use full specialization overloads instead\n");
+
+			return BitBoard();
+		}
+
+		template<>
+		BitBoard bitBoardFor<Piece::KING>() const { return kings(); }
+		template<>
+		BitBoard bitBoardFor<Piece::QUEEN>() const { return queens(); }
+		template<>
+		BitBoard bitBoardFor<Piece::BISHOP>() const { return bishops(); }
+		template<>
+		BitBoard bitBoardFor<Piece::KNIGHT>() const { return knights(); }
+		template<>
+		BitBoard bitBoardFor<Piece::ROOK>() const { return rooks(); }
+		template<>
+		BitBoard bitBoardFor<Piece::PAWN>() const { return pawns(); }
+
 		BoardSquare whiteKing() const { return m_whiteKing; }
 		BoardSquare blackKing() const { return m_blackKing; }
 
@@ -204,6 +228,4 @@ namespace forge
 
 		// TODO: Still need castiling
 	};
-	
-
 } // namespace forge

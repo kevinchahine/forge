@@ -2,13 +2,13 @@
 === OPTIMIZATIONS ===
 
 Consider these optimizations:
-	- MoveGenerator outputs vector<unique_ptr<Node>> instead of 
-		vector<MovePositionPair> 
+	- Let MoveGenerator output vector<unique_ptr<Node>> instead of 
+		vector<MovePositionPair>.
 		Reason: When expanding Nodes, we are having to copy Positions from the MoveList 
-		to the Node itself. 
-	- MoveGenerator non-pseudo move generator is slow and can be implemented more efficiently.
-		Instead of generating pseudo legal moves then checking to see if King is attacked,
-		consider only generating move that avoid putting King is check in the 1st place.
+		to the Node itself. Using a pointer will allow for fast move operations instead of copies.
+
+	- MoveGenerator basic move generator is slow and can be implemented more efficiently.
+		Implement quiescence move generator instead.
 
 	- MoveGenerate:
 		MoveList reserves 35 elements. Maybe increase this to 60+ to prevent reallocating 
@@ -34,17 +34,26 @@ Consider these optimizations:
 		when copying Positions.
 
 		Looking for insufficient material only needs to be performed after a capture or 
-		promotion has been made. If no capture or promotion has been made, then we shouldn't
-		check for insufficient material. 
+		promotion has been made. If no capture or promotion has been made, then condition for
+		insufficient material hasen't changed.
 
 	- Tree Search Algorithms:
 		When searching endgames that are very drauwus (likely to lead to a draw), consider
 		terminating search early with an evaluation of 0 (meaning draw). Because searching
-		a drauss endgame can take as much resources as a win or loss, 
-		How to know if a game is leading to a draw.
+		a drauss endgame can take even more time to search as a win or loss because of chains
+		of passive moves. 
+		How do you know if a game is leading to a draw?
+
+		Multi-threading of search algorithms. Use dynamic tree splitting. See Multi_threading.txt
+
+		Use CPU and GPUs for evaluating NNs instead of GPUs only.
 
 	- GameHistory (or even Node tree):
 		For evaluating draw by repetition, each position in GameHistory is compared to 
 		some current position for equality. This equality consists of comparing
 		two Boards and current player. See if theres a more efficient way of comparing
-		the equality of moves based the changes.
+		the equality of Boards based on the changes.
+			Maybe see what move lead to a specified Board and start by comparing the squares
+			of the piece that moved. Starting with comparing those squares will show that two
+			Boards are not equal because, the piece that moved is more likely to be different 
+			that say the top rank.

@@ -1,0 +1,15 @@
+=== Forge ===
+=== Benchmark Testing ===
+
+Purpose: To evaluate performance of search algorithm using the following metrics:
+	- Nodes searched per second
+	- Plys searched per second (Minimax only)
+	- Duration to search a full ply (Minimax only)
+	- Lines searched per second (MCTS only)
+
+Requirements:
+	
+Ideas:
+	- Make it like the ChessMatch class. Where solvers can be set explicitly
+	- Leave out Views.
+	- Needs a way to access analytics from SearchMonitor class.

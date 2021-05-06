@@ -1,6 +1,7 @@
 #pragma once
 
 #include "HeuristicBase.h"
+#include "ApplePieWeights.h"
 
 #include <array>
 
@@ -55,7 +56,10 @@ namespace forge
 
 		virtual std::unique_ptr<HeuristicBase> clone() const override;
 
+		ApplePieWeights & weights() { return m_weights; }
+		const ApplePieWeights & weights() const { return m_weights; }
+
 	protected:
-		
+		ApplePieWeights m_weights;
 	};
 } // namespace forge

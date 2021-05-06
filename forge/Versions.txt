@@ -39,11 +39,12 @@ v1.0
 				- convert from a vector<heuristic_t> for ML....................
 				- Stream insertion operator (for logging and IPC)..............
 				- Stream extraction operator (for logging and IPC).............
+		- Support for AI Agents
+			- Minimax algorithm with basic evaluation function
 
 v2.0
-	Support for AI Agents
-		- Minimax algorithm with basic evaluation function
-		- MCTS algorithm with no evaluation function
+		- Support for AI Agents
+			- MCTS algorithm with no evaluation function
 	
 v3.0 
 	UCI Support

@@ -27,7 +27,6 @@ Model:
 		- keeps track of move number (could be important for solver in deciding how much time to use)
 		- maybe make it a part of TimeControl
 
-
 	AI Agent:
 		solvers:
 			- minimax or negamax
@@ -46,6 +45,12 @@ Controller:
 		Should support both PGN and Long Algebreic Notation.
 	Database Controller - 
 	AI Controller - 
+		- RandomSolver
+		- MinimaxSolver
+		- MinimaxSolverMT
+		- MCTSSolver
+		- MCTSSolverMT
+	Network Controller -
 
 ===============================================================================
 
@@ -59,6 +64,7 @@ Chess Notations:
 	- PGN
 	- Long Algebreic Notation 
 		ex: e2e4, e7e5, e1g1 (white short castling), e7e8q (for promotion)
+	- FEN
 
 Machine Learning:
 	For traditional evaluation:
@@ -74,7 +80,7 @@ Multithreading:
 		- should work great
 	For DNN:
 		- GPU might be the bottleneck and limit effectiveness of larger numbers of threads.
-			- Consider using Hornet for intense multithreading because it can support 2 video cards.
+			- Consider using Raptor for intense multithreading because it can support 2 video cards.
 				Having 2 video cards may reduce the GPU bottleneck if it even exists. 
 
 Opening Table Database:

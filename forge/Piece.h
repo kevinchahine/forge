@@ -11,25 +11,33 @@ namespace forge
 	class Piece
 	{
 	public:
-		static const uint8_t EMPTY = 0b0000;
+		using piece_t = uint8_t;
 
-		static const uint8_t WHITE_KING		= 0b0001;
-		static const uint8_t BLACK_KING		= 0b1001;
-		static const uint8_t WHITE_QUEEN	= 0b0010;
-		static const uint8_t BLACK_QUEEN	= 0b1010;
-		static const uint8_t WHITE_BISHOP	= 0b0011;
-		static const uint8_t BLACK_BISHOP	= 0b1011;
-		static const uint8_t WHITE_KNIGHT	= 0b0100;
-		static const uint8_t BLACK_KNIGHT	= 0b1100;
-		static const uint8_t WHITE_ROOK		= 0b0101;
-		static const uint8_t BLACK_ROOK		= 0b1101;
-		static const uint8_t WHITE_PAWN		= 0b0110;
-		static const uint8_t BLACK_PAWN		= 0b1110;
+		static const piece_t EMPTY = 0b0000;
 
+		static const piece_t WHITE_KING		= 0b0001;
+		static const piece_t BLACK_KING		= 0b1001;
+		static const piece_t WHITE_QUEEN	= 0b0010;
+		static const piece_t BLACK_QUEEN	= 0b1010;
+		static const piece_t WHITE_BISHOP	= 0b0011;
+		static const piece_t BLACK_BISHOP	= 0b1011;
+		static const piece_t WHITE_KNIGHT	= 0b0100;
+		static const piece_t BLACK_KNIGHT	= 0b1100;
+		static const piece_t WHITE_ROOK		= 0b0101;
+		static const piece_t BLACK_ROOK		= 0b1101;
+		static const piece_t WHITE_PAWN		= 0b0110;
+		static const piece_t BLACK_PAWN		= 0b1110;
+
+		static const piece_t KING = WHITE_KING;
+		static const piece_t QUEEN = WHITE_QUEEN;
+		static const piece_t BISHOP = WHITE_BISHOP;
+		static const piece_t KNIGHT = WHITE_KNIGHT;
+		static const piece_t ROOK = WHITE_ROOK;
+		static const piece_t PAWN = WHITE_PAWN;
 
 	public:
 		Piece() : m_val(EMPTY) {}
-		Piece(uint8_t value) : m_val(value) {}
+		Piece(piece_t value) : m_val(value) {}
 		Piece(char ch, bool isWhite = true) { setCh(ch, isWhite); }
 		Piece(const Piece &) = default;
 		Piece(Piece &&) noexcept = default;

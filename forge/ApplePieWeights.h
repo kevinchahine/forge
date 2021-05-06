@@ -1,7 +1,6 @@
 #pragma once
 
 #include "WeightsBase.h"
-#include "ApplePieHeuristic.h"
 #include "PositionTable.h"
 
 namespace forge
@@ -23,15 +22,19 @@ namespace forge
 		virtual void parse(WeightsArchive & ar) override;
 
 		// --- Material ---
-		heuristic_t queenWeight = 0;
-		heuristic_t rookWeight = 0;
-		heuristic_t bishopWeight = 0;
-		heuristic_t knightWeight = 0;
-		heuristic_t pawnWeight = 0;
+		// Based on value of simply having a number of each piece
+		heuristic_t queenMaterial = 0;
+		heuristic_t rookMaterial = 0;
+		heuristic_t bishopMaterial = 0;
+		heuristic_t knightMaterial = 0;
+		heuristic_t pawnMaterial = 0;
+
+		// --- 
 		heuristic_t bishopPair = 0;
 		heuristic_t oppositeBishop = 0;
 		
 		// --- Mobility ---
+		// Based on how many spaces each piece can move.
 		heuristic_t queenMobility = 0;
 		heuristic_t rookMobility = 0;
 		heuristic_t bishopMobility = 0;

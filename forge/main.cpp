@@ -46,8 +46,11 @@ int main(int argc, char ** argv)
 	//forge::test::insufficientMaterial();
 	//forge::test::gameState();
 	//forge::test::drawByRepetition();
-	forge::test::weights::applePie();
+	//forge::test::weights::applePie();
+	forge::test::ai::playApplePie();
+	//forge::benchmark::search<MinimaxSolver, ApplePieHeuristic>();
 
+	cout << "Done...";
 	//this_thread::sleep_for(chrono::seconds(1));
 	cin.get();
 	return 0;

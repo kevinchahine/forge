@@ -11,8 +11,8 @@ using namespace std;
 void printError(forge::Move m, const string & funcName) {
 	///cout << "Illegal move found :p, " << m << " in " << funcName << "\n";
 }
-#elif
-#define printError(MOVE, FUNCNAME)
+#else
+#define printError(MOVE, FUNCNAME)	// empty placeholder
 #endif
 
 namespace forge

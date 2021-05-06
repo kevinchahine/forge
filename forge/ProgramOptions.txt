@@ -5,10 +5,11 @@ sortme: These should go under switches or options
 	--network-train
 
 switches:
-	--train	= default false	(Can't have this and play else show error)
-	--play = default true	(Can't have this and train else show error)
-	--uci = default false	(If true, tells engine to listen for commands from a UCI gui )
-
+	--train	= default false	(Can't have this and --play, else show error)
+	--play = default true	(Can't have this and --train, else show error)
+	--uci = default false	(If true, tells engine to listen for commands from a UCI gui. It should do that anyway)
+	--benchmarck = default false (Tests performance of engine, Must specify what search algorithm to use)
+	
 options:
 	--orientation = [ 
 		<none> |	# white pieces on bottom
@@ -16,28 +17,30 @@ options:
 		alternate 	# displays board with thinking player on bottom (good for 2 human players using same display)
 		]
 
-	--white-controller = [ keyboard | uci | minimax | mcts | negamax ]	
-	--black-controller = [ keyboard | uci | minimax | mcts | negamax ]
+	--white-controller = [ keyboard | uci | minimax | mcts ]	
+	--black-controller = [ keyboard | uci | minimax | mcts ]
 
 	--time-control = [ 
 		# Standard time controls
-		"1 min"		"bullet 1"
-		"1/1 min"	"bullet 2"
-		"2/1 min"	"bullet 3"
-		"3 min"		"blitz 1"
-		"3/2 min"	"blitz 2"
-		"5 min" 	"blitz 3"
-		"10 min"	"rapid 1"
-		"15/5 min"	"rapid 2"
-		"30 min"	"rapid 3"
+		[
+		"1 min"		|	"bullet 1"	|
+		"1/1 min"	|	"bullet 2"	|
+		"2/1 min"	|	"bullet 3"	|
+		"3 min"		|	"blitz 1"	|
+		"3/2 min"	|	"blitz 2"	|
+		"5 min" 	|	"blitz 3"	|
+		"10 min"	|	"rapid 1"	|
+		"15/5 min"	|	"rapid 2"	|
+		"30 min"	|	"rapid 3"	|
 		"<starttime>/<increment=0> <[days | hours | min | sec]"		# units refer to starttime, increment units will always be in sec
 		]
+		#	/ : and | should all be allowed for separating start time and increment
 
 	# AI Options #
 	--weights-file="/c/path/to/weights.xxx"	# (default: "./openings.xxx") if exists
 	--opening-table-file="c/openings.xxx"	# (default: "./openings.xxx")
 	--depth=n								# limit number of plys to search (default ?8?)
-	--nodes=n								# search n nodes only	(default INT_MAX, means search all nodes. Only applies to MCTS)
+	--nodes=n								# search n nodes only	(default INT_MAX, means search all nodes. )
 	--move-time=t							# search for t msec only
 	--threads=n								# number of threads to use (default: HARDWARE_CONCURENCY)
 

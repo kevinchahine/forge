@@ -28,13 +28,15 @@ namespace forge
 	MovePositionPair MinimaxSolver::solve(const Position & position)
 	{
 		m_searchMonitor.start();
+		m_searchMonitor.timer.expires_from_now(chrono::hours(1));
+		cout << "Is expired: " << m_searchMonitor.timer.is_expired();
 
 		m_nodeTree.reset();
 
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		Node::iterator it = m_nodeTree.begin();
-		it.setDepthLimit(2);
+		it.setDepthLimit(5);
 
 		while (m_searchMonitor.exitConditionReached() == false) {
 			// --- 1.) Get current position to evaluate ---
@@ -45,7 +47,7 @@ namespace forge
 			}
 
 			Position & pos = (*it).position();
-			cout << it.getDepth() << ' ';
+			///cout << it.getDepth() << ' ';
 			///cout << '.';
 			///pos.board().printMini();
 			///cin.get();
@@ -60,29 +62,31 @@ namespace forge
 			// --- 4.) Evaluate this position ---
 			// We only want to evaluate leaf nodes
 			if (state.isGameOver()) {
-				cout << guten::color::brown << "GAME OVER!!!\n";
+				///cout << guten::color::brown << "GAME OVER!!!\n";
 
+				// Do we have a winner?
 				if (state.state == GameState::STATE::WIN) {
+					// Yes we have a winner!!!
 					(*it).fitness() = (
 						state.player == GameState::PLAYER::WHITE ?
 						std::numeric_limits<heuristic_t>::max() :		// WHITE won
 						std::numeric_limits<heuristic_t>::lowest());	// BLACK won
-					cout << guten::color::green << state << '\n';
+					///cout << guten::color::green << state << '\n';
 				}
 				else if (state.state == GameState::STATE::DRAW) {
 					(*it).fitness() = 0;								// DRAW
-					cout << guten::color::blue << state << '\n';
+					///cout << guten::color::blue << state << '\n';
 				}
 
 				// TODO: I don't know about this.
 				///(*it).prune();	// make sure no children get evaluated
 			}
 			else if (it.isLeafNode()) {
-				(*it).fitness() = heuristicPtr->eval(pos);
-				cout << guten::color::push()
-					<< guten::color::brown << " Depth limit reached. Eval = "
-					<< guten::color::cyan << ' ' << (*it).fitness() << "\n"
-					<< guten::color::pop();
+				(*it).fitness() = heuristicPtr()->eval(pos);
+				///cout << guten::color::push()
+				///	<< guten::color::brown << " Depth limit reached. Eval = "
+				///	<< guten::color::cyan << ' ' << (*it).fitness() << "\n"
+				///	<< guten::color::pop();
 			}
 			else {
 				///cout << guten::color::red << '.';

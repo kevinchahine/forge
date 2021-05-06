@@ -70,5 +70,10 @@ namespace forge
 		{
 			void applePie();
 		} // namespace weights
+
+		namespace ai
+		{
+			void playApplePie();
+		} // namespace ai
 	} // namespace test
 } // namespace forge

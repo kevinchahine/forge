@@ -27,5 +27,5 @@ Implement MCTS using multi-threading
 Implement MCTS using ???DNN (How would we even do this)???
 
 Networking:
-	- distributed training. train accross multiple computers on a network
+	- distributed training. train accross multiple computers on a network at the same time
 	- play on a network. Would need this processes to run on both computers

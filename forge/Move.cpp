@@ -157,8 +157,8 @@ namespace forge
 		case 'r':	p = pieces::whiteRook;		break;
 		case 'b':	p = pieces::whiteBishop;	break;
 		case 'n':	p = pieces::whiteKnight;	break;
-		default:
 #ifdef _DEBUG
+		default:
 			cout << "Error: " << __FUNCTION__ << " " << promotionCh
 				<< " is not a promotion pieces\n";
 			this->isInvalid();

@@ -244,6 +244,9 @@
     <Text Include="UCI_DefinitionNotes.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="BenchmarkTesting.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test.h">

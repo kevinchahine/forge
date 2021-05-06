@@ -12,12 +12,12 @@ Pruning:
 	ex:
 		branch factor b = 30	(typically there would be about 35-38 valid moves at most positions)
 		depth limit d = 25		(based on typical uses of LC0)
-		number of nodes n = b^d ~= 348,678,440,100,000,000,000,000,000,000
-								~= 348 x 10^27
-		bytes per node s ~= 50 bytes
-		size of tree = n * s ~= 17 x 10 ^ 30 bytes
-								~= 16,236,605,127,342,045,307,159 GB
-								~= 14,421,002 YB (Yeta Bytes)
+		number of nodes n = b^d ~= 348,678,440,100,000,000,000,000,000,000 nodes
+								~= 348 x 10^27 nodes
+		bytes per node s ~= 50 bytes/node
+		size of tree = s * n ~= 50 bytes/node * 30^25 nodes
+								~= 4.236443047215e+38 bytes
+								~= 376,271,729,082,500,172,580,694 PB (Peta Bytes)
 
 The search can store its data in a tree. This tree can be shared accross threads
 ??and even be recycled accross multiple searches??. 

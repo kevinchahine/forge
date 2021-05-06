@@ -512,11 +512,11 @@ namespace forge
 				ApplePieWeights w;
 
 				// --- Material ---
-				w.queenWeight = 1;
-				w.rookWeight = 2;
-				w.bishopWeight = 3; 
-				w.knightWeight = 4;
-				w.pawnWeight = 5;
+				w.queenMaterial = 1;
+				w.rookMaterial = 2;
+				w.bishopMaterial = 3;
+				w.knightMaterial = 4;
+				w.pawnMaterial = 5;
 				w.bishopPair = 6;
 				w.oppositeBishop = 7;
 
@@ -527,16 +527,16 @@ namespace forge
 				w.knightMobility = 11;
 				w.pawnMobility = 12;
 				w.kingMobility = 13;
-					
+
 				// --- Piece Square Table Bonus ---
 				w.queenPSTB = { {
-					1, 1, 1, 1, 1, 1, 1, 1, 
+					1, 1, 1, 1, 1, 1, 1, 1,
 					2, 2, 2, 2, 2, 2, 2, 2,
-					3, 3, 3, 3, 3, 3, 3, 3, 
-					4, 4, 4, 4, 4, 4, 4, 4, 
-					5, 5, 5, 5, 5, 5, 5, 5, 
-					6, 6, 6, 6, 6, 6, 6, 6, 
-					7, 7, 7, 7, 7, 7, 7, 7, 
+					3, 3, 3, 3, 3, 3, 3, 3,
+					4, 4, 4, 4, 4, 4, 4, 4,
+					5, 5, 5, 5, 5, 5, 5, 5,
+					6, 6, 6, 6, 6, 6, 6, 6,
+					7, 7, 7, 7, 7, 7, 7, 7,
 					8, 8, 8, 8, 8, 8, 8, 8, } };
 				w.rookPSTB = w.queenPSTB;
 				w.bishopPSTB = w.queenPSTB;
@@ -554,14 +554,14 @@ namespace forge
 
 				WeightsArchive ar;
 				w.serialize(ar);
-				
+
 				auto v = ar.to<vector<heuristic_t>>();
 
 				cout << "Weights: ";
 				for (const auto & elem : v) {
 					cout << elem << '\t';
 				}
-				
+
 				ApplePieWeights w2;
 
 				w2.parse(ar);
@@ -569,6 +569,50 @@ namespace forge
 				cout << "\nAre w and w2 equal? " << (w == w2) << '\n';
 			}
 		} // namespace weights
+
+		namespace ai
+		{
+			void playApplePie()
+			{
+				forge::ChessMatch match;
+
+				// Set Controllers/Solvers
+				{
+					// --- Make Heuristics and set their weights ---
+					unique_ptr<forge::ApplePieHeuristic> wHeur = make_unique<forge::ApplePieHeuristic>();
+					unique_ptr<forge::ApplePieHeuristic> bHeur = make_unique<forge::ApplePieHeuristic>();
+
+					// Set weights manually
+					auto & w = wHeur->weights();
+					w.queenMaterial = 900;
+					w.rookMaterial = 500;
+					w.bishopMaterial = 300;
+					w.knightMaterial = 300;
+					w.pawnMaterial = 100;
+
+					// Copy same weights to blacks heuristic
+					bHeur->weights() = w;
+
+					// *** Now both black and white have weights that have been set.
+					
+					// --- Create solvers ---
+					unique_ptr<forge::MinimaxSolver> wController = make_unique<forge::MinimaxSolver>();
+					unique_ptr<forge::MinimaxSolver> bController = make_unique<forge::MinimaxSolver>();
+
+					// --- Move heuristics into solvers ---
+					wController->heuristicPtr() = move(wHeur);
+					bController->heuristicPtr() = move(bHeur);
+
+					// --- Move Solvers into ChessMatch ---
+					match.whiteController() = std::move(wController);
+					match.blackController() = std::move(bController);
+
+					match.makeView<TextView>();
+
+					match.runGame();
+				}
+			}
+		} // namespace ai
 	} // namespace test
 } // namespace forge
 

@@ -13,7 +13,7 @@ Normal Moves (from whites perspective):
 	- knight: 0, 1, 2, 3, 4, 5, 6, 7 (see class Move)
 	- bishop: \_x, /_x
 	- queen: rooks and bishop combined
-	- king: up, down, left, right, \, /, \\, //
+	- king: up, down, left, right, \, /, \\, //, O-O O-O-O
 
 Special Moves:
 	- pawn promotion
@@ -21,7 +21,7 @@ Special Moves:
 	- castling
 
 After generating a move:
-	- Is king being attacked?		(Yes - invalid, No - valid)	
+	- Is king being attacked?		(Yes - illegal, No - legal)	
 		But this check is very slow, do we want to do it every time?
 		
 Quinesectial Move Generation:

@@ -3,7 +3,7 @@
 
 Purpose:
 	Monitors search as it progresses.
-	Keeps track of data to be sent to UCI as algorithm is searching.
+	Keeps track of data to be sent to UCI as search is being made.
 
 Description:
 	(continuously updated and sent to UCI as engine is searching)

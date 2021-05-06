@@ -25,7 +25,9 @@ namespace forge
 
 	GameState forge::ChessMatch::runGame()
 	{
-		// Make sure we have controllers/solvers.
+		cout << "Chess match is about to start...\n";
+
+		// --- Make sure we have controllers/solvers ---
 		if (m_whitesController == nullptr) {
 			cout << "ChessMatch needs a controller for white" << endl;
 			return GameState();
@@ -42,7 +44,7 @@ namespace forge
 			cout << "Black controller: " << m_blacksController->getName() << '\n';
 		}
 
-		// --- Set up board ---
+		// --- Prepare board for a new game ---
 		reset();
 
 		// --- Show board before playing ---
@@ -51,7 +53,7 @@ namespace forge
 		}
 
 		// clock should have already been reset, syncronized and should now be paused.
-		// Start the clock by clicking it.
+		// Start the clock by "clicking" it.
 		m_clock.click();
 
 		GameState gstate;
@@ -59,7 +61,7 @@ namespace forge
 		while (true)
 		{
 			// --- CONTROLLER ---
-			// Who's turn is it?
+			// Who's turn is it anyways?
 			ControllerBase * currPlayer = nullptr;
 
 			if (this->position().moveCounter().isWhitesTurn()) {
@@ -73,6 +75,7 @@ namespace forge
 				currPlayer = m_blacksController.get();
 			}
 			
+			// --- Prompt current player for a move ---
 			MovePositionPair pair = currPlayer->getMove(this->position());
 
 			// --- VIEW ---
@@ -90,8 +93,7 @@ namespace forge
 			}
 			
 			// Apply the move. 
-			// TODO: Make sure move was legal
-			// if (legals.find(move)) ???
+			// TODO: Make sure move is legal before adding it.
 			m_history.emplace_back(pair.position); // Its just that simple.
 			
 			// Check the game state
@@ -110,7 +112,7 @@ namespace forge
 				if (m_viewPtr != nullptr) {
 					m_viewPtr->show(m_history.current(), pair.move);
 					cout << "Press any key...";
-					cin.get();	// remove this
+					///cin.get();	// remove this
 				}
 
 				m_clock.resume();

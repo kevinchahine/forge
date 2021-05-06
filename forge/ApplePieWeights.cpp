@@ -6,11 +6,11 @@ namespace forge
 	{
 		return static_cast<const WeightsBase&>(*this) == static_cast<const WeightsBase&>(rhs) &&
 			// --- Material ---
-			queenWeight == rhs.queenWeight &&
-			rookWeight == rhs.rookWeight &&
-			bishopWeight == rhs.bishopWeight &&
-			knightWeight == rhs.knightWeight &&
-			pawnWeight == rhs.pawnWeight &&
+			queenMaterial == rhs.queenMaterial &&
+			rookMaterial == rhs.rookMaterial &&
+			bishopMaterial == rhs.bishopMaterial &&
+			knightMaterial == rhs.knightMaterial &&
+			pawnMaterial == rhs.pawnMaterial &&
 			bishopPair == rhs.bishopPair &&
 			oppositeBishop == rhs.oppositeBishop &&
 
@@ -44,11 +44,11 @@ namespace forge
 	void ApplePieWeights::serialize(WeightsArchive & ar) const
 	{
 		// --- Material ---
-		ar.push_back(queenWeight);
-		ar.push_back(rookWeight);
-		ar.push_back(bishopWeight);
-		ar.push_back(knightWeight);
-		ar.push_back(pawnWeight);
+		ar.push_back(queenMaterial);
+		ar.push_back(rookMaterial);
+		ar.push_back(bishopMaterial);
+		ar.push_back(knightMaterial);
+		ar.push_back(pawnMaterial);
 		ar.push_back(bishopPair);
 		ar.push_back(oppositeBishop);
 
@@ -80,11 +80,11 @@ namespace forge
 	void ApplePieWeights::parse(WeightsArchive & ar)
 	{
 		// --- Material ---
-		queenWeight = ar.front();		ar.pop_front();
-		rookWeight = ar.front();		ar.pop_front();
-		bishopWeight = ar.front();		ar.pop_front();
-		knightWeight = ar.front();		ar.pop_front();
-		pawnWeight = ar.front();		ar.pop_front();
+		queenMaterial = ar.front();		ar.pop_front();
+		rookMaterial = ar.front();		ar.pop_front();
+		bishopMaterial = ar.front();		ar.pop_front();
+		knightMaterial = ar.front();		ar.pop_front();
+		pawnMaterial = ar.front();		ar.pop_front();
 		bishopPair = ar.front();		ar.pop_front();
 		oppositeBishop = ar.front();	ar.pop_front();
 
