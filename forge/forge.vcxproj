@@ -184,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="AI.txt" />
+    <Text Include="Benchmarks.txt" />
     <Text Include="BenchmarkTesting.txt" />
     <Text Include="Bugs.txt" />
     <Text Include="Classes.txt" />

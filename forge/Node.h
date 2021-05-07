@@ -88,6 +88,7 @@ namespace forge
 			void setDepthLimit(int nPlys) { depthLimit = nPlys; }
 			int getDepth() const { return depth; }
 			bool isLeafNode() const { return depth >= depthLimit; }
+			size_t getNodeCount() const { return m_nodeCount; }
 
 		protected:
 			bool nextSiblingExists() const { return ptr->m_nextPtr != nullptr; }
@@ -97,6 +98,7 @@ namespace forge
 			void goToNextSibling()
 			{
 				ptr = ptr->m_nextPtr;	// go to next sibling
+				m_nodeCount++;			// We've reached a new node
 			}
 
 			void goToParent()
@@ -119,6 +121,7 @@ namespace forge
 				// One or more children.
 				ptr = ptr->children().front().get();	// Go the 1st child.
 				depth++;								// going down one ply
+				m_nodeCount++;							// We've reached a new node
 			}
 
 		private:
@@ -126,8 +129,11 @@ namespace forge
 
 			int depth = 0;
 			
-			int depthLimit = INT_MAX;	// Limitless
-		};
+			int depthLimit = std::numeric_limits<int>::max();	// limitless 
+
+			// Counts the number of nodes that this iterator has reached counting each node once.
+			size_t m_nodeCount = 0;
+		}; // end class iterator
 
 		iterator begin() { return iterator(this); }
 		iterator end() { return iterator(nullptr); }	// TODO: do we need this and does it make sense

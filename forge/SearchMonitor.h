@@ -32,8 +32,6 @@ namespace forge
 	{
 	public:
 		
-		void reset();
-
 		// Call at immediately before the beginning of a search.
 		// Keeps track of start time 
 		void start();
@@ -46,17 +44,19 @@ namespace forge
 				(stopFlag == true);
 		}
 
-		double nodesPerSecond() { 
+		double nodesPerSecond() const { 
 			return
 				static_cast<double>(nodeCount) /
 				std::chrono::duration<double, std::ratio<1, 1>>(searchTime.elapsed()).count();
 		}
 
-		double plysPerSecond() {
+		double plysPerSecond() const {
 			return
 				static_cast<double>(plyCount) /
 				std::chrono::duration<double, std::ratio<1, 1>>(searchTime.elapsed()).count();
 		}
+
+		void print(std::ostream & os = std::cout) const;
 
 	public:
 		int nodeCount = 0;

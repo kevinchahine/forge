@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ControllerBase.h"
-
 #include "HeuristicBase.h"
+#include "SearchMonitor.h"
 
 #include <vector>
 #include <type_traits>	// for is_base_of()
@@ -23,8 +23,14 @@ namespace forge
 		template<typename T>
 		void makeHeuristic(const std::vector<heuristic_t> & weights);
 
+		const SearchMonitor & searchMonitor() const { return m_searchMonitor; }
+		SearchMonitor & searchMonitor() { return m_searchMonitor; }
+
 	protected:
 		std::unique_ptr<HeuristicBase> m_heuristicPtr;
+
+	public:
+		SearchMonitor m_searchMonitor;
 	};
 
 	template<typename T>

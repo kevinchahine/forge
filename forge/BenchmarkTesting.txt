@@ -6,9 +6,20 @@ Purpose: To evaluate performance of search algorithm using the following metrics
 	- Plys searched per second (Minimax only)
 	- Duration to search a full ply (Minimax only)
 	- Lines searched per second (MCTS only)
+	- Stores results in a .csv file (or something else)
 
 Requirements:
-	
+	- Run a game (Similar to how a ChessMatch class does it)
+	- Record performance of each move:
+		- # of Nodes searched
+		- # of plys searched
+		- duration
+	- Move after move, write the data into a csv file. 
+	- Should be make the write continuously after every move, or wait till its game over?
+		- I think continuously, incase games are too long or program crashes 
+	- Should use an AISolver pointer instead of ControllerBase.
+	- Destination directory should be currend directory 
+
 Ideas:
 	- Make it like the ChessMatch class. Where solvers can be set explicitly
 	- Leave out Views.

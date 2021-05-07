@@ -247,6 +247,9 @@
     <Text Include="BenchmarkTesting.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="Benchmarks.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test.h">

@@ -17,6 +17,8 @@ namespace forge
 	{
 		MovePositionPair bestMove = solve(position);
 
+		m_searchMonitor.print();
+
 		return bestMove;
 	}
 
@@ -27,12 +29,10 @@ namespace forge
 
 	MovePositionPair MinimaxSolver::solve(const Position & position)
 	{
-		m_searchMonitor.start();
 		m_searchMonitor.timer.expires_from_now(chrono::hours(1));
-		cout << "Is expired: " << m_searchMonitor.timer.is_expired();
+		m_searchMonitor.start();
 
 		m_nodeTree.reset();
-
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		Node::iterator it = m_nodeTree.begin();
@@ -47,13 +47,8 @@ namespace forge
 			}
 
 			Position & pos = (*it).position();
-			///cout << it.getDepth() << ' ';
-			///cout << '.';
-			///pos.board().printMini();
-			///cin.get();
+			
 			// --- 3.) Check game state (is this a terminal node) ---
-			// TODO: GAME WILL probably crash when reaching a terminal node since no valid
-			//	moves will be generated
 			// TODO: WE REALLY NEED TO DO THIS NEXT
 			// Could this be done more easily in isLeafNode() see below vvv
 			GameState state;
@@ -99,10 +94,13 @@ namespace forge
 			// Did we reached the root node?
 			else {
 #ifdef _DEBUG
-				cout << guten::color::cyan << "Root not reached :)\n";
+				cout << guten::color::cyan << "Root node reached :)\n";
 #endif // TODO: Should this ifdef wrap the entire if (it == ..... ?
 				break;
 			}
+
+			m_searchMonitor.nodeCount = it.getNodeCount();
+			m_searchMonitor.plyCount = std::max(it.getDepth(), m_searchMonitor.plyCount);
 		} // end while (
 
 		// *** Now the search is complete. Hopefully we found a best move. ***

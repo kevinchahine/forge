@@ -3,7 +3,6 @@
 #include "SolverBase.h"
 #include "Node.h"
 #include "Line.h"
-#include "SearchMonitor.h"
 
 namespace forge
 {
@@ -17,13 +16,9 @@ namespace forge
 		virtual std::string getName() override;
 
 	protected:
-
 		MovePositionPair solve(const Position & position);
 
 	protected:
-
 		Node m_nodeTree;
-
-		SearchMonitor m_searchMonitor;
 	};
 } // namespace forge
