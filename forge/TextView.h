@@ -28,6 +28,12 @@ namespace forge
 		// pos - represents the current game.
 		virtual void show(const Position & pos, const MoveList & validMoves) override;
 
+		static void highlightCells(
+			BitBoard bb, 
+			const guten::color::Color & lightColor,
+			const guten::color::Color & darkColor,
+			guten::boards::CheckerBoard & board);
+
 	private:
 
 		guten::boards::CheckerBoard m_img;

@@ -204,6 +204,44 @@ namespace forge
 			b.print();
 		}
 
+		namespace piece_moves
+		{
+			void king()
+			{
+				templatePiece<pieces::King>();
+			}
+
+			void queen()
+			{
+				templatePiece<pieces::Queen>();
+			}
+
+			void bishop()
+			{
+				templatePiece<pieces::Bishop>();
+			}
+
+			void knight()
+			{
+				templatePiece<pieces::Knight>();
+			}
+
+			void rook()
+			{
+				templatePiece<pieces::Rook>();
+			}
+
+			void pawn()
+			{
+				templatePiece<pieces::WhitePawn>();
+
+				cout << "Press any key to continue...";
+				cin.get();
+
+				templatePiece<pieces::BlackPawn>();
+			}
+		} // namespace piece_moves
+
 		void moveKings()
 		{
 			ChessMatch m;
@@ -632,7 +670,7 @@ namespace forge
 					bHeur->weights() = w;
 
 					// *** Now both black and white have weights that have been set.
-					
+
 					// --- Create solvers ---
 					unique_ptr<forge::MinimaxSolver> wController = make_unique<forge::MinimaxSolver>();
 					unique_ptr<forge::MinimaxSolver> bController = make_unique<forge::MinimaxSolver>();
@@ -653,4 +691,5 @@ namespace forge
 		} // namespace ai
 	} // namespace test
 } // namespace forge
+
 

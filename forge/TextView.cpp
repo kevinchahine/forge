@@ -82,4 +82,19 @@ namespace forge
 
 		m_img.print();
 	}
+
+	void TextView::highlightCells(
+		BitBoard bb, 
+		const guten::color::Color & lightColor, 
+		const guten::color::Color & darkColor, 
+		guten::boards::CheckerBoard & board)
+	{
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				if (bb[BoardSquare(row, col)] == 1) {
+					board.highlight(row, col, lightColor, darkColor);
+				}
+			}
+		}
+	}
 } // namespace forge

@@ -44,6 +44,40 @@ namespace forge
 
 		void placeMethods();
 
+		namespace piece_moves
+		{
+			template<typename PIECE>
+			void templatePiece() {
+				PIECE piece;
+				//BoardSquare square(4, 5);
+				BoardSquare square('b', '2');
+
+				BitBoard bb = piece.moves(square);
+
+				guten::boards::CheckerBoard cb;
+				cb.lightPiece = guten::color::blue;
+				cb.drawBackground();
+				cb.placePiece(piece.getCh(), guten::Point(square.row(), square.col()), true);
+
+				TextView::highlightCells(bb, guten::color::lightred, guten::color::red, cb);
+
+				cb.print();
+			}
+
+			void king();
+
+			void queen();
+
+			void bishop();
+
+			void knight();
+
+			void rook();
+
+			void pawn();
+
+		} // namespace piece_moves
+
 		void moveKings();
 
 		void legalMoveGenerator();
