@@ -1,6 +1,8 @@
 === Forge ===
 === Move Generator Quintessential ===
 
+https://peterellisjones.com/posts/generating-legal-chess-moves-efficiently/
+
 !!! Things we still need to add to procedure: 
 	- pawns doing enpassent while king pinned
 	- castling while being attacked

@@ -265,6 +265,9 @@
     <Text Include="MoveGeneratorQuintessential2.txt">
       <Filter>Notes</Filter>
     </Text>
+    <Text Include="MoveGeneratorSpecial.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test.h">

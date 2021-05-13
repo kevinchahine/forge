@@ -1,0 +1,33 @@
+=== Forge ===
+=== Move Generator Special ===
+
+Things we will need to calculate:
+	- threatened squares
+	- King pins
+	- Direction of King pins
+	- Square of checking pieces
+	- Checks
+	- Double Checks
+	- Is attacker blockable (Only ray pieces can be blocked)
+	- Is attacker defended (If so, our king can't capture it)
+	- Where can we move King to safty
+
+1.) Who's turn is it anyway?
+
+2.) Calculate BitBoard for threats against King.
+	- We are only conserned with the 9 squares that suround and hold the King.
+	- We need each direction attackable by opponent:
+		- If they have diagonal pieces (QB) we need to search diagonal
+		- If they have lateral pieces (QR) we need to search lateral
+		- If they have knights (N) we need to search knight moves
+		- If they have pawns (p) we need to search 1 diagonal move forward
+		* When evaluating these, we need to remove King from board (or just ignore it)
+	- Call these "KingDangerSquares"
+	
+3.) Determine how many times King is attacked.
+	3-2.) King is attacked 2 times (Double-Check)
+	3-1.) King is attacked 1 time (Single-Check)
+	3-0.) King is not attacked
+
+
+	

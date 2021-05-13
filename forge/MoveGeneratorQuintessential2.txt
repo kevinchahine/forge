@@ -25,31 +25,34 @@ Terminology:
 3.) --- Is King under attack? ---
 	3-Yes.) Yes our King is under attack. 
 		--- But by how many pieces? --- 
+		3-Yes-Two.) King is attacked by 2 opponents: (Do double checks 1st incase we can stop early)
+			*** Only King moves are permitted
+			Criteria for this to happen:
+				- One attacker is a ray piece, and
+				- other attacker is QBRN (Never a Pawn nor King)
+					* These criteria should be further broken down (But will likely overcomplicate things):
+						If one attacker is QB attacking Diagonally:
+							- Then other attacker will only be a N (Never a Rook)
+							- Or a newly promoted piece (only if King is on opponents promotion rank)
+						... 
+						This can get very complicated.
+				- Capture Attacker: **See above
+				- Move King: **See above
+				X Can't block attacker X
 		3-Yes-One.) King is only attacked by 1 opponent
 			The following describe the only moves that we can make:
 				- Capture attacker:
-					- By non-King piece
+					- By non-King piece:
+						- Remember: Enpassent can be used to capture attacking pawns (only pawns)
 					- By King but only if attacker:
 						- is vulnerable (See terminology) and
 						- attacker is not a knight
 				- Block Attacker:
 					- Only if attacker is a ray piece:
+					- Remember: Enpassent can be used to block attacking ray pieces
 				- Move King:
 					- See threat table to find safe squares
 
-		3-Yes-Two.) King is attacked by 2 opponents:
-			Criteria for this to happen:
-				- One attacker is a ray piece, and
-				- other attacker is QBRN (Not Pawn nor King)
-				* These criteria should be further broken down (But will likely overcomplicate things):
-					If one attacker is QB attacking Diagonally:
-						- Then other attacker will only be a N
-						- Or a newly promoted piece
-					... 
-					This can get so complicated.
-				- Capture Attacker: **See above
-				- Move King: **See above
-				X Can't block attacker X
 		*** Things not possible: ***
 			- Castling
 
@@ -63,23 +66,34 @@ Terminology:
 			- King has moved
 			- Rook has moved
 			- Space between is attacked (What space???)
-		Pinned pieces (Excluding enpassent):
+		Pinned pieces:
 			- King pinned pieces can only:	
-				- Move in direction of attacker. True
+				- Move towards/away from direction of attacker
 				- Stay where they are
-		Normal moves (pieces that are not King Pinned):
-			- Queen:
-				Lateral moves
-				Diagonal moves
-			- Bishop:
-				Diagonal moves
-			- Rook:
-				Lateral moves
-				(Accounted for above) Castling
-			- Knights:
-				You know
-			- Pawns:
-				One move up
-				If not moved yet. 1-2 moves up
-				Near diagonal captures
-				Promotions
+				- King Pinned knights can never move
+		Normal moves 
+			Is piece King Pinned?
+				No. Piece is not King Pinned
+					- Queen:
+						Lateral moves
+						Diagonal moves
+					- Bishop:
+						Diagonal moves
+					- Rook:
+						Lateral moves
+						Castling (Accounted for above)
+					- Knights:
+						You know
+					- Pawns:
+						One move forward
+						If not moved yet. 1-2 moves forward
+						Near forward diagonal captures
+						Enpassent:
+							- Always make sure King is not attacked by rays.
+							- enpassent can create discovered attacks for opponent.
+							- only need to see horizontal attacks because, calculating pins
+								will eliminate horizontal ray attacks
+						Promotions
+				Yes. Piece is King Pinned:
+					- Then that piece can only move in direction of attacking ray piece
+					- Remember, only ray pieces can deliver pins

@@ -1,6 +1,8 @@
 === FORGE ===
 === VALID MOVE GENERATOR ===
 
+https://peterellisjones.com/posts/generating-legal-chess-moves-efficiently/
+
 Perft:
 	https://www.chessprogramming.org/Perft
 
