@@ -16,6 +16,7 @@ namespace forge
 
 		virtual std::string getName() = 0;
 
+		virtual std::string getNameVariant() = 0;
 	protected:
 
 	};

@@ -36,6 +36,11 @@ namespace forge
 		// Keeps track of start time 
 		void start();
 
+		// Call immediately after search is completed or terminated.
+		// If not called, then timer will continue to accumulate time as if 
+		// search is still progressing.
+		void stop();
+
 		bool exitConditionReached() const {
 			return
 				(nodeCount >= nodeLimit) ||

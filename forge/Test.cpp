@@ -368,6 +368,29 @@ namespace forge
 			match.runGame();
 		}
 
+		void performanceTester()
+		{
+			forge::PerformanceTester tester;
+
+			auto whiteSolver =
+				//make_unique<RandomSolver>();
+				make_unique<MinimaxSolver>();
+
+			auto blackSolver =
+				//make_unique<RandomSolver>();
+				make_unique<MinimaxSolver>();
+
+			whiteSolver->makeHeuristic<forge::ApplePieHeuristic>();
+			blackSolver->makeHeuristic<forge::ApplePieHeuristic>();
+
+			tester.whiteSolver() = std::move(whiteSolver);
+			tester.blackSolver() = std::move(blackSolver);
+
+			tester.view() = make_unique<TextView>();
+
+			tester.runGame();
+		}
+
 		void nodeIterator()
 		{
 			Node root;
@@ -503,6 +526,21 @@ namespace forge
 			match.makeView<TextView>();
 
 			match.runGame();
+		}
+
+		void logger()
+		{
+			PerformanceLogger logger;
+
+			filesystem::path currDir = filesystem::current_path();
+			logger.start(
+				"Some Solver",
+				"Some Variant",
+				"Some Evaluation Function",
+				"v0.0");
+
+			logger.log(50, 0.5, 2, 0.6, chrono::milliseconds(234));
+			logger.log(523, 0.55, 25, 0.36, chrono::milliseconds(2234));
 		}
 
 		namespace weights

@@ -28,6 +28,8 @@ namespace forge
 
 		virtual std::string getName()  override;
 
+		virtual std::string getNameVariant() override { return "Basic"; }
+
 		void pauseBeforeReturn(bool pause = true) { m_pauseBeforeReturning = pause; }
 
 	private:

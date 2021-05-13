@@ -15,6 +15,8 @@ namespace forge
 
 		virtual std::string getName() override;
 
+		virtual std::string getNameVariant() override { return "Basic"; }
+
 	protected:
 		MovePositionPair solve(const Position & position);
 

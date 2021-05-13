@@ -166,6 +166,8 @@
     <ClCompile Include="MovePositionPair.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="OWeightsArchive.cpp" />
+    <ClCompile Include="PerformanceLogger.cpp" />
+    <ClCompile Include="PerformanceTester.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PositionTable.cpp" />
@@ -192,6 +194,8 @@
     <Text Include="GameStates.txt" />
     <Text Include="Goals.txt" />
     <Text Include="HighLevelDesign.txt" />
+    <Text Include="MoveGeneratorQuintessential.txt" />
+    <Text Include="MoveGeneratorQuintessential2.txt" />
     <Text Include="Multi_threading.txt" />
     <Text Include="NameSpaces.txt" />
     <Text Include="NodeTree.txt" />
@@ -240,6 +244,8 @@
     <ClInclude Include="MovePositionPair.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="OWeightsArchive.h" />
+    <ClInclude Include="PerformanceLogger.h" />
+    <ClInclude Include="PerformanceTester.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PositionInline.h" />

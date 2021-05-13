@@ -42,6 +42,9 @@
     <Filter Include="Weights">
       <UniqueIdentifier>{9c487543-8ab1-476b-8ba4-28a7774c09f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Benchmarking">
+      <UniqueIdentifier>{60e17615-d7cb-4bae-a726-238b09b4f1a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -170,6 +173,12 @@
     <ClCompile Include="OWeightsArchive.cpp">
       <Filter>Weights</Filter>
     </ClCompile>
+    <ClCompile Include="PerformanceTester.cpp">
+      <Filter>Benchmarking</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceLogger.cpp">
+      <Filter>Benchmarking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -248,6 +257,12 @@
       <Filter>Notes</Filter>
     </Text>
     <Text Include="Benchmarks.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="MoveGeneratorQuintessential.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="MoveGeneratorQuintessential2.txt">
       <Filter>Notes</Filter>
     </Text>
   </ItemGroup>
@@ -392,6 +407,12 @@
     </ClInclude>
     <ClInclude Include="IWeightsArchive.h">
       <Filter>Weights</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceTester.h">
+      <Filter>Benchmarking</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceLogger.h">
+      <Filter>Benchmarking</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

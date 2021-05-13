@@ -14,6 +14,8 @@ namespace forge
 
 		virtual std::string getName() override;
 
+		virtual std::string getNameVariant() override { return "Basic"; }
+
 	protected:
 		std::default_random_engine m_randomEngine{ static_cast<unsigned int>(time(nullptr)) };
 	};

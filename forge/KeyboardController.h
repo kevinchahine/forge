@@ -13,6 +13,8 @@ namespace forge
 
 		virtual std::string getName() override;
 
+		virtual std::string getNameVariant() override { return "Basic"; }
+
 	private:
 		
 		// returns true if 'move' is found in 'legalMoves'

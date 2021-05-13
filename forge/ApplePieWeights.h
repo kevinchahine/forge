@@ -23,11 +23,11 @@ namespace forge
 
 		// --- Material ---
 		// Based on value of simply having a number of each piece
-		heuristic_t queenMaterial = 0;
-		heuristic_t rookMaterial = 0;
-		heuristic_t bishopMaterial = 0;
-		heuristic_t knightMaterial = 0;
-		heuristic_t pawnMaterial = 0;
+		heuristic_t queenMaterial = 901;
+		heuristic_t rookMaterial = 501;
+		heuristic_t bishopMaterial = 305;
+		heuristic_t knightMaterial = 301;
+		heuristic_t pawnMaterial = 101;
 
 		// --- 
 		heuristic_t bishopPair = 0;

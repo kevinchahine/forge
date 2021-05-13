@@ -40,14 +40,16 @@ int main(int argc, char ** argv)
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();
+	forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
 	//forge::test::solver();
 	//forge::test::insufficientMaterial();
 	//forge::test::gameState();
 	//forge::test::drawByRepetition();
+	//forge::test::logger();
 	//forge::test::weights::applePie();
-	forge::test::ai::playApplePie();
+	//forge::test::ai::playApplePie();
 	//forge::benchmark::search<MinimaxSolver, ApplePieHeuristic>();
 
 	cout << "Done...";

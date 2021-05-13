@@ -17,9 +17,13 @@ namespace forge
 		RandomHeuristic & operator=(const RandomHeuristic &) = default;
 		RandomHeuristic & operator=(RandomHeuristic &&) noexcept = default;
 
-		virtual heuristic_t eval(const Position & pos) override;
+		virtual heuristic_t eval(const Position & pos) const override;
 
 		virtual std::unique_ptr<HeuristicBase> clone() const override;
+
+		virtual std::string name() const override { return "RandomHeuristic"; }
+
+		virtual void print(const Position & pos, std::ostream & os = std::cout) const override;
 
 	protected:
 		std::uniform_int_distribution<heuristic_t> mydist;	// units centi pawns

@@ -9,8 +9,15 @@ namespace forge
 		nodeCount = 0;
 		plyCount = 0;
 		stopFlag = false;
+		searchTime.reset();
 		searchTime.resume();
-		timer.resume();
+		timer.resume();	// TODO: timer needs to be reset to desired search time also
+	}
+
+	void SearchMonitor::stop()
+	{
+		searchTime.pause();
+		timer.pause();
 	}
 
 	void SearchMonitor::print(std::ostream & os) const

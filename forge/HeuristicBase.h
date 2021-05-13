@@ -17,7 +17,7 @@ namespace forge
 		// 0 favors a draw.
 		// Evaluation is based on the Heursitic class derived from 
 		// HeuristicBase and the classes set of weights if it has any.
-		virtual heuristic_t eval(const Position & pos) = 0;
+		virtual heuristic_t eval(const Position & pos) const = 0;
 
 		// Creates a copy of object and returns its address.
 		// Equivalent to useing copy assignment opertor on objects and references.
@@ -32,6 +32,10 @@ namespace forge
 		// then use the .clone() method instead.
 		template<typename T>
 		std::unique_ptr<T> cloneAs() const;
+
+		virtual std::string name() const = 0;
+
+		virtual void print(const Position & pos, std::ostream & os = std::cout) const = 0;
 
 	protected: // --------------------- PROTECTED METHODS ---------------------
 

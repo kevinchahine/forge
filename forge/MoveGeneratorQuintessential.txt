@@ -1,0 +1,82 @@
+=== Forge ===
+=== Move Generator Quintessential ===
+
+!!! Things we still need to add to procedure: 
+	- pawns doing enpassent while king pinned
+	- castling while being attacked
+	- pawn promotions for pinned pawns (Don't think we need to worry about this one)
+
+Procedure:
+
+1.) Which player is making a turn?
+currPlayer
+Find currPlayers King: king
+
+2.) Start by getting some values that we will use throughout algorithm
+	Find all cells that are being attacked by opponent
+		* This tells us which of our pieces are pinned
+	Find all opponent pieces that are defended	
+		* This tells us what opponent pieces our king can't capture
+
+3.) Find which of our pieces are pinned to King (King Pins).
+	- remember direction of pin.
+		- for each King Pin:
+			- find direction of pin:
+				- attackedByRay<Up>() - bool (Or these can return BoardSquare of attacker)
+				- attackedByRay<Down>() - bool
+				- attackedByRay<Left>() - bool
+				- attackedByRay<Right>() - bool
+				- attackedByRay<UpRight>() - bool
+				- attackedByRay<UpLeft>() - bool
+				- attackedByRay<DownRight>() - bool
+				- attackedByRay<DownLeft>() - bool
+				* Remember: knights, pawns and kings can't perform pins
+				*	Only Ray pieces can. Therefore we don't care if knights, pawns
+				*	or kings are attacking a piece.
+	- pieces can only be pinned to Kings by ray pieces and
+	- can only move in direction of that ray piece
+
+2.) Is King attacked?
+	Yes.) Then all legal moves involve getting the King out of check:
+		2-1.) Find opponent pieces that are attacking the King.
+		2-2.) How many attackers are there? 1, 2, (can more than 2 pieces attack a King? Don't think so)
+			2 attackers are only possible in discovered attacks:
+				Possibilities:
+					- Ray Piece and Knight:	QN		BN		RN
+					- Ray piece and Pawn (only after doing enpassent)
+					QP		BP		RP
+					- Ray piece and Ray piece:	QQ	QB	QR	BB	BR	RR
+				Not Possibles:
+					N and N
+					NP
+					K and anything
+					P and P
+
+		2-3.) 1 Attacker:
+			- Capture pieces with non-King (Make sure piece is not pinned to King)
+			- Capture pieces with King (but only if there're not defended)
+			- Move King to safe square
+			- If attacker is a ray pieces (QBR):
+				- Block ray pieces 
+					(blockers must not be pinned in any way)
+		2-4.) 2 Attackers:
+			Things we can't do:
+				~ Capture either piece with non-king (Then the other is still dealing check)
+				~ Block either piece (Then the other is still dealing check)
+			Only thing we can do:
+				- Move King to safe square
+				- Capture 1 piece with king (only if its not defended)
+
+	No.) King is not attacked
+		Pieces pinned to king can only move in direction of pinning piece (We can assume it to be a ray piece)
+			- pieces can only be pinned to king by a single attacker. (true)
+			- two attackers can't pin the same piece to its king (only one can)
+			- only ray pieces can deliver pins
+		** No piece can be skewered to King (because Kings are the most valuable piece)
+		** Knights and pawns can only deliver forks (no pins nor skewers)
+
+		For King Pinned pieces, list all moves/captures they can make in direction of attacker ray piece
+
+		For each other piece, list all moves/captures they can make
+		For pawns don't forget enpassent and promotions.
+			For a pawn that is pinned, it cannot do enpassent in any cercumstance (Is this true???)

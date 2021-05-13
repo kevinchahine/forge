@@ -52,9 +52,13 @@ namespace forge
 	class ApplePieHeuristic : public HeuristicBase
 	{
 	public:
-		virtual heuristic_t eval(const Position & pos) override;
+		virtual heuristic_t eval(const Position & pos) const override;
 
 		virtual std::unique_ptr<HeuristicBase> clone() const override;
+
+		virtual std::string name() const override { return "ApplePieHeuristic"; }
+
+		virtual void print(const Position & pos, std::ostream & os = std::cout) const override;
 
 		ApplePieWeights & weights() { return m_weights; }
 		const ApplePieWeights & weights() const { return m_weights; }

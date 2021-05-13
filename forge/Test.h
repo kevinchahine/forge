@@ -8,6 +8,8 @@
 #include "StopWatch.h"
 #include "Move.h"
 #include "ChessMatch.h"
+#include "PerformanceTester.h"
+#include "PerformanceLogger.h"
 #include "MoveGenerator.h"
 #include "GameState.h"
 #include "Node.h"
@@ -54,6 +56,8 @@ namespace forge
 
 		void chessMatch();
 
+		void performanceTester();
+
 		void nodeIterator();
 
 		void heuristic();
@@ -65,6 +69,8 @@ namespace forge
 		void gameState();
 
 		void drawByRepetition();
+
+		void logger();
 
 		namespace weights
 		{
