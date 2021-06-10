@@ -10,6 +10,11 @@
 
 namespace forge
 {
+	// Data type alias to represent piece color
+	using color_t = bool;
+	const color_t WHITE = 1;
+	const color_t BLACK = 0;
+
 	class Piece
 	{
 	public:
@@ -125,7 +130,7 @@ namespace forge
 			Empty & operator=(Empty &&) noexcept = default;
 
 			// Returns BitBoard containing all zeros
-			static BitBoard moves(BoardSquare square);
+			///static BitBoard moves(BoardSquare square);
 		};
 
 		class King : public Piece {

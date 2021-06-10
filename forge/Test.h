@@ -78,6 +78,11 @@ namespace forge
 
 		} // namespace piece_moves
 
+		namespace attacked_squares
+		{
+
+		} // namespace attacked_squares
+
 		void moveKings();
 
 		void legalMoveGenerator();

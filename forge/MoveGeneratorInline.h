@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Position.h"
+#include "Movers.h"
+#include "MoveGenerator.h"
 
 #include <vector>
-#include "MoveGenerator.h"
+#include <type_traits>
 
 namespace forge
 {
@@ -450,4 +452,17 @@ namespace forge
 		}
 }
 
+	template<typename PIECE_T>
+	BitBoard MoveGenerator::getAttackers(const Position & position, BoardSquare square)
+	{
+		static_assert(
+			is_base_of<Piece, PIECE_T>(),
+			"Data type of PIECE_T must be one that inherits from forge::Piece");
+
+		BitBoard bb = PIECE_T::moves(square);
+
+		BitBoard pieces = position.board().bitBoardFor<PIECE_T>();
+
+		return bb && pieces;
+	}
 } // namespace forge

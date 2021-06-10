@@ -45,6 +45,9 @@
     <Filter Include="Benchmarking">
       <UniqueIdentifier>{60e17615-d7cb-4bae-a726-238b09b4f1a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MoveGenerator">
+      <UniqueIdentifier>{4a8acb56-d48e-4bb6-bf8c-c8f8016a5c33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -96,9 +99,6 @@
       <Filter>Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveCounter.cpp">
-      <Filter>Move</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveGenerator.cpp">
       <Filter>Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveList.cpp">
@@ -178,6 +178,15 @@
     </ClCompile>
     <ClCompile Include="PerformanceLogger.cpp">
       <Filter>Benchmarking</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveGenerator.cpp">
+      <Filter>MoveGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveGeneratorHelpers.cpp">
+      <Filter>MoveGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="Movers.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,12 +327,6 @@
     <ClInclude Include="MoveCounter.h">
       <Filter>Move</Filter>
     </ClInclude>
-    <ClInclude Include="MoveGenerator.h">
-      <Filter>Move</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveGeneratorInline.h">
-      <Filter>Move</Filter>
-    </ClInclude>
     <ClInclude Include="MoveList.h">
       <Filter>Move</Filter>
     </ClInclude>
@@ -417,5 +420,15 @@
     <ClInclude Include="PerformanceLogger.h">
       <Filter>Benchmarking</Filter>
     </ClInclude>
+    <ClInclude Include="MoveGenerator.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveGeneratorInline.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveGeneratorHelpers.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="Movers.h" />
   </ItemGroup>
 </Project>

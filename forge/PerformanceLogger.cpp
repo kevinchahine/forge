@@ -88,6 +88,8 @@ namespace forge
 		sheet.cell(4, 1).value("Move Gen Version");
 		sheet.cell(4, 2).value(moveGeneratorVersion);
 
+		sheet.cell(5, 1).value("Date");
+		sheet.cell(5, 2).value("???");	// How about some dates
 		// --- Leave row 3 empty ---
 
 		sheet.cell(1, 4).value("Node Count");

@@ -40,13 +40,13 @@ int main(int argc, char ** argv)
 	//forge::test::piece_moves::bishop();
 	//forge::test::piece_moves::knight();
 	//forge::test::piece_moves::rook();
-	forge::test::piece_moves::pawn();
+	//forge::test::piece_moves::pawn();
 	//forge::test::moveKings();
 	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();
-	//forge::test::performanceTester();
+	forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
 	//forge::test::solver();
@@ -56,7 +56,6 @@ int main(int argc, char ** argv)
 	//forge::test::logger();
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
-	//forge::benchmark::search<MinimaxSolver, ApplePieHeuristic>();
 
 	cout << "Done...";
 	//this_thread::sleep_for(chrono::seconds(1));

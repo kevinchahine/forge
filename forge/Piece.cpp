@@ -56,10 +56,10 @@ namespace forge
 	// -------------------------------- Individual Pieces ---------------------
 
 	namespace pieces {
-		BitBoard Empty::moves(BoardSquare square)
-		{
-			return BitBoard(); // Empty BitBoard for Empty square
-		}
+		///BitBoard Empty::moves(BoardSquare square)
+		///{
+		///	return BitBoard(); // Empty BitBoard for Empty square
+		///}
 
 		BitBoard King::moves(BoardSquare square)
 		{

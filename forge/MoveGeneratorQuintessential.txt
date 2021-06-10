@@ -1,12 +1,14 @@
 === Forge ===
-=== Move Generator Quintessential ===
+=== Move Generator (Special) ===
 
 https://peterellisjones.com/posts/generating-legal-chess-moves-efficiently/
 
 !!! Things we still need to add to procedure: 
 	- pawns doing enpassent while king pinned
 	- castling while being attacked
+		and while King-Rook squares are attacked
 	- pawn promotions for pinned pawns (Don't think we need to worry about this one)
+		Because if a pawn can move up (upleft, up or upright) then it can do it as a promotion.
 
 Procedure:
 
@@ -24,7 +26,7 @@ Find currPlayers King: king
 	- remember direction of pin.
 		- for each King Pin:
 			- find direction of pin:
-				- attackedByRay<Up>() - bool (Or these can return BoardSquare of attacker)
+				- attackedByRay<Up>() - bool (Or these can return BoardSquare of attacker !!!Or even BitBoard!!!)
 				- attackedByRay<Down>() - bool
 				- attackedByRay<Left>() - bool
 				- attackedByRay<Right>() - bool
@@ -36,38 +38,51 @@ Find currPlayers King: king
 				*	Only Ray pieces can. Therefore we don't care if knights, pawns
 				*	or kings are attacking a piece.
 	- pieces can only be pinned to Kings by ray pieces and
-	- can only move in direction of that ray piece
+	- can only move/capture in direction of that ray piece (or stay where they are)
 
 2.) Is King attacked?
 	Yes.) Then all legal moves involve getting the King out of check:
-		2-1.) Find opponent pieces that are attacking the King.
+		2-1.) Find opponent pieces that are attacking the King. - BitBoard
 		2-2.) How many attackers are there? 1, 2, (can more than 2 pieces attack a King? Don't think so)
-			2 attackers are only possible in discovered attacks:
+			2-2-2.) 2 attackers are only possible after discovered attacks:
 				Possibilities:
-					- Ray Piece and Knight:	QN		BN		RN
-					- Ray piece and Pawn (only after doing enpassent)
-					QP		BP		RP
-					- Ray piece and Ray piece:	QQ	QB	QR	BB	BR	RR
+					- Ray Piece and Knight (common):	
+						QN	(Q attacks laterally or diagonally)	
+						BN		
+						RN	
+					- Lateral ray piece and Pawn (only possible after doing enpassent)
+						QP (BQ attacks down only) (WQ attacks up only)		
+						RP (BR attacks down only) (WR attacks up only)
+						?BP? (Not possible)		
+					- Ray piece and Ray piece:	
+						QQ (Only possible after pawn promotion)	
+						QB (Queen can only attack laterally)	
+						QR (Queen can only attack diagonally)
+						BR 
+						?BB? (Not possible in a regular game)
+						?RR? (Not possible in a regular game)
 				Not Possibles:
 					N and N
 					NP
 					K and anything
 					P and P
 
-		2-3.) 1 Attacker:
-			- Capture pieces with non-King (Make sure piece is not pinned to King)
-			- Capture pieces with King (but only if there're not defended)
-			- Move King to safe square
-			- If attacker is a ray pieces (QBR):
-				- Block ray pieces 
-					(blockers must not be pinned in any way)
-		2-4.) 2 Attackers:
-			Things we can't do:
-				~ Capture either piece with non-king (Then the other is still dealing check)
-				~ Block either piece (Then the other is still dealing check)
-			Only thing we can do:
+			2-2-1.) 1 Attacker:
+				Only legal moves:
+				- Capture pieces with non-King (Make sure piece is not pinned to King)
+				- Capture pieces with King (but only if there're not defended)
 				- Move King to safe square
-				- Capture 1 piece with king (only if its not defended)
+				- If attacker is a ray pieces (QBR):
+					- Block ray pieces 
+						(blockers must not be pinned in any way)
+			2-2-2.) 2 Attackers:
+				Only legal moves:
+				Things we can't do:
+					~ Capture either piece with non-king (Then the other is still dealing check)
+					~ Block either piece (Then the other is still dealing check)
+				Only thing we can do:
+					- Move King to safe square
+					- Capture 1 piece with king (only if its not defended)
 
 	No.) King is not attacked
 		Pieces pinned to king can only move in direction of pinning piece (We can assume it to be a ray piece)

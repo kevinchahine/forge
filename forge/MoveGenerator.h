@@ -6,13 +6,13 @@
 
 namespace forge
 {
-	// A Pseudo Legal Move Generator.
+	// A Legal Move Generator.
 	// Generates legal moves for a given Position but without accounting
 	// for Positions that keep the king attacked.
 	// Generated moves must be checked to see if the King is attacked.
 	class MoveGenerator
 	{
-	public: 
+	public:
 
 		static MoveList generateLegalMoves(const Position & position);
 
@@ -21,7 +21,7 @@ namespace forge
 		static MoveList generateLegalMovesFor(const Position & position, BoardSquare square);
 
 	private:
-		
+
 		// do not call on empty cells
 		// Make sure isWhite cooresponds to the color of the piece at cell
 		static void generateLegalMovesFor(
@@ -47,6 +47,14 @@ namespace forge
 		static inline void generateQueenMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 		static inline void generateKingMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 
+		// Gets the coordinate of all piece of a specified type that are attacking a square.
+		//	- position - Position of game
+		//	- square - coordinate of square on the board that we are interested in
+		//	- PIECE_T - Datatype of attacker piece that we are interested in
+		//	- return - BitBoard representing coorinates of all pieces of both 
+		//				colors that are attacking a square. 
+		template<typename PIECE_T>
+		static BitBoard getAttackers(const Position & position, BoardSquare square);
 	};
 } // namespace forge
 

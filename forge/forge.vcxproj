@@ -162,8 +162,10 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="MoveCounter.cpp" />
     <ClCompile Include="MoveGenerator.cpp" />
+    <ClCompile Include="MoveGeneratorHelpers.cpp" />
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="MovePositionPair.cpp" />
+    <ClCompile Include="Movers.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="OWeightsArchive.cpp" />
     <ClCompile Include="PerformanceLogger.cpp" />
@@ -240,9 +242,11 @@
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveCounter.h" />
     <ClInclude Include="MoveGenerator.h" />
+    <ClInclude Include="MoveGeneratorHelpers.h" />
     <ClInclude Include="MoveGeneratorInline.h" />
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="MovePositionPair.h" />
+    <ClInclude Include="Movers.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="OWeightsArchive.h" />
     <ClInclude Include="PerformanceLogger.h" />

@@ -9,7 +9,7 @@ namespace forge
 {
 	class BoardSquare
 	{
-		friend class BitBoard;	// Give BitBoard access to m_val
+		friend class BitBoard;	// Gives BitBoard access to m_val
 
 	public:
 		BoardSquare() = default;
@@ -86,6 +86,21 @@ namespace forge
 			m_val |= (colCoord << 0);	// set col bits to colCoord
 		}
 
+		bool isValid()
+		{
+			return m_val & is_valid_mask;
+		}
+
+		void setAsValid()
+		{
+			m_val |= is_valid_mask;	// set bit to 1
+		}
+
+		void setAsInvalid()
+		{
+			m_val &= ~is_valid_mask; // set bit to 0
+		}
+
 		// Returns true iff square refers to a light square. ex: a1, a3, a5
 		bool isLightSquare() const { return (row() & 0b0001) == (col() & 0b0001); }	// '& 0b1' is same as 'modulus 2'
 		// Returns true iff square referse to a dark square. ex: a2, a4, a6
@@ -157,16 +172,23 @@ namespace forge
 		BoardSquare knight6() const { return BoardSquare(m_val + 1 + 16); }
 		BoardSquare knight7() const { return BoardSquare(m_val + 2 + 8); }
 
+		template<typename DIRECTION_T>
+		BoardSquare directionOf() const {
+			return BoardSquare();
+		}
+
 		friend std::ostream & operator<<(std::ostream & os, const BoardSquare & pos);
 
 	private:
 		// bits 0, 1, 2	- col coordinate
 		// bits 3, 4, 5 - row coordinate
-		// bits 6, 7    - reserved
+		// bit  6		- isValid (1: valid, 0: invalid)
+		// bit  7		- reserved
 		// 00cccrrr
 		uint8_t m_val = 0;
 
 		static const uint8_t col_mask = 0b00'000'111;	// Has 1's for each col bit
 		static const uint8_t row_mask = 0b00'111'000;	// Has 1's for each row bit
+		static const uint8_t is_valid_mask = 0b01'000'000;
 	};
 } // namespace forge
