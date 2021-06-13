@@ -12,7 +12,7 @@ namespace forge
 	{
 		os << move.from() << move.to();
 
-		Piece promotion = move.promotion();
+		pieces::Piece promotion = move.promotion();
 
 		if (promotion != pieces::empty) {
 			os << promotion;
@@ -149,7 +149,7 @@ namespace forge
 
 	void Move::promotion(char promotionCh)
 	{
-		Piece p;
+		pieces::Piece p;
 
 		switch (promotionCh)
 		{
@@ -187,7 +187,7 @@ namespace forge
 
 		ss << from() << to();
 
-		Piece promo = promotion();
+		pieces::Piece promo = promotion();
 
 		if (promo.isEmpty() == false) {
 			ss << promo;

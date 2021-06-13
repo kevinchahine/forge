@@ -20,7 +20,7 @@ namespace forge
 
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
-				Piece p = b.at(row, col);
+				pieces::Piece p = b.at(row, col);
 
 				m_img.placePiece(p.getCh(), row, col, p.isWhite());
 			}
@@ -39,7 +39,7 @@ namespace forge
 
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
-				Piece p = b.at(row, col);
+				pieces::Piece p = b.at(row, col);
 
 				m_img.placePiece(p.getCh(), row, col, p.isWhite());
 			}
@@ -60,7 +60,7 @@ namespace forge
 		// Place pieces
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
-				Piece p = b.at(row, col);
+				pieces::Piece p = b.at(row, col);
 
 				m_img.placePiece(p.getCh(), row, col, p.isWhite());
 			}

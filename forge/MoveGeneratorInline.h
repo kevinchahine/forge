@@ -456,7 +456,7 @@ namespace forge
 	BitBoard MoveGenerator::getAttackers(const Position & position, BoardSquare square)
 	{
 		static_assert(
-			is_base_of<Piece, PIECE_T>(),
+			is_base_of<pieces::Piece, PIECE_T>(),
 			"Data type of PIECE_T must be one that inherits from forge::Piece");
 
 		BitBoard bb = PIECE_T::moves(square);

@@ -4,67 +4,63 @@ using namespace std;
 
 namespace forge
 {
-	char Piece::getCh() const
-	{
-		// Look up table
-		// converts piece value to a printable character
-		// index - piece value
-		// output - character 
-		static const uint8_t pieceValToChar[] = {
-			' ',	// 0  Empty
-			'K',	// 1  White
-			'Q',	// 2  White
-			'B',	// 3  White
-			'N',	// 4  White
-			'R',	// 5  White
-			'p',	// 6  White
-		};
-
-		Piece p = *this;
-
-		p.makeWhite();
-
-		return pieceValToChar[p.m_val.to_ulong()];
-	}
-
-	void Piece::setCh(char ch, bool isWhite)
-	{
-		ch = tolower(ch);
-
-		switch (ch) {
-		case ' ': 	m_val = EMPTY;			break;
-		case 'k': 	m_val = WHITE_KING;		break;
-		case 'q': 	m_val = WHITE_QUEEN;	break;
-		case 'b': 	m_val = WHITE_BISHOP;	break;
-		case 'n': 	m_val = WHITE_KNIGHT;	break;
-		case 'r': 	m_val = WHITE_ROOK;		break;
-		case 'p': 	m_val = WHITE_PAWN;		break;
-		default:
-#ifdef _DEBUG
-			cout << "Error: " << __FUNCTION__ << " unknown character " << ch << '\n';
-#endif 
-			break;
-		}
-
-		// What color should the piece be?
-		if (!isWhite) {
-			// It should be black
-			this->makeBlack();
-		}
-	}
-
-	// -------------------------------- Individual Pieces ---------------------
-
 	namespace pieces {
-		///BitBoard Empty::moves(BoardSquare square)
-		///{
-		///	return BitBoard(); // Empty BitBoard for Empty square
-		///}
+		char Piece::getCh() const
+		{
+			// Look up table
+			// converts piece value to a printable character
+			// index - piece value
+			// output - character 
+			static const uint8_t pieceValToChar[] = {
+				' ',	// 0  Empty
+				'K',	// 1  White
+				'Q',	// 2  White
+				'B',	// 3  White
+				'N',	// 4  White
+				'R',	// 5  White
+				'p',	// 6  White
+			};
 
-		BitBoard King::moves(BoardSquare square)
+			Piece p = *this;
+
+			p.makeWhite();
+
+			return pieceValToChar[p.m_val.to_ulong()];
+		}
+
+		void Piece::setCh(char ch, bool isWhite)
+		{
+			ch = tolower(ch);
+
+			switch (ch) {
+			case ' ': 	m_val = EMPTY;			break;
+			case 'k': 	m_val = WHITE_KING;		break;
+			case 'q': 	m_val = WHITE_QUEEN;	break;
+			case 'b': 	m_val = WHITE_BISHOP;	break;
+			case 'n': 	m_val = WHITE_KNIGHT;	break;
+			case 'r': 	m_val = WHITE_ROOK;		break;
+			case 'p': 	m_val = WHITE_PAWN;		break;
+			default:
+#ifdef _DEBUG
+				cout << "Error: " << __FUNCTION__ << " unknown character " << ch << '\n';
+#endif 
+				break;
+			}
+
+			// What color should the piece be?
+			if (!isWhite) {
+				// It should be black
+				this->makeBlack();
+			}
+		}
+
+		// -------------------------------- Individual Pieces ---------------------
+
+		BitBoard King::pushMask(BoardSquare square)
 		{
 			BitBoard bb;
 
+			// TODO: Optimize: Make this with only bitwise operations. No "if"s
 			// --- Top 3 squares ---
 			if (square.isTopRank() == false) {
 				bb[square.upOne()] = 1;
@@ -100,12 +96,12 @@ namespace forge
 			return bb;
 		}
 
-		BitBoard Queen::moves(BoardSquare square)
+		BitBoard Queen::pushMask(BoardSquare square)
 		{
-			return Rook::moves(square) | Bishop::moves(square);
+			return Rook::pushMask(square) | Bishop::pushMask(square);
 		}
 
-		BitBoard Bishop::moves(BoardSquare square)
+		BitBoard Bishop::pushMask(BoardSquare square)
 		{
 			BitBoard bb;
 
@@ -132,34 +128,12 @@ namespace forge
 			return bb;
 		}
 
-		BitBoard Knight::moves(BoardSquare square)
+		BitBoard Knight::pushMask(BoardSquare square)
 		{
-			BoardSquare & s = square;	// Alias name
-
-			BitBoard bb;
-
-			if (s.isKnight0InBounds()) bb[s.knight0()] = 1;
-			if (s.isKnight1InBounds()) bb[s.knight1()] = 1;
-			if (s.isKnight2InBounds()) bb[s.knight2()] = 1;
-			if (s.isKnight3InBounds()) bb[s.knight3()] = 1;
-			if (s.isKnight4InBounds()) bb[s.knight4()] = 1;
-			if (s.isKnight5InBounds()) bb[s.knight5()] = 1;
-			if (s.isKnight6InBounds()) bb[s.knight6()] = 1;
-			if (s.isKnight7InBounds()) bb[s.knight7()] = 1;
-
-			///BoardSquare base{ 2, 2 };
-			///
-			///const BitBoard KNIGHTS = 0b00000000'00000000'00000000'00001010'00010001'00000000'00010001'00001010;
-			///const BitBoard BLANKER = 0b0;
-			///
-			///bb = KNIGHTS << (3);	// Horizontal Shift
-			///
-			///bb = bb << (1 * 8);		// Vertical Shift
-
-			return bb;
+			return BitBoard::mask<directions::LShape>(square);
 		}
 
-		BitBoard Rook::moves(BoardSquare square)
+		BitBoard Rook::pushMask(BoardSquare square)
 		{
 			BitBoard bb;
 
@@ -173,22 +147,12 @@ namespace forge
 			return bb;
 		}
 
-		BitBoard WhitePawn::moves(BoardSquare square) const
+		BitBoard WhitePawn::pushMask(BoardSquare square)
 		{
 			BitBoard bb;
 
-			// --- Left Capture ---
-			if (square.isLeftFile() == false) {
-				bb[square.upLeftOne()] = 1;
-			}
-
 			// --- Single Push ---
 			bb[square.upOne()] = 1;
-
-			// --- Right Capture ---
-			if (square.isRightFile() == false) {
-				bb[square.upRightOne()] = 1;
-			}
 
 			// --- Double Push ---
 			if (square.row() == 6) {
@@ -198,22 +162,34 @@ namespace forge
 			return bb;
 		}
 
-		BitBoard BlackPawn::moves(BoardSquare square) const
+		BitBoard WhitePawn::captureMask(BoardSquare square)
 		{
 			BitBoard bb;
 
+			// *** Does not need vertical bounds checking ***
+			// *** because pawns can't be on top or bottom rank ***
+
+			// TODO: Optimize: Try to use bit shifts instead of if 
+
 			// --- Left Capture ---
 			if (square.isLeftFile() == false) {
-				bb[square.downLeftOne()] = 1;
+				bb[square.upLeftOne()] = 1;
 			}
-
-			// --- Single Push ---
-			bb[square.upOne()] = 1;
 
 			// --- Right Capture ---
 			if (square.isRightFile() == false) {
-				bb[square.downRightOne()] = 1;
+				bb[square.upRightOne()] = 1;
 			}
+
+			return bb;
+		}
+
+		BitBoard BlackPawn::pushMask(BoardSquare square)
+		{
+			BitBoard bb;
+
+			// --- Single Push ---
+			bb[square.upOne()] = 1;
 
 			// --- Double Push ---
 			if (square.row() == 1) {
@@ -222,5 +198,28 @@ namespace forge
 
 			return bb;
 		}
+
+		BitBoard BlackPawn::captureMask(BoardSquare square)
+		{
+			BitBoard bb;
+
+			// *** Does not need vertical bounds checking ***
+			// *** because pawns can't be on top or bottom rank ***
+
+			// TODO: Optimize: Try to use bit shifts instead of if 
+
+			// --- Left Capture ---
+			if (square.isLeftFile() == false) {
+				bb[square.downLeftOne()] = 1;
+			}
+
+			// --- Right Capture ---
+			if (square.isRightFile() == false) {
+				bb[square.downRightOne()] = 1;
+			}
+
+			return bb;
+		}
+
 	} // namespace pieces
 } // namespace forge

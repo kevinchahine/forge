@@ -33,8 +33,8 @@ namespace forge
 			const guten::color::Color & lightCell = guten::color::brown,
 			const guten::color::Color & darkCell = guten::color::green) const;
 
-		Piece at(int row, int col) const;
-		Piece at(BoardSquare square) const;
+		pieces::Piece at(int row, int col) const;
+		pieces::Piece at(BoardSquare square) const;
 
 		// Does not remove Kings
 		// !!! Do not use to remove Kings !!!
@@ -47,12 +47,17 @@ namespace forge
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.
 		// Use methods that move pieces instead
-		void placePiece(uint8_t row, uint8_t col, Piece piece) {	placePiece(BoardSquare( (uint16_t)row, (uint16_t)col ), piece); }
+		void placePiece(uint8_t row, uint8_t col, pieces::Piece piece) {	placePiece(BoardSquare( (uint16_t)row, (uint16_t)col ), piece); }
 		// If piece == empty, does not remove King.
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.
 		// Use methods that move pieces instead
-		void placePiece(BoardSquare square, Piece piece);
+		void placePiece(BoardSquare square, pieces::Piece piece);
+		// Places 0 or more pieces of the same type.
+		// Not an efficient method.
+		// Does not work on Kings.
+		// * See comments for void Board::placePiece(BoardSquare square, pieces::Piece piece)
+		void placePieces(BitBoard squares, pieces::Piece piece);
 
 		// Places a piece at square
 		// Only call on empty cells
@@ -172,10 +177,13 @@ namespace forge
 			return kingsBB;
 		}
 
+		BoardSquare whiteKing() const { return m_whiteKing; }
+		BoardSquare blackKing() const { return m_blackKing; }
+
 		// Returns the bitboard for the specified piece type
-		// Piece type can come from class forge::Piece and be of type
-		// forge::Piece::piece_t.
-		template<Piece::piece_t>
+		// Piece type can come from class forge::pieces::Piece and be of type
+		// forge::pieces::Piece::piece_t.
+		template<pieces::Piece::piece_t>
 		BitBoard bitBoardFor() const
 		{
 			static_assert(false, "Don't use this method. Use full specialization overloads instead\n");
@@ -184,20 +192,17 @@ namespace forge
 		}
 
 		template<>
-		BitBoard bitBoardFor<Piece::KING>() const { return kings(); }
+		BitBoard bitBoardFor<pieces::Piece::KING>() const { return kings(); }
 		template<>
-		BitBoard bitBoardFor<Piece::QUEEN>() const { return queens(); }
+		BitBoard bitBoardFor<pieces::Piece::QUEEN>() const { return queens(); }
 		template<>
-		BitBoard bitBoardFor<Piece::BISHOP>() const { return bishops(); }
+		BitBoard bitBoardFor<pieces::Piece::BISHOP>() const { return bishops(); }
 		template<>
-		BitBoard bitBoardFor<Piece::KNIGHT>() const { return knights(); }
+		BitBoard bitBoardFor<pieces::Piece::KNIGHT>() const { return knights(); }
 		template<>
-		BitBoard bitBoardFor<Piece::ROOK>() const { return rooks(); }
+		BitBoard bitBoardFor<pieces::Piece::ROOK>() const { return rooks(); }
 		template<>
-		BitBoard bitBoardFor<Piece::PAWN>() const { return pawns(); }
-
-		BoardSquare whiteKing() const { return m_whiteKing; }
-		BoardSquare blackKing() const { return m_blackKing; }
+		BitBoard bitBoardFor<pieces::Piece::PAWN>() const { return pawns(); }
 
 		bool operator==(const Board & rhs) const { 
 			return 
@@ -205,7 +210,7 @@ namespace forge
 				(m_blacks == rhs.m_blacks) && 
 				(m_bishops == rhs.m_bishops) &&
 				(m_rooks == rhs.m_rooks) &&
-				(m_pawns == rhs.m_pawns) &&				// includes enpassent
+				(m_pawns == rhs.m_pawns) &&				// includes enpassent bits
 				(m_whiteKing == rhs.m_whiteKing) &&
 				(m_blackKing == rhs.m_blackKing);
 				// TODO: Don't forget Castling

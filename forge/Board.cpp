@@ -17,7 +17,7 @@ namespace forge
 
 		for (int row = 0; row < this->rows(); row++) {
 			for (int col = 0; col < this->cols(); col++) {
-				const Piece & p = (*this).at(row, col);
+				const pieces::Piece & p = (*this).at(row, col);
 
 				disp.placePiece(p.getCh(), row, col, p.isWhite());
 			}
@@ -46,7 +46,7 @@ namespace forge
 
 		for (int row = 0; row < this->rows(); row++) {
 			for (int col = 0; col < this->cols(); col++) {
-				const Piece & p = (*this).at(row, col);
+				const pieces::Piece & p = (*this).at(row, col);
 
 				guten::color::Color color;
 				color.setbg(row % 2 == col % 2 ? guten::color::yellow : guten::color::green);
@@ -60,16 +60,16 @@ namespace forge
 		return miniBoard;
 	}
 
-	Piece Board::at(int row, int col) const
+	pieces::Piece Board::at(int row, int col) const
 	{
 		return this->at(BoardSquare(
 			static_cast<uint16_t>(row),
 			static_cast<uint16_t>(col)));
 	}
 
-	Piece Board::at(BoardSquare square) const
+	pieces::Piece Board::at(BoardSquare square) const
 	{
-		Piece piece;
+		pieces::Piece piece;
 
 		if (~occupied()[square]) {
 			piece = pieces::empty;
@@ -104,7 +104,7 @@ namespace forge
 		m_pawns.set(pos.val(), 0);
 	}
 
-	void Board::placePiece(BoardSquare square, Piece piece)
+	void Board::placePiece(BoardSquare square, pieces::Piece piece)
 	{
 		if (piece.isEmpty()) {
 			m_whites[square] = 0;
@@ -156,6 +156,19 @@ namespace forge
 				}
 				else {
 					m_blackKing = square;
+				}
+			}
+		}
+	}
+
+	void Board::placePieces(BitBoard squares, pieces::Piece piece)
+	{
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				BoardSquare bs(row, col);
+
+				if (squares[bs] == 1) {
+					placePiece(bs, piece);
 				}
 			}
 		}

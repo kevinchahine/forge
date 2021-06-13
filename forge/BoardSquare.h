@@ -1,9 +1,9 @@
 #pragma once
 
-#include "BitBoard.h"
+///#include "BitBoard.h"
 
 #include <iostream>
-#include <stdint.h>
+#include <string>
 
 namespace forge
 {
@@ -32,8 +32,11 @@ namespace forge
 		//BoardSquare & operator++(int) { ++m_val; }
 		//BoardSquare operator++() { }
 
-		bool operator==(const BoardSquare & bs) const { return this->m_val == bs.m_val; }
-		bool operator!=(const BoardSquare & bs) const { return this->m_val != bs.m_val; }
+		//bool operator==(const BoardSquare & bs) const { return this->m_val == bs.m_val; }
+		//bool operator!=(const BoardSquare & bs) const { return this->m_val != bs.m_val; }
+		
+		bool operator==(BoardSquare bs) const { return this->m_val == bs.m_val; }
+		bool operator!=(BoardSquare bs) const { return this->m_val != bs.m_val; }
 
 		void fromString(const std::string & str);
 
@@ -107,10 +110,10 @@ namespace forge
 		bool isDarkSquare() const { return !isLightSquare(); }
 
 		// Is row coord, the top rank where black's pieces start
-		// and white's pawns promot?
+		// and white's pawns promote?
 		bool isTopRank() const { return row() == 0; }
 		// Is row coord, the bottom rank where white's pieces start
-		// and black's pawns promot?
+		// and black's pawns promote?
 		bool isBotRank() const { return row() == 7; }
 		// Is col coord the left most file
 		bool isLeftFile() const { return col() == 0; }
@@ -172,10 +175,10 @@ namespace forge
 		BoardSquare knight6() const { return BoardSquare(m_val + 1 + 16); }
 		BoardSquare knight7() const { return BoardSquare(m_val + 2 + 8); }
 
-		template<typename DIRECTION_T>
-		BoardSquare directionOf() const {
-			return BoardSquare();
-		}
+		//template<typename DIRECTION_T>
+		//BoardSquare directionOf() const {
+		//	return BoardSquare();
+		//}
 
 		friend std::ostream & operator<<(std::ostream & os, const BoardSquare & pos);
 

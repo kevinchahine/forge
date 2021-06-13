@@ -114,7 +114,7 @@ namespace forge
 			}
 
 			static bool wouldBeInBounds(const BoardSquare & square) {
-				return square.isBotRank() == false & square.isLeftFile() == false;
+				return square.isBotRank() == false && square.isLeftFile() == false;
 			}
 		};
 

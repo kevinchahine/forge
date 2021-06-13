@@ -17,7 +17,7 @@ namespace forge
 		Move() = default;
 		Move(BoardSquare from, BoardSquare to) :
 			m_val((to.val() << 6) | from.val()) {}
-		Move(BoardSquare from, BoardSquare to, Piece promotion) :
+		Move(BoardSquare from, BoardSquare to, pieces::Piece promotion) :
 			m_val((promotion.val().to_ulong() << 12) | (to.val() << 6) | (from.val())) {}
 		// Constructs move based on string
 		// string can be stored in PGN or LAN notation
@@ -75,11 +75,11 @@ namespace forge
 		// !!! Only use characters not integers
 		void to(char file, char rank);
 		
-		Piece promotion() const 
+		pieces::Piece promotion() const 
 		{
 			uint16_t v = (uint16_t) (m_val & promotion_mask).to_ulong() >> 12;
 
-			return Piece((uint8_t) v);
+			return pieces::Piece((uint8_t) v);
 		}
 		
 		// Make sure piece is of the correct color
@@ -92,7 +92,7 @@ namespace forge
 		// and None of:
 		//	- King
 		//	- Pawn
-		void promotion(Piece piece) 
+		void promotion(pieces::Piece piece)
 		{
 			std::bitset<16> promotionBits = piece.val().to_ulong() << 12;
 

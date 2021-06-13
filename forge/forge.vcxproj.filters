@@ -48,6 +48,9 @@
     <Filter Include="MoveGenerator">
       <UniqueIdentifier>{4a8acb56-d48e-4bb6-bf8c-c8f8016a5c33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Directions">
+      <UniqueIdentifier>{7dd17e2a-86d4-4317-9f2f-fbb56a6da090}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -186,7 +189,13 @@
       <Filter>MoveGenerator</Filter>
     </ClCompile>
     <ClCompile Include="Movers.cpp">
+      <Filter>Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Direction.cpp">
+      <Filter>Directions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -429,6 +438,14 @@
     <ClInclude Include="MoveGeneratorHelpers.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
-    <ClInclude Include="Movers.h" />
+    <ClInclude Include="Movers.h">
+      <Filter>Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Direction.h">
+      <Filter>Directions</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

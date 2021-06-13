@@ -43,7 +43,7 @@ namespace forge
 		// White counts as positive, black as negative.
 		// That way 3 White Rooks and 1 Black will return (3 - 1 == 2)
 		// Or 1 White Rook and 3 Black will return (1 - 3 == -2)
-		template<Piece::piece_t PIECE_VAL>
+		template<pieces::Piece::piece_t PIECE_VAL>
 		int imbalance(const Position & pos) const;
 
 		// Counts how many free spaces a specified piece can move to.
@@ -62,15 +62,16 @@ namespace forge
 		return ptr;
 	}
 
-	template<Piece::piece_t PIECE_VAL>
+	template<pieces::Piece::piece_t PIECE_VAL>
 	int HeuristicBase::imbalance(const Position & pos) const
 	{
 		BitBoard pieces = pos.board().bitBoardFor<PIECE_VAL>();	// pieces of some type
 		BitBoard whites = pieces & pos.board().whites();		// white pieces of that type
 		BitBoard blacks = pieces & pos.board().blacks();		// black pieces of that type
 
-		return static_cast<int>(
-			whites.count() - blacks.count());	// difference between number of each piece
+		return 
+			static_cast<int>(whites.count()) - 
+			static_cast<int>(blacks.count());		// difference between number of each piece
 	}
 	
 	///int HeuristicBase::imbalance<Piece::KING>(const Position & pos) const

@@ -32,6 +32,25 @@ namespace forge
 	{
 		void boardSquare();
 
+		namespace bitboard
+		{
+			void allMasks();
+
+			template<typename DIRECTION_T>
+			void showMask(BoardSquare bs) {
+				Board b;
+
+				cout << "=== " << typeid(DIRECTION_T).name() << " ===\n";
+
+				BitBoard bits = BitBoard::mask<DIRECTION_T>(bs);
+
+				b.placePieces(bits, pieces::whitePawn);
+
+				b.printMini();
+			}
+
+		} // namespace bitboard
+
 		void keyboardController();
 
 		void clock();
@@ -52,7 +71,7 @@ namespace forge
 				//BoardSquare square(4, 5);
 				BoardSquare square('b', '2');
 
-				BitBoard bb = piece.moves(square);
+				BitBoard bb = piece.pushMask(square);
 
 				guten::boards::CheckerBoard cb;
 				cb.lightPiece = guten::color::blue;

@@ -28,6 +28,32 @@ namespace forge
 			}
 		}
 
+		namespace bitboard {
+			void allMasks()
+			{
+				BoardSquare bs('e', '4');
+
+				// --- Lateral Line Masks ---
+				showMask<directions::Horizontal>(bs);
+				showMask<directions::Vertical>(bs);
+				showMask<directions::Lateral>(bs);
+
+				// --- Diagonal Line Masks ---
+				showMask<directions::MainDiagonal>(bs);
+				showMask<directions::OffDiagonal>(bs);
+				showMask<directions::Diagonal>(bs);
+
+				// --- Lateral Ray Masks ---
+				showMask<directions::Up>(bs);
+				showMask<directions::Down>(bs);
+				showMask<directions::Left>(bs);
+				showMask<directions::Right>(bs);
+
+				// --- Diagonal Ray Masks ---
+
+			}
+		} // namespace bitboard
+
 		void keyboardController()
 		{
 			ChessMatch match;
@@ -691,5 +717,3 @@ namespace forge
 		} // namespace ai
 	} // namespace test
 } // namespace forge
-
-

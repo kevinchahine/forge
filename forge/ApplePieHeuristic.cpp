@@ -8,11 +8,11 @@ namespace forge
 	{
 		return
 			// --- Material ---
-			imbalance<Piece::QUEEN>(pos) * m_weights.queenMaterial +
-			imbalance<Piece::BISHOP>(pos) * m_weights.bishopMaterial +
-			imbalance<Piece::KNIGHT>(pos) * m_weights.knightMaterial +
-			imbalance<Piece::ROOK>(pos) * m_weights.rookMaterial +
-			imbalance<Piece::PAWN>(pos) * m_weights.pawnMaterial +
+			imbalance<pieces::Piece::QUEEN>(pos) * m_weights.queenMaterial +
+			imbalance<pieces::Piece::BISHOP>(pos) * m_weights.bishopMaterial +
+			imbalance<pieces::Piece::KNIGHT>(pos) * m_weights.knightMaterial +
+			imbalance<pieces::Piece::ROOK>(pos) * m_weights.rookMaterial +
+			imbalance<pieces::Piece::PAWN>(pos) * m_weights.pawnMaterial +
 
 			///// --- 
 			///heuristic_t bishopPair = 0;
@@ -79,18 +79,18 @@ namespace forge
 	{
 		os
 			<< "Piece Imbalances:\n"
-			<< "\tQueen  " << PrintHelper(imbalance<Piece::QUEEN>(pos), m_weights.queenMaterial) << endl
-			<< "\tBishop " << PrintHelper(imbalance<Piece::BISHOP>(pos), m_weights.bishopMaterial) << endl
-			<< "\tKnight " << PrintHelper(imbalance<Piece::KNIGHT>(pos), m_weights.knightMaterial) << endl
-			<< "\tRook   " << PrintHelper(imbalance<Piece::ROOK>(pos), m_weights.rookMaterial) << endl
-			<< "\tPawn   " << PrintHelper(imbalance<Piece::PAWN>(pos), m_weights.pawnMaterial) << endl
+			<< "\tQueen  " << PrintHelper(imbalance<pieces::Piece::QUEEN>(pos), m_weights.queenMaterial) << endl
+			<< "\tBishop " << PrintHelper(imbalance<pieces::Piece::BISHOP>(pos), m_weights.bishopMaterial) << endl
+			<< "\tKnight " << PrintHelper(imbalance<pieces::Piece::KNIGHT>(pos), m_weights.knightMaterial) << endl
+			<< "\tRook   " << PrintHelper(imbalance<pieces::Piece::ROOK>(pos), m_weights.rookMaterial) << endl
+			<< "\tPawn   " << PrintHelper(imbalance<pieces::Piece::PAWN>(pos), m_weights.pawnMaterial) << endl
 
 			<< "Total = " << 
-				imbalance<Piece::QUEEN>(pos) * m_weights.queenMaterial +
-				imbalance<Piece::BISHOP>(pos) * m_weights.bishopMaterial +
-				imbalance<Piece::KNIGHT>(pos) * m_weights.knightMaterial +
-				imbalance<Piece::ROOK>(pos) * m_weights.rookMaterial +
-				imbalance<Piece::PAWN>(pos) * m_weights.pawnMaterial
+				imbalance<pieces::Piece::QUEEN>(pos) * m_weights.queenMaterial +
+				imbalance<pieces::Piece::BISHOP>(pos) * m_weights.bishopMaterial +
+				imbalance<pieces::Piece::KNIGHT>(pos) * m_weights.knightMaterial +
+				imbalance<pieces::Piece::ROOK>(pos) * m_weights.rookMaterial +
+				imbalance<pieces::Piece::PAWN>(pos) * m_weights.pawnMaterial
 			<< endl;
 	}
 } // namespace forge

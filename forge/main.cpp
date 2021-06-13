@@ -28,7 +28,10 @@ int main(int argc, char ** argv)
 		<< guten::color::red << "=============\n"
 		<< guten::color::white;
 	
+	forge::BoardSquare bs;
+
 	//forge::test::boardSquare();
+	forge::test::bitboard::allMasks();
 	//forge::test::keyboardController();
 	//forge::test::clock();
 	//forge::test::stopWatch();
@@ -46,7 +49,7 @@ int main(int argc, char ** argv)
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();
-	forge::test::performanceTester();
+	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
 	//forge::test::solver();
