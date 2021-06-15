@@ -52,6 +52,40 @@ namespace forge
 		std::bitset<64>::reference operator[](const BoardSquare & square);
 		bool operator[](const BoardSquare & square) const;
 
+		template<typename DIRECTION_T>
+		void shift(uint8_t numberOfCells) {
+			static_assert(true, 
+				"Never call this method. "
+				"This method is the unspeciallized template. "
+				"Instead call a fully specialized overload instead.");
+		}
+
+		// Shift all bits up a number of rows
+		template<>
+		void shift<directions::Up>(uint8_t numberOfRows) {
+			(*this) = (*this) >> (numberOfRows << 3);
+		}
+
+		// Shift all bits down a number of rows
+		template<>
+		void shift<directions::Down>(uint8_t numberOfRows) {
+			(*this) = (*this) << (numberOfRows << 3);
+		}
+
+		// Shift all bits left a number of cols.
+		// Bits might overflow into downward rows 
+		template<>
+		void shift<directions::Left>(uint8_t numberOfCols) {
+			(*this) = (*this) >> numberOfCols;
+		}
+
+		// Shift all bits left a number of cols.
+		// Bits might overflow into upward rows 
+		template<>
+		void shift<directions::Right>(uint8_t numberOfCols) {
+			(*this) = (*this) << numberOfCols;
+		}
+
 		// Draws a line of 1s between begin and end.
 		// Inclusive on begin
 		// Exclusive on end
@@ -90,7 +124,7 @@ namespace forge
 		template<>
 		static BitBoard mask<directions::OffDiagonal>(BoardSquare center);
 
-		// --- Ray Masks (As in not Lines) ---
+		// --- Lateral Ray Masks (As in not Lines) ---
 		template<>
 		static BitBoard mask<directions::Up>(BoardSquare center);
 		template<>
@@ -100,6 +134,7 @@ namespace forge
 		template<>
 		static BitBoard mask<directions::Right>(BoardSquare center);
 
+		// --- Diagonal Ray Masks (As in not Lines) ---
 		template<>
 		static BitBoard mask<directions::UL>(BoardSquare center);
 		template<>
@@ -192,17 +227,21 @@ namespace forge
 	template<>
 	inline BitBoard BitBoard::mask<directions::Horizontal>(BoardSquare center)
 	{
-		const BitBoard TOP = 0b00000000'00000000'00000000'00000000'00000000'00000000'00000000'11111111;
+		BitBoard top = 0b00000000'00000000'00000000'00000000'00000000'00000000'00000000'11111111;
 
-		return TOP << (center.row() << 3);
+		top.shift<directions::Down>(center.row());
+
+		return top;
 	}
 
 	template<>
 	inline BitBoard BitBoard::mask<directions::Vertical>(BoardSquare center)
 	{
-		const BitBoard LEFT = 0b00000001'00000001'00000001'00000001'00000001'00000001'00000001'00000001;
+		BitBoard left = 0b00000001'00000001'00000001'00000001'00000001'00000001'00000001'00000001;
 
-		return LEFT << center.col();
+		left.shift<directions::Right>(center.col());
+
+		return left;
 	}
 
 	template<>
@@ -211,15 +250,15 @@ namespace forge
 		// Diagonal direction: / 
 		const BitBoard POS_DIAGONAL = 0b00000001'00000010'00000100'00001000'00010000'00100000'01000000'10000000;
 
-		BitBoard bb;
+		BitBoard bb = POS_DIAGONAL;
 
 		int mainShift = 7 - (center.row() + center.col());
-
+		
 		if (mainShift > 0) {
-			bb |= (POS_DIAGONAL >> (mainShift << 3));
+			bb.shift<directions::Up>(mainShift);
 		}
 		else {
-			bb |= (POS_DIAGONAL << (-mainShift << 3));
+			bb.shift<directions::Down>(-mainShift);
 		}
 
 		return bb;
@@ -230,15 +269,15 @@ namespace forge
 	{
 		const BitBoard NEG_DIAGONAL = 0b10000000'01000000'00100000'00010000'00001000'00000100'00000010'00000001;
 
-		BitBoard bb;
+		BitBoard bb = NEG_DIAGONAL;
 
-		int inverseShift = center.row() - center.col();
+		int inverseShift = (int) center.row() - (int) center.col();
 
 		if (inverseShift > 0) {
-			bb |= (NEG_DIAGONAL << (inverseShift << 3));
+			bb.shift<directions::Down>(inverseShift);
 		}
 		else {
-			bb |= (NEG_DIAGONAL >> (-inverseShift << 3));
+			bb.shift<directions::Up>(-inverseShift);
 		}
 
 		return bb;
@@ -249,71 +288,93 @@ namespace forge
 	template<>
 	inline BitBoard BitBoard::mask<directions::Up>(BoardSquare center)
 	{
-		BitBoard bb = BitBoard::mask<directions::Vertical>(center);
+		BitBoard left = 0b00000001'00000001'00000001'00000001'00000001'00000001'00000001'00000001;
 		
-		bb = bb >> center.col();
+		left.shift<directions::Up>(8 - center.row());
+		left.shift<directions::Right>(center.col());
 
-		return bb;
+		return left;
 	}
 
 	template<>
 	inline BitBoard BitBoard::mask<directions::Down>(BoardSquare center)
 	{
-		BitBoard bb = BitBoard::mask<directions::Vertical>(center);
+		BitBoard left = 0b00000001'00000001'00000001'00000001'00000001'00000001'00000001'00000001;
 
-		bb = bb << center.col();
+		left.shift<directions::Down>(center.row());
+		left.shift<directions::Right>(center.col());
 
-		return bb;
+		return left;
 	}
 
 	template<>
 	inline BitBoard BitBoard::mask<directions::Left>(BoardSquare center)
 	{
-		BitBoard bb = BitBoard::mask<directions::Horizontal>(center);
+		BitBoard top = 0b00000000'00000000'00000000'00000000'00000000'00000000'00000000'11111111;
+		
+		top.shift<directions::Left>(8 - center.col());
+		top.shift<directions::Down>(center.row());
 
-		bb = bb << center.col();
-
-		return bb;
+		return top;
 	}
 
 	template<>
 	inline BitBoard BitBoard::mask<directions::Right>(BoardSquare center)
 	{
-		BitBoard bb;
-		
-		return bb;
+		BitBoard bottom = 0b11111111'00000000'00000000'00000000'00000000'00000000'00000000'00000000;
+
+		bottom.shift<directions::Right>(center.col());
+		bottom.shift<directions::Up>(7 - center.row());
+
+		return bottom;
 	}
 
 	template<>
 	inline BitBoard BitBoard::mask<directions::UL>(BoardSquare center)
 	{
-		BitBoard bb;
-		
-		return bb;
+		// Diagonal direction: \ 
+		BitBoard negDiag = 0b10000000'01000000'00100000'00010000'00001000'00000100'00000010'00000001;
+
+		negDiag.shift<directions::Down>(7 - center.col());
+		negDiag.shift<directions::Up>(7 - center.row());
+
+		return negDiag;
 	}
 	
 	template<>
 	inline BitBoard BitBoard::mask<directions::UR>(BoardSquare center)
 	{
-		BitBoard bb;
-		
-		return bb;
+		// Diagonal direction: /  
+		BitBoard posDiag = 0b00000001'00000010'00000100'00001000'00010000'00100000'01000000'10000000;
+
+		posDiag.shift<directions::Down>(center.col());
+		posDiag.shift<directions::Up>(7 - center.row());
+
+		return posDiag;
 	}
 	
 	template<>
 	inline BitBoard BitBoard::mask<directions::DL>(BoardSquare center)
 	{
-		BitBoard bb;
-		
-		return bb;
+		// Diagonal direction: / 
+		BitBoard posDiag = 0b00000001'00000010'00000100'00001000'00010000'00100000'01000000'10000000;
+
+		posDiag.shift<directions::Up>(7 - center.col());
+		posDiag.shift<directions::Down>(center.row());
+
+		return posDiag;
 	}
 	
 	template<>
 	inline BitBoard BitBoard::mask<directions::DR>(BoardSquare center)
 	{
-		BitBoard bb;
-		
-		return bb;
+		// Diagonal direction: \ 
+		BitBoard negDiag = 0b10000000'01000000'00100000'00010000'00001000'00000100'00000010'00000001;
+
+		negDiag.shift<directions::Up>(center.col());
+		negDiag.shift<directions::Down>(center.row());
+
+		return negDiag;
 	}
-	
+
 } // namespace forge

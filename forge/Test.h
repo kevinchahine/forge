@@ -34,18 +34,36 @@ namespace forge
 
 		namespace bitboard
 		{
+			void allShifts();
+
+			template<typename DIRECTION_T>
+			void showShift(BitBoard bb, uint8_t nCells) {
+				Board b;
+
+				cout << "=== Shift: " << typeid(DIRECTION_T).name() << " x" << (int)nCells << " ===\n";
+
+				bb.shift<DIRECTION_T>(nCells);
+
+				b.placePieces(bb, pieces::whiteQueen);
+
+				b.printMini();
+			}
+
 			void allMasks();
 
 			template<typename DIRECTION_T>
 			void showMask(BoardSquare bs) {
 				Board b;
 
-				cout << "=== " << typeid(DIRECTION_T).name() << " ===\n";
+				cout << "=== Mask: " << typeid(DIRECTION_T).name() << " ===\n";
 
 				BitBoard bits = BitBoard::mask<DIRECTION_T>(bs);
 
-				b.placePieces(bits, pieces::whitePawn);
-
+				b.placePieces(bits, pieces::whiteQueen);
+				pieces::Piece p = b.at(bs);
+				p.makeBlack();
+				b.placePiece(bs, p);
+				
 				b.printMini();
 			}
 

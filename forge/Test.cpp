@@ -29,28 +29,60 @@ namespace forge
 		}
 
 		namespace bitboard {
+			void allShifts()
+			{
+				BitBoard bb;
+
+				bb[BoardSquare{ 'e', '4' }] = 1;
+				bb[BoardSquare{ 'e', '5' }] = 1;
+				bb[BoardSquare{ 'e', '6' }] = 1;
+				bb[BoardSquare{ 'd', '4' }] = 1;
+				bb[BoardSquare{ 'd', '5' }] = 1;
+				bb[BoardSquare{ 'd', '6' }] = 1;
+				bb[BoardSquare{ 'c', '4' }] = 1;
+				bb[BoardSquare{ 'c', '5' }] = 1;
+				bb[BoardSquare{ 'c', '6' }] = 1;
+
+				showShift<directions::Up>(bb, 0);
+				showShift<directions::Up>(bb, 3);
+				showShift<directions::Down>(bb, 4);
+				showShift<directions::Left>(bb, 5);
+				showShift<directions::Right>(bb, 2);
+			}
+
 			void allMasks()
 			{
-				BoardSquare bs('e', '4');
+				BoardSquare bs('g', '2');
 
-				// --- Lateral Line Masks ---
-				showMask<directions::Horizontal>(bs);
-				showMask<directions::Vertical>(bs);
-				showMask<directions::Lateral>(bs);
+				while (true) {
+					char file, rank;
 
-				// --- Diagonal Line Masks ---
-				showMask<directions::MainDiagonal>(bs);
-				showMask<directions::OffDiagonal>(bs);
-				showMask<directions::Diagonal>(bs);
+					cout << "Enter board square (use file and rank): ";
+					cin >> file >> rank;
+					bs = BoardSquare{ file, rank };
 
-				// --- Lateral Ray Masks ---
-				showMask<directions::Up>(bs);
-				showMask<directions::Down>(bs);
-				showMask<directions::Left>(bs);
-				showMask<directions::Right>(bs);
+					//// --- Lateral Line Masks ---
+					//showMask<directions::Horizontal>(bs);
+					//showMask<directions::Vertical>(bs);
+					//showMask<directions::Lateral>(bs);
+					//
+					//// --- Diagonal Line Masks ---
+					//showMask<directions::MainDiagonal>(bs);
+					//showMask<directions::OffDiagonal>(bs);
+					//showMask<directions::Diagonal>(bs);
+					//
+					//// --- Lateral Ray Masks ---
+					//showMask<directions::Up>(bs);
+					//showMask<directions::Down>(bs);
+					//showMask<directions::Left>(bs);
+					//showMask<directions::Right>(bs);
 
-				// --- Diagonal Ray Masks ---
-
+					// --- Diagonal Ray Masks ---
+					showMask<directions::UR>(bs);
+					showMask<directions::UL>(bs);
+					showMask<directions::DL>(bs);
+					showMask<directions::DR>(bs);
+				}
 			}
 		} // namespace bitboard
 

@@ -197,6 +197,9 @@
     <ClCompile Include="Direction.cpp">
       <Filter>Directions</Filter>
     </ClCompile>
+    <ClCompile Include="aaremovethis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">

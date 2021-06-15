@@ -31,6 +31,7 @@ int main(int argc, char ** argv)
 	forge::BoardSquare bs;
 
 	//forge::test::boardSquare();
+	//forge::test::bitboard::allShifts();
 	forge::test::bitboard::allMasks();
 	//forge::test::keyboardController();
 	//forge::test::clock();

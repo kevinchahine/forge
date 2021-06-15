@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="aaremovethis.cpp" />
     <ClCompile Include="ApplePieHeuristic.cpp" />
     <ClCompile Include="ApplePieWeights.cpp" />
     <ClCompile Include="AttackChecker.cpp" />
