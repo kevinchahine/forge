@@ -461,7 +461,7 @@ namespace forge
 
 		BitBoard bb = PIECE_T::moves(square);
 
-		BitBoard pieces = position.board().bitBoardFor<PIECE_T>();
+		BitBoard pieces = position.board().pieces<PIECE_T>();
 
 		return bb && pieces;
 	}

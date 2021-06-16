@@ -11,6 +11,7 @@
 #include "PerformanceTester.h"
 #include "PerformanceLogger.h"
 #include "MoveGenerator.h"
+#include "MoveGenerator2.h"
 #include "GameState.h"
 #include "Node.h"
 
@@ -119,6 +120,10 @@ namespace forge
 		{
 
 		} // namespace attacked_squares
+
+		namespace pins {
+			void isPinPossible();
+		}
 
 		void moveKings();
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Color.h"
 #include "BitBoard.h"
 #include "BoardSquare.h"
 #include "Piece.h"
@@ -151,11 +152,18 @@ namespace forge
 		BitBoard empty() const { return ~occupied(); }
 		BitBoard whites() const { return m_whites; }
 		BitBoard blacks() const { return m_blacks; }
+		template<typename COLOR_T> BitBoard colors() const;
+		template<> BitBoard colors<colors::White>() const { return whites(); }
+		template<> BitBoard colors<colors::Black>() const { return blacks(); }
 		BitBoard pawns() const { return m_pawns & pawn_mask; }
 		BitBoard en_passent() const { return m_pawns & ~pawn_mask; }
 		BitBoard rooks() const { return m_rooks & ~m_bishops; }
 		BitBoard bishops() const { return m_bishops & ~m_rooks; }
 		BitBoard queens() const { return m_rooks & m_bishops; }
+		BitBoard laterals() const { return m_rooks; }
+		BitBoard diagonals() const { return m_bishops; }
+		BitBoard rays() const { return m_rooks | m_bishops; }
+		BitBoard blockers() const { return occupied() & ~kings(); }
 		BitBoard knights() const { 
 			BitBoard knightsBB =
 				occupied() &
@@ -168,7 +176,7 @@ namespace forge
 
 			return knightsBB;
 		}
-		BitBoard kings() const {
+		BitBoard kings() const { 
 			BitBoard kingsBB;
 
 			kingsBB[m_whiteKing] = 1;
@@ -176,6 +184,20 @@ namespace forge
 
 			return kingsBB;
 		}
+		template<typename DIRECTION_T> BitBoard directionals() const;
+		template<> BitBoard directionals<directions::Linear>() const { return laterals() & diagonals(); }
+		template<> BitBoard directionals<directions::Lateral>() const { return laterals(); }
+		template<> BitBoard directionals<directions::Diagonal>() const { return diagonals(); }
+		template<> BitBoard directionals<directions::LShape>() const { return knights(); }
+		template<> BitBoard directionals<directions::Ray>() const { return rays(); }
+		template<> BitBoard directionals<directions::Up>() const { return rays(); }
+		template<> BitBoard directionals<directions::Down>() const { return rays(); }
+		template<> BitBoard directionals<directions::Left>() const { return rays(); }
+		template<> BitBoard directionals<directions::Right>() const { return rays(); }
+		template<> BitBoard directionals<directions::UR>() const { return rays(); }
+		template<> BitBoard directionals<directions::UL>() const { return rays(); }
+		template<> BitBoard directionals<directions::DL>() const { return rays(); }
+		template<> BitBoard directionals<directions::DR>() const { return rays(); }
 
 		BoardSquare whiteKing() const { return m_whiteKing; }
 		BoardSquare blackKing() const { return m_blackKing; }
@@ -184,25 +206,18 @@ namespace forge
 		// Piece type can come from class forge::pieces::Piece and be of type
 		// forge::pieces::Piece::piece_t.
 		template<pieces::Piece::piece_t>
-		BitBoard bitBoardFor() const
+		BitBoard pieces() const
 		{
 			static_assert(false, "Don't use this method. Use full specialization overloads instead\n");
 
 			return BitBoard();
 		}
-
-		template<>
-		BitBoard bitBoardFor<pieces::Piece::KING>() const { return kings(); }
-		template<>
-		BitBoard bitBoardFor<pieces::Piece::QUEEN>() const { return queens(); }
-		template<>
-		BitBoard bitBoardFor<pieces::Piece::BISHOP>() const { return bishops(); }
-		template<>
-		BitBoard bitBoardFor<pieces::Piece::KNIGHT>() const { return knights(); }
-		template<>
-		BitBoard bitBoardFor<pieces::Piece::ROOK>() const { return rooks(); }
-		template<>
-		BitBoard bitBoardFor<pieces::Piece::PAWN>() const { return pawns(); }
+		template<> BitBoard pieces<pieces::Piece::KING>() const { return kings(); }
+		template<> BitBoard pieces<pieces::Piece::QUEEN>() const { return queens(); }
+		template<> BitBoard pieces<pieces::Piece::BISHOP>() const { return bishops(); }
+		template<> BitBoard pieces<pieces::Piece::KNIGHT>() const { return knights(); }
+		template<> BitBoard pieces<pieces::Piece::ROOK>() const { return rooks(); }
+		template<> BitBoard pieces<pieces::Piece::PAWN>() const { return pawns(); }
 
 		bool operator==(const Board & rhs) const { 
 			return 

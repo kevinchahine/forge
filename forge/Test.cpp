@@ -61,21 +61,21 @@ namespace forge
 					cin >> file >> rank;
 					bs = BoardSquare{ file, rank };
 
-					//// --- Lateral Line Masks ---
-					//showMask<directions::Horizontal>(bs);
-					//showMask<directions::Vertical>(bs);
-					//showMask<directions::Lateral>(bs);
-					//
-					//// --- Diagonal Line Masks ---
-					//showMask<directions::MainDiagonal>(bs);
-					//showMask<directions::OffDiagonal>(bs);
-					//showMask<directions::Diagonal>(bs);
-					//
-					//// --- Lateral Ray Masks ---
-					//showMask<directions::Up>(bs);
-					//showMask<directions::Down>(bs);
-					//showMask<directions::Left>(bs);
-					//showMask<directions::Right>(bs);
+					// --- Lateral Line Masks ---
+					showMask<directions::Horizontal>(bs);
+					showMask<directions::Vertical>(bs);
+					showMask<directions::Lateral>(bs);
+					
+					// --- Diagonal Line Masks ---
+					showMask<directions::MainDiagonal>(bs);
+					showMask<directions::OffDiagonal>(bs);
+					showMask<directions::Diagonal>(bs);
+					
+					// --- Lateral Ray Masks ---
+					showMask<directions::Up>(bs);
+					showMask<directions::Down>(bs);
+					showMask<directions::Left>(bs);
+					showMask<directions::Right>(bs);
 
 					// --- Diagonal Ray Masks ---
 					showMask<directions::UR>(bs);
@@ -299,6 +299,51 @@ namespace forge
 				templatePiece<pieces::BlackPawn>();
 			}
 		} // namespace piece_moves
+
+		namespace pins
+		{
+			template<typename DIRECTION_T>
+			void printIsPinPossible(const Board & b, bool isKingWhite) {
+				MoveGenerator2 moveGen;
+
+				BitBoard theirRays = b.directionals<DIRECTION_T>();
+
+				if (is_base_of<directions::Lateral, DIRECTION_T>()) {
+					theirRays |= b.laterals();
+				}
+
+				bool isPinPossible = 
+					moveGen.isPinPossible<directions::Up>(b.laterals() & b.blacks(), b.blockers());
+
+			}
+
+			void isPinPossible()
+			{
+				Position p;
+
+				Board b = p.board();
+
+				b.moveBlackKing(BoardSquare{ 'a', '8' });
+				b.moveWhiteKing(BoardSquare{ 'e', '1' });
+				b.placeBlackRook(BoardSquare{ 'e', '8' });
+				b.placeWhitePawn(BoardSquare{ 'e', '4' });
+
+				b.printMini();
+
+				// Make sure these methods are public for testing
+				//printIsPinPossible<directions::Up>(b, true);
+				MoveGenerator2 moveGen;
+				moveGen.generate(p);
+
+				BitBoard theirRays = b.directionals<directions::Up>() & b.blacks();
+				BitBoard ourBlockers = b.blockers() & b.whites();
+
+				bool isPinPossible =
+					moveGen.isPinPossible<directions::Up>(theirRays, ourBlockers);
+				cout << "IsPinPossible: " << isPinPossible << endl;
+
+			}
+		} // namespace pins
 
 		void moveKings()
 		{

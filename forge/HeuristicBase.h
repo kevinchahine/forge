@@ -65,9 +65,9 @@ namespace forge
 	template<pieces::Piece::piece_t PIECE_VAL>
 	int HeuristicBase::imbalance(const Position & pos) const
 	{
-		BitBoard pieces = pos.board().bitBoardFor<PIECE_VAL>();	// pieces of some type
-		BitBoard whites = pieces & pos.board().whites();		// white pieces of that type
-		BitBoard blacks = pieces & pos.board().blacks();		// black pieces of that type
+		BitBoard pieces = pos.board().pieces<PIECE_VAL>();	// pieces of some type
+		BitBoard whites = pieces & pos.board().whites();	// white pieces of that type
+		BitBoard blacks = pieces & pos.board().blacks();	// black pieces of that type
 
 		return 
 			static_cast<int>(whites.count()) - 

@@ -32,7 +32,7 @@ int main(int argc, char ** argv)
 
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
-	forge::test::bitboard::allMasks();
+	//forge::test::bitboard::allMasks();
 	//forge::test::keyboardController();
 	//forge::test::clock();
 	//forge::test::stopWatch();
@@ -45,6 +45,7 @@ int main(int argc, char ** argv)
 	//forge::test::piece_moves::knight();
 	//forge::test::piece_moves::rook();
 	//forge::test::piece_moves::pawn();
+	forge::test::pins::isPinPossible();
 	//forge::test::moveKings();
 	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();

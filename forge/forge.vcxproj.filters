@@ -200,6 +200,9 @@
     <ClCompile Include="aaremovethis.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MoveGenerator2.cpp">
+      <Filter>MoveGenerator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -449,6 +452,9 @@
     </ClInclude>
     <ClInclude Include="Direction.h">
       <Filter>Directions</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveGenerator2.h">
+      <Filter>MoveGenerator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

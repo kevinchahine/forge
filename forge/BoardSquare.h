@@ -89,9 +89,14 @@ namespace forge
 			m_val |= (colCoord << 0);	// set col bits to colCoord
 		}
 
-		bool isValid()
+		bool isValid() const
 		{
 			return m_val & is_valid_mask;
+		}
+
+		bool isInValid() const
+		{
+			return !isValid();
 		}
 
 		void setAsValid()
