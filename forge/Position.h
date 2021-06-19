@@ -27,15 +27,27 @@ namespace forge
 		// Removes all pieces
 		void clear();
 
-		// If the final position of a move is already known, then this
-		// could be a more efficient alternative to applyMove(Move)
-		// Works great for search algorithms because they already generate and store the 
-		// resulting positions of each move.
-		// Simply copies position to *this
-		// !!! Does not check for valid or invalid moves. 
-		// Passing an invalid board may have unexpected results.
-		// TODO: Shouldn't we just use the assignment operator
-		void applyMove(const Position & position);
+		// ----- Push Moves (non captures) -----
+		template <typename PIECE_T> void pushPiece(Move move);
+		template<> void pushPiece<pieces::King>(Move move);
+		template<> void pushPiece<pieces::Queen>(Move move);
+		template<> void pushPiece<pieces::Bishop>(Move move);
+		template<> void pushPiece<pieces::Knight>(Move move);
+		template<> void pushPiece<pieces::Rook>(Move move);
+		template<> void pushPiece<pieces::WhitePawn>(Move move);
+		template<> void pushPiece<pieces::BlackPawn>(Move move);
+		template<> void pushPiece<pieces::Piece>(Move move);
+
+		// ----- Captures (non push moves) -----
+		///xxxtemplate <typename PIECE_T>	void capturePiece(Move capturingPiece);
+		///xxxtemplate<> void capturePiece<pieces::King>(Move capturingPiece);
+		///xxxtemplate<> void capturePiece<pieces::Queen>(Move capturingPiece);
+		///xxxtemplate<> void capturePiece<pieces::Bishop>(Move capturingPiece);
+		///xxxtemplate<> void capturePiece<pieces::Knight>(Move capturingPiece);
+		///xxxtemplate<> void capturePiece<pieces::Rook>(Move capturingPiece);
+		///xxxtemplate<> void capturePiece<pieces::WhitePawn>(Move capturingPiece);
+		///xxxtemplate<> void capturePiece<pieces::BlackPawn>(Move capturingPiece);
+		///xxxtemplate<> void capturePiece<pieces::Piece>(Move capturingPiece);
 
 		// ----- PAWN MOVES -----
 
@@ -46,27 +58,26 @@ namespace forge
 		// Calling incorrectly can cause errors. Follow these rules when calling.
 		//	- 'from' should point to piece of player whos turn it is.
 		//	- move should a simple move: (not a capture, not promotion, not castling, not enpassent)
-		inline void moveWhitePawn(Move move);
+		void moveWhitePawn(Move move);
 		// WARNING: do not use for promotions. Use overload instead
-		inline void moveWhitePawn(BoardSquare from, BoardSquare to);
+		void moveWhitePawn(BoardSquare from, BoardSquare to);
 		// *** See comments for moveWhitePawn(...)
-		inline void moveBlackPawn(Move move);
+		void moveBlackPawn(Move move);
 		// WARNING: do not use for promotions. Use overload instead
-		inline void moveBlackPawn(BoardSquare from, BoardSquare to);
+		void moveBlackPawn(BoardSquare from, BoardSquare to);
 
-		inline void captureWithWhitePawn(Move move);
-
-		inline void captureWithBlackPawn(Move move);
+		///xxxinline void captureWithWhitePawn(Move move);
+		///xxxinline void captureWithBlackPawn(Move move);
 
 		// ----- ROOK MOVES -----
 		// ----- KNIGHT MOVES -----
 		// ----- BISHOP MOVES -----
 		// ----- QUEEN MOVES -----
 
-		inline void moveRook(BoardSquare from, BoardSquare to);
-		inline void moveRook(Move move);
-		inline void captureWithRook(BoardSquare from, BoardSquare to);
-		inline void captureWithRook(Move move);
+		void moveRook(BoardSquare from, BoardSquare to);
+		void moveRook(Move move);
+		///xxxinline void captureWithRook(BoardSquare from, BoardSquare to);
+		///xxxinline void captureWithRook(Move move);
 
 		// Moves a Queen, Bishop, Knight or Rook of either color.
 		// Make sure:
@@ -74,8 +85,8 @@ namespace forge
 		//	- Not to be used with captures.
 		//	- 'from' square is occupied by a Queen, Bishop, Knight or Rook (not empty)
 		//	- 'from' should point to piece of player whos turn it is.
-		inline void moveQBNR(BoardSquare from, BoardSquare to);
-		inline void moveQBNR(Move move);
+		void moveQBNR(BoardSquare from, BoardSquare to);
+		void moveQBNR(Move move);
 
 		// Captures a piece with a Queen, Bishop, Knight or Rook of either color.
 		// Make sure:
@@ -83,32 +94,31 @@ namespace forge
 		//	- 'from' square is occupied by a Queen, Bishop, Knight or Rook (not empty)
 		//	- 'from' 
 		//	- 'from' should point to piece of player whos turn it is.
-		inline void captureWithQBNR(BoardSquare from, BoardSquare to);
-		inline void captureWithQBNR(Move move);
+		///xxxinline void captureWithQBNR(BoardSquare from, BoardSquare to);
+		///xxxinline void captureWithQBNR(Move move);
 
 		// ----- KING MOVES -----
 
 		// TODO: Should account for castling
-		inline void moveWhiteKing(BoardSquare to);
+		void moveWhiteKing(BoardSquare to);
 
 		// TODO: Should account for castling
-		inline void moveBlackKing(BoardSquare to);
+		void moveBlackKing(BoardSquare to);
 
-		inline void captureWithWhiteKing(BoardSquare to);
+		///xxxinline void captureWithWhiteKing(BoardSquare to);
+		///xxxinline void captureWithBlackKing(BoardSquare to);
 
-		inline void captureWithBlackKing(BoardSquare to);
-		
 		Board & board() { return m_board; }
 		const Board & board() const { return m_board; }
 		const FiftyMoveRule & fiftyMoveRule() const { return m_fiftyMoveRule; }
 		const MoveCounter & moveCounter() const { return m_moveCounter; }
 
 		// Only compares board.
-		bool operator==(const Position & rhs) const 
-		{ 
-			return 
-				(m_moveCounter.isWhitesTurn() == rhs.m_moveCounter.isWhitesTurn()) && 
-				(m_board == rhs.m_board); 
+		bool operator==(const Position & rhs) const
+		{
+			return
+				(m_moveCounter.isWhitesTurn() == rhs.m_moveCounter.isWhitesTurn()) &&
+				(m_board == rhs.m_board);
 		}
 		bool operator!=(const Position & rhs) const { return !(*this == rhs); }
 

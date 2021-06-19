@@ -55,8 +55,8 @@ namespace forge
 		template<typename DIRECTION_T>
 		void shift(uint8_t numberOfCells) {
 			static_assert(true, 
-				"Never call this method. "
 				"This method is the unspeciallized template. "
+				"Don't call this method. "
 				"Instead call a fully specialized overload instead.");
 		}
 

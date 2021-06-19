@@ -203,6 +203,9 @@
     <ClCompile Include="MoveGenerator2.cpp">
       <Filter>MoveGenerator</Filter>
     </ClCompile>
+    <ClCompile Include="Pin.cpp">
+      <Filter>MoveGenerator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -455,6 +458,15 @@
     </ClInclude>
     <ClInclude Include="MoveGenerator2.h">
       <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveGenerator2_Templates.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="Pin.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardDefinitions.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

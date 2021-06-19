@@ -12,3 +12,8 @@ int op2()
 {
 	return 2;
 }
+
+int op3()
+{
+	return 4;
+}

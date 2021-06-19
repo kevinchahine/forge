@@ -321,27 +321,19 @@ namespace forge
 			{
 				Position p;
 
-				Board b = p.board();
+				Board & b = p.board();
 
 				b.moveBlackKing(BoardSquare{ 'a', '8' });
-				b.moveWhiteKing(BoardSquare{ 'e', '1' });
+				b.moveWhiteKing(BoardSquare{ 'e', '4' });
 				b.placeBlackRook(BoardSquare{ 'e', '8' });
-				b.placeWhitePawn(BoardSquare{ 'e', '4' });
+				b.placeWhitePawn(BoardSquare{ 'e', '6' });
+				b.placeBlackBishop(BoardSquare{ 'g', '6' });
+				b.placeWhitePawn(BoardSquare{ 'f', '5' });
 
-				b.printMini();
+				b.print();
 
-				// Make sure these methods are public for testing
-				//printIsPinPossible<directions::Up>(b, true);
 				MoveGenerator2 moveGen;
 				moveGen.generate(p);
-
-				BitBoard theirRays = b.directionals<directions::Up>() & b.blacks();
-				BitBoard ourBlockers = b.blockers() & b.whites();
-
-				bool isPinPossible =
-					moveGen.isPinPossible<directions::Up>(theirRays, ourBlockers);
-				cout << "IsPinPossible: " << isPinPossible << endl;
-
 			}
 		} // namespace pins
 
@@ -498,8 +490,14 @@ namespace forge
 				//make_unique<RandomSolver>();
 				make_unique<MinimaxSolver>();
 
-			whiteController->makeHeuristic<RandomHeuristic>();
-			blackController->makeHeuristic<RandomHeuristic>();
+			whiteController->makeHeuristic<
+				//RandomHeuristic
+				ApplePieHeuristic
+			>();
+			blackController->makeHeuristic<
+				//RandomHeuristic
+				ApplePieHeuristic
+			>();
 
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);

@@ -71,7 +71,7 @@ namespace forge
 	{
 		pieces::Piece piece;
 
-		if (~occupied()[square]) {
+		if (empty()[square]) {
 			piece = pieces::empty;
 		}
 		else {
@@ -290,11 +290,7 @@ namespace forge
 		m_rooks[to] = m_rooks[from];
 		m_pawns[to] = m_pawns[from];
 
-		m_whites.reset(from.val());		// clear 1 bit
-		m_blacks.reset(from.val());		// clear 1 bit
-		m_bishops.reset(from.val());	// clear 1 bit
-		m_rooks.reset(from.val());		// clear 1 bit
-		m_pawns.reset(from.val());		// clear 1 bit
+		removePiece(from);
 	}
 
 	void Board::reset()

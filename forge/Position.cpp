@@ -21,127 +21,135 @@ namespace forge
 
 		m_moveCounter.reset();
 	}
-	
-	///void Position::applyMoveFast(Move move)
-	///{
-	///	BoardSquare from = move.from();
-	///	BoardSquare to = move.to();
-	///	Piece promotion = move.promotion();	// If promoting, what will we promot to. Might be empty.
-	///	Piece fromPiece = m_board.at(from);	// Piece we are moving from
-	///	Piece toPiece = m_board.at(to);		// Piece we are moving to
-	///
-	///	// Look for captures
-	///	if (toPiece.isEmpty() == false) {
-	///		// A capture is being made.
-	///		m_fiftyMoveRule.pieceCaptured();
-	///	}
-	///
-	///	// Removing toPiece must be done before moving other pieces to this square
-		// Remember that tecnically kings can't be captured
-		// Assuming move is valid, we don't need to check if we are 
-		// removing a King because that would be an invalid move anyway.
-	///	m_board.removePiece(to);
-	///
-	///	// --- PAWNS ---
-	///	if (fromPiece.isPawn()) {
-	///		if (fromPiece.isWhite()) {
-	///			// Is this a promotion?
-	///			if (to.isTopRank()) {
-	///				m_board.removePiece(from);
-	///				m_board.placePiece(to, promotion);
-	///			}
-	///			// Is this en passent?
-	///			else if (false) {
-	///				// TODO: 
-	///			}
-	///		}
-	///		else { // fromPiece.isBlack()
-	///		// Is this a promotion?
-	///			if (to.isBotRank()) {
-	///				m_board.removePiece(from);
-	///				m_board.placePiece(to, promotion);
-	///			}
-	///			// Is this en passent?
-	///			else if (false) {
-	///				// TODO: 
-	///			}
-	///		}
-	///
-	///		m_fiftyMoveRule.pawnHasMoved();
-	///		m_board.removePiece(from);
-	///		m_board.placePiece(to, fromPiece);
-	///	}
-	///	// --- KINGS ---
-	///	else if (fromPiece.isKing()) {
-	///		// Is this a castling move?
-	///		// Do we still have castling rights?
-	///		// TODO: 
-	///
-	///		// Moving Kings is done a little different than moving other pieces
-	///		m_board.moveKing(from, to);
-	///	}
-	///	// --- ANYTHING ELSE ---
-	///	else {
-	///		// Move other pieces
-	///		m_board.removePiece(from);
-	///		m_board.placePiece(to, fromPiece);
-	///	}
-	///
-	///	m_fiftyMoveRule.update();
-	///	++m_moveCounter;
-	///}
-	///
-	///bool Position::applyMoveSafe(Move move)
-	///{
-	///	//cout << __FUNCTION__ << " Not implemented" << endl;
-	///	applyMoveFast(move);	// TODO: for now
-	///
-	///	//BoardSquare from = move.from();
-	///	//BoardSquare to = move.to();
-	///
-	///	//if (m_board.occupied()[from] == true) {
-	///	//	if (m_moveCounter.isWhitesTurn()) {
-	///	//		if (m_board.whites()[from] == false) {
-	///	//			return false;	// White can't pick up a black piece
-	///	//		}
-	///	//	}
-	///	//	else {
-	///	//		if (m_board.blacks()[from] == false) {
-	///	//			return false;	// black can't pick up a white piece
-	///	//		}
-	///	//	}
-	///
-	///	//	// Now we know that from cooresponds to a piece of the color the the current player
-	///	//	Piece pickedUpPiece = m_board.at(from);
-	///
-	///	//	// If its a King
-	///	//	if (pickedUpPiece.isKing()) {
-	///	//		m_board.moveKing(to, pickedUpPiece.isWhite());
-	///	//	}
-	///	//	if (pickedUpPiece.isPawn()) {
-	///	//	}
-	///	//	else {
-	///	//		// Check for captures
-	///	//		Piece toPiece = m_board.at(to);
-	///
-	///	//		if (toPiece.isEmpty()) {
-	///	//			// No capture
-	///	//		}
-	///	//	}
-	///	//}
-	///	//else {
-	///	//	// You tried to pick up a piece that isn't there
-	///	//	return false;	// Invalid Move
-	///	//}
-	///
-	///	//m_moveCounter++;
-	///
-	///	return true;	// TODO: this is wrong
-	///}
 
-	void Position::applyMove(const Position & position)
+
+	void Position::moveWhitePawn(Move move)
 	{
-		(*this) = position;
+#ifdef _DEBUG 
+		if (m_board.pawns()[move.from()] == false || m_board.whites()[move.from()] == false)
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": This method only moves white pawns\n";
+		if (m_board.empty()[move.to()] == false)
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": 'to' square must be empty when calling this method.\n";
+#endif
+		if (m_board.isOccupied(move.to()))
+			m_fiftyMoveRule.pieceCaptured();
+		m_fiftyMoveRule.pawnHasMoved();
+		m_fiftyMoveRule.update();
+
+		m_board.removePiece(move.from());
+		if (move.to().isTopRank()) m_board.placePiece(move.to(), move.promotion());
+		else m_board.placeWhitePawn(move.to());
+
+		// TODO: ENPASSENT
+
+		m_moveCounter++;
 	}
 
+	void Position::moveWhitePawn(BoardSquare from, BoardSquare to)
+	{
+#ifdef _DEBUG
+		if (to.isTopRank()) {
+			cout << "Error: " << __FUNCTION__ << " don't use this method for promotions\n";
+		}
+#endif // _DEBUG
+
+		moveWhitePawn(Move{ from, to });
+	}
+
+	void Position::moveBlackPawn(Move move)
+	{
+#ifdef _DEBUG 
+		if (m_board.pawns()[move.from()] == false || m_board.blacks()[move.from()] == false)
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": This method only moves black pawns\n";
+		if (m_board.empty()[move.to()] == false)
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			<< ": 'to' square must be empty when calling this method.\n";
+#endif
+		if (m_board.isOccupied(move.to()))
+			m_fiftyMoveRule.pieceCaptured();
+		m_fiftyMoveRule.pawnHasMoved();
+		m_fiftyMoveRule.update();
+
+		m_board.removePiece(move.from());
+		if (move.to().isBotRank()) m_board.placePiece(move.to(), move.promotion());
+		else m_board.placeBlackPawn(move.to());
+
+		// TODO: Still need enpassent 
+
+		m_moveCounter++;
+	}
+
+	void Position::moveBlackPawn(BoardSquare from, BoardSquare to)
+	{
+#ifdef _DEBUG
+		if (to.isTopRank()) {
+			cout << "Error: " << __FUNCTION__ << " don't use this method for promotions\n";
+		}
+#endif // _DEBUG
+
+		moveBlackPawn(Move{ from, to });
+	}
+
+	void Position::moveRook(BoardSquare from, BoardSquare to)
+	{
+		if (m_board.isOccupied(to))
+			m_fiftyMoveRule.pieceCaptured();
+		m_fiftyMoveRule.update();
+
+		m_board.movePiece(from, to);
+
+		// TODO: Don't forget Castling
+
+		m_moveCounter++;
+	}
+
+	void Position::moveRook(Move move)
+	{
+		moveRook(move.from(), move.to());
+	}
+
+	void Position::moveQBNR(BoardSquare from, BoardSquare to)
+	{
+		if (m_board.isOccupied(to))
+			m_fiftyMoveRule.pieceCaptured();
+		m_fiftyMoveRule.update();
+
+		m_board.movePiece(from, to);
+
+		m_moveCounter++;
+	}
+
+	void Position::moveQBNR(Move move)
+	{
+		moveQBNR(move.from(), move.to());
+	}
+
+	void Position::moveWhiteKing(BoardSquare to)
+	{
+		if (m_board.isOccupied(to))
+			m_fiftyMoveRule.pieceCaptured();
+		m_fiftyMoveRule.update();
+
+		m_board.moveWhiteKing(to);
+
+		// TODO: Don't forget castling
+
+		m_moveCounter++;
+	}
+
+	void Position::moveBlackKing(BoardSquare to)
+	{
+		if (m_board.isOccupied(to))
+			m_fiftyMoveRule.pieceCaptured();
+		m_fiftyMoveRule.update();
+
+		m_board.moveBlackKing(to);
+
+		// TODO: Don't forget castling
+
+		m_moveCounter++;
+	}
 } // namespace forge

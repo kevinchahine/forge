@@ -1,6 +1,7 @@
 #include "ChessMatch.h"
 
 #include "MoveGenerator.h"
+#include "MoveGenerator2.h"
 
 using namespace std;
 
@@ -37,7 +38,7 @@ namespace forge
 		}
 
 		if (m_blacksController == nullptr) {
-			cout << "ChessMatch needs a controller for white" << endl;
+			cout << "ChessMatch needs a controller for black" << endl;
 			return GameState();
 		}
 		else {
@@ -111,8 +112,14 @@ namespace forge
 				// Show Board
 				if (m_viewPtr != nullptr) {
 					m_viewPtr->show(m_history.current(), pair.move);
-					///cout << "Press any key...";
-					///cin.get();	// remove this
+
+					cout << "Is " 
+						<< (position().moveCounter().isWhitesTurn() ? "whites" : "blacks")
+						<< " king in a pin?" << endl;
+					MoveGenerator2 moveGen;
+					moveGen.generate(this->position());
+					cout << "Press any key...";
+					cin.get();
 				}
 
 				m_clock.resume();

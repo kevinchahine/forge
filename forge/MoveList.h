@@ -18,6 +18,10 @@ namespace forge
 		MoveList & operator=(const MoveList &) = default;
 		MoveList & operator=(MoveList &&) noexcept = default;
 
+		// TODO: IMplement this
+		void pushPushMove(const Position & currPos, Move move);
+		void pushCaptureMove(const Position & currPos, Move move);
+
 		// Purpose: Pushes move to MoveList but only if move/capture was legal:
 		//	1.) Push move and Position to MoveList
 		//	2.) Check to see if move was illegal
@@ -26,18 +30,12 @@ namespace forge
 		//	and pointers of MoveList to be invalid regardless of wether
 		//	move was legal or not.
 		void pushIfLegalQBNMove(const Position & currPos, Move move);
-		// * See comment for pushIfLegalQBNMove
-		void pushIfLegalQBNCapture(const Position & currPos, Move move);
+		void addQBNPush(const Position & currPos, Move move);
 
 		// * See comment for pushIfLegalQBNMove
 		void pushIfLegalWhitePawnMove(const Position & currPos, Move move);
 		// * See comment for pushIfLegalQBNMove
 		void pushIfLegalBlackPawnMove(const Position & currPos, Move move);
-
-		// * See comment for pushIfLegalQBNMove
-		void pushIfLegalWhitePawnCapture(const Position & currPos, Move move);
-		// * See comment for pushIfLegalQBNMove
-		void pushIfLegalBlackPawnCapture(const Position & currPos, Move move);
 
 		// * See comment for pushIfLegalQBNMove
 		// Accounts for promotions involving captures also
@@ -48,13 +46,9 @@ namespace forge
 
 		// * See comment for pushIfLegalQBNMove
 		void pushIfLegalRookMove(const Position & currPos, Move move);
-		// * See comment for pushIfLegalQBNMove
-		void pushIfLegalRookCapture(const Position & currPos, Move move);
 
 		// * See comment for pushIfLegalQBNMove
 		void pushIfLegalKingMove(const Position & currPos, Move move);
-		// * See comment for pushIfLegalQBNMove
-		void pushIfLegalKingCapture(const Position & currPos, Move move);
 
 		void print(std::ostream & os = std::cout) const;
 

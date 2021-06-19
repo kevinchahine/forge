@@ -175,6 +175,7 @@
     <ClCompile Include="PerformanceLogger.cpp" />
     <ClCompile Include="PerformanceTester.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Pin.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PositionTable.cpp" />
     <ClCompile Include="RandomHeuristic.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="AttackChecker.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardDefinitions.h" />
     <ClInclude Include="ChessMatch.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="BoardSquare.h" />
@@ -249,6 +251,7 @@
     <ClInclude Include="MoveCounter.h" />
     <ClInclude Include="MoveGenerator.h" />
     <ClInclude Include="MoveGenerator2.h" />
+    <ClInclude Include="MoveGenerator2_Templates.h" />
     <ClInclude Include="MoveGeneratorHelpers.h" />
     <ClInclude Include="MoveGeneratorInline.h" />
     <ClInclude Include="MoveList.h" />
@@ -259,6 +262,7 @@
     <ClInclude Include="PerformanceLogger.h" />
     <ClInclude Include="PerformanceTester.h" />
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="Pin.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PositionInline.h" />
     <ClInclude Include="PositionTable.h" />

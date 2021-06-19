@@ -38,17 +38,15 @@ namespace forge
 		pieces::Piece at(BoardSquare square) const;
 
 		// Does not remove Kings
-		// !!! Do not use to remove Kings !!!
 		// Only call on cells that are guarenteed to have a piece on them (other than kings).
 		// !!! Calling on a cell that is already empty or is occupied by a king
 		//	may have unexpected results
 		void removePiece(BoardSquare pos);
-		
 		// If piece == empty, does not remove King.
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.
 		// Use methods that move pieces instead
-		void placePiece(uint8_t row, uint8_t col, pieces::Piece piece) {	placePiece(BoardSquare( (uint16_t)row, (uint16_t)col ), piece); }
+		void placePiece(uint8_t row, uint8_t col, pieces::Piece piece) { placePiece(BoardSquare((uint16_t)row, (uint16_t)col), piece); }
 		// If piece == empty, does not remove King.
 		// To move King, simply set the desired coordinates using this method.
 		// Optimization: Not intended to be used in performance critical code.
@@ -60,6 +58,26 @@ namespace forge
 		// * See comments for void Board::placePiece(BoardSquare square, pieces::Piece piece)
 		void placePieces(BitBoard squares, pieces::Piece piece);
 
+		template <typename PIECE_T>	void place(BoardSquare square, bool isWhite);
+		template<> void place<pieces::Empty>(BoardSquare square, bool isWhite);
+		template<> void place<pieces::Queen>(BoardSquare square, bool isWhite);
+		template<> void place<pieces::Bishop>(BoardSquare square, bool isWhite);
+		template<> void place<pieces::Knight>(BoardSquare square, bool isWhite);
+		template<> void place<pieces::Rook>(BoardSquare square, bool isWhite);
+		template<> void place<pieces::WhitePawn>(BoardSquare square, bool isWhite);
+		template<> void place<pieces::BlackPawn>(BoardSquare square, bool isWhite);
+		///template<> void place<pieces::King>(BoardSquare square, bool isWhite);
+
+		template <typename PIECE_T> void move(Move move);
+		template<> void move<pieces::Empty>(Move move);
+		template<> void move<pieces::Queen>(Move move);
+		template<> void move<pieces::Bishop>(Move move);
+		template<> void move<pieces::Knight>(Move move);
+		template<> void move<pieces::Rook>(Move move);
+		template<> void move<pieces::WhitePawn>(Move move);
+		template<> void move<pieces::BlackPawn>(Move move);
+		template<> void move<pieces::King>(Move move);
+
 		// Places a piece at square
 		// Only call on empty cells
 		// Do not call on a cell that is occupied by a piece
@@ -68,11 +86,11 @@ namespace forge
 		// See comment for placeWhitePawn()
 		void placeBlackPawn(BoardSquare square);
 		// See comment for placeWhitePawn()
-		void placePawn(BoardSquare square, bool isWhite) 
-		{ 
-			isWhite ? placeWhitePawn(square) : placeBlackPawn(square); 
+		void placePawn(BoardSquare square, bool isWhite)
+		{
+			isWhite ? placeWhitePawn(square) : placeBlackPawn(square);
 		}
-		
+
 		// See comment for placeWhitePawn()
 		void placeWhiteRook(BoardSquare square);
 		// See comment for placeWhitePawn()
@@ -129,14 +147,27 @@ namespace forge
 
 		void movePiece(BoardSquare from, BoardSquare to);
 
-		bool isPawn(BoardSquare square) const { return pawns()[square] == 1; }
-		bool isRook(BoardSquare square) const { return rooks()[square] == 1; }
-		bool isKnight(BoardSquare square) const { return knights()[square] == 1; }
-		bool isBishop(BoardSquare square) const { return bishops()[square] == 1; }
-		bool isQueen(BoardSquare square) const { return queens()[square] == 1; }
-		bool isKing(BoardSquare square) const { return kings()[square] == 1; }
-		bool isWhite(BoardSquare square) const { return whites()[square] == 1; }
-		bool isBlack(BoardSquare square) const { return blacks()[square] == 1; }
+		bool isOccupied(BoardSquare square) const { return occupied()[square]; }
+		bool isEmpty(BoardSquare square) const { return empty()[square]; }
+		bool isKing(BoardSquare square) const { return kings()[square]; }
+		bool isQueen(BoardSquare square) const { return queens()[square]; }
+		bool isBishop(BoardSquare square) const { return bishops()[square]; }
+		bool isKnight(BoardSquare square) const { return knights()[square]; }
+		bool isRook(BoardSquare square) const { return rooks()[square]; }
+		bool isPawn(BoardSquare square) const { return pawns()[square]; }
+		bool isWhite(BoardSquare square) const { return whites()[square]; }
+		bool isBlack(BoardSquare square) const { return blacks()[square]; }
+
+		template <typename PIECE_T> bool isPiece(BoardSquare square) const;
+		template<> bool isPiece<pieces::King>(BoardSquare square) const { return isKing(square); }
+		template<> bool isPiece<pieces::Queen>(BoardSquare square) const { return isQueen(square); }
+		template<> bool isPiece<pieces::Bishop>(BoardSquare square) const { return isBishop(square); }
+		template<> bool isPiece<pieces::Knight>(BoardSquare square) const { return isKnight(square); }
+		template<> bool isPiece<pieces::Rook>(BoardSquare square) const { return isRook(square); }
+		template<> bool isPiece<pieces::WhitePawn>(BoardSquare square) const { return isWhite(square) && isPawn(square); }
+		template<> bool isPiece<pieces::BlackPawn>(BoardSquare square) const { return isBlack(square) && isPawn(square); }
+		template<> bool isPiece<colors::White>(BoardSquare square) const { return isWhite(square); }
+		template<> bool isPiece<colors::Black>(BoardSquare square) const { return isBlack(square); }
 
 		// Removes all pieces except Kings.
 		// Places Kings in there starting locations.
@@ -164,19 +195,19 @@ namespace forge
 		BitBoard diagonals() const { return m_bishops; }
 		BitBoard rays() const { return m_rooks | m_bishops; }
 		BitBoard blockers() const { return occupied() & ~kings(); }
-		BitBoard knights() const { 
+		BitBoard knights() const {
 			BitBoard knightsBB =
 				occupied() &
 				~pawns() &
 				~m_bishops &
 				~m_rooks;
-			
+
 			knightsBB[m_whiteKing] = 0;
 			knightsBB[m_blackKing] = 0;
 
 			return knightsBB;
 		}
-		BitBoard kings() const { 
+		BitBoard kings() const {
 			BitBoard kingsBB;
 
 			kingsBB[m_whiteKing] = 1;
@@ -184,6 +215,7 @@ namespace forge
 
 			return kingsBB;
 		}
+
 		template<typename DIRECTION_T> BitBoard directionals() const;
 		template<> BitBoard directionals<directions::Linear>() const { return laterals() & diagonals(); }
 		template<> BitBoard directionals<directions::Lateral>() const { return laterals(); }
@@ -219,16 +251,16 @@ namespace forge
 		template<> BitBoard pieces<pieces::Piece::ROOK>() const { return rooks(); }
 		template<> BitBoard pieces<pieces::Piece::PAWN>() const { return pawns(); }
 
-		bool operator==(const Board & rhs) const { 
-			return 
-				(m_whites == rhs.m_whites) && 
-				(m_blacks == rhs.m_blacks) && 
+		bool operator==(const Board & rhs) const {
+			return
+				(m_whites == rhs.m_whites) &&
+				(m_blacks == rhs.m_blacks) &&
 				(m_bishops == rhs.m_bishops) &&
 				(m_rooks == rhs.m_rooks) &&
 				(m_pawns == rhs.m_pawns) &&				// includes enpassent bits
 				(m_whiteKing == rhs.m_whiteKing) &&
 				(m_blackKing == rhs.m_blackKing);
-				// TODO: Don't forget Castling
+			// TODO: Don't forget Castling
 		}
 		bool operator!=(const Board & rhs) const { return !(*this == rhs); }
 
@@ -242,10 +274,12 @@ namespace forge
 		// same for black pawns. Those "fake" pawns are not present in our_pieces_ and
 		// their_pieces_ bitboards.
 		BitBoard m_pawns;			// Pawns (Ranks 1 and 8 represent which pawns can do enpassent)
-		
+
 		BoardSquare m_whiteKing{ 60 };
 		BoardSquare m_blackKing{ 4 };
 
 		// TODO: Still need castiling
 	};
 } // namespace forge
+
+#include "Board.h"
