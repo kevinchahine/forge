@@ -402,9 +402,6 @@
     <ClInclude Include="globals.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="PositionInline.h">
-      <Filter>Move</Filter>
-    </ClInclude>
     <ClInclude Include="GameHistory.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -467,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="BoardDefinitions.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionDefinitions.h">
+      <Filter>Move</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

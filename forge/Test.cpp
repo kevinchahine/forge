@@ -96,7 +96,7 @@ namespace forge
 			match.makeView<TextView>();
 
 			match.position().clear();
-			match.position().board().placeBlackPawn(BoardSquare{ 'b', '3' });
+			match.position().board().place<pieces::BlackPawn>(BoardSquare{ 'b', '3' });
 
 			//cout << "You entered " << m << ' ' 
 			//	<< (m.isPartial() ? "partial" : "full") << ' '
@@ -223,41 +223,41 @@ namespace forge
 
 			using Square = forge::BoardSquare;
 
-			b.placeBlackRook(Square{ 'a', '8' });
-			b.placeBlackKnight(Square{ 'b', '8' });
-			b.placeBlackBishop(Square{ 'c', '8' });
-			b.placeBlackQueen(Square{ 'd', '8' });
-			b.moveBlackKing(Square{ 'e', '8' });	// Kings already here
-			b.placeBlackBishop(Square{ 'f', '8' });
-			b.placeBlackKnight(Square{ 'g', '8' });
-			b.placeBlackRook(Square{ 'h', '8' });
+			b.place<pieces::Rook>(Square{ 'a', '8' }, BLACK);
+			b.place<pieces::Knight>(Square{ 'b', '8' }, BLACK);
+			b.place<pieces::Bishop>(Square{ 'c', '8' }, BLACK);
+			b.place<pieces::Queen>(Square{ 'd', '8' }, BLACK);
+			b.place<pieces::BlackKing>(Square{ 'e', '8' });	// Kings already here
+			b.place<pieces::Bishop>(Square{ 'f', '8' }, BLACK);
+			b.place<pieces::Knight>(Square{ 'g', '8' }, BLACK);
+			b.place<pieces::Rook>(Square{ 'h', '8' }, BLACK);
 
-			b.placeBlackPawn(Square{ 'a', '7' });
-			b.placeBlackPawn(Square{ 'b', '7' });
-			b.placeBlackPawn(Square{ 'c', '7' });
-			b.placeBlackPawn(Square{ 'd', '7' });
-			b.placeBlackPawn(Square{ 'e', '7' });
-			b.placeBlackPawn(Square{ 'f', '7' });
-			b.placeBlackPawn(Square{ 'g', '7' });
-			b.placeBlackPawn(Square{ 'h', '7' });
+			b.place<pieces::BlackPawn>(Square{ 'a', '7' });
+			b.place<pieces::BlackPawn>(Square{ 'b', '7' });
+			b.place<pieces::BlackPawn>(Square{ 'c', '7' });
+			b.place<pieces::BlackPawn>(Square{ 'd', '7' });
+			b.place<pieces::BlackPawn>(Square{ 'e', '7' });
+			b.place<pieces::BlackPawn>(Square{ 'f', '7' });
+			b.place<pieces::BlackPawn>(Square{ 'g', '7' });
+			b.place<pieces::BlackPawn>(Square{ 'h', '7' });
 
-			b.placeWhitePawn(Square{ 'a', '2' });
-			b.placeWhitePawn(Square{ 'b', '2' });
-			b.placeWhitePawn(Square{ 'c', '2' });
-			b.placeWhitePawn(Square{ 'd', '2' });
-			b.placeWhitePawn(Square{ 'e', '2' });
-			b.placeWhitePawn(Square{ 'f', '2' });
-			b.placeWhitePawn(Square{ 'g', '2' });
-			b.placeWhitePawn(Square{ 'h', '2' });
+			b.place<pieces::WhitePawn>(Square{ 'a', '2' });
+			b.place<pieces::WhitePawn>(Square{ 'b', '2' });
+			b.place<pieces::WhitePawn>(Square{ 'c', '2' });
+			b.place<pieces::WhitePawn>(Square{ 'd', '2' });
+			b.place<pieces::WhitePawn>(Square{ 'e', '2' });
+			b.place<pieces::WhitePawn>(Square{ 'f', '2' });
+			b.place<pieces::WhitePawn>(Square{ 'g', '2' });
+			b.place<pieces::WhitePawn>(Square{ 'h', '2' });
 
-			b.placeWhiteRook(Square{ 'a', '1' });
-			b.placeWhiteKnight(Square{ 'b', '1' });
-			b.placeWhiteBishop(Square{ 'c', '1' });
-			b.placeWhiteQueen(Square{ 'd', '1' });
-			b.moveWhiteKing(Square{ 'e', '1' });	// Kings already here
-			b.placeWhiteBishop(Square{ 'f', '1' });
-			b.placeWhiteKnight(Square{ 'g', '1' });
-			b.placeWhiteRook(Square{ 'h', '1' });
+			b.place<pieces::Rook>(Square{ 'a', '1' }, WHITE);
+			b.place<pieces::Knight>(Square{ 'b', '1' }, WHITE);
+			b.place<pieces::Bishop>(Square{ 'c', '1' }, WHITE);
+			b.place<pieces::Queen>(Square{ 'd', '1' }, WHITE);
+			b.place<pieces::WhiteKing>(Square{ 'e', '1' });	// Kings already here
+			b.place<pieces::Bishop>(Square{ 'f', '1' }, WHITE);
+			b.place<pieces::Knight>(Square{ 'g', '1' }, WHITE);
+			b.place<pieces::Rook>(Square{ 'h', '1' }, WHITE);
 
 			b.print();
 		}
@@ -323,12 +323,12 @@ namespace forge
 
 				Board & b = p.board();
 
-				b.moveBlackKing(BoardSquare{ 'a', '8' });
-				b.moveWhiteKing(BoardSquare{ 'e', '4' });
-				b.placeBlackRook(BoardSquare{ 'e', '8' });
-				b.placeWhitePawn(BoardSquare{ 'e', '6' });
-				b.placeBlackBishop(BoardSquare{ 'g', '6' });
-				b.placeWhitePawn(BoardSquare{ 'f', '5' });
+				b.place<pieces::BlackKing>(BoardSquare{ 'a', '8' });
+				b.place<pieces::WhiteKing>(BoardSquare{ 'e', '4' });
+				b.place<pieces::Rook>(BoardSquare{ 'e', '8' }, BLACK);
+				b.place<pieces::WhitePawn>(BoardSquare{ 'e', '6' });
+				b.place<pieces::Bishop>(BoardSquare{ 'g', '6' }, BLACK);
+				b.place<pieces::WhitePawn>(BoardSquare{ 'f', '5' });
 
 				b.print();
 
@@ -359,10 +359,10 @@ namespace forge
 
 			///b.placeAllPieces();
 			forge::BoardSquare s{ 5, 4 };
-			b.placeWhiteKnight(s);
-			b.placeWhiteQueen(s.right());
-			b.placeBlackBishop(s.up(2));
-			b.placeWhitePawn(s.left(2));
+			b.place<pieces::Knight>(s, WHITE);
+			b.place<pieces::Queen>(s.right(), WHITE);
+			b.place<pieces::Bishop>(s.up(2), BLACK);
+			b.place<pieces::WhitePawn>(s.left(2));
 			(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
 
 			b.print();
@@ -414,7 +414,7 @@ namespace forge
 			pos.clear();
 
 			forge::BoardSquare k{ 'c', '4' };
-			b.moveBlackKing(k);
+			b.place<pieces::BlackKing>(k);
 			//b.placeWhiteRook(k.down(2));
 			//b.placeWhiteBishop(k.downLeft(2));
 			//b.placeWhiteQueen(k.down(2));
@@ -483,12 +483,12 @@ namespace forge
 			); // Clock is still paused
 
 			auto whiteController =
-				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				make_unique<RandomSolver>();
+				//make_unique<MinimaxSolver>();
 
 			auto blackController =
-				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				make_unique<RandomSolver>();
+				//make_unique<MinimaxSolver>();
 
 			whiteController->makeHeuristic<
 				//RandomHeuristic
@@ -613,7 +613,7 @@ namespace forge
 			forge::Position pos;
 			pos.clear();
 
-			pos.board().placeBlackRook(forge::BoardSquare{ 'e', '4' });
+			pos.board().place<pieces::Rook>(forge::BoardSquare{ 'e', '4' }, BLACK);
 
 			pos.board().print();
 

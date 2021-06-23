@@ -27,30 +27,16 @@ namespace forge
 		// Removes all pieces
 		void clear();
 
-		// ----- Push Moves (non captures) -----
-		template <typename PIECE_T> void pushPiece(Move move);
-		template<> void pushPiece<pieces::King>(Move move);
-		template<> void pushPiece<pieces::Queen>(Move move);
-		template<> void pushPiece<pieces::Bishop>(Move move);
-		template<> void pushPiece<pieces::Knight>(Move move);
-		template<> void pushPiece<pieces::Rook>(Move move);
-		template<> void pushPiece<pieces::WhitePawn>(Move move);
-		template<> void pushPiece<pieces::BlackPawn>(Move move);
-		template<> void pushPiece<pieces::Piece>(Move move);
-
-		// ----- Captures (non push moves) -----
-		///xxxtemplate <typename PIECE_T>	void capturePiece(Move capturingPiece);
-		///xxxtemplate<> void capturePiece<pieces::King>(Move capturingPiece);
-		///xxxtemplate<> void capturePiece<pieces::Queen>(Move capturingPiece);
-		///xxxtemplate<> void capturePiece<pieces::Bishop>(Move capturingPiece);
-		///xxxtemplate<> void capturePiece<pieces::Knight>(Move capturingPiece);
-		///xxxtemplate<> void capturePiece<pieces::Rook>(Move capturingPiece);
-		///xxxtemplate<> void capturePiece<pieces::WhitePawn>(Move capturingPiece);
-		///xxxtemplate<> void capturePiece<pieces::BlackPawn>(Move capturingPiece);
-		///xxxtemplate<> void capturePiece<pieces::Piece>(Move capturingPiece);
-
-		// ----- PAWN MOVES -----
-
+		// ----- Moves (both push moves and captures) -----
+		template <typename PIECE_T> void move(Move move);
+		template<> void move<pieces::King>(Move move);
+		template<> void move<pieces::WhiteKing>(Move move);
+		template<> void move<pieces::BlackKing>(Move move);
+		template<> void move<pieces::Queen>(Move move);
+		template<> void move<pieces::Bishop>(Move move);
+		template<> void move<pieces::Knight>(Move move);
+		template<> void move<pieces::QBN_Piece>(Move move);
+		template<> void move<pieces::Rook>(Move move);
 		// Intended to be used from class MoveGenerator to move pieces
 		// efficiently. 
 		// Automatically applies "50 move rule" and increments move counter.
@@ -58,62 +44,16 @@ namespace forge
 		// Calling incorrectly can cause errors. Follow these rules when calling.
 		//	- 'from' should point to piece of player whos turn it is.
 		//	- move should a simple move: (not a capture, not promotion, not castling, not enpassent)
-		void moveWhitePawn(Move move);
-		// WARNING: do not use for promotions. Use overload instead
-		void moveWhitePawn(BoardSquare from, BoardSquare to);
-		// *** See comments for moveWhitePawn(...)
-		void moveBlackPawn(Move move);
-		// WARNING: do not use for promotions. Use overload instead
-		void moveBlackPawn(BoardSquare from, BoardSquare to);
-
-		///xxxinline void captureWithWhitePawn(Move move);
-		///xxxinline void captureWithBlackPawn(Move move);
-
-		// ----- ROOK MOVES -----
-		// ----- KNIGHT MOVES -----
-		// ----- BISHOP MOVES -----
-		// ----- QUEEN MOVES -----
-
-		void moveRook(BoardSquare from, BoardSquare to);
-		void moveRook(Move move);
-		///xxxinline void captureWithRook(BoardSquare from, BoardSquare to);
-		///xxxinline void captureWithRook(Move move);
-
-		// Moves a Queen, Bishop, Knight or Rook of either color.
-		// Make sure:
-		//	- 'to' square is empty when calling this method
-		//	- Not to be used with captures.
-		//	- 'from' square is occupied by a Queen, Bishop, Knight or Rook (not empty)
-		//	- 'from' should point to piece of player whos turn it is.
-		void moveQBNR(BoardSquare from, BoardSquare to);
-		void moveQBNR(Move move);
-
-		// Captures a piece with a Queen, Bishop, Knight or Rook of either color.
-		// Make sure:
-		//	- 'to' square is occupied by an piece with color opposite capturing piece
-		//	- 'from' square is occupied by a Queen, Bishop, Knight or Rook (not empty)
-		//	- 'from' 
-		//	- 'from' should point to piece of player whos turn it is.
-		///xxxinline void captureWithQBNR(BoardSquare from, BoardSquare to);
-		///xxxinline void captureWithQBNR(Move move);
-
-		// ----- KING MOVES -----
-
-		// TODO: Should account for castling
-		void moveWhiteKing(BoardSquare to);
-
-		// TODO: Should account for castling
-		void moveBlackKing(BoardSquare to);
-
-		///xxxinline void captureWithWhiteKing(BoardSquare to);
-		///xxxinline void captureWithBlackKing(BoardSquare to);
+		template<> void move<pieces::WhitePawn>(Move move);
+		template<> void move<pieces::BlackPawn>(Move move);
+		template<> void move<pieces::Piece>(Move move);
 
 		Board & board() { return m_board; }
 		const Board & board() const { return m_board; }
 		const FiftyMoveRule & fiftyMoveRule() const { return m_fiftyMoveRule; }
 		const MoveCounter & moveCounter() const { return m_moveCounter; }
 
-		// Only compares board.
+		// Only compares board and current payers turn.
 		bool operator==(const Position & rhs) const
 		{
 			return
@@ -130,12 +70,8 @@ namespace forge
 		FiftyMoveRule m_fiftyMoveRule;
 
 		// Number of moves played
-		// 0 - no pieces have moved yet. (Whites thinking)
-		// 1 - white made its first move. (Blacks thinking)
-		// even numbers - (whites turn, whites thinking)
-		// odd numbers - (blacks turn, blacks thinking)
 		MoveCounter m_moveCounter;
 	};
 } // namespace forge
 
-#include "PositionInline.h"
+#include "PositionDefinitions.h"

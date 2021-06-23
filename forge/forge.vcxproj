@@ -264,7 +264,7 @@
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Pin.h" />
     <ClInclude Include="Position.h" />
-    <ClInclude Include="PositionInline.h" />
+    <ClInclude Include="PositionDefinitions.h" />
     <ClInclude Include="PositionTable.h" />
     <ClInclude Include="RandomHeuristic.h" />
     <ClInclude Include="RandomSolver.h" />

@@ -8,15 +8,18 @@ namespace forge
 		{
 		public:
 
+
+		public:
+			bool val = false;
 		};
 
 		class White : public Color {
 		public:
-			//static Black opposite() { return Black(); }
+			
 		};
 		
 		class Black : public Color {
-			//static White opposite() { return White(); }
+		public:
 		};
 		
 		// TODO: Implement opposite functions. See reverse() in Direction.h 

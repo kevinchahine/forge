@@ -17,10 +17,10 @@ namespace forge
 	while (s.BOUNDS_CHECK_FUNC() == false) { \
 		s = s.DIRECTION_FUNC(); \
 		if (isEmpty[s]) { \
-			moves.pushIfLegalQBNMove(position, Move{ START_SQUARE, s}); \
+			moves.emplace_back<pieces::QBN_Piece>(Move{ START_SQUARE, s}, position); \
 		} \
 		else if (theirs[s]) { \
-			moves.pushIfLegalQBNMove(position, Move{ START_SQUARE, s}); \
+			moves.emplace_back<pieces::QBN_Piece>(Move{ START_SQUARE, s}, position); \
 			break; \
 		} \
 		else { break; } \
@@ -36,10 +36,10 @@ namespace forge
 	while (s.BOUNDS_CHECK_FUNC1() == false && s.BOUNDS_CHECK_FUNC2() == false) { \
 		s = s.DIRECTION_FUNC(); \
 		if (isEmpty[s]) { \
-			moves.pushIfLegalQBNMove(position, Move{ START_SQUARE, s }); \
+			moves.emplace_back<pieces::QBN_Piece>(Move{ START_SQUARE, s}, position); \
 		} \
 		else if (theirs[s]) { \
-			moves.pushIfLegalQBNMove(position, Move{ START_SQUARE, s}); \
+			moves.emplace_back<pieces::QBN_Piece>(Move{ START_SQUARE, s}, position); \
 			break; \
 		} \
 		else { break; } \
@@ -68,18 +68,18 @@ namespace forge
 			// --- Promotion ---
 			// Can pawn promote?
 			if (s.upOne().isTopRank()) {
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne(), pieces::whiteQueen });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne(), pieces::whiteRook });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne(), pieces::whiteBishop });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne(), pieces::whiteKnight }); 
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upOne(), pieces::whiteQueen }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upOne(), pieces::whiteRook }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upOne(), pieces::whiteBishop }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upOne(), pieces::whiteKnight }, position); 
 			}
 			else {
 				// No promotion yet.
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upOne() });
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upOne() }, position);
 
 				// Can it move a second time
 				if (s.row() == 6 && isEmpty[s.up(2)]) {
-					moves.pushIfLegalWhitePawnMove(position, Move{ s, s.up(2) });
+					moves.emplace_back<pieces::WhitePawn>(Move{ s, s.up(2) }, position);
 				}
 			}
 		}
@@ -94,14 +94,14 @@ namespace forge
 			// Would this capture result in a promotion?
 			if (s.upLeftOne().isTopRank()) {
 				// Yes promotion and capture
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upLeftOne(), pieces::whiteQueen });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upLeftOne(), pieces::whiteRook });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upLeftOne(), pieces::whiteBishop });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upLeftOne(), pieces::whiteKnight });
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upLeftOne(), pieces::whiteQueen }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upLeftOne(), pieces::whiteRook }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upLeftOne(), pieces::whiteBishop }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upLeftOne(), pieces::whiteKnight }, position);
 			}
 			else {
 				// No promotion. Only capture
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upLeftOne() });
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upLeftOne() }, position);
 			}
 		}
 
@@ -111,14 +111,14 @@ namespace forge
 			// Would this capture result in a promotion?
 			if (s.upRightOne().isTopRank()) {
 				// Yes promotion and capture
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upRightOne(), pieces::whiteQueen });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upRightOne(), pieces::whiteRook });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upRightOne(), pieces::whiteBishop });
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upRightOne(), pieces::whiteKnight });
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upRightOne(), pieces::whiteQueen }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upRightOne(), pieces::whiteRook }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upRightOne(), pieces::whiteBishop }, position);
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upRightOne(), pieces::whiteKnight }, position);
 			}
 			else {
 				// No promotion without capture
-				moves.pushIfLegalWhitePawnMove(position, Move{ s, s.upRightOne() });
+				moves.emplace_back<pieces::WhitePawn>(Move{ s, s.upRightOne() }, position);
 			}
 		}
 
@@ -147,18 +147,18 @@ namespace forge
 			// Can pawn promote?
 			if (s.downOne().isBotRank()) {
 				// Yes promote pawn
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne(), pieces::blackQueen });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne(), pieces::blackRook });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne(), pieces::blackBishop });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne(), pieces::blackKnight });
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, s.downOne(), pieces::blackQueen }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, s.downOne(), pieces::blackRook }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, s.downOne(), pieces::blackBishop }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, s.downOne(), pieces::blackKnight }, position);
 			}
 			else {
 				// No promotion yet.
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, s.downOne() });
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, s.downOne() }, position);
 
 				// Can it move a second time
 				if (s.row() == 1 && isEmpty[s.down(2)]) {
-					moves.pushIfLegalBlackPawnMove(position, Move{ s, s.down(2) });
+					moves.emplace_back<pieces::BlackPawn>(Move{ s, s.down(2) }, position);
 				}
 			}
 		}
@@ -172,14 +172,14 @@ namespace forge
 			// Would this capture result in a promotion?
 			if (to.isBotRank()) {
 				// Yes promotion and capture
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to, pieces::blackQueen });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to, pieces::blackRook });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to, pieces::blackBishop });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to, pieces::blackKnight });
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to, pieces::blackQueen }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to, pieces::blackRook }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to, pieces::blackBishop }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to, pieces::blackKnight }, position);
 			}
 			else {
 				// No promotion. Only a capture
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to });
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to }, position);
 			}
 		}
 
@@ -188,14 +188,14 @@ namespace forge
 			// Would this capture result in a promotion?
 			if (to.isBotRank()) {
 				// Yes promotion and capture
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to, pieces::blackQueen });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to, pieces::blackRook });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to, pieces::blackBishop });
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to, pieces::blackKnight });
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to, pieces::blackQueen }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to, pieces::blackRook }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to, pieces::blackBishop }, position);
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to, pieces::blackKnight }, position);
 			}
 			else {
 				// No promotion. Only a capture
-				moves.pushIfLegalBlackPawnMove(position, Move{ s, to });
+				moves.emplace_back<pieces::BlackPawn>(Move{ s, to }, position);
 			}
 		}
 
@@ -285,80 +285,80 @@ namespace forge
 			Move move{ square, square.knight0() };
 
 			if (isEmpty[s.knight0()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 			else if (theirs[s.knight0()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 		}
 		if (square.isKnight1InBounds()) {
 			Move move{ square, square.knight1() };
 
 			if (isEmpty[s.knight1()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 			else if (theirs[s.knight1()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 		}
 		if (square.isKnight2InBounds()) {
 			Move move{ square, square.knight2() };
 
 			if (isEmpty[s.knight2()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 			else if (theirs[s.knight2()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 		}
 		if (square.isKnight3InBounds()) {
 			Move move{ square, square.knight3() };
 
 			if (isEmpty[s.knight3()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 			else if (theirs[s.knight3()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 		}
 		if (square.isKnight4InBounds()) {
 			Move move{ square, square.knight4() };
 
 			if (isEmpty[s.knight4()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 			else if (theirs[s.knight4()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 		}
 		if (square.isKnight5InBounds()) {
 			Move move{ square, square.knight5() };
 
 			if (isEmpty[s.knight5()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 			else if (theirs[s.knight5()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 		}
 		if (square.isKnight6InBounds()) {
 			Move move{ square, square.knight6() };
 
 			if (isEmpty[s.knight6()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 			else if (theirs[s.knight6()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 		}
 		if (square.isKnight7InBounds()) {
 			Move move{ square, square.knight7() };
 
 			if (isEmpty[s.knight7()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 			else if (theirs[s.knight7()]) {
-				moves.pushIfLegalQBNMove(position, move);
+				moves.emplace_back<pieces::QBN_Piece>(move, position);
 			}
 		}
 	}
@@ -401,7 +401,7 @@ namespace forge
 
 #ifndef FORGE_KING
 #define FORGE_KING(ORIGIN, DEST) \
-		moves.pushIfLegalKingMove(position, Move{ ORIGIN, DEST });
+		moves.emplace_back<pieces::King>(Move{ ORIGIN, DEST }, position);
 #endif
 
 		// --- UP MOVES ---

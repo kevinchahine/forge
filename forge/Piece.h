@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BitBoard.h"
+#include "Color.h"
 
 #include <iostream>
 #include <bitset>
@@ -79,6 +80,7 @@ namespace forge
 			std::bitset<8> & val() { return m_val; }
 
 			char getCh() const;
+			colors::Color getColor() const;
 
 			// Set piece based on character
 			// Piece color is set to white by default
@@ -107,7 +109,13 @@ namespace forge
 			std::bitset<8> m_val = 0;
 		};
 
+		// QBR
 		class RayPiece { };
+
+		class QBN_Piece {};
+
+		// QBNRP (Not K or Empty)
+		class NonKingPiece { };
 
 		const Piece empty{ Piece::EMPTY };
 		const Piece whiteKing{ Piece::WHITE_KING };
@@ -153,7 +161,27 @@ namespace forge
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
 		};
 
-		class Queen : public Piece, public RayPiece {
+		class WhiteKing : public King {
+		public:
+			WhiteKing() : King{ Piece::WHITE_KING } {}
+			WhiteKing(bool isWhite) : King{ (isWhite ? Piece::WHITE_KING : Piece::BLACK_KING) } {}
+			WhiteKing(WhiteKing &&) noexcept = default;
+			virtual ~WhiteKing() noexcept = default;
+			WhiteKing & operator=(const WhiteKing &) = default;
+			WhiteKing & operator=(WhiteKing &&) noexcept = default;
+		};
+
+		class BlackKing : public King {
+		public:
+			BlackKing() : King{ Piece::BLACK_KING } {}
+			BlackKing(bool isWhite) : King{ (isWhite ? Piece::WHITE_KING : Piece::BLACK_KING) } {}
+			BlackKing(BlackKing &&) noexcept = default;
+			virtual ~BlackKing() noexcept = default;
+			BlackKing & operator=(const BlackKing &) = default;
+			BlackKing & operator=(BlackKing &&) noexcept = default;
+		};
+
+		class Queen : public Piece, public RayPiece, public NonKingPiece, public QBN_Piece {
 		public:
 			Queen() : Piece{ Piece::QUEEN } {}
 			Queen(bool isWhite) : Piece{ (isWhite ? Piece::WHITE_QUEEN : Piece::BLACK_QUEEN) } {}
@@ -169,7 +197,7 @@ namespace forge
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
 		};
 
-		class Bishop : public Piece, public RayPiece {
+		class Bishop : public Piece, public RayPiece, public NonKingPiece, public QBN_Piece {
 		public:
 			Bishop() : Piece{ Piece::BISHOP } {}
 			Bishop(bool isWhite) : Piece{ (isWhite ? Piece::WHITE_BISHOP : Piece::BLACK_BISHOP) } {}
@@ -185,7 +213,7 @@ namespace forge
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
 		};
 
-		class Knight : public Piece {
+		class Knight : public Piece, public NonKingPiece, public QBN_Piece {
 		public:
 			Knight() : Piece{ Piece::KNIGHT } {}
 			Knight(bool isWhite) : Piece{ (isWhite ? Piece::WHITE_KNIGHT : Piece::BLACK_KNIGHT) } {}
@@ -201,7 +229,7 @@ namespace forge
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
 		};
 
-		class Rook : public Piece, public RayPiece {
+		class Rook : public Piece, public RayPiece, public NonKingPiece {
 		public:
 			Rook() : Piece{ Piece::ROOK } {}
 			Rook(bool isWhite) : Piece{ (isWhite ? Piece::WHITE_ROOK : Piece::BLACK_ROOK) } {}
@@ -217,9 +245,19 @@ namespace forge
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
 		};
 
-		class WhitePawn : public Piece {
+		class Pawn : public Piece, public NonKingPiece {
 		public:
-			WhitePawn() : Piece{ Piece::WHITE_PAWN } {}
+			Pawn(uint8_t pawnColor) : Piece{ pawnColor } {}
+			Pawn(const Pawn &) = default;
+			Pawn(Pawn &&) noexcept = default;
+			virtual ~Pawn() noexcept = default;
+			Pawn & operator=(const Pawn &) = default;
+			Pawn & operator=(Pawn &&) noexcept = default;
+		};
+
+		class WhitePawn : public Pawn {
+		public:
+			WhitePawn() : Pawn{ Piece::WHITE_PAWN } {}
 			WhitePawn(const WhitePawn &) = default;
 			WhitePawn(WhitePawn &&) noexcept = default;
 			virtual ~WhitePawn() noexcept = default;
@@ -232,9 +270,9 @@ namespace forge
 			static BitBoard captureMask(BoardSquare square);
 		};
 
-		class BlackPawn : public Piece {
+		class BlackPawn : public Pawn {
 		public:
-			BlackPawn() : Piece{ Piece::BLACK_PAWN } {}
+			BlackPawn() : Pawn{ Piece::BLACK_PAWN } {}
 			BlackPawn(const BlackPawn &) = default;
 			BlackPawn(BlackPawn &&) noexcept = default;
 			virtual ~BlackPawn() noexcept = default;
