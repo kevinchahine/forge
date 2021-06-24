@@ -194,7 +194,7 @@ namespace forge
 			BitBoard bb;
 
 			// --- Single Push ---
-			bb[square.upOne()] = 1;
+			bb[square.downOne()] = 1;
 
 			// --- Double Push ---
 			if (square.row() == 1) {

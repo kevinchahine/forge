@@ -366,10 +366,15 @@ namespace forge
 				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
 				//b.place<Queen>(BoardSquare{ 'h', '5' }, WHITE);
 
-				b.place<BlackKing>(BoardSquare{ 'b', '7' });
+				//b.place<BlackKing>(BoardSquare{ 'b', '7' });
+				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+				//b.place<BlackPawn>(BoardSquare{ 'e', '4' });
+				//b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
+
+				b.place<BlackKing>(BoardSquare{ 'd', '8' });
 				b.place<WhiteKing>(BoardSquare{ 'f', '1' });
-				b.place<BlackPawn>(BoardSquare{ 'e', '4' });
-				b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
+				b.place<BlackPawn>(BoardSquare{ 'd', '4' });
+				b.place<Queen>(BoardSquare{ 'd', '1' }, WHITE);
 
 				b.print();
 
