@@ -27,12 +27,14 @@ namespace forge
 
 	template<> void Board::place<pieces::WhiteKing>(BoardSquare square, bool isWhite)
 	{
-		move<pieces::WhiteKing>(Move{ m_whiteKing, square });
+		if (square != m_whiteKing)
+			move<pieces::WhiteKing>(Move{ m_whiteKing, square });
 	}
 
 	template<> void Board::place<pieces::BlackKing>(BoardSquare square, bool isWhite)
 	{
-		move<pieces::BlackKing>(Move{ m_blackKing, square });
+		if (square != m_blackKing)
+			move<pieces::BlackKing>(Move{ m_blackKing, square });
 	}
 
 	template<> void Board::place<pieces::Queen>(BoardSquare square, bool isWhite)
@@ -109,7 +111,7 @@ namespace forge
 		if (!isKing(move.from())) {
 			cout << "Error " << __FUNCTION__ << " line " << __LINE__
 				<< ": 'from' square must be a King when calling this method.\n";
-		}
+}
 #endif // _DEBUG
 
 		// Remove anything that might be on destination square
@@ -163,6 +165,28 @@ namespace forge
 		place<pieces::Empty>(move.from(), true);
 	}
 
+	template<> void Board::move<pieces::Queen>(Move move)
+	{
+		this->move<pieces::QBN_Piece>(move);
+	}
+
+	template<> void Board::move<pieces::Bishop>(Move move)
+	{
+		this->move<pieces::QBN_Piece>(move);
+	}
+
+	template<> void Board::move<pieces::Knight>(Move move)
+	{
+		this->move<pieces::QBN_Piece>(move);
+	}
+
+	template<> void Board::move<pieces::Rook>(Move move)
+	{
+		this->move<pieces::QBN_Piece>(move);
+
+		// TODO: Dont forget castling rights
+	}
+
 	template<> void Board::move<pieces::WhitePawn>(Move move)
 	{
 		m_whites[move.to()] = 1;
@@ -188,7 +212,7 @@ namespace forge
 
 		place<pieces::Empty>(move.from(), true);
 	}
-	
+
 	template<> void Board::move<pieces::Piece>(Move move)
 	{
 		pieces::Piece p = this->at(move.from());

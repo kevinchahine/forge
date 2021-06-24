@@ -251,7 +251,7 @@
     <ClInclude Include="MoveCounter.h" />
     <ClInclude Include="MoveGenerator.h" />
     <ClInclude Include="MoveGenerator2.h" />
-    <ClInclude Include="MoveGenerator2_Templates.h" />
+    <ClInclude Include="MoveGenerator2_Definitions.h" />
     <ClInclude Include="MoveGeneratorHelpers.h" />
     <ClInclude Include="MoveGeneratorInline.h" />
     <ClInclude Include="MoveList.h" />

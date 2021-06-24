@@ -47,7 +47,7 @@ namespace forge
 		// ourBlockers - Squares of all our pieces that can block our King. In otherwords, all our pieces
 		//		except our King.
 		template<typename DIRECTION_T>
-		bool isPinPossible();
+		bool isPinPossible() const;
 
 		// Searches in some direction for our pieces that are pinned to our King. 
 		// theirRays - ray pieces that can attack in given directions. 
@@ -58,14 +58,14 @@ namespace forge
 		//		first - coordinate of pinned
 		//		second - coordinate of pinner
 		template<typename RAY_DIRECTION_T>
-		Pin pinSearch();
+		Pin pinSearch() const;
 
 		// Searches in some direction for a piece that might qualify as a pinned to its king.
 		// If a candidite piece is found, then its coordinates are returned.
 		// If a piece is not found, then an invalid BoardSquare is returned.
 		// * See comments of pinSearch()
 		template<typename RAY_DIRECTION_T>
-		BoardSquare findPinned();
+		BoardSquare findPinned() const;
 
 		// Searches in some direction for a piece that might qualify as a pinner to a king.
 		// pinnedPiece - coordinate of a candidate piece that could be pinned to king.
@@ -73,7 +73,12 @@ namespace forge
 		// If a pinner is not found, then an invalid BoardSquare is returend.
 		// * See comments of pinSearch()
 		template<typename RAY_DIRECTION_T>
-		BoardSquare findPinner(BoardSquare pinnedPiece);
+		BoardSquare findPinner(BoardSquare pinnedPiece) const;
+
+		// Given a direction and nothing else, this method will search for absolute pins and generate
+		// legal moves for the pinned piece.  Moves are added to legalMoves.
+		template<typename DIRECTION_T>
+		void searchAndGeneratePins();
 
 	private:
 		// The squares that our pieces stand on
@@ -123,4 +128,4 @@ namespace forge
 	};
 } // namespace forge
 
-#include "MoveGenerator2_Templates.h"
+#include "MoveGenerator2_Definitions.h"

@@ -29,6 +29,19 @@ namespace forge
 		template<typename PIECE_T>
 		void emplace_back(Move move, const Position & currPos);
 
+		// Appends 0 or more MovePositionPairs to end of container.
+		// Iterates from begin (inclusive) to end (exclusive) in specified direction 
+		// and appends MovePositionPairs put only if a 1 exists in moveMask.
+		// PIECE_T - Piece type to be moved.
+		// RAY_DIRECTION_T - Direction between begin and end. Must be a ray direction.
+		// begin - Starting square (inclusive).
+		// piece - Coordinate of piece that is moving 
+		// end - Ending square (exclusive).
+		// moveMask - BitBoard containing 1s where ever the piece may move to (push/captures).
+		// currPos - current state of game.
+		template<typename PIECE_T, typename RAY_DIRECTION_T>
+		void emplace_back(BoardSquare begin, BoardSquare piece, BoardSquare end, BitBoard moveMask, const Position & currPos);
+
 		void print(std::ostream & os = std::cout) const;
 
 		MoveList::const_iterator find(Move move) const;
@@ -54,6 +67,26 @@ namespace forge
 			this->pop_back(); // Illegal Move
 		}
 #endif // _DEBUG
+	}
+
+	template<typename PIECE_T, typename RAY_DIRECTION_T>
+	void MoveList::emplace_back(
+		BoardSquare begin, 
+		BoardSquare piece, 
+		BoardSquare end, 
+		BitBoard moveMask, 
+		const Position & currPos)
+	{
+		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
+			"RAY_DIRECTION_T must be a Ray");
+
+		BoardSquare bs = begin;
+		while (true) {
+			if (moveMask[bs] == 1)	this->emplace_back<PIECE_T>(Move{ piece, bs }, currPos);
+
+			if (RAY_DIRECTION_T::wouldBeInBounds(bs))	bs = RAY_DIRECTION_T::move(bs);
+			else break;
+		}
 	}
 
 } // namespace forge

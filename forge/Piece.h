@@ -105,6 +105,10 @@ namespace forge
 			void makeWhite() { m_val[3] = 0; }
 			void makeBlack() { m_val[3] = 1; }
 
+			BitBoard pushMask(BoardSquare square) const;
+
+			BitBoard captureMask(BoardSquare square) const;
+
 		protected:
 			std::bitset<8> m_val = 0;
 		};

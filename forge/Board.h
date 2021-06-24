@@ -82,6 +82,10 @@ namespace forge
 		template<> void move<pieces::WhiteKing>(Move move);
 		template<> void move<pieces::BlackKing>(Move move);
 		template<> void move<pieces::QBN_Piece>(Move move);
+		template<> void move<pieces::Queen>(Move move);
+		template<> void move<pieces::Bishop>(Move move);
+		template<> void move<pieces::Knight>(Move move);
+		template<> void move<pieces::Rook>(Move move);
 		template<> void move<pieces::WhitePawn>(Move move);
 		template<> void move<pieces::BlackPawn>(Move move);
 		template<> void move<pieces::Piece>(Move move);
@@ -171,14 +175,14 @@ namespace forge
 		template<> BitBoard directionals<directions::Diagonal>() const { return diagonals(); }
 		template<> BitBoard directionals<directions::LShape>() const { return knights(); }
 		template<> BitBoard directionals<directions::Ray>() const { return rays(); }
-		template<> BitBoard directionals<directions::Up>() const { return rays(); }
-		template<> BitBoard directionals<directions::Down>() const { return rays(); }
-		template<> BitBoard directionals<directions::Left>() const { return rays(); }
-		template<> BitBoard directionals<directions::Right>() const { return rays(); }
-		template<> BitBoard directionals<directions::UR>() const { return rays(); }
-		template<> BitBoard directionals<directions::UL>() const { return rays(); }
-		template<> BitBoard directionals<directions::DL>() const { return rays(); }
-		template<> BitBoard directionals<directions::DR>() const { return rays(); }
+		template<> BitBoard directionals<directions::Up>() const { return laterals(); }
+		template<> BitBoard directionals<directions::Down>() const { return laterals(); }
+		template<> BitBoard directionals<directions::Left>() const { return laterals(); }
+		template<> BitBoard directionals<directions::Right>() const { return laterals(); }
+		template<> BitBoard directionals<directions::UR>() const { return diagonals(); }
+		template<> BitBoard directionals<directions::UL>() const { return diagonals(); }
+		template<> BitBoard directionals<directions::DL>() const { return diagonals(); }
+		template<> BitBoard directionals<directions::DR>() const { return diagonals(); }
 
 		bool operator==(const Board & rhs) const {
 			return

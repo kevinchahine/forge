@@ -123,6 +123,8 @@ namespace forge
 
 		namespace pins {
 			void isPinPossible();
+
+			void absolutePins();
 		}
 
 		void moveKings();

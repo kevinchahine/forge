@@ -61,6 +61,7 @@ namespace forge
 			BitBoard bb;
 
 			// TODO: Optimize: Make this with only bitwise operations. No "if"s
+			// Use shift operations
 			// --- Top 3 squares ---
 			if (square.isTopRank() == false) {
 				bb[square.upOne()] = 1;
@@ -125,6 +126,8 @@ namespace forge
 				bb |= (NEG_DIAGONAL >> (-inverseShift << 3));
 			}
 
+			bb[square] = 0;	// Clear bit where piece is standing
+
 			return bb;
 		}
 
@@ -143,6 +146,8 @@ namespace forge
 			bb =
 				(TOP << (square.row() << 3)) |
 				(LEFT << square.col());
+
+			bb[square] = 0;	// Clear bit where piece is standing
 
 			return bb;
 		}
@@ -219,6 +224,45 @@ namespace forge
 			}
 
 			return bb;
+		}
+
+		// --- These definitions must be place here below other overloads to compile properly ---
+
+		BitBoard Piece::pushMask(BoardSquare square) const
+		{
+			// Pawn is first because it is most common piece
+			if (isPawn()) {
+				if (isWhite())	return WhitePawn::pushMask(square);
+				else			return BlackPawn::pushMask(square);
+			}
+			if (isQueen())		return Queen::pushMask(square);
+			if (isBishop())		return Bishop::pushMask(square);
+			if (isKnight())		return Knight::pushMask(square);
+			if (isRook())		return Rook::pushMask(square);
+			if (isKing())		return King::pushMask(square);
+#ifdef _DEBUG
+			cout << "Error: " << __FILE__ << " line " << __LINE__
+				<< " Piece type could not be identified. Square might be empty.\n";
+#endif // _DEBUG
+		}
+
+		BitBoard Piece::captureMask(BoardSquare square) const
+		{
+			// Pawn is first because it is most common piece
+			if (isPawn()) {
+				if (isWhite())	return WhitePawn::captureMask(square);
+				else			return BlackPawn::captureMask(square);
+			}
+			if (isQueen())		return Queen::captureMask(square);
+			if (isBishop())		return Bishop::captureMask(square);
+			if (isKnight())		return Knight::captureMask(square);
+			if (isRook())		return Rook::captureMask(square);
+			if (isKing())		return King::captureMask(square);
+
+#ifdef _DEBUG
+			cout << "Error: " << __FILE__ << " line " << __LINE__
+				<< " Piece type could not be identified. Square might be empty.\n";
+#endif // _DEBUG
 		}
 
 	} // namespace pieces

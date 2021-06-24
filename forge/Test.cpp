@@ -8,6 +8,7 @@
 #include <sstream>
 
 using namespace std;
+using namespace forge::pieces;
 
 namespace forge
 {
@@ -334,6 +335,58 @@ namespace forge
 
 				MoveGenerator2 moveGen;
 				moveGen.generate(p);
+			}
+
+			void absolutePins()
+			{
+				Position p;
+
+				Board & b = p.board();
+				//b.place<BlackKing>(BoardSquare{ 'e', '8' });
+				//b.place<WhiteKing>(BoardSquare{ 'c', '1' });
+				//b.place<Rook>(BoardSquare{ 'e', '6' }, BLACK);
+				//b.place<Queen>(BoardSquare{ 'e', '4' }, WHITE);
+
+				//b.place<BlackKing>(BoardSquare{ 'c', '8' });
+				//b.place<WhiteKing>(BoardSquare{ 'g', '1' });
+				//b.place<Queen>(BoardSquare{ 'e', '6' }, BLACK);
+				//b.place<Bishop>(BoardSquare{ 'h', '3' }, WHITE);
+
+				//b.place<Rook>(BoardSquare{ 'd', '6' }, BLACK);
+				//b.place<Bishop>(BoardSquare{ 'd', '8' }, WHITE);
+				//b.place<BlackKing>(BoardSquare{ 'd', '2' });
+
+				//b.place<BlackKing>(BoardSquare{ 'b', '7' });
+				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
+				//b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
+				
+				//b.place<BlackKing>(BoardSquare{ 'b', '5' });
+				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
+				//b.place<Queen>(BoardSquare{ 'h', '5' }, WHITE);
+
+				b.place<BlackKing>(BoardSquare{ 'b', '7' });
+				b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+				b.place<BlackPawn>(BoardSquare{ 'e', '4' });
+				b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
+
+				b.print();
+
+				p.move<WhiteKing>(Move{ b.whiteKing(), b.whiteKing().rightOne() });	// Make a move as white
+				// *** Now its blacks turn.
+				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << " turn" << endl;
+
+				MoveGenerator2 gen;
+				MoveList legals = gen.generate(p);
+
+				for (const auto & pair : legals) {
+					pair.position.board().printMini();
+					cout << endl;
+				}
+
+				cout << "Generated " << legals.size() << " legal moves" << endl;
+				legals.print();
 			}
 		} // namespace pins
 

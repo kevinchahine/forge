@@ -6,7 +6,7 @@ namespace forge
 {
 	// A class that represents a Pin by storing the coordinates of 
 	// both the pinned piece and the pinning (or pinner) piece.
-	// Object is initialized with as a valid 
+	// Object is initialized as an invalid Pin
 	class Pin
 	{
 	public:

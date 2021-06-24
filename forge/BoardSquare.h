@@ -91,22 +91,22 @@ namespace forge
 
 		bool isValid() const
 		{
-			return m_val & is_valid_mask;
+			return !isInValid();
 		}
 
 		bool isInValid() const
 		{
-			return !isValid();
+			return m_val & is_invalid_mask;
 		}
 
 		void setAsValid()
 		{
-			m_val |= is_valid_mask;	// set bit to 1
+			m_val &= ~is_invalid_mask; // set bit to 0
 		}
 
 		void setAsInvalid()
 		{
-			m_val &= ~is_valid_mask; // set bit to 0
+			m_val |= is_invalid_mask;	// set bit to 1
 		}
 
 		// Returns true iff square refers to a light square. ex: a1, a3, a5
@@ -190,13 +190,13 @@ namespace forge
 	private:
 		// bits 0, 1, 2	- col coordinate
 		// bits 3, 4, 5 - row coordinate
-		// bit  6		- isValid (1: valid, 0: invalid)
+		// bit  6		- isInValid (0: valid, 1: invalid)
 		// bit  7		- reserved
 		// 00cccrrr
 		uint8_t m_val = 0;
 
 		static const uint8_t col_mask = 0b00'000'111;	// Has 1's for each col bit
 		static const uint8_t row_mask = 0b00'111'000;	// Has 1's for each row bit
-		static const uint8_t is_valid_mask = 0b01'000'000;
+		static const uint8_t is_invalid_mask = 0b01'000'000;
 	};
 } // namespace forge

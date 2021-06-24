@@ -456,9 +456,6 @@
     <ClInclude Include="MoveGenerator2.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
-    <ClInclude Include="MoveGenerator2_Templates.h">
-      <Filter>MoveGenerator</Filter>
-    </ClInclude>
     <ClInclude Include="Pin.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
@@ -467,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="PositionDefinitions.h">
       <Filter>Move</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveGenerator2_Definitions.h">
+      <Filter>MoveGenerator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

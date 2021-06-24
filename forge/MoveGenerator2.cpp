@@ -11,6 +11,7 @@ namespace forge
 
 	void MoveGenerator2::preprocess(const Position & position)
 	{
+		currPositionPtr = &position;
 		bool isWhitesTurn = position.moveCounter().isWhitesTurn();
 		const Board & b = position.board();
 
@@ -65,21 +66,17 @@ namespace forge
 
 		// --- Forward Checking ---
 		// Is there a possibility of a pin in some direction?
-		// If not, then theirs no reason to perform an expensive pin search in that direction
+		// If not, then there's no reason to perform an expensive pin search in that direction
 		// Is a pin possible in a diagonal direction?
 		if (isPinPossible<directions::Diagonal>()) {
 			// Yes, A diagonal pin is possible.
 			cout << "Diagonal pin is possible\n";
 			
 			// --- Break it down further into individual ray directions ---
-			Pin pin0 = pinSearch<directions::UR>();
-			if (pin0.isValid()) { genPinMovesFor<directions::UR>(pin0); }
-
-			Pin pin1 = pinSearch<directions::UL>();
-			if (pin1.isValid()) { genPinMovesFor<directions::UL>(pin1); }
-
-			Pin pin2 = pinSearch<directions::DL>();
-			Pin pin3 = pinSearch<directions::DR>();
+			searchAndGeneratePins<directions::UR>();
+			searchAndGeneratePins<directions::UL>();
+			searchAndGeneratePins<directions::DL>();
+			searchAndGeneratePins<directions::DR>();
 		}
 		else {
 			cout << "Diagonal pin NOT possible\n";
@@ -91,11 +88,10 @@ namespace forge
 			cout << "Lateral pin is possible\n";
 		
 			// --- Break it down further into individual ray directions ---
-		
-			Pin pin0 = pinSearch<directions::Up>();
-			Pin pin1 = pinSearch<directions::Down>();
-			Pin pin2 = pinSearch<directions::Left>();
-			Pin pin3 = pinSearch<directions::Right>();
+			searchAndGeneratePins<directions::Up>();
+			searchAndGeneratePins<directions::Down>();
+			searchAndGeneratePins<directions::Left>();
+			searchAndGeneratePins<directions::Right>();
 		}
 		else {
 			cout << "Lateral pin NOT possible\n";
