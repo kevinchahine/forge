@@ -1,4 +1,5 @@
 #include "MoveGenerator2.h"
+#include "MoveGeneratorHelpers.h"
 
 using namespace std;
 
@@ -58,6 +59,42 @@ namespace forge
 		genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn());
 
 		return legalMoves;
+	}
+
+	BitBoard MoveGenerator2::genKingThreats() const
+	{
+		BitBoard threats;
+
+		// There are many directions and BoardSquares to look King Threats:
+		//	- 3 Verticals
+		//	- 3 Horizontal
+		//	- 3 MainDiagonals
+		//	- 3 OffDiagonals
+		//	- 9 Knights
+		//	- A Bunch of pawns
+
+		// --- Vertical Threats (Queens and Rooks) ---
+		if (!ourKing.isLeftFile() && !ourKing.isTopRank()) {
+			BoardSquare attacker = 
+				findAttacker<directions::Up>(ourKing.upLeftOne(), currPositionPtr->board(), theirs, ours);
+		}
+		
+		if (!ourKing.isRightFile() && !ourKing.isBotRank()) {
+			BoardSquare attacker =
+				findAttacker<directions::Down>(ourKing.downRightOne(), currPositionPtr->board(), theirs, ours);
+		}
+
+		// --- Horizontal Threats (Queens and Rooks)  ---
+
+		// --- Main Diagonal Threats (Queens and Bishops) ---
+
+		// --- Off Diagonal Threats (Queens and Bishops) ---
+
+		// --- Knight Threats (Knights only) ---
+
+		// --- Pawn Threats (Pawns only) ---
+
+		return threats;
 	}
 
 	void MoveGenerator2::genPinMoves(const Board & b, bool isWhitesTurn)

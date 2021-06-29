@@ -45,6 +45,10 @@ namespace forge
 				return square.upOne();
 			}
 
+			static BoardSquare reverse(const BoardSquare & square) {
+				return square.downOne();
+			}
+
 			static bool wouldBeInBounds(const BoardSquare & square) {
 				return square.isTopRank() == false;
 			}
@@ -56,6 +60,10 @@ namespace forge
 		
 			static BoardSquare move(const BoardSquare & square) {
 				return square.downOne();
+			}
+
+			static BoardSquare reverse(const BoardSquare & square) {
+				return square.upOne();
 			}
 
 			static bool wouldBeInBounds(const BoardSquare & square) {
@@ -71,6 +79,10 @@ namespace forge
 				return square.leftOne();
 			}
 
+			static BoardSquare reverse(const BoardSquare & square) {
+				return square.rightOne();
+			}
+
 			static bool wouldBeInBounds(const BoardSquare & square) {
 				return square.isLeftFile() == false;
 			}
@@ -82,6 +94,10 @@ namespace forge
 		
 			static BoardSquare move(const BoardSquare & square) {
 				return square.rightOne();
+			}
+
+			static BoardSquare reverse(const BoardSquare & square) {
+				return square.leftOne();
 			}
 
 			static bool wouldBeInBounds(const BoardSquare & square) {
@@ -99,6 +115,10 @@ namespace forge
 				return square.upLeftOne();
 			}
 
+			static BoardSquare reverse(const BoardSquare & square) {
+				return square.downRightOne();
+			}
+
 			static bool wouldBeInBounds(const BoardSquare & square) {
 				return square.isTopRank() == false && square.isLeftFile() == false;
 			}
@@ -110,6 +130,10 @@ namespace forge
 		
 			static BoardSquare move(const BoardSquare & square) {
 				return square.upRightOne();
+			}
+
+			static BoardSquare reverse(const BoardSquare & square) {
+				return square.downLeftOne();
 			}
 
 			static bool wouldBeInBounds(const BoardSquare & square) {
@@ -125,6 +149,10 @@ namespace forge
 				return square.downLeftOne();
 			}
 
+			static BoardSquare reverse(const BoardSquare & square) {
+				return square.upRightOne();
+			}
+
 			static bool wouldBeInBounds(const BoardSquare & square) {
 				return square.isBotRank() == false && square.isLeftFile() == false;
 			}
@@ -136,6 +164,10 @@ namespace forge
 		
 			static BoardSquare move(const BoardSquare & square) {
 				return square.downRightOne();
+			}
+
+			static BoardSquare reverse(const BoardSquare & square) {
+				return square.upLeftOne();
 			}
 
 			static bool wouldBeInBounds(const BoardSquare & square) {

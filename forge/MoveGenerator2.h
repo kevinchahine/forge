@@ -29,6 +29,8 @@ namespace forge
 
 		void countChecks(const Board & b, bool isWhitesTurn);
 
+		BitBoard genKingThreats() const;
+
 		void genPinMoves(const Board & b, bool isWhitesTurn);
 		
 		// Make sure to only call on valid Pin objects.  

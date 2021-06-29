@@ -371,15 +371,21 @@ namespace forge
 				//b.place<BlackPawn>(BoardSquare{ 'e', '4' });
 				//b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
 
-				b.place<BlackKing>(BoardSquare{ 'd', '8' });
-				b.place<WhiteKing>(BoardSquare{ 'f', '1' });
-				b.place<BlackPawn>(BoardSquare{ 'd', '4' });
-				b.place<Queen>(BoardSquare{ 'd', '1' }, WHITE);
+				//b.place<BlackKing>(BoardSquare{ 'd', '8' });
+				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+				//b.place<BlackPawn>(BoardSquare{ 'd', '4' });
+				//b.place<Queen>(BoardSquare{ 'd', '1' }, WHITE);
+
+				b.place<Queen>(BoardSquare{ 'd', '8' }, BLACK);
+				b.place<Rook>(BoardSquare{ 'd', '4' }, WHITE);
+				b.place<WhiteKing>(BoardSquare{ 'd', '1' });
+				b.place<BlackKing>(BoardSquare{ 'a', '8' });
 
 				b.print();
 
-				p.move<WhiteKing>(Move{ b.whiteKing(), b.whiteKing().rightOne() });	// Make a move as white
+				//p.move<WhiteKing>(Move{ b.whiteKing(), b.whiteKing().rightOne() });	// Make a move as white
 				// *** Now its blacks turn.
+				
 				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << " turn" << endl;
 
 				MoveGenerator2 gen;

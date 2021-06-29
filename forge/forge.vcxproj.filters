@@ -468,5 +468,8 @@
     <ClInclude Include="MoveGenerator2_Definitions.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
+    <ClInclude Include="MoveGeneratorHelpersDefinitions.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

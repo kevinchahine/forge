@@ -253,6 +253,7 @@
     <ClInclude Include="MoveGenerator2.h" />
     <ClInclude Include="MoveGenerator2_Definitions.h" />
     <ClInclude Include="MoveGeneratorHelpers.h" />
+    <ClInclude Include="MoveGeneratorHelpersDefinitions.h" />
     <ClInclude Include="MoveGeneratorInline.h" />
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="MovePositionPair.h" />
