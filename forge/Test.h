@@ -12,6 +12,7 @@
 #include "PerformanceLogger.h"
 #include "MoveGenerator.h"
 #include "MoveGenerator2.h"
+#include "MoveGeneratorHelpers.h"
 #include "GameState.h"
 #include "Node.h"
 
@@ -126,6 +127,11 @@ namespace forge
 
 			void absolutePins();
 		}
+
+		namespace movegen
+		{
+			void genAttackRay();
+		} // namespace movegen
 
 		void moveKings();
 

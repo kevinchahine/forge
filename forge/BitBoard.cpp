@@ -5,16 +5,6 @@
 
 namespace forge
 {
-	std::bitset<64>::reference BitBoard::operator[](const BoardSquare & square)
-	{
-		return (*this)[square.val()];
-	}
-
-	bool BitBoard::operator[](const BoardSquare & square) const
-	{
-		return (*this)[square.val()];
-	}
-
 	std::ostream & operator<<(std::ostream & os, const BitBoard & bb)
 	{
 		for (size_t bit = 0; bit < 64; bit++) {
@@ -24,5 +14,16 @@ namespace forge
 		}
 
 		return os;
+	}
+
+	void BitBoard::print(std::ostream & os) const
+	{
+		for (uint16_t row = 0; row < 8; row++) {
+			for (uint16_t col = 0; col < 8; col++) {
+				os << ((*this)[BoardSquare{ row, col }] ? '1' : '0');
+			}
+			os << '\n';
+		}
+		os << '\n';
 	}
 } // namespace forge

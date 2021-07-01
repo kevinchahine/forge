@@ -401,6 +401,37 @@ namespace forge
 			}
 		} // namespace pins
 
+		namespace movegen
+		{
+			void genAttackRay()
+			{
+				Board b;
+				b.place<pieces::Rook>(BoardSquare{ 'e', '2' }, BLACK);
+				b.place<pieces::BlackPawn>(BoardSquare{ 'c', '2' });
+				b.place<pieces::WhitePawn>(BoardSquare{ 'c', '5' });
+				b.place<pieces::Bishop>(BoardSquare{ 'e', '7' }, WHITE);
+				b.place<pieces::Queen>(BoardSquare{ 'e', '4' }, WHITE);
+				b.place<pieces::Knight>(BoardSquare{ 'f', '8' }, WHITE);
+
+				BitBoard threats = forge::MoveGenHelpers::genThreats(b, b.whites());
+
+				b.printMini();
+
+				guten::boards::CheckerBoard cb;
+				cb.drawBackground();
+				for (int row = 0; row < 8; row++) {
+					for (int col = 0; col < 8; col++) {
+						if (threats[BoardSquare{ row, col }])
+							cb.highlight(guten::Point{ row, col });
+					}
+				}
+				cb.print();
+
+				cout << "Queen\n";
+
+			}
+		} // namespace movegen
+
 		void moveKings()
 		{
 			ChessMatch m;

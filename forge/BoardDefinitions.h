@@ -109,7 +109,7 @@ namespace forge
 	{
 #ifdef _DEBUG
 		if (!isKing(move.from())) {
-			cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
 				<< ": 'from' square must be a King when calling this method.\n";
 }
 #endif // _DEBUG
@@ -237,8 +237,8 @@ namespace forge
 		}
 #ifdef _DEBUG
 		else {
-			cout << "Error: " << __FILE__ << " line " << __LINE__
-				<< " Piece = " << p << " move = " << move << endl;
+			std::cout << "Error: " << __FILE__ << " line " << __LINE__
+				<< " Piece = " << p << " move = " << move << std::endl;
 		}
 #endif // _DEBUG
 	}

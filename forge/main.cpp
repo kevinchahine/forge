@@ -46,7 +46,8 @@ int main(int argc, char ** argv)
 	//forge::test::piece_moves::rook();
 	//forge::test::piece_moves::pawn();
 	//forge::test::pins::isPinPossible();
-	forge::test::pins::absolutePins();		// <--- Do this next
+	//forge::test::pins::absolutePins();		// <--- Do this next
+	forge::test::movegen::genAttackRay();
 	//forge::test::moveKings();
 	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();

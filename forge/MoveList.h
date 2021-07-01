@@ -1,11 +1,20 @@
 #pragma once
 
 #include "MovePositionPair.h"
+#include "AttackChecker.h"
 
 #include <vector>
 
 namespace forge
 {
+#ifdef _DEBUG
+	inline void printError(forge::Move m, const string & funcName) {
+		std::cout << "Illegal move found :p, " << m << " in " << funcName << "\n";
+	}
+#else
+#define printError(MOVE, FUNCNAME)	// empty placeholder
+#endif
+
 	// TODO: consider inheriting with protected instead of public to prevent 
 	//		users from calling push_back and emplace back
 	class MoveList : public std::vector<MovePositionPair>

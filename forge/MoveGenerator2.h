@@ -25,11 +25,8 @@ namespace forge
 
 	private:
 	public:	// <-- Only for testing
-		void generateThreats(const Board & b);
 
 		void countChecks(const Board & b, bool isWhitesTurn);
-
-		BitBoard genKingThreats() const;
 
 		void genPinMoves(const Board & b, bool isWhitesTurn);
 		
@@ -124,6 +121,8 @@ namespace forge
 		BitBoard ourAbsolutePins;
 
 		const Position * currPositionPtr = nullptr;
+
+		const Board * boardPtr = nullptr;
 
 		// List of legal moves
 		MoveList legalMoves;

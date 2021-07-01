@@ -8,14 +8,6 @@
 using namespace forge::pieces;
 using namespace std;
 
-#ifdef _DEBUG
-void printError(forge::Move m, const string & funcName) {
-	///cout << "Illegal move found :p, " << m << " in " << funcName << "\n";
-}
-#else
-#define printError(MOVE, FUNCNAME)	// empty placeholder
-#endif
-
 namespace forge
 {
 	///#ifndef FORGE_DEBUG_PUSH_IF_LEGAL_MOVE
