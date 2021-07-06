@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "BoardSquare.h"
+#include "AttackerPair.h"
 
 namespace forge
 {
@@ -26,6 +27,11 @@ namespace forge
 		// This way an attacker can "attack" its own pieces as well as opponents.
 		template<typename RAY_DIRECTION_T> static BitBoard genAttackRay(BoardSquare attacker, BitBoard obstacles);
 
+		// Searches for any opponent pieces that might be attacking 'ourKing'
+		// Returns up to 2 BoardSquares that locate what pieces are attacking 'ourKing'
+		// Calling this function should be avoided for performance if 'ourKing' stands on a safe square.
+		// This can be determined using the threat board.
+		static AttackerPair findKingAttackers(const Board & board, BoardSquare ourKing, BitBoard theirs, BitBoard ours);
 	}; // class MoveGenHelpers
 } // namespace forge
 

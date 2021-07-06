@@ -203,7 +203,7 @@
     <ClCompile Include="MoveGenerator2.cpp">
       <Filter>MoveGenerator</Filter>
     </ClCompile>
-    <ClCompile Include="Pin.cpp">
+    <ClCompile Include="AttackerPair.cpp">
       <Filter>MoveGenerator</Filter>
     </ClCompile>
   </ItemGroup>
@@ -469,6 +469,9 @@
       <Filter>MoveGenerator</Filter>
     </ClInclude>
     <ClInclude Include="MoveGeneratorHelpersDefinitions.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackerPair.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
   </ItemGroup>

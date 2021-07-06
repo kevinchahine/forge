@@ -10,10 +10,146 @@
 using namespace std;
 using namespace forge::pieces;
 
+
 namespace forge
 {
 	namespace test
 	{
+		// --- Global Variables ---
+		vector<Board> boards;
+
+		void initTestBoards()
+		{
+			using namespace pieces;
+
+			{
+				Board & b = boards.emplace_back();
+				b.placeAllPieces();
+			}
+
+			{ 
+				Board & b = boards.emplace_back();
+				b.place<pieces::Rook>(BoardSquare{ 'e', '2' }, BLACK);
+				b.place<pieces::BlackPawn>(BoardSquare{ 'c', '2' });
+				b.place<pieces::WhitePawn>(BoardSquare{ 'c', '5' });
+				b.place<pieces::Bishop>(BoardSquare{ 'e', '7' }, WHITE);
+				b.place<pieces::Queen>(BoardSquare{ 'e', '4' }, WHITE);
+				b.place<pieces::Knight>(BoardSquare{ 'f', '8' }, WHITE);
+			}
+
+			{
+				BoardSquare s{ 'e', '4' };
+				Board & b = boards.emplace_back();
+				b.place<pieces::Knight>(s, WHITE);
+				b.place<pieces::Queen>(s.right(), WHITE);
+				b.place<pieces::Bishop>(s.up(2), BLACK);
+				b.place<pieces::WhitePawn>(s.left(2));
+			}
+
+			{
+				BoardSquare k{ 'e', '4' };
+				Board & b = boards.emplace_back();
+				b.place<pieces::BlackKing>(k);
+				b.place<pieces::Rook>(k.down(2), WHITE);
+				b.place<pieces::Bishop>(k.downLeft(2), WHITE);
+				b.place<pieces::Queen>(k.down(2), WHITE);
+				b.place<pieces::Knight>(k.knight7(), WHITE);
+				b.place<pieces::Pawn>(k.downLeft(), WHITE);
+			}
+
+			{
+				Board & b = boards.emplace_back();
+
+				BoardSquare wk{ 'c', '3' };
+				b.place<WhiteKing>(wk);
+				//b.place<Knight>(wk.knight0(), BLACK);
+				//b.place<Knight>(wk.knight1(), BLACK);
+				b.place<Knight>(wk.knight2(), BLACK);
+				b.place<Knight>(wk.knight3(), BLACK);
+				b.place<Knight>(wk.knight4(), BLACK);
+				b.place<Knight>(wk.knight5(), BLACK);
+				b.place<Knight>(wk.knight5(), BLACK);
+				b.place<Knight>(wk.knight6(), BLACK);
+				b.place<Knight>(wk.knight7(), BLACK);
+
+				BoardSquare bk{ 'f', '5' };
+				b.place<BlackKing>(bk);
+				//b.place<Knight>(bk.knight0(), WHITE);
+				//b.place<Knight>(bk.knight1(), WHITE);
+				b.place<Knight>(bk.knight2(), WHITE);
+				b.place<Knight>(bk.knight3(), WHITE);
+				b.place<Knight>(bk.knight4(), WHITE);
+				b.place<Knight>(bk.knight5(), WHITE);
+				b.place<Knight>(bk.knight5(), WHITE);
+				b.place<Knight>(bk.knight6(), WHITE);
+				b.place<Knight>(bk.knight7(), WHITE);
+			}
+
+			{
+				Board & b = boards.emplace_back();
+
+				BoardSquare wk{ 'e', '3' };
+				b.place<WhiteKing>(wk);
+				b.place<Bishop>(wk.upLeft(2), BLACK);
+				b.place<Bishop>(wk.upRight(2), WHITE);
+				b.place<Queen>(wk.downLeft(2), WHITE);
+				b.place<Queen>(wk.downRight(2), BLACK);
+
+				BoardSquare bk{ 'e', '7' };
+				b.place<BlackKing>(bk);
+			}
+
+			{
+				Board & b = boards.emplace_back();
+
+				BoardSquare wk{ 'e', '3' };
+				b.place<WhiteKing>(wk);
+				b.place<Rook>(wk.up(4), BLACK);
+
+				BoardSquare bk{ 'd', '4' };
+				b.place<BlackKing>(bk);
+				b.place<Rook>(bk.right(4), WHITE);
+
+				Board & b2 = boards.emplace_back(b);
+				b2.place<Bishop>(wk.upRight(3), BLACK);
+				b2.place<Bishop>(bk.upRight(2), WHITE);
+
+				Board & b3 = boards.emplace_back(b2);
+				b3.place<Queen>(bk.upLeft(2), WHITE);
+				b3.place<Queen>(wk.downRight(2), BLACK);
+			}
+
+			{
+				Board & b = boards.emplace_back();
+
+				BoardSquare wk{ 'f', '4' };
+				b.place<WhiteKing>(wk);
+				b.place<BlackPawn>(wk.upLeftOne());
+				b.place<BlackPawn>(wk.upRightOne());
+
+				BoardSquare bk{ 'c', '5' };
+				b.place<BlackKing>(bk);
+				b.place<WhitePawn>(bk.downLeftOne());
+				b.place<WhitePawn>(bk.downRightOne());
+			}
+
+			{
+				Board & b = boards.emplace_back();
+
+				BoardSquare wk{ 'e', '3' };
+				b.place<Queen>(wk.up(3), BLACK);
+				b.place<BlackPawn>(wk.upLeftOne());
+				b.place<WhitePawn>(wk.downLeftOne());
+
+				
+				BoardSquare bk{ 'c', '6' };
+				b.place<Queen>(bk.down(3), WHITE);
+				b.place<WhitePawn>(bk.downRightOne());
+				b.place<BlackPawn>(bk.upLeftOne());
+
+			}
+		}
+
 		void boardSquare()
 		{
 			BoardSquare cell;
@@ -66,12 +202,12 @@ namespace forge
 					showMask<directions::Horizontal>(bs);
 					showMask<directions::Vertical>(bs);
 					showMask<directions::Lateral>(bs);
-					
+
 					// --- Diagonal Line Masks ---
 					showMask<directions::MainDiagonal>(bs);
 					showMask<directions::OffDiagonal>(bs);
 					showMask<directions::Diagonal>(bs);
-					
+
 					// --- Lateral Ray Masks ---
 					showMask<directions::Up>(bs);
 					showMask<directions::Down>(bs);
@@ -313,7 +449,7 @@ namespace forge
 					theirRays |= b.laterals();
 				}
 
-				bool isPinPossible = 
+				bool isPinPossible =
 					moveGen.isPinPossible<directions::Up>(b.laterals() & b.blacks(), b.blockers());
 
 			}
@@ -360,7 +496,7 @@ namespace forge
 				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
 				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
 				//b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
-				
+
 				//b.place<BlackKing>(BoardSquare{ 'b', '5' });
 				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
 				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
@@ -385,7 +521,7 @@ namespace forge
 
 				//p.move<WhiteKing>(Move{ b.whiteKing(), b.whiteKing().rightOne() });	// Make a move as white
 				// *** Now its blacks turn.
-				
+
 				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << " turn" << endl;
 
 				MoveGenerator2 gen;
@@ -426,9 +562,26 @@ namespace forge
 					}
 				}
 				cb.print();
+			}
 
-				cout << "Queen\n";
+			void findKingAttackers()
+			{
+				for (const Board & b : boards) {
+					AttackerPair pair;
 
+					b.print();
+					
+					pair = MoveGenHelpers::findKingAttackers(b, b.whiteKing(), b.blacks(), b.whites());
+
+					cout << "White King: ";
+					pair.print(b);
+					cout << endl;
+					
+					cout << "Black King: ";
+					pair = MoveGenHelpers::findKingAttackers(b, b.blackKing(), b.whites(), b.blacks());
+					pair.print(b);
+					cout << endl << endl;
+				}
 			}
 		} // namespace movegen
 
@@ -579,11 +732,11 @@ namespace forge
 
 			auto whiteController =
 				make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
+			//make_unique<MinimaxSolver>();
 
 			auto blackController =
 				make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
+			//make_unique<MinimaxSolver>();
 
 			whiteController->makeHeuristic<
 				//RandomHeuristic

@@ -105,10 +105,9 @@ namespace forge
 		// Their Lateral Rays
 		BitBoard theirLaterals;
 
-		// The squares that our pieces are attacking
-		BitBoard ourThreats;
-		// The squares that their pieces are attacking
-		BitBoard theirThreats;
+		// The squares that their pieces are attacking.
+		// Our King cannot move to any of these square.
+		BitBoard threats;
 
 		// Our non-King pieces
 		BitBoard ourBlockers;

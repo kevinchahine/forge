@@ -46,8 +46,7 @@ namespace forge
 		theirLaterals = theirs & b.laterals();
 
 		// TODO: Fill this in
-		ourThreats;
-		///theirThreats = MoveGenHelpers::genThreats(*boardPtr, ours);
+		threats = MoveGenHelpers::genThreats(b, theirs);
 	}
 
 	MoveList & MoveGenerator2::generate(const Position & pos)

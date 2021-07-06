@@ -30,6 +30,7 @@ int main(int argc, char ** argv)
 	
 	forge::BoardSquare bs;
 
+	forge::test::initTestBoards();
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
@@ -47,7 +48,8 @@ int main(int argc, char ** argv)
 	//forge::test::piece_moves::pawn();
 	//forge::test::pins::isPinPossible();
 	//forge::test::pins::absolutePins();		// <--- Do this next
-	forge::test::movegen::genAttackRay();
+	//forge::test::movegen::genAttackRay();
+	forge::test::movegen::findKingAttackers();
 	//forge::test::moveKings();
 	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();

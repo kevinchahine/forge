@@ -143,6 +143,7 @@
     <ClCompile Include="ApplePieHeuristic.cpp" />
     <ClCompile Include="ApplePieWeights.cpp" />
     <ClCompile Include="AttackChecker.cpp" />
+    <ClCompile Include="AttackerPair.cpp" />
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ChessMatch.cpp" />
@@ -175,7 +176,6 @@
     <ClCompile Include="PerformanceLogger.cpp" />
     <ClCompile Include="PerformanceTester.cpp" />
     <ClCompile Include="Piece.cpp" />
-    <ClCompile Include="Pin.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PositionTable.cpp" />
     <ClCompile Include="RandomHeuristic.cpp" />
@@ -226,6 +226,7 @@
     <ClInclude Include="ApplePieHeuristic.h" />
     <ClInclude Include="ApplePieWeights.h" />
     <ClInclude Include="AttackChecker.h" />
+    <ClInclude Include="AttackerPair.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardDefinitions.h" />

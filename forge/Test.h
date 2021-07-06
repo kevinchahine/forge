@@ -32,6 +32,8 @@ namespace forge
 {
 	namespace test
 	{
+		void initTestBoards();
+
 		void boardSquare();
 
 		namespace bitboard
@@ -131,6 +133,8 @@ namespace forge
 		namespace movegen
 		{
 			void genAttackRay();
+
+			void findKingAttackers();
 		} // namespace movegen
 
 		void moveKings();
