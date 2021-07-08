@@ -16,19 +16,19 @@ namespace forge
 	namespace test
 	{
 		// --- Global Variables ---
-		vector<Board> boards;
+		vector<Position> positions;
 
 		void initTestBoards()
 		{
 			using namespace pieces;
 
 			{
-				Board & b = boards.emplace_back();
+				Board & b = positions.emplace_back().board();
 				b.placeAllPieces();
 			}
-
-			{ 
-				Board & b = boards.emplace_back();
+			
+			{
+				Board & b = positions.emplace_back().board();
 				b.place<pieces::Rook>(BoardSquare{ 'e', '2' }, BLACK);
 				b.place<pieces::BlackPawn>(BoardSquare{ 'c', '2' });
 				b.place<pieces::WhitePawn>(BoardSquare{ 'c', '5' });
@@ -36,19 +36,19 @@ namespace forge
 				b.place<pieces::Queen>(BoardSquare{ 'e', '4' }, WHITE);
 				b.place<pieces::Knight>(BoardSquare{ 'f', '8' }, WHITE);
 			}
-
+			
 			{
 				BoardSquare s{ 'e', '4' };
-				Board & b = boards.emplace_back();
+				Board & b = positions.emplace_back().board();
 				b.place<pieces::Knight>(s, WHITE);
 				b.place<pieces::Queen>(s.right(), WHITE);
 				b.place<pieces::Bishop>(s.up(2), BLACK);
 				b.place<pieces::WhitePawn>(s.left(2));
 			}
-
+			
 			{
 				BoardSquare k{ 'e', '4' };
-				Board & b = boards.emplace_back();
+				Board & b = positions.emplace_back().board();
 				b.place<pieces::BlackKing>(k);
 				b.place<pieces::Rook>(k.down(2), WHITE);
 				b.place<pieces::Bishop>(k.downLeft(2), WHITE);
@@ -56,10 +56,10 @@ namespace forge
 				b.place<pieces::Knight>(k.knight7(), WHITE);
 				b.place<pieces::Pawn>(k.downLeft(), WHITE);
 			}
-
+			
 			{
-				Board & b = boards.emplace_back();
-
+				Board & b = positions.emplace_back().board();
+			
 				BoardSquare wk{ 'c', '3' };
 				b.place<WhiteKing>(wk);
 				//b.place<Knight>(wk.knight0(), BLACK);
@@ -71,7 +71,7 @@ namespace forge
 				b.place<Knight>(wk.knight5(), BLACK);
 				b.place<Knight>(wk.knight6(), BLACK);
 				b.place<Knight>(wk.knight7(), BLACK);
-
+			
 				BoardSquare bk{ 'f', '5' };
 				b.place<BlackKing>(bk);
 				//b.place<Knight>(bk.knight0(), WHITE);
@@ -84,69 +84,78 @@ namespace forge
 				b.place<Knight>(bk.knight6(), WHITE);
 				b.place<Knight>(bk.knight7(), WHITE);
 			}
-
+			
 			{
-				Board & b = boards.emplace_back();
-
+				Board & b = positions.emplace_back().board();
+			
 				BoardSquare wk{ 'e', '3' };
 				b.place<WhiteKing>(wk);
 				b.place<Bishop>(wk.upLeft(2), BLACK);
 				b.place<Bishop>(wk.upRight(2), WHITE);
 				b.place<Queen>(wk.downLeft(2), WHITE);
 				b.place<Queen>(wk.downRight(2), BLACK);
-
+			
 				BoardSquare bk{ 'e', '7' };
 				b.place<BlackKing>(bk);
 			}
-
+			
 			{
-				Board & b = boards.emplace_back();
-
+				Board & b = positions.emplace_back().board();
+			
 				BoardSquare wk{ 'e', '3' };
 				b.place<WhiteKing>(wk);
 				b.place<Rook>(wk.up(4), BLACK);
-
+			
 				BoardSquare bk{ 'd', '4' };
 				b.place<BlackKing>(bk);
 				b.place<Rook>(bk.right(4), WHITE);
-
-				Board & b2 = boards.emplace_back(b);
+			
+				Board & b2 = positions.emplace_back(positions.back()).board();
 				b2.place<Bishop>(wk.upRight(3), BLACK);
 				b2.place<Bishop>(bk.upRight(2), WHITE);
-
-				Board & b3 = boards.emplace_back(b2);
+						
+				Board & b3 = positions.emplace_back(positions.back()).board();
 				b3.place<Queen>(bk.upLeft(2), WHITE);
 				b3.place<Queen>(wk.downRight(2), BLACK);
 			}
-
+			
 			{
-				Board & b = boards.emplace_back();
-
+				Board & b = positions.emplace_back().board();
+			
 				BoardSquare wk{ 'f', '4' };
 				b.place<WhiteKing>(wk);
 				b.place<BlackPawn>(wk.upLeftOne());
 				b.place<BlackPawn>(wk.upRightOne());
-
+			
 				BoardSquare bk{ 'c', '5' };
 				b.place<BlackKing>(bk);
 				b.place<WhitePawn>(bk.downLeftOne());
 				b.place<WhitePawn>(bk.downRightOne());
 			}
-
+			
 			{
-				Board & b = boards.emplace_back();
-
+				Board & b = positions.emplace_back().board();
+			
 				BoardSquare wk{ 'e', '3' };
 				b.place<Queen>(wk.up(3), BLACK);
 				b.place<BlackPawn>(wk.upLeftOne());
 				b.place<WhitePawn>(wk.downLeftOne());
-
-				
+			
+			
 				BoardSquare bk{ 'c', '6' };
 				b.place<Queen>(bk.down(3), WHITE);
 				b.place<WhitePawn>(bk.downRightOne());
 				b.place<BlackPawn>(bk.upLeftOne());
-
+			}
+			
+			{
+				Board & b = positions.emplace_back().board();
+			
+				BoardSquare s{ 5, 4 };
+				b.place<pieces::Knight>(s, WHITE);
+				b.place<pieces::Queen>(s.right(), WHITE);
+				b.place<pieces::Bishop>(s.up(2), BLACK);
+				b.place<pieces::WhitePawn>(s.left(2));
 			}
 		}
 
@@ -539,6 +548,28 @@ namespace forge
 
 		namespace movegen
 		{
+			void genThreatBoard()
+			{
+				MoveGenerator2 movegen;
+
+				for (const Position & pos : positions) {
+					movegen.generate(pos);
+					
+					guten::boards::CheckerBoard img = pos.board().getImage();
+
+					// Highlight threats
+					BitBoard threats = movegen.getThreats();
+
+					for (int r = 0; r < 8; r++) {
+						for (int c = 0; c < 8; c++) {
+							if (threats[BoardSquare{ r, c }]) {
+								img.highlight(r, c);
+							}
+						}
+					}
+				}
+			}
+
 			void genAttackRay()
 			{
 				Board b;
@@ -566,17 +597,18 @@ namespace forge
 
 			void findKingAttackers()
 			{
-				for (const Board & b : boards) {
+				for (const Position & p : positions) {
 					AttackerPair pair;
 
+					const Board & b = p.board();
 					b.print();
-					
+
 					pair = MoveGenHelpers::findKingAttackers(b, b.whiteKing(), b.blacks(), b.whites());
 
 					cout << "White King: ";
 					pair.print(b);
 					cout << endl;
-					
+
 					cout << "Black King: ";
 					pair = MoveGenHelpers::findKingAttackers(b, b.blackKing(), b.whites(), b.blacks());
 					pair.print(b);
@@ -599,59 +631,54 @@ namespace forge
 
 		void legalMoveGenerator()
 		{
-			forge::Position p;
-			forge::Board & b = p.board();
+			for (const auto & p : positions) {
+				const forge::Board & b = p.board();
+				
+				b.print();
 
-			p.reset();
-			p.clear();
-
-			///b.placeAllPieces();
-			forge::BoardSquare s{ 5, 4 };
-			b.place<pieces::Knight>(s, WHITE);
-			b.place<pieces::Queen>(s.right(), WHITE);
-			b.place<pieces::Bishop>(s.up(2), BLACK);
-			b.place<pieces::WhitePawn>(s.left(2));
-			(const_cast<forge::MoveCounter &>(p.moveCounter()))++;
-
-			b.print();
-
-			forge::MoveList moves =
-				forge::MoveGenerator::generateLegalMoves(p);
-
-			cout << moves.size() << " legal moves generated" << endl;
-
-			guten::grids::GridView gridView;
-			gridView.setGridCols(8);
-
-			for (int i = 0; i < moves.size(); i++) {
-				const auto & elem = moves.at(i);
-
-				guten::core::Matrix mini = elem.position.board().getMiniBoard();
-
-				guten::core::Matrix miniText;
-				guten::Size sz = mini.size();
-				sz.height += 2;
-				miniText.resize(sz);
-				mini.copyTo(miniText, guten::Point{ 2, 0 });
-
-				{
-					stringstream ss;
-					ss << elem.move.toLAN();
-					guten::draw::putText(miniText, ss.str(), guten::Point{ 0, 0 });
+				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << "	turn" << endl;
+				
+				forge::MoveGenerator2 mg2;
+				
+				forge::MoveList moves =
+					//forge::MoveGenerator::generateLegalMoves(p);
+					mg2.generate(p);
+				
+				cout << moves.size() << " legal moves generated" << endl;
+				
+				guten::grids::GridView gridView;
+				gridView.setGridCols(8);
+				
+				for (int i = 0; i < moves.size(); i++) {
+					const auto & elem = moves.at(i);
+				
+					guten::core::Matrix mini = elem.position.board().getMiniBoard();
+				
+					guten::core::Matrix miniText;
+					guten::Size sz = mini.size();
+					sz.height += 2;
+					miniText.resize(sz);
+					mini.copyTo(miniText, guten::Point{ 2, 0 });
+				
+					{
+						stringstream ss;
+						ss << elem.move.toLAN();
+						guten::draw::putText(miniText, ss.str(), guten::Point{ 0, 0 });
+					}
+				
+					{
+						stringstream ss;
+						ss << (AttackChecker::isAttacked(elem.position.board(), elem.position.board().blackKing()) ?
+							"Illegal" : "Legal");
+						guten::draw::putText(miniText, ss.str(), guten::Point{ 1, 0 });
+					}
+				
+					gridView.push(miniText);
 				}
-
-				{
-					stringstream ss;
-					ss << (AttackChecker::isAttacked(elem.position.board(), elem.position.board().blackKing()) ?
-						"Illegal" : "Legal");
-					guten::draw::putText(miniText, ss.str(), guten::Point{ 1, 0 });
-				}
-
-				gridView.push(miniText);
+				cout << '\n';
+				
+				gridView.toMatrix().print();
 			}
-			cout << '\n';
-
-			gridView.toMatrix().print();
 		}
 
 		void isAttacked()

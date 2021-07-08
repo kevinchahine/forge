@@ -104,7 +104,7 @@ namespace forge
 		//		ray as their ray pieces. When they are, a pin is possible.
 
 		// Does extents contain any of their rays? 
-		BitBoard overlap = extents & theirRays;
+		BitBoard overlap = extents & theirs & currPositionPtr->board().directionals<DIRECTION_T>();
 
 		// Does extents contain any of our blockers?
 		BitBoard possiblePins = extents & ourBlockers;

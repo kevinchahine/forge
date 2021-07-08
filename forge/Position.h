@@ -28,15 +28,34 @@ namespace forge
 		void clear();
 
 		// ----- Moves (both push moves and captures) -----
-		template <typename PIECE_T> void move(Move move);
-		template<> void move<pieces::King>(Move move);
-		template<> void move<pieces::WhiteKing>(Move move);
-		template<> void move<pieces::BlackKing>(Move move);
-		template<> void move<pieces::Queen>(Move move);
-		template<> void move<pieces::Bishop>(Move move);
-		template<> void move<pieces::Knight>(Move move);
-		template<> void move<pieces::QBN_Piece>(Move move);
-		template<> void move<pieces::Rook>(Move move);
+		// primary specialization works for all but Kings, Rooks and Pawns
+		template <typename PIECE_T> void move(Move move) {
+#ifndef _DEBUG
+			///if (m_board.at(move.from()).isKing() == false) {
+			///	std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			///		<< ": This method only moves Kings\n";
+			///}
+#endif // _DEBUG
+
+			// --- Was this a capture? ---
+			if (m_board.isOccupied(move.to()))
+				m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
+
+			m_fiftyMoveRule.update();
+			// TODO: Castling
+
+			m_board.move<PIECE_T>(move);
+
+			m_moveCounter++;
+		}
+		///template<> void move<pieces::King>(Move move);
+		///template<> void move<pieces::WhiteKing>(Move move);
+		///template<> void move<pieces::BlackKing>(Move move);
+		///template<> void move<pieces::Queen>(Move move);
+		///template<> void move<pieces::Bishop>(Move move);
+		///template<> void move<pieces::Knight>(Move move);
+		///template<> void move<pieces::QBN_Piece>(Move move);
+		///template<> void move<pieces::Rook>(Move move);
 		// Intended to be used from class MoveGenerator to move pieces
 		// efficiently. 
 		// Automatically applies "50 move rule" and increments move counter.
@@ -47,6 +66,8 @@ namespace forge
 		template<> void move<pieces::WhitePawn>(Move move);
 		template<> void move<pieces::BlackPawn>(Move move);
 		template<> void move<pieces::Piece>(Move move);
+
+		// TODO: Add capture() and push() versions of move() that will be more efficient
 
 		Board & board() { return m_board; }
 		const Board & board() const { return m_board; }

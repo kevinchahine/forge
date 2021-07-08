@@ -23,10 +23,10 @@ namespace forge
 
 		MoveList & generate(const Position & pos);
 
+		const BitBoard & getThreats() const { return threats; }
+
 	private:
 	public:	// <-- Only for testing
-
-		void countChecks(const Board & b, bool isWhitesTurn);
 
 		void genPinMoves(const Board & b, bool isWhitesTurn);
 		
@@ -79,6 +79,9 @@ namespace forge
 		template<typename DIRECTION_T>
 		void searchAndGeneratePins();
 
+		// Generates King caputres and pushes.
+		void genKingMoves();
+
 	private:
 		// The squares that our pieces stand on
 		BitBoard ours;
@@ -120,9 +123,7 @@ namespace forge
 		BitBoard ourAbsolutePins;
 
 		const Position * currPositionPtr = nullptr;
-
-		const Board * boardPtr = nullptr;
-
+		
 		// List of legal moves
 		MoveList legalMoves;
 	};

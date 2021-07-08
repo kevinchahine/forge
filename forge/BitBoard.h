@@ -200,8 +200,6 @@ namespace forge
 	template<>
 	BitBoard BitBoard::mask<directions::LShape>(BoardSquare center)
 	{
-		//static_assert(std::is_base_of<directions::LShape, LSHAPE_T>(), "LSHAPE_T must be type forge::directions::LShape");
-
 		BitBoard bb;
 
 		if (center.isKnight0InBounds()) bb[center.knight0()] = 1;

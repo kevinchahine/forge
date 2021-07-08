@@ -36,7 +36,7 @@ namespace forge
 
 		ourBlockers = ours & b.blockers();
 		theirBlockers = theirs & b.blockers();
-		
+
 		// TODO: Don't think we need these
 		ourDiagonals = ours & b.diagonals();
 		theirDiagonals = theirs & b.diagonals();
@@ -45,7 +45,6 @@ namespace forge
 		ourLaterals = ours & b.laterals();
 		theirLaterals = theirs & b.laterals();
 
-		// TODO: Fill this in
 		threats = MoveGenHelpers::genThreats(b, theirs);
 	}
 
@@ -55,7 +54,38 @@ namespace forge
 
 		preprocess(pos);
 
-		genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn());
+		// Who if any are attacking our King?
+		AttackerPair attackers = MoveGenHelpers::findKingAttackers(pos.board(), ourKing, theirs, ours);
+
+		// How many King attackers did we find?
+		if (attackers.size() <= 2) {
+			// 2 enemies are attacking our King
+			// All we can do is:
+			//	- King pushes to safety
+			//	- King captures one attacker (assuming its not defended)
+
+			// --- King Pushes to Safety ---
+			// --- King captures one attacker ---
+			genKingMoves();
+		}
+
+		if (attackers.size() <= 1) {
+			// 1 enemey is attacking our King
+			// All we can do is:
+			//	- See attackers.size() <= 2
+			//	- Non-King blocks attacker ***
+			//	- Non-King captures attacker ***
+			// *** Non-King pieces that are pinned to King can only move between pinner and our King
+		}
+
+		if (attackers.size() == 0) {
+			// Our King is safe from attackers
+			// We can do any move:
+			//	- Move Absolutely Pinned Pieces
+			//	- Move non-Pinned pieces
+		}
+
+		genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn());	// TODO: Where should this go
 
 		return legalMoves;
 	}
@@ -71,7 +101,7 @@ namespace forge
 		if (isPinPossible<directions::Diagonal>()) {
 			// Yes, A diagonal pin is possible.
 			cout << "Diagonal pin is possible\n";
-			
+
 			// --- Break it down further into individual ray directions ---
 			searchAndGeneratePins<directions::UR>();
 			searchAndGeneratePins<directions::UL>();
@@ -81,12 +111,12 @@ namespace forge
 		else {
 			cout << "Diagonal pin NOT possible\n";
 		}
-		
+
 		// Is a pin possible in a lateral direction?
 		if (isPinPossible<directions::Lateral>()) {
 			// Yes, A pin is possible.
 			cout << "Lateral pin is possible\n";
-		
+
 			// --- Break it down further into individual ray directions ---
 			searchAndGeneratePins<directions::Up>();
 			searchAndGeneratePins<directions::Down>();
@@ -96,6 +126,89 @@ namespace forge
 		else {
 			cout << "Lateral pin NOT possible\n";
 		}
+	}
 
+	template<typename DIRECTION_T>
+	void moveKing(
+		MoveList & legals,
+		const BoardSquare & ourKing,
+		const BitBoard & threats,
+		const BitBoard & ours,
+		const Position & pos) {
+
+		if (DIRECTION_T::wouldBeInBounds(ourKing)) {
+			BoardSquare to = DIRECTION_T::move(ourKing);
+
+			// Is move safe?
+			if (threats[to] == false) {
+				// Yes it is safe.
+
+				// We can't on top of our own pieces. Is 'to' empty or their piece
+				if (ours[to] == 0) {
+					legals.emplace_back<pieces::King>(Move{ ourKing, to }, pos);
+				}
+			}
+		}
+	}
+
+	void MoveGenerator2::genKingMoves()
+	{
+		const Position & pos = *currPositionPtr;
+		const Board & board = pos.board();
+
+		// --- Up ---
+		if (!ourKing.isTopRank()) {
+			// --- Left ---
+			if (!ourKing.isLeftFile()) {
+				moveKing<directions::UL>(legalMoves, ourKing, threats, ours, pos);
+			}
+
+			// --- Middle ---
+			{
+				moveKing<directions::Up>(legalMoves, ourKing, threats, ours, pos);
+			}
+
+			// --- Right ---
+			if (!ourKing.isRightFile()) {
+				moveKing<directions::UR>(legalMoves, ourKing, threats, ours, pos);
+			}
+		}
+
+		// --- Middle ---
+		{
+			// --- Left ---
+			if (!ourKing.isLeftFile()) {
+				moveKing<directions::Left>(legalMoves, ourKing, threats, ours, pos);
+			}
+
+			// --- Middle ---
+			{
+				// King stays where it is. Nothing to do here.
+			}
+
+			// --- Right ---
+			if (!ourKing.isRightFile()) {
+				moveKing<directions::Right>(legalMoves, ourKing, threats, ours, pos);
+			}
+		}
+
+		// --- Bottom ---
+		if (!ourKing.isBotRank()) {
+
+			// --- Left ---
+			if (!ourKing.isLeftFile()) {
+				moveKing<directions::DL>(legalMoves, ourKing, threats, ours, pos);
+			}
+
+			// --- Middle ---
+			{
+				moveKing<directions::Down>(legalMoves, ourKing, threats, ours, pos);
+			}
+
+			// --- Right ---
+			if (!ourKing.isRightFile()) {
+				moveKing<directions::DR>(legalMoves, ourKing, threats, ours, pos);
+			}
+		}
 	}
 } // namespace forge

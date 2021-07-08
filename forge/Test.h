@@ -132,6 +132,8 @@ namespace forge
 
 		namespace movegen
 		{
+			void genThreatBoard();
+
 			void genAttackRay();
 
 			void findKingAttackers();

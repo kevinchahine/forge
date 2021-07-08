@@ -15,8 +15,23 @@ namespace forge
 
 	void Board::print(std::ostream & os) const
 	{
-		os << guten::color::push();
+		//os << guten::color::push();
 
+		guten::boards::CheckerBoard cb = std::move(getImage());
+		cb.print();
+
+		//os << guten::color::pop();
+	}
+
+	void Board::printMini(std::ostream & os) const
+	{
+		guten::core::Matrix miniBoard = getMiniBoard();
+
+		miniBoard.print(0, os);
+	}
+
+	guten::boards::CheckerBoard Board::getImage() const
+	{
 		guten::boards::CheckerBoard disp;
 		disp.drawBackground();
 
@@ -28,16 +43,7 @@ namespace forge
 			}
 		}
 
-		disp.print(0, os);
-
-		os << guten::color::pop();
-	}
-
-	void Board::printMini(std::ostream & os) const
-	{
-		guten::core::Matrix miniBoard = getMiniBoard();
-
-		miniBoard.print(0, os);
+		return disp;
 	}
 
 	guten::core::Matrix Board::getMiniBoard(

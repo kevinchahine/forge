@@ -7,7 +7,7 @@
 #include "Move.h"
 
 #include <Guten/Color.h>
-#include <Guten/Matrix.h>
+#include <Guten/CheckerBoard.h>
 
 #include <iostream>
 #include <vector>
@@ -35,6 +35,7 @@ namespace forge
 		void print(std::ostream & os = std::cout) const;
 		void printMini(std::ostream & os = std::cout) const;
 
+		guten::boards::CheckerBoard getImage() const;
 		guten::core::Matrix getMiniBoard(
 			const guten::color::Color & lightPiece = guten::color::white,
 			const guten::color::Color & darkPiece = guten::color::black,

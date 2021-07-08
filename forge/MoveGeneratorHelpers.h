@@ -32,6 +32,7 @@ namespace forge
 		// Calling this function should be avoided for performance if 'ourKing' stands on a safe square.
 		// This can be determined using the threat board.
 		static AttackerPair findKingAttackers(const Board & board, BoardSquare ourKing, BitBoard theirs, BitBoard ours);
+
 	}; // class MoveGenHelpers
 } // namespace forge
 

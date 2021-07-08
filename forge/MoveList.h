@@ -27,14 +27,9 @@ namespace forge
 		MoveList & operator=(const MoveList &) = default;
 		MoveList & operator=(MoveList &&) noexcept = default;
 
-		// Purpose: Pushes move to MoveList but only if move/capture was legal:
-		//	1.) Push move and Position to MoveList
-		//	2.) Check to see if move was illegal
-		//	3.) If illegal, pops off Move and Position 
-		// Warning: May reallocate underlying container causing iteraters
-		//	and pointers of MoveList to be invalid regardless of wether
-		//	move was legal or not.
-		// Accounts for promotions involving captures also
+		// Purpose: Pushes move to MoveListl
+		// In Debug mode, it also verifies that Move was legal by seeing if the King
+		// is being attacked. 
 		template<typename PIECE_T>
 		void emplace_back(Move move, const Position & currPos);
 
