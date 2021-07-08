@@ -33,7 +33,7 @@ namespace forge
 	guten::boards::CheckerBoard Board::getImage() const
 	{
 		guten::boards::CheckerBoard disp;
-		disp.drawBackground();
+		disp.draw();
 
 		for (int row = 0; row < this->rows(); row++) {
 			for (int col = 0; col < this->cols(); col++) {

@@ -15,9 +15,7 @@ namespace forge
 	void TextView::show(const Position & pos)
 	{
 		const Board & b = pos.board();
-
-		m_img.drawBackground();
-
+		
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
 				pieces::Piece p = b.at(row, col);
@@ -34,9 +32,7 @@ namespace forge
 	void TextView::show(const Position & pos, const Move & move)
 	{
 		const Board & b = pos.board();
-
-		m_img.drawBackground();
-
+		
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
 				pieces::Piece p = b.at(row, col);
@@ -54,8 +50,6 @@ namespace forge
 	void TextView::show(const Position & pos, const MoveList & validMoves)
 	{
 		const Board & b = pos.board();
-
-		m_img.drawBackground();
 
 		// Place pieces
 		for (int row = 0; row < 8; row++) {

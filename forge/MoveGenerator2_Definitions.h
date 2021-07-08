@@ -210,11 +210,11 @@ namespace forge
 		// Find the pinned and pinner pieces for the absolute pin
 		Pin pin = pinSearch<DIRECTION_T>();
 
-		cout << pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid")
-			<< ' ' << pin.pinner << (pin.pinner.isValid() ? " valid" : " invalid")
-			<< " is "
-			<< (pin.isValid() ? "" : "NOT") << " a pin in "
-			<< typeid(DIRECTION_T).name() << " direction." << endl;
+		///cout << pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid")
+		///	<< ' ' << pin.pinner << (pin.pinner.isValid() ? " valid" : " invalid")
+		///	<< " is "
+		///	<< (pin.isValid() ? "" : "NOT") << " a pin in "
+		///	<< typeid(DIRECTION_T).name() << " direction." << endl;
 
 		// If a valid absolute pin was found, generate its legal moves
 		if (pin.isValid()) { genPinMovesFor<DIRECTION_T>(pin); }

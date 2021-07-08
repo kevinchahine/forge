@@ -97,7 +97,6 @@ namespace forge
 
 				guten::boards::CheckerBoard cb;
 				cb.lightPiece = guten::color::blue;
-				cb.drawBackground();
 				cb.placePiece(piece.getCh(), guten::Point(square.row(), square.col()), true);
 
 				TextView::highlightCells(bb, guten::color::lightred, guten::color::red, cb);
@@ -137,6 +136,8 @@ namespace forge
 			void genAttackRay();
 
 			void findKingAttackers();
+
+			void genKingMoves();
 		} // namespace movegen
 
 		void moveKings();

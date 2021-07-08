@@ -65,7 +65,7 @@ namespace forge
 
 #ifdef _DEBUG
 		// 3.) --- Make sure it was a legal move ---
-		if (AttackChecker::isKingAttacked(pair.position.board(), false)) {
+		if (AttackChecker::isKingAttacked(pair.position.board(), currPos.moveCounter().isWhitesTurn())) {
 			printError(move, __FUNCTION__);
 
 			this->pop_back(); // Illegal Move
