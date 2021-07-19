@@ -3,6 +3,8 @@
 #include "KingAttackers.h"
 #include "Position.h"
 #include "MoveList.h"
+#include "Attackers.h"
+#include "Threats.h"
 #include "Pin.h"
 
 #include <iostream>

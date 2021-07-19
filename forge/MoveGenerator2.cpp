@@ -1,5 +1,4 @@
 #include "MoveGenerator2.h"
-#include "MoveGeneratorHelpers.h"
 
 using namespace std;
 
@@ -45,7 +44,7 @@ namespace forge
 		ourLaterals = ours & b.laterals();
 		theirLaterals = theirs & b.laterals();
 
-		threats = MoveGenHelpers::genThreats(b, theirs);
+		threats = Threats::genThreats(b, theirs);
 	}
 
 	MoveList & MoveGenerator2::generate(const Position & pos)
@@ -55,7 +54,7 @@ namespace forge
 		preprocess(pos);
 
 		// Who if any are attacking our King?
-		KingAttackers attackers = MoveGenHelpers::findKingAttackers(pos.board(), ourKing, theirs, ours);
+		KingAttackers attackers = KingAttackers::findKingAttackers(pos.board(), ourKing, theirs, ours);
 
 		// How many King attackers did we find?
 		if (attackers.size() <= 2) {

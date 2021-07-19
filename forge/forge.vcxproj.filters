@@ -185,9 +185,6 @@
     <ClCompile Include="MoveGenerator.cpp">
       <Filter>MoveGenerator</Filter>
     </ClCompile>
-    <ClCompile Include="MoveGeneratorHelpers.cpp">
-      <Filter>MoveGenerator</Filter>
-    </ClCompile>
     <ClCompile Include="Movers.cpp">
       <Filter>Move</Filter>
     </ClCompile>
@@ -207,6 +204,9 @@
       <Filter>MoveGenerator</Filter>
     </ClCompile>
     <ClCompile Include="Attackers.cpp">
+      <Filter>MoveGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="Threats.cpp">
       <Filter>MoveGenerator</Filter>
     </ClCompile>
   </ItemGroup>
@@ -444,9 +444,6 @@
     <ClInclude Include="MoveGeneratorInline.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
-    <ClInclude Include="MoveGeneratorHelpers.h">
-      <Filter>MoveGenerator</Filter>
-    </ClInclude>
     <ClInclude Include="Movers.h">
       <Filter>Move</Filter>
     </ClInclude>
@@ -471,9 +468,6 @@
     <ClInclude Include="MoveGenerator2_Definitions.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
-    <ClInclude Include="MoveGeneratorHelpersDefinitions.h">
-      <Filter>MoveGenerator</Filter>
-    </ClInclude>
     <ClInclude Include="KingAttacker.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
@@ -487,6 +481,15 @@
       <Filter>MoveGenerator</Filter>
     </ClInclude>
     <ClInclude Include="KingAttackersDefinitions.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="Threats.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreatsDefinitions.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackersDefinitions.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
   </ItemGroup>

@@ -168,7 +168,6 @@
     <ClCompile Include="MoveCounter.cpp" />
     <ClCompile Include="MoveGenerator.cpp" />
     <ClCompile Include="MoveGenerator2.cpp" />
-    <ClCompile Include="MoveGeneratorHelpers.cpp" />
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="MovePositionPair.cpp" />
     <ClCompile Include="Movers.cpp" />
@@ -187,6 +186,7 @@
     <ClCompile Include="StopWatch.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="TextView.cpp" />
+    <ClCompile Include="Threats.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ViewBase.cpp" />
     <ClCompile Include="WeightsArchive.cpp" />
@@ -228,6 +228,7 @@
     <ClInclude Include="ApplePieWeights.h" />
     <ClInclude Include="AttackChecker.h" />
     <ClInclude Include="Attackers.h" />
+    <ClInclude Include="AttackersDefinitions.h" />
     <ClInclude Include="KingAttackers.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Board.h" />
@@ -257,8 +258,6 @@
     <ClInclude Include="MoveGenerator.h" />
     <ClInclude Include="MoveGenerator2.h" />
     <ClInclude Include="MoveGenerator2_Definitions.h" />
-    <ClInclude Include="MoveGeneratorHelpers.h" />
-    <ClInclude Include="MoveGeneratorHelpersDefinitions.h" />
     <ClInclude Include="MoveGeneratorInline.h" />
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="MovePositionPair.h" />
@@ -282,6 +281,8 @@
     <ClInclude Include="StopWatch.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="TextView.h" />
+    <ClInclude Include="Threats.h" />
+    <ClInclude Include="ThreatsDefinitions.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ViewBase.h" />
     <ClInclude Include="Weights.hpp" />

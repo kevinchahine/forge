@@ -2,6 +2,8 @@
 
 #include "globals.h"
 
+#include "Attackers.h"
+#include "Threats.h"
 #include "AttackChecker.h"
 #include "Board.h"
 #include "Clock.h"
@@ -12,7 +14,6 @@
 #include "PerformanceLogger.h"
 #include "MoveGenerator.h"
 #include "MoveGenerator2.h"
-#include "MoveGeneratorHelpers.h"
 #include "GameState.h"
 #include "Node.h"
 

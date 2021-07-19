@@ -602,7 +602,7 @@ namespace forge
 				b.place<pieces::Queen>(BoardSquare{ 'e', '4' }, WHITE);
 				b.place<pieces::Knight>(BoardSquare{ 'f', '8' }, WHITE);
 
-				BitBoard threats = forge::MoveGenHelpers::genThreats(b, b.whites());
+				BitBoard threats = forge::Threats::genThreats(b, b.whites());
 
 				b.printMini();
 
@@ -623,7 +623,7 @@ namespace forge
 					KingAttackers pair;
 
 					const Board & b = p.board();
-					pair = MoveGenHelpers::findKingAttackers(b, b.whiteKing(), b.blacks(), b.whites());
+					pair = KingAttackers::findKingAttackers(b, b.whiteKing(), b.blacks(), b.whites());
 
 					guten::boards::CheckerBoard cb = b.getImage();
 
@@ -637,7 +637,7 @@ namespace forge
 					pair.print(b);
 					cout << endl << endl;
 
-					pair = MoveGenHelpers::findKingAttackers(b, b.blackKing(), b.whites(), b.blacks());
+					pair = KingAttackers::findKingAttackers(b, b.blackKing(), b.whites(), b.blacks());
 					cb = b.getImage();
 					if (pair.size() >= 1)
 						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
