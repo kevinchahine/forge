@@ -5,7 +5,11 @@
 namespace forge
 {
 	template<typename RAY_DIRECTION_T>
-	BoardSquare Attackers::findAttackingRay(BoardSquare attackedSquare, const Board & board, BitBoard theirs, BitBoard ours)
+	BoardSquare Attackers::findAttackingRay(
+		BoardSquare attackedSquare, 
+		const Board & board, 
+		BitBoard theirs, 
+		BitBoard ours)
 	{
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"RAY_DIRECTION_T must be a ray direction");
@@ -26,7 +30,7 @@ namespace forge
 			while (RAY_DIRECTION_T::wouldBeInBounds(bs)) {
 				bs = RAY_DIRECTION_T::move(bs);
 
-				// What is on this square
+				// What is on this square?
 				if (possibleAttackers[bs]) {
 					// It is one of there attackers which can attack in our direction.
 					attacker = bs;
@@ -77,7 +81,7 @@ namespace forge
 	}
 
 	template<typename RAY_DIRECTION_T>
-	BitBoard Attackers::genAttackRay(BoardSquare attacker, BitBoard obstacles)
+	BitBoard Attackers::genAttackLineSegment(BoardSquare attacker, BitBoard obstacles)
 	{
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"RAY_DIRECTION_T must be a ray direction");

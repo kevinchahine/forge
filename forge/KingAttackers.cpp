@@ -126,7 +126,7 @@ namespace forge
 
 			// Is our King attacked by a Knight? (Only 1 Knight can attack King at a time)
 			if (theirKnights.any()) {
-				// Yes. A Knight is attacking our King.
+				// Yes. A Knight is attacking our King. Lets find this Knight?
 				// TODO: Optimize: Only one Knight can attack a King at a time. Once 1 is found
 				//	we can skip the rest.
 				pushIfKnightIsAttackingKing<directions::Knight0>(ourKing, theirKnights, pair, isKnightAttack);
@@ -148,10 +148,10 @@ namespace forge
 			// Is our King attacked by some diagonal piece? (Only 1 Diagonal piece can attack at a time)
 			if (theirDiagonals.any()) {
 				// A Diagonal attack is possible. Lets look in more detail.
-				pushIfRayIsAttackingKing<directions::UR>(board, ourKing, ours, theirDiagonals, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::UL>(board, ourKing, ours, theirDiagonals, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::DR>(board, ourKing, ours, theirDiagonals, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::DL>(board, ourKing, ours, theirDiagonals, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::UR>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::UL>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::DR>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::DL>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
 			}
 		} // end Diagonals
 
@@ -169,10 +169,10 @@ namespace forge
 			if (theirLaterals.any()) {
 				// A Lateral attack is possible. Lets look in more detail.
 
-				pushIfRayIsAttackingKing<directions::Up>(board, ourKing, ours, theirLaterals, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::Down>(board, ourKing, ours, theirLaterals, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::Left>(board, ourKing, ours, theirLaterals, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::Right>(board, ourKing, ours, theirLaterals, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::Up>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::Down>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::Left>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::Right>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
 			}
 		} // end Laterals
 

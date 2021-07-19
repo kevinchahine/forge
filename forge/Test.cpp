@@ -619,7 +619,8 @@ namespace forge
 
 			void findKingAttackers()
 			{
-				for (const Position & p : positions) {
+				const Position & p = positions[1];	// remove this when uncommenting below line
+				/*for (const Position & p : positions)*/ {
 					KingAttackers pair;
 
 					const Board & b = p.board();

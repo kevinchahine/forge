@@ -18,10 +18,10 @@ namespace forge
 	{
 		BitBoard threats;
 
-		threats |= Attackers::genAttackRay<directions::Up>(attacker, obstacles);
-		threats |= Attackers::genAttackRay<directions::Down>(attacker, obstacles);
-		threats |= Attackers::genAttackRay<directions::Left>(attacker, obstacles);
-		threats |= Attackers::genAttackRay<directions::Right>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::Up>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::Down>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::Left>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::Right>(attacker, obstacles);
 
 		return threats;
 	}
@@ -30,10 +30,10 @@ namespace forge
 	{
 		BitBoard threats;
 
-		threats |= Attackers::genAttackRay<directions::UL>(attacker, obstacles);
-		threats |= Attackers::genAttackRay<directions::UR>(attacker, obstacles);
-		threats |= Attackers::genAttackRay<directions::DR>(attacker, obstacles);
-		threats |= Attackers::genAttackRay<directions::DL>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::UL>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::UR>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::DR>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::DL>(attacker, obstacles);
 
 		return threats;
 	}

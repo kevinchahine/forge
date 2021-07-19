@@ -22,7 +22,7 @@ namespace forge
 		// This method treats both pieces of colors as obstacles. 
 		// This way an attacker can "attack" its opponents as well as its own pieces.
 		template<typename RAY_DIRECTION_T> 
-		static BitBoard genAttackRay(BoardSquare attacker, BitBoard obstacles);
+		static BitBoard genAttackLineSegment(BoardSquare attacker, BitBoard obstacles);
 	};
 } // namespace forge
 
