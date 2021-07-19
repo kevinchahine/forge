@@ -10,6 +10,7 @@ namespace forge
 		const Board & b = currPositionPtr->board();
 		const pieces::Piece piece = b.at(pin.pinned);
 
+		cout << piece << " is pinned. " << piece.val() << "\n";
 		// 0.) --- Make sure direction is a Ray
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"RAY_DIRECTION_T must be a ray direction");
@@ -211,11 +212,11 @@ namespace forge
 		// Find the pinned and pinner pieces for the absolute pin
 		Pin pin = pinSearch<DIRECTION_T>();
 
-		///cout << pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid")
-		///	<< ' ' << pin.pinner << (pin.pinner.isValid() ? " valid" : " invalid")
-		///	<< " is "
-		///	<< (pin.isValid() ? "" : "NOT") << " a pin in "
-		///	<< typeid(DIRECTION_T).name() << " direction." << endl;
+		cout << pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid")
+			<< ' ' << pin.pinner << (pin.pinner.isValid() ? " valid" : " invalid")
+			<< " is "
+			<< (pin.isValid() ? "" : "NOT") << " a pin in "
+			<< typeid(DIRECTION_T).name() << " direction." << endl;
 
 		// If a valid absolute pin was found, generate its legal moves
 		if (pin.isValid()) { genPinMovesFor<DIRECTION_T>(pin); }

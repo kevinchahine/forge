@@ -33,6 +33,7 @@ int main(int argc, char ** argv)
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
+	//forge::test::piece::all();
 	//forge::test::direction::pointingTo();
 	//forge::test::keyboardController();
 	//forge::test::clock();
@@ -51,9 +52,9 @@ int main(int argc, char ** argv)
 	//forge::test::movegen::genThreatBoard();
 	//forge::test::movegen::genAttackRay();
 	//forge::test::movegen::findKingAttackers();
-	forge::test::movegen::genKingMoves();
+	//forge::test::movegen::genKingMoves();
 	//forge::test::moveKings();
-	//forge::test::legalMoveGenerator();
+	forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();

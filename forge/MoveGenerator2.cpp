@@ -78,7 +78,7 @@ namespace forge
 			//	- Non-King blocks attacker ***
 			//	- Non-King captures attacker ***
 			// *** Non-King pieces that are pinned to King can only move between pinner and our King
-			genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn());	// TODO: Where should this go
+			genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn());
 
 			//genBlockAndCaptureMoves(attackers[0]);
 		}

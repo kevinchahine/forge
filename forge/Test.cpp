@@ -157,6 +157,42 @@ namespace forge
 				b.place<pieces::Bishop>(s.up(2), BLACK);
 				b.place<pieces::WhitePawn>(s.left(2));
 			}
+
+			{ // Pins
+				Position & p = positions.emplace_back();
+				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
+				Board & b = p.board();
+
+				BoardSquare bk{ 'e', '8' };
+				b.place<BlackKing>(bk);
+				b.place<Rook>(bk.down(2), BLACK);
+				b.place<Queen>(bk.down(5), WHITE);
+				b.place<WhiteKing>(BoardSquare{ 'c', '1' });
+			} 
+			
+			{ // Pins
+				Position & p = positions.emplace_back();
+				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
+				Board & b = p.board();
+
+				BoardSquare bk{ 'e', '8' };
+				b.place<BlackKing>(bk);
+				b.place<Knight>(bk.down(2), BLACK);
+				b.place<Queen>(bk.down(5), WHITE);
+				b.place<WhiteKing>(BoardSquare{ 'c', '1' });
+			}
+
+			{ // Pins
+				Position & p = positions.emplace_back();
+				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
+				Board & b = p.board();
+			
+				BoardSquare bk{ 'a', '4' };
+				b.place<BlackKing>(bk);
+				b.place<BlackPawn>(bk.right(3));
+				b.place<Queen>(bk.right(7), WHITE);
+				b.place<WhiteKing>(BoardSquare{ 'd', '1' });
+			}
 		}
 
 		void boardSquare()
@@ -231,6 +267,27 @@ namespace forge
 				}
 			}
 		} // namespace bitboard
+
+		namespace piece
+		{
+			void all()
+			{
+				cout
+					<< forge::pieces::empty			<< ' ' 
+					<< forge::pieces::whiteKing		<< ' ' 
+					<< forge::pieces::whiteQueen	<< ' ' 
+					<< forge::pieces::whiteBishop	<< ' ' 
+					<< forge::pieces::whiteKnight	<< ' ' 
+					<< forge::pieces::whiteRook		<< ' ' 
+					<< forge::pieces::whitePawn		<< ' ' 
+					<< forge::pieces::blackKing		<< ' ' 
+					<< forge::pieces::blackQueen	<< ' ' 
+					<< forge::pieces::blackBishop	<< ' ' 
+					<< forge::pieces::blackKnight	<< ' ' 
+					<< forge::pieces::blackRook		<< ' ' 
+					<< forge::pieces::blackPawn		<< ' ' << '\n';
+			}
+		} // namespace pieces
 
 		namespace direction
 		{
@@ -690,17 +747,21 @@ namespace forge
 		{
 			for (const auto & p : positions) {
 				const forge::Board & b = p.board();
-
-				b.print();
-
-				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << "	turn" << endl;
+				b.printMini();
 
 				forge::MoveGenerator2 mg2;
-
 				forge::MoveList moves =
 					//forge::MoveGenerator::generateLegalMoves(p);
 					mg2.generate(p);
 
+				guten::boards::CheckerBoard cb = b.getImage();
+				for (const auto & legal : moves) {
+					BoardSquare dst = legal.move.to();
+					cb.highlight(dst.row(), dst.col());
+				}
+				cb.print();
+
+				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << "	turn" << endl;
 				cout << moves.size() << " legal moves generated" << endl;
 
 				guten::grids::GridView gridView;
@@ -735,6 +796,9 @@ namespace forge
 				cout << '\n';
 
 				gridView.toMatrix().print();
+				auto flags = cout.flags();
+				cout << setfill('=') << setw(40) << '\0' << endl;
+				cout.flags(flags);
 			}
 		}
 
@@ -1124,3 +1188,4 @@ namespace forge
 		} // namespace ai
 	} // namespace test
 } // namespace forge
+

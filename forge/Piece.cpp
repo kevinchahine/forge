@@ -280,23 +280,23 @@ namespace forge
 					captureMask = BlackPawn::captureMask(square);
 				}
 			}
-			if (isQueen()) {
+			else if (isQueen()) {
 				pushMask = Queen::pushMask(square);
 				captureMask = Queen::captureMask(square);
 			}
-			if (isBishop()) {
+			else if (isBishop()) {
 				pushMask = Bishop::pushMask(square);
 				captureMask = Bishop::captureMask(square);
 			}
-			if (isKnight()) {
+			else if (isKnight()) {
 				pushMask = Knight::pushMask(square);
 				captureMask = Knight::captureMask(square);
 			}
-			if (isRook()) {
+			else if (isRook()) {
 				pushMask = Rook::pushMask(square);
 				captureMask = Rook::captureMask(square);
 			}
-			if (isKing()) {
+			else if (isKing()) {
 				pushMask = King::pushMask(square);
 				captureMask = King::captureMask(square);
 			}

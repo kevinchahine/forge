@@ -74,6 +74,11 @@ namespace forge
 
 		} // namespace bitboard
 
+		namespace piece
+		{
+			void all();
+		} // namespace pieces
+
 		namespace direction
 		{
 			void pointingTo();
