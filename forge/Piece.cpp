@@ -1,5 +1,7 @@
 #include "Piece.h"
 
+#include <sstream>
+
 using namespace std;
 
 namespace forge
@@ -265,5 +267,47 @@ namespace forge
 #endif // _DEBUG
 		}
 
+		void Piece::masks(BoardSquare square, BitBoard & pushMask, BitBoard & captureMask) const
+		{
+			// Pawn is first because it is most common piece
+			if (isPawn()) {
+				if (isWhite()) {
+					pushMask = WhitePawn::pushMask(square);
+					captureMask = WhitePawn::captureMask(square);
+				}
+				else {
+					pushMask = BlackPawn::pushMask(square);
+					captureMask = BlackPawn::captureMask(square);
+				}
+			}
+			if (isQueen()) {
+				pushMask = Queen::pushMask(square);
+				captureMask = Queen::captureMask(square);
+			}
+			if (isBishop()) {
+				pushMask = Bishop::pushMask(square);
+				captureMask = Bishop::captureMask(square);
+			}
+			if (isKnight()) {
+				pushMask = Knight::pushMask(square);
+				captureMask = Knight::captureMask(square);
+			}
+			if (isRook()) {
+				pushMask = Rook::pushMask(square);
+				captureMask = Rook::captureMask(square);
+			}
+			if (isKing()) {
+				pushMask = King::pushMask(square);
+				captureMask = King::captureMask(square);
+			}
+			else {
+#ifdef _DEBUG
+				stringstream ss;
+				ss << "Error: " << __FILE__ << " line " << __LINE__
+					<< " Piece type could not be identified. Square might be empty.\n";
+				throw std::exception(ss.str().c_str());
+#endif // _DEBUG
+			}
+		}
 	} // namespace pieces
 } // namespace forge

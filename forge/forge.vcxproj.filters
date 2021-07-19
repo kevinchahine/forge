@@ -197,13 +197,16 @@
     <ClCompile Include="Direction.cpp">
       <Filter>Directions</Filter>
     </ClCompile>
-    <ClCompile Include="aaremovethis.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MoveGenerator2.cpp">
       <Filter>MoveGenerator</Filter>
     </ClCompile>
-    <ClCompile Include="AttackerPair.cpp">
+    <ClCompile Include="KingAttacker.cpp">
+      <Filter>MoveGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="KingAttackers.cpp">
+      <Filter>MoveGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="Attackers.cpp">
       <Filter>MoveGenerator</Filter>
     </ClCompile>
   </ItemGroup>
@@ -471,7 +474,19 @@
     <ClInclude Include="MoveGeneratorHelpersDefinitions.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
-    <ClInclude Include="AttackerPair.h">
+    <ClInclude Include="KingAttacker.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="KingAttackers.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="Attackers.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="PinDefinitions.h">
+      <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="KingAttackersDefinitions.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
   </ItemGroup>

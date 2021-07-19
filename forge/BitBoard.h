@@ -106,8 +106,15 @@ namespace forge
 
 		// Generates a BitBoard with 8 1s surrounding 'center'.
 		// The 1s represent the squares a knight can move to from 'center'.
-		template<>
-		static BitBoard mask<directions::LShape>(BoardSquare center);
+		template<> static BitBoard mask<directions::LShape>(BoardSquare center);
+		template<> static BitBoard mask<directions::Knight0>(BoardSquare center);
+		template<> static BitBoard mask<directions::Knight1>(BoardSquare center);
+		template<> static BitBoard mask<directions::Knight2>(BoardSquare center);
+		template<> static BitBoard mask<directions::Knight3>(BoardSquare center);
+		template<> static BitBoard mask<directions::Knight4>(BoardSquare center);
+		template<> static BitBoard mask<directions::Knight5>(BoardSquare center);
+		template<> static BitBoard mask<directions::Knight6>(BoardSquare center);
+		template<> static BitBoard mask<directions::Knight7>(BoardSquare center);
 
 		// Generates a BitBoard with 1s in orientation of 'LINE_T'.
 		// 'LINE_T' can be any type derived from forge::direction::Line.
@@ -115,38 +122,24 @@ namespace forge
 		// The 1s represet the squares a Rook, Bishop or Queen can move to from 'center'.
 
 		// --- Line Masks (As in not Rays) ---
-		template<>
-		static BitBoard mask<directions::Lateral>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::Diagonal>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::Horizontal>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::Vertical>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::MainDiagonal>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::OffDiagonal>(BoardSquare center);
+		template<> static BitBoard mask<directions::Lateral>(BoardSquare center);
+		template<> static BitBoard mask<directions::Diagonal>(BoardSquare center);
+		template<> static BitBoard mask<directions::Horizontal>(BoardSquare center);
+		template<> static BitBoard mask<directions::Vertical>(BoardSquare center);
+		template<> static BitBoard mask<directions::MainDiagonal>(BoardSquare center);
+		template<> static BitBoard mask<directions::OffDiagonal>(BoardSquare center);
 
 		// --- Lateral Ray Masks (As in not Lines) ---
-		template<>
-		static BitBoard mask<directions::Up>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::Down>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::Left>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::Right>(BoardSquare center);
+		template<> static BitBoard mask<directions::Up>(BoardSquare center);
+		template<> static BitBoard mask<directions::Down>(BoardSquare center);
+		template<> static BitBoard mask<directions::Left>(BoardSquare center);
+		template<> static BitBoard mask<directions::Right>(BoardSquare center);
 
 		// --- Diagonal Ray Masks (As in not Lines) ---
-		template<>
-		static BitBoard mask<directions::UL>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::UR>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::DL>(BoardSquare center);
-		template<>
-		static BitBoard mask<directions::DR>(BoardSquare center);
+		template<> static BitBoard mask<directions::UL>(BoardSquare center);
+		template<> static BitBoard mask<directions::UR>(BoardSquare center);
+		template<> static BitBoard mask<directions::DL>(BoardSquare center);
+		template<> static BitBoard mask<directions::DR>(BoardSquare center);
 
 		friend std::ostream & operator<<(std::ostream & os, const BitBoard & bb);
 
@@ -211,6 +204,86 @@ namespace forge
 		if (center.isKnight6InBounds()) bb[center.knight6()] = 1;
 		if (center.isKnight7InBounds()) bb[center.knight7()] = 1;
 
+		return bb;
+	}
+
+	template<>
+	inline BitBoard BitBoard::mask<directions::Knight0>(BoardSquare center)
+	{
+		BitBoard bb;
+		
+		if (center.isKnight0InBounds()) bb[center.knight0()] = 1; 
+		
+		return bb;
+	}
+	
+	template<>
+	inline BitBoard BitBoard::mask<directions::Knight1>(BoardSquare center)
+	{
+		BitBoard bb;
+		
+		if (center.isKnight1InBounds()) bb[center.knight0()] = 1; 
+		
+		return bb;
+	}
+	
+	template<>
+	inline BitBoard BitBoard::mask<directions::Knight2>(BoardSquare center)
+	{
+		BitBoard bb;
+		
+		if (center.isKnight2InBounds()) bb[center.knight0()] = 1; 
+		
+		return bb;
+	}
+	
+	template<>
+	inline BitBoard BitBoard::mask<directions::Knight3>(BoardSquare center)
+	{
+		BitBoard bb;
+		
+		if (center.isKnight3InBounds()) bb[center.knight0()] = 1; 
+		
+		return bb;
+	}
+	
+	template<>
+	inline BitBoard BitBoard::mask<directions::Knight4>(BoardSquare center)
+	{
+		BitBoard bb;
+		
+		if (center.isKnight4InBounds()) bb[center.knight0()] = 1; 
+		
+		return bb;
+	}
+	
+	template<>
+	inline BitBoard BitBoard::mask<directions::Knight5>(BoardSquare center)
+	{
+		BitBoard bb;
+		
+		if (center.isKnight5InBounds()) bb[center.knight0()] = 1; 
+		
+		return bb;
+	}
+	
+	template<>
+	inline BitBoard BitBoard::mask<directions::Knight6>(BoardSquare center)
+	{
+		BitBoard bb;
+		
+		if (center.isKnight6InBounds()) bb[center.knight0()] = 1; 
+		
+		return bb;
+	}
+	
+	template<>
+	inline BitBoard BitBoard::mask<directions::Knight7>(BoardSquare center)
+	{
+		BitBoard bb;
+		
+		if (center.isKnight7InBounds()) bb[center.knight0()] = 1; 
+		
 		return bb;
 	}
 

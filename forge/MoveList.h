@@ -27,7 +27,7 @@ namespace forge
 		MoveList & operator=(const MoveList &) = default;
 		MoveList & operator=(MoveList &&) noexcept = default;
 
-		// Purpose: Pushes move to MoveListl
+		// Purpose: Pushes move to MoveList
 		// In Debug mode, it also verifies that Move was legal by seeing if the King
 		// is being attacked. 
 		template<typename PIECE_T>

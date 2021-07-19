@@ -26,9 +26,10 @@ namespace forge
 		// 3.) --- Calculate Push and Capture Masks ---
 		// Squares pinned piece can push to (same for non-Pawns)
 		// Squares pinned piece can capture on (same for non-Pawns)
-		BitBoard pushMask = piece.pushMask(pin.pinned);			// Squares pinned piece can push to 
-		BitBoard captureMask = piece.captureMask(pin.pinned);	// Squares pinned piece can capture on
-		
+		BitBoard pushMask;			// Squares pinned piece can push to 
+		BitBoard captureMask;		// Squares pinned piece can capture on
+		piece.masks(pin.pinned, pushMask, captureMask);
+
 		// 4.) --- Overlap masks with battleGround and their pieces ---
 		pushMask &= battleGround & (~theirs);		// Should contain 1s where pinned can push to between King and pinner
 		captureMask &= battleGround & (theirs);		// Should contain a 1 on pinner or all zeros

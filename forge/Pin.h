@@ -1,15 +1,19 @@
 #pragma once
 
 #include "BoardSquare.h"
+#include "Direction.h"	
 
 namespace forge
 {
+	// --- Forward Declarations ---
+	class MoveGenerator2;
+
 	// A class that represents a Pin by storing the coordinates of 
 	// both the pinned piece and the pinning (or pinner) piece.
 	// Object is initialized as an invalid Pin
 	class Pin
 	{
-	public:
+	public: // ------------------------ METHODS -------------------------------
 
 		// Identifies if this represents a valid pin.
 		// Meaning:
@@ -19,8 +23,10 @@ namespace forge
 			return pinned.isValid() && pinner.isValid() && (pinned != pinner);
 		}
 
-	public:
+	public: // ------------------------ FIELDS --------------------------------
 		BoardSquare pinned;
 		BoardSquare pinner;
 	};
 } // namespace forge
+
+#include "PinDefinitions.h"

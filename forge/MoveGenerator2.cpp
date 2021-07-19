@@ -55,7 +55,7 @@ namespace forge
 		preprocess(pos);
 
 		// Who if any are attacking our King?
-		AttackerPair attackers = MoveGenHelpers::findKingAttackers(pos.board(), ourKing, theirs, ours);
+		KingAttackers attackers = MoveGenHelpers::findKingAttackers(pos.board(), ourKing, theirs, ours);
 
 		// How many King attackers did we find?
 		if (attackers.size() <= 2) {
@@ -76,6 +76,9 @@ namespace forge
 			//	- Non-King blocks attacker ***
 			//	- Non-King captures attacker ***
 			// *** Non-King pieces that are pinned to King can only move between pinner and our King
+			genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn());	// TODO: Where should this go
+
+			//genBlockAndCaptureMoves(attackers[0]);
 		}
 
 		if (attackers.size() == 0) {
@@ -85,7 +88,6 @@ namespace forge
 			//	- Move non-Pinned pieces
 		}
 
-		genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn());	// TODO: Where should this go
 
 		return legalMoves;
 	}
@@ -208,6 +210,68 @@ namespace forge
 			// --- Right ---
 			if (!ourKing.isRightFile()) {
 				moveKing<directions::DR>(legalMoves, ourKing, threats, ours, pos);
+			}
+		}
+	}
+
+	void MoveGenerator2::genBlockAndCaptureMoves(const KingAttacker & attacker)
+	{
+		const Board & board = currPositionPtr->board();
+		pieces::Piece attackingPiece = board.at(attacker.square);
+
+		BitBoard pushMask;		// Where the attacker can push to (assuming no obstacles)
+		BitBoard captureMask;	// Where the attacker can capture (assuming each square can be captured)
+
+		// Generate push and capture masks that tell us where attacker can push and capture to
+		attackingPiece.masks(attacker.square, pushMask, captureMask);
+
+		// --- Can we block/capture the attacker? ---
+
+		if (attackingPiece.isRay()) {
+			// Yes. Because the attacker is not a Knight nor a Pawn, it can be blocked.
+			
+			const directions::Direction & dir = attacker.dir;
+
+			BoardSquare it = ourKing;
+			while (dir.wouldBeInBounds(it)) {
+				it = dir.move(it);	// Incremented first to skip kings coordinate
+
+				// --- Find one of our pieces that can block/capture the attacker ---
+
+				// Find a piece that can move to this square and block the attacker.
+			
+				// --- Our Laterals ---
+				///findAndMoveBlockers<directions::Up>(it);
+				///findAndMoveBlockers<directions::Down>(it);
+				///findAndMoveBlockers<directions::Left>(it);
+				///findAndMoveBlockers<directions::Right>(it);
+
+				// --- Our Diagonals ---
+				///findAndMoveBlockers<directions::UL>(it);
+				///findAndMoveBlockers<directions::UR>(it);
+				///findAndMoveBlockers<directions::DL>(it);
+				///findAndMoveBlockers<directions::DR>(it);
+
+				// --- Our Knights ---
+				
+
+				// --- Our Pawns ---
+				// --- Our Kings (Can't block attacks) ---
+				// Excluded because King can't block himself. Nothing to do here
+			}
+		}
+
+		// Can piece can be captured? Lets see if we have to ability to 
+
+		// --- Can we capture the attacker? ---
+		if (board.isKnight(attacker.square)) {
+			
+		}
+
+		if (board.isPawn(attacker.square)) {
+			if (board.isWhite(attacker.square)) {
+			}
+			else {
 			}
 		}
 	}

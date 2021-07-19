@@ -232,6 +232,32 @@ namespace forge
 			}
 		} // namespace bitboard
 
+		namespace direction
+		{
+			template <typename DIRECTION_T>
+			void showDir(BoardSquare from, BoardSquare to)
+			{
+				cout << __FUNCTION__ << " is no longer implemented\n";
+				///cout << from << ' ' << DIRECTION_T::str() << ' ' << to << ' '
+				///	<< (directions::isPointingTo<DIRECTION_T>(from, to) ? "true" : "false") << endl;
+			}
+
+			void pointingTo()
+			{
+				BoardSquare from{ 5, 3 };
+				BoardSquare to{ 2, 3 };
+
+				showDir<directions::Up>(from, to);
+				showDir<directions::Down>(from, to);
+				showDir<directions::Left>(from, to);
+				showDir<directions::Right>(from, to);
+				showDir<directions::UR>(from, to);
+				showDir<directions::UL>(from, to);
+				showDir<directions::DL>(from, to);
+				showDir<directions::DR>(from, to);
+			}
+		}
+
 		void keyboardController()
 		{
 			ChessMatch match;
@@ -594,7 +620,7 @@ namespace forge
 			void findKingAttackers()
 			{
 				for (const Position & p : positions) {
-					AttackerPair pair;
+					KingAttackers pair;
 
 					const Board & b = p.board();
 					pair = MoveGenHelpers::findKingAttackers(b, b.whiteKing(), b.blacks(), b.whites());
@@ -602,25 +628,25 @@ namespace forge
 					guten::boards::CheckerBoard cb = b.getImage();
 
 					if (pair.size() >= 1)
-						cb.highlight(pair.attacker0().row(), pair.attacker0().col());
+						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
 					if (pair.size() >= 2)
-						cb.highlight(pair.attacker1().row(), pair.attacker1().col());
+						cb.highlight(pair.attacker1().square.row(), pair.attacker1().square.col());
 
 					cb.print();
-					
 					cout << "White King: ";
 					pair.print(b);
-					cout << endl;
-					
-					cout << "Black King: ";
+					cout << endl << endl;
+
 					pair = MoveGenHelpers::findKingAttackers(b, b.blackKing(), b.whites(), b.blacks());
 					cb = b.getImage();
 					if (pair.size() >= 1)
-						cb.highlight(pair.attacker0().row(), pair.attacker0().col());
+						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
 					if (pair.size() >= 2)
-						cb.highlight(pair.attacker1().row(), pair.attacker1().col());
-					pair.print(b);
+						cb.highlight(pair.attacker1().square.row(), pair.attacker1().square.col());
 
+					cb.print();
+					cout << "Black King: ";
+					pair.print(b);
 					cout << endl << endl;
 				}
 			}
@@ -630,7 +656,7 @@ namespace forge
 				MoveGenerator2 gen;
 
 				for (const auto & pos : positions) {
-					cout << endl << "=== It is " 
+					cout << endl << "=== It is "
 						<< (pos.moveCounter().isWhitesTurn() ? "whites" : "blacks") << " turn ===\n";
 
 					MoveList legals = gen.generate(pos);

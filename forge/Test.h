@@ -73,6 +73,11 @@ namespace forge
 
 		} // namespace bitboard
 
+		namespace direction
+		{
+			void pointingTo();
+		}
+
 		void keyboardController();
 
 		void clock();

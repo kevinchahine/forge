@@ -24,18 +24,18 @@ namespace forge
 
 			static const piece_t EMPTY = 0b0000;
 
-			static const piece_t WHITE_KING = 0b0001;
-			static const piece_t BLACK_KING = 0b1001;
-			static const piece_t WHITE_QUEEN = 0b0010;
-			static const piece_t BLACK_QUEEN = 0b1010;
+			static const piece_t WHITE_KING   = 0b0001;
+			static const piece_t BLACK_KING   = 0b1001;
+			static const piece_t WHITE_QUEEN  = 0b0010;
+			static const piece_t BLACK_QUEEN  = 0b1010;
 			static const piece_t WHITE_BISHOP = 0b0011;
 			static const piece_t BLACK_BISHOP = 0b1011;
 			static const piece_t WHITE_KNIGHT = 0b0100;
 			static const piece_t BLACK_KNIGHT = 0b1100;
-			static const piece_t WHITE_ROOK = 0b0101;
-			static const piece_t BLACK_ROOK = 0b1101;
-			static const piece_t WHITE_PAWN = 0b0110;
-			static const piece_t BLACK_PAWN = 0b1110;
+			static const piece_t WHITE_ROOK   = 0b0101;
+			static const piece_t BLACK_ROOK   = 0b1101;
+			static const piece_t WHITE_PAWN   = 0b0110;
+			static const piece_t BLACK_PAWN   = 0b1110;
 
 			static const piece_t KING = WHITE_KING;
 			static const piece_t QUEEN = WHITE_QUEEN;
@@ -96,7 +96,7 @@ namespace forge
 			bool isBishop() const { return (m_val == WHITE_BISHOP) || (m_val == BLACK_BISHOP); }
 			bool isKnight() const { return (m_val == WHITE_KNIGHT) || (m_val == BLACK_KNIGHT); }
 			bool isPawn() const { return (m_val == WHITE_PAWN) || (m_val == BLACK_PAWN); }
-			//bool isRay() const { return ... }
+			bool isRay() const { auto val = m_val & std::bitset<8>(0b0111); return (val == QUEEN && val == BISHOP && val == ROOK); }
 
 			// Flips color of piece:
 			// black -> white
@@ -108,6 +108,8 @@ namespace forge
 			BitBoard pushMask(BoardSquare square) const;
 
 			BitBoard captureMask(BoardSquare square) const;
+
+			void masks(BoardSquare square, BitBoard & pushMask, BitBoard & captureMask) const;
 
 		protected:
 			std::bitset<8> m_val = 0;

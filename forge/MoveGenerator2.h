@@ -1,5 +1,6 @@
 #pragma once
 
+#include "KingAttackers.h"
 #include "Position.h"
 #include "MoveList.h"
 #include "Pin.h"
@@ -81,6 +82,29 @@ namespace forge
 
 		// Generates King caputres and pushes.
 		void genKingMoves();
+
+		template <typename RAY_DIRECTION_T>
+		inline void findAndMoveBlockers(const BoardSquare & blockableSquare)
+		{
+			// Find a piece that can move to this square and block the attacker.
+			///BoardSquare block = MoveGenHelpers::findAttackingRay<RAY_DIRECTION_T>(
+			///	blockableSquare,
+			///	currPositionPtr->board(), 
+			///	ours,
+			///	theirs);
+			///
+			///// Was a blocker piece found? Make sure it isn't occupied in a pin.
+			///if (block.isValid() && !ourAbsolutePins[block]) {
+			///	// Yes, an unpinned piece was found to block the attacker.
+			///	legalMoves.emplace_back<pieces::Piece>(Move{ block, blockableSquare }, *currPositionPtr);
+			///}
+		}
+
+		// Generates moves that block attackers from attacking the King
+		// and moves that capture pieces that attack the King.
+		// Should not be called with searchAndGeneratePins() otherwise some
+		// moves will be generated twice.
+		void genBlockAndCaptureMoves(const KingAttacker & attacker);
 
 	private:
 		// The squares that our pieces stand on

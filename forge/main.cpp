@@ -7,13 +7,14 @@ Designed to use a variety of search algorithms including:
 	- monte carlo tree search (mcts)
 
 Designed to use a variety of evaluation functions including:
-	- traditional chess engine evaluation functions
+	- traditional chess engine evaluation functions using:
+		- Linear combinations
+		- Neural Networks
 	- deep neural network (DNN)
 
 Designed to be compatible with a variety of displays including:
 	- Universal Chess Interface (UCI) GUIs
 	- Custom command line GUI for systems that don't support graphical output.
-
 */
 
 #include "Test.h"	// Contains all necessary includes
@@ -32,6 +33,7 @@ int main(int argc, char ** argv)
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
+	//forge::test::direction::pointingTo();
 	//forge::test::keyboardController();
 	//forge::test::clock();
 	//forge::test::stopWatch();
@@ -48,8 +50,8 @@ int main(int argc, char ** argv)
 	//forge::test::pins::absolutePins();		// <--- Do this next
 	//forge::test::movegen::genThreatBoard();
 	//forge::test::movegen::genAttackRay();
-	//forge::test::movegen::findKingAttackers();
-	forge::test::movegen::genKingMoves();
+	forge::test::movegen::findKingAttackers();
+	//forge::test::movegen::genKingMoves();
 	//forge::test::moveKings();
 	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();

@@ -1,5 +1,7 @@
 #include "MoveGeneratorHelpers.h"
 
+#include "Attackers.h"
+
 using namespace std;
 
 namespace forge
@@ -48,13 +50,82 @@ namespace forge
 		return threats;
 	}
 
-	AttackerPair MoveGenHelpers::findKingAttackers(
+	// Determines if 'ourKing' is being attacked by some knight.
+	// That knight may or may not be on a square. 
+	// The square will be determined by 'ourKing' and 'KNIGHT_DIRECTION_T'.
+	template<typename KNIGHT_DIRECTION_T>
+	inline void pushIfKnightIsAttackingKing(
+		const BoardSquare & ourKing,
+		const BitBoard & theirKnights,
+		KingAttackers & pair,
+		bool & isKnightAttack)
+	{
+		static_assert(std::is_base_of<directions::LShape, KNIGHT_DIRECTION_T>(),
+			"This method must only be called for a LShape (Knight) direction");
+
+		// First of all, determine if an attacking Knight has already been found.
+		// Remember that only 1 Knight can attack the King at a time in a Chess game.
+		if (!isKnightAttack)
+		{
+			// Is this move on the board or out-of-bounds?
+			if (KNIGHT_DIRECTION_T::wouldBeInBounds(ourKing)) {
+				// Yes. It is in-bounds.
+
+				// On which square does must the knight exist?
+				BoardSquare knight = KNIGHT_DIRECTION_T::move(ourKing);
+
+				// Does a knight exist on this square?
+				if (theirKnights[knight]) {
+					// Yes it exists. Also, it is attacking our King.
+					pair.push_back_non_rays<KNIGHT_DIRECTION_T>(knight);
+					isKnightAttack = true;
+				}
+			}
+		} // if (isKnightAttack)
+	}
+
+	// !!!VERY IMPORTANT: IF RAY_DIRECTION_T is a Lateral direction, always set 'isRayAttacking'
+	//	so that promotions to Rook/Queens are accounted for.
+	template<typename RAY_DIRECTION_T>
+	inline void pushIfRayIsAttackingKing(
+		const Board & board,
+		const BoardSquare & ourKing,
+		const BitBoard & ours,
+		const BitBoard & theirs,
+		KingAttackers & pair,
+		bool & isRayAttacking) {
+		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
+			"This method must only be called for a Ray direction");
+
+		// Have we already found a Ray attacker is some direction. 
+		// Remember: 2 Diagonal attacks are impossible.
+		// 2 Lateral attacks ARE Possible but only from ROOK/QUEEN promotions.
+		// !!! 'isRayAttacking' should always be set to false when 'RAY_DIRECTION_T' is a Lateral direction.
+		if (!isRayAttacking) {
+			// 1.) --- Search in this direction for a Ray attacker. ---
+			// Attacker could be a Queen, Rook, or Bishop.
+			BoardSquare attacker = Attackers::findAttackingRay<RAY_DIRECTION_T>(
+				ourKing,
+				board,
+				theirs,
+				ours);
+
+			// 2.) --- Did we find a Ray attacker? ---
+			if (attacker.isValid()) {
+				// Yes. It's coordinates are stored in 'attacker'
+				pair.push_back_rays<RAY_DIRECTION_T>(ourKing, attacker);
+				isRayAttacking = true;
+			}
+		}
+	}
+
+	KingAttackers MoveGenHelpers::findKingAttackers(
 		const Board & board,
 		BoardSquare ourKing,
 		BitBoard theirs,
 		BitBoard ours)
 	{
-		AttackerPair pair;		// initialized to invalid attackers
+		KingAttackers pair;		// initialized to invalid attackers
 
 		bool isKnightAttack = false;
 		bool isDiagonalAttack = false;
@@ -95,47 +166,16 @@ namespace forge
 			// Is our King attacked by a Knight? (Only 1 Knight can attack King at a time)
 			if (theirKnights.any()) {
 				// Yes. A Knight is attacking our King.
-
-				// --- Knight 0 ---
-				if (ourKing.isKnight0InBounds() && theirKnights[ourKing.knight0()]) {
-					pair.push_back(ourKing.knight0());
-					isKnightAttack = true;
-				}
-				// --- Knight 1 ---
-				else if (ourKing.isKnight1InBounds() && theirKnights[ourKing.knight1()]) {
-					pair.push_back(ourKing.knight1());
-					isKnightAttack = true;
-				}
-				// --- Knight 2 ---
-				else if (ourKing.isKnight2InBounds() && theirKnights[ourKing.knight2()]) {
-					pair.push_back(ourKing.knight2());	// Attacker found
-					isKnightAttack = true;
-				}
-				// --- Knight 3 ---
-				else if (ourKing.isKnight3InBounds() && theirKnights[ourKing.knight3()]) {
-					pair.push_back(ourKing.knight3());	// Attacker found
-					isKnightAttack = true;
-				}
-				// --- Knight 4 ---
-				else if (ourKing.isKnight4InBounds() && theirKnights[ourKing.knight4()]) {
-					pair.push_back(ourKing.knight4());	// Attacker found
-					isKnightAttack = true;
-				}
-				// --- Knight 5 ---
-				else if (ourKing.isKnight5InBounds() && theirKnights[ourKing.knight5()]) {
-					pair.push_back(ourKing.knight5());	// Attacker found
-					isKnightAttack = true;
-				}
-				// --- Knight 6 ---
-				else if (ourKing.isKnight6InBounds() && theirKnights[ourKing.knight6()]) {
-					pair.push_back(ourKing.knight6());	// Attacker found
-					isKnightAttack = true;
-				}
-				// --- Knight 7 ---
-				else if (ourKing.isKnight7InBounds() && theirKnights[ourKing.knight7()]) {
-					pair.push_back(ourKing.knight7());	// Attacker found
-					isKnightAttack = true;
-				}
+				// TODO: Optimize: Only one Knight can attack a King at a time. Once 1 is found
+				//	we can skip the rest.
+				pushIfKnightIsAttackingKing<directions::Knight0>(ourKing, theirKnights, pair, isKnightAttack);
+				pushIfKnightIsAttackingKing<directions::Knight1>(ourKing, theirKnights, pair, isKnightAttack);
+				pushIfKnightIsAttackingKing<directions::Knight2>(ourKing, theirKnights, pair, isKnightAttack);
+				pushIfKnightIsAttackingKing<directions::Knight3>(ourKing, theirKnights, pair, isKnightAttack);
+				pushIfKnightIsAttackingKing<directions::Knight4>(ourKing, theirKnights, pair, isKnightAttack);
+				pushIfKnightIsAttackingKing<directions::Knight5>(ourKing, theirKnights, pair, isKnightAttack);
+				pushIfKnightIsAttackingKing<directions::Knight6>(ourKing, theirKnights, pair, isKnightAttack);
+				pushIfKnightIsAttackingKing<directions::Knight7>(ourKing, theirKnights, pair, isKnightAttack);
 			} // end Knights
 		}
 
@@ -146,40 +186,11 @@ namespace forge
 
 			// Is our King attacked by some diagonal piece? (Only 1 Diagonal piece can attack at a time)
 			if (theirDiagonals.any()) {
-				// Maybe it is attacked by a diagonal
-
-				BoardSquare attacker;
-
-				// --- UR ---
-				attacker = findAttacker<directions::UR>(ourKing, board, theirs, ours);
-				if (attacker.isValid()) {
-					pair.push_back(attacker);
-					isDiagonalAttack = true;
-				}
-				else {
-					// --- UL ---
-					attacker = findAttacker<directions::UL>(ourKing, board, theirs, ours);
-					if (attacker.isValid()) {
-						pair.push_back(attacker);
-						isDiagonalAttack = true;
-					}
-					else {
-						// --- DL ---
-						attacker = findAttacker<directions::DL>(ourKing, board, theirs, ours);
-						if (attacker.isValid()) {
-							pair.push_back(attacker);
-							isDiagonalAttack = true;
-						}
-						else {
-							// --- DR ---
-							attacker = findAttacker<directions::DR>(ourKing, board, theirs, ours);
-							if (attacker.isValid()) {
-								pair.push_back(attacker);
-								isDiagonalAttack = true;
-							}
-						}
-					}
-				}
+				// A Diagonal attack is possible. Lets look in more detail.
+				pushIfRayIsAttackingKing<directions::UR>(board, ourKing, ours, theirDiagonals, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::UL>(board, ourKing, ours, theirDiagonals, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::DR>(board, ourKing, ours, theirDiagonals, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::DL>(board, ourKing, ours, theirDiagonals, pair, isDiagonalAttack);
 			}
 		} // end Diagonals
 
@@ -195,45 +206,12 @@ namespace forge
 
 			// Is our King attacked by some lateral piece?
 			if (theirLaterals.any()) {
-				// Maybe it is attacked by a lateral
+				// A Lateral attack is possible. Lets look in more detail.
 
-				BoardSquare attacker;
-
-				if (pair.isNotFull()) {
-					// --- Up ---
-					attacker = findAttacker<directions::Up>(ourKing, board, theirs, ours);
-					if (attacker.isValid()) {
-						pair.push_back(attacker);
-						isLateralAttack = true;
-					}
-
-					if (pair.isNotFull()) {
-						// --- Down ---
-						attacker = findAttacker<directions::Down>(ourKing, board, theirs, ours);
-						if (attacker.isValid()) {
-							pair.push_back(attacker);
-							isLateralAttack = true;
-						}
-
-						if (pair.isNotFull()) {
-							// --- Left ---
-							attacker = findAttacker<directions::Left>(ourKing, board, theirs, ours);
-							if (attacker.isValid()) {
-								pair.push_back(attacker);
-								isLateralAttack = true;
-							}
-
-							if (pair.isNotFull()) {
-								// --- Right ---
-								attacker = findAttacker<directions::Right>(ourKing, board, theirs, ours);
-								if (attacker.isValid()) {
-									pair.push_back(attacker);
-									isLateralAttack = true;
-								}
-							} // end Right
-						} // end Left
-					} // end Down
-				} // end Up
+				pushIfRayIsAttackingKing<directions::Up>(board, ourKing, ours, theirLaterals, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::Down>(board, ourKing, ours, theirLaterals, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::Left>(board, ourKing, ours, theirLaterals, pair, isDiagonalAttack);
+				pushIfRayIsAttackingKing<directions::Right>(board, ourKing, ours, theirLaterals, pair, isDiagonalAttack);
 			}
 		} // end Laterals
 
@@ -245,22 +223,22 @@ namespace forge
 		// 1-4.) --- Pawns ---
 		if (board.isWhite(ourKing)) {
 			// Our King is White. There Pawns are Black.
-		
+
 			BitBoard captureMask = pieces::WhitePawn::captureMask(ourKing);
 			BitBoard theirPawns = captureMask & board.pawns() & board.blacks();
-		
+
 			// Is it possible for one of their pawns to attack our King?
 			if (theirPawns.any()) {
 				// It is possible.
 				if (!ourKing.isTopRank()) {
 					if (!ourKing.isLeftFile() && board.isPawn(ourKing.upLeftOne())) {
 						// Pawn is attacking our King
-						pair.push_back(ourKing.upLeftOne());
+						pair.push_back_non_rays<directions::UL>(ourKing.upLeftOne());
 						isPawnAttack = true;
 					}
 					if (!ourKing.isRightFile() && board.isPawn(ourKing.upRightOne())) {
 						// Pawn is attacking our King
-						pair.push_back(ourKing.upRightOne());
+						pair.push_back_non_rays<directions::UR>(ourKing.upRightOne());
 						isPawnAttack = true;
 					}
 				}
@@ -268,21 +246,21 @@ namespace forge
 		}
 		else {
 			// Our King is Black. There Pawns are White.
-		
+
 			BitBoard captureMask = pieces::BlackPawn::captureMask(ourKing);
 			BitBoard theirPawns = captureMask & board.pawns() & board.whites();
-		
+
 			// Is it possible for one of their pawns to attack our King?
 			if (theirPawns.any()) {
 				if (!ourKing.isBotRank()) {
 					if (!ourKing.isLeftFile() && board.isPawn(ourKing.downLeftOne())) {
 						// Pawn is attacking our King
-						pair.push_back(ourKing.downLeftOne());
+						pair.push_back_non_rays<directions::DL>(ourKing.downLeftOne());
 						isPawnAttack = true;
 					}
 					if (!ourKing.isRightFile() && board.isPawn(ourKing.downRightOne())) {
 						// Pawn is attacking our King
-						pair.push_back(ourKing.downRightOne());
+						pair.push_back_non_rays<directions::DR>(ourKing.downRightOne());
 						isPawnAttack = true;
 					}
 				}

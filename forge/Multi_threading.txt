@@ -5,5 +5,9 @@ Dynamic tree splitting is claimed to be the best multithreading algorithm becaus
 of its scalability when using more cores.
 Although it is the most difficult to implement.
 https://www.chessprogramming.org/Dynamic_Tree_Splitting
+https://craftychess.com/hyatt/search.html		<--- This is the real paper
 
 ??? What does stockfish use for its multi-threading ???
+
+Consider PVS algorithm if DTS is to hard.
+	PVS is supposed to be very simple and easy to implement. But its not as efficient ofcourse.

@@ -139,11 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="aaremovethis.cpp" />
     <ClCompile Include="ApplePieHeuristic.cpp" />
     <ClCompile Include="ApplePieWeights.cpp" />
     <ClCompile Include="AttackChecker.cpp" />
-    <ClCompile Include="AttackerPair.cpp" />
+    <ClCompile Include="Attackers.cpp" />
+    <ClCompile Include="KingAttackers.cpp" />
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ChessMatch.cpp" />
@@ -159,6 +159,7 @@
     <ClCompile Include="HeuristicBase.cpp" />
     <ClCompile Include="IWeightsArchive.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
+    <ClCompile Include="KingAttacker.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
@@ -226,7 +227,8 @@
     <ClInclude Include="ApplePieHeuristic.h" />
     <ClInclude Include="ApplePieWeights.h" />
     <ClInclude Include="AttackChecker.h" />
-    <ClInclude Include="AttackerPair.h" />
+    <ClInclude Include="Attackers.h" />
+    <ClInclude Include="KingAttackers.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardDefinitions.h" />
@@ -246,6 +248,8 @@
     <ClInclude Include="Heuristics.hpp" />
     <ClInclude Include="IWeightsArchive.h" />
     <ClInclude Include="KeyboardController.h" />
+    <ClInclude Include="KingAttacker.h" />
+    <ClInclude Include="KingAttackersDefinitions.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MinimaxSolver.h" />
     <ClInclude Include="Move.h" />
@@ -265,6 +269,7 @@
     <ClInclude Include="PerformanceTester.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Pin.h" />
+    <ClInclude Include="PinDefinitions.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PositionDefinitions.h" />
     <ClInclude Include="PositionTable.h" />

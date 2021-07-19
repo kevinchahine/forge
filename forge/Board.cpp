@@ -82,22 +82,22 @@ namespace forge
 	{
 		pieces::Piece piece;
 
-		if (empty()[square]) {
+		if (isEmpty(square)) {
 			piece = pieces::empty;
 		}
 		else {
 			// Just assume piece is white for now.
 			// Well make sure at the bottom.
 
-			if (pawns()[square]) { piece = pieces::whitePawn; }
-			else if (bishops()[square]) { piece = pieces::whiteBishop; }
-			else if (rooks()[square]) { piece = pieces::whiteRook; }
-			else if (queens()[square]) { piece = pieces::whiteQueen; }
-			else if (knights()[square]) { piece = pieces::whiteKnight; }
+			if (isPawn(square)) { piece = pieces::whitePawn; }
+			else if (isBishop(square)) { piece = pieces::whiteBishop; }
+			else if (isRook(square)) { piece = pieces::whiteRook; }
+			else if (isQueen(square)) { piece = pieces::whiteQueen; }
+			else if (isKnight(square)) { piece = pieces::whiteKnight; }
 			else { piece = pieces::whiteKing; }
 
 			// Was the piece infact white or black?
-			if (blacks()[square]) {
+			if (isBlack(square)) {
 				// It should be black
 				piece.flipColor();	// Change color to black;
 			}
