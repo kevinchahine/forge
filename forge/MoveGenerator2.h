@@ -109,6 +109,11 @@ namespace forge
 		void genBlockAndCaptureMoves(const KingAttacker & attacker);
 
 	private:
+		// The squares occupied by pieces of both colors
+		BitBoard occupied;
+		// The squares that are empty
+		BitBoard empty;
+
 		// The squares that our pieces stand on
 		BitBoard ours;
 		// The squares that their pieces stand on

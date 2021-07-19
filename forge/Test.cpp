@@ -619,8 +619,7 @@ namespace forge
 
 			void findKingAttackers()
 			{
-				const Position & p = positions[1];	// remove this when uncommenting below line
-				/*for (const Position & p : positions)*/ {
+				for (const Position & p : positions) {
 					KingAttackers pair;
 
 					const Board & b = p.board();
@@ -666,7 +665,7 @@ namespace forge
 					cb.highlight(gen.getThreats());
 					cb.print();
 
-					cout << "Legal moves:\n";
+					cout << "There are " << legals.size() << " legal moves:\n";
 					for (const auto & legal : legals) {
 						cout << legal.move << endl;
 						legal.position.board().printMini();

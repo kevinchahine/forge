@@ -9,7 +9,9 @@ namespace forge
 {
 #ifdef _DEBUG
 	inline void printError(forge::Move m, const string & funcName) {
-		std::cout << "Illegal move found :p, " << m << " in " << funcName << "\n";
+		std::cout << guten::color::push() << guten::color::red
+			<< "Illegal move found :p, " << m << " in " << funcName << "\n"
+			<< guten::color::pop();
 	}
 #else
 #define printError(MOVE, FUNCNAME)	// empty placeholder

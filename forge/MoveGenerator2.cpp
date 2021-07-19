@@ -15,6 +15,9 @@ namespace forge
 		bool isWhitesTurn = position.moveCounter().isWhitesTurn();
 		const Board & b = position.board();
 
+		occupied = b.occupied();
+		empty = b.empty();
+
 		if (isWhitesTurn) {
 			ours = b.whites();
 			theirs = b.blacks();
@@ -129,26 +132,31 @@ namespace forge
 		}
 	}
 
+	// !!!WARNING: Make sure move is in bounds before calling this function.
+	// Does not perform bounds checking.
 	template<typename DIRECTION_T>
 	void moveKing(
 		MoveList & legals,
 		const BoardSquare & ourKing,
-		const BitBoard & threats,
-		const BitBoard & ours,
-		const Position & pos) {
+		const BitBoard & open,	// Every square that is not occupied and not attacked
+		const Position & pos)
+	{
+#ifdef _DEBUG
+		if (DIRECTION_T::wouldBeInBounds(ourKing) == false) {
+			cout << guten::color::push() << guten::color::red
+				<< "Error: " << __FILE__ << " line " << __LINE__
+				<< " move is out of bounds.\n"
+				<< guten::color::pop();
+			return;
+		}
+#endif // _DEBUG
 
-		if (DIRECTION_T::wouldBeInBounds(ourKing)) {
-			BoardSquare to = DIRECTION_T::move(ourKing);
+		BoardSquare to = DIRECTION_T::move(ourKing);
 
-			// Is move safe?
-			if (threats[to] == false) {
-				// Yes it is safe.
-
-				// We can't on top of our own pieces. Is 'to' empty or their piece
-				if (ours[to] == 0) {
-					legals.emplace_back<pieces::King>(Move{ ourKing, to }, pos);
-				}
-			}
+		// Is move safe?
+		if (open[to]) {
+			// Yes it is safe.
+			legals.emplace_back<pieces::King>(Move{ ourKing, to }, pos);
 		}
 	}
 
@@ -156,22 +164,23 @@ namespace forge
 	{
 		const Position & pos = *currPositionPtr;
 		const Board & board = pos.board();
+		const BitBoard open = ~(ours | threats);	// Squares that are not ours and not attacked
 
 		// --- Up ---
 		if (!ourKing.isTopRank()) {
 			// --- Left ---
 			if (!ourKing.isLeftFile()) {
-				moveKing<directions::UL>(legalMoves, ourKing, threats, ours, pos);
+				moveKing<directions::UL>(legalMoves, ourKing, open, pos);
 			}
 
 			// --- Middle ---
 			{
-				moveKing<directions::Up>(legalMoves, ourKing, threats, ours, pos);
+				moveKing<directions::Up>(legalMoves, ourKing, open, pos);
 			}
 
 			// --- Right ---
 			if (!ourKing.isRightFile()) {
-				moveKing<directions::UR>(legalMoves, ourKing, threats, ours, pos);
+				moveKing<directions::UR>(legalMoves, ourKing, open, pos);
 			}
 		}
 
@@ -179,7 +188,7 @@ namespace forge
 		{
 			// --- Left ---
 			if (!ourKing.isLeftFile()) {
-				moveKing<directions::Left>(legalMoves, ourKing, threats, ours, pos);
+				moveKing<directions::Left>(legalMoves, ourKing, open, pos);
 			}
 
 			// --- Middle ---
@@ -189,7 +198,7 @@ namespace forge
 
 			// --- Right ---
 			if (!ourKing.isRightFile()) {
-				moveKing<directions::Right>(legalMoves, ourKing, threats, ours, pos);
+				moveKing<directions::Right>(legalMoves, ourKing, open, pos);
 			}
 		}
 
@@ -198,17 +207,17 @@ namespace forge
 
 			// --- Left ---
 			if (!ourKing.isLeftFile()) {
-				moveKing<directions::DL>(legalMoves, ourKing, threats, ours, pos);
+				moveKing<directions::DL>(legalMoves, ourKing, open, pos);
 			}
 
 			// --- Middle ---
 			{
-				moveKing<directions::Down>(legalMoves, ourKing, threats, ours, pos);
+				moveKing<directions::Down>(legalMoves, ourKing, open, pos);
 			}
 
 			// --- Right ---
 			if (!ourKing.isRightFile()) {
-				moveKing<directions::DR>(legalMoves, ourKing, threats, ours, pos);
+				moveKing<directions::DR>(legalMoves, ourKing, open, pos);
 			}
 		}
 	}
@@ -228,7 +237,7 @@ namespace forge
 
 		if (attackingPiece.isRay()) {
 			// Yes. Because the attacker is not a Knight nor a Pawn, it can be blocked.
-			
+
 			const directions::Direction & dir = attacker.dir;
 
 			BoardSquare it = ourKing;
@@ -238,7 +247,7 @@ namespace forge
 				// --- Find one of our pieces that can block/capture the attacker ---
 
 				// Find a piece that can move to this square and block the attacker.
-			
+
 				// --- Our Laterals ---
 				///findAndMoveBlockers<directions::Up>(it);
 				///findAndMoveBlockers<directions::Down>(it);
@@ -252,7 +261,7 @@ namespace forge
 				///findAndMoveBlockers<directions::DR>(it);
 
 				// --- Our Knights ---
-				
+
 
 				// --- Our Pawns ---
 				// --- Our Kings (Can't block attacks) ---
@@ -264,7 +273,7 @@ namespace forge
 
 		// --- Can we capture the attacker? ---
 		if (board.isKnight(attacker.square)) {
-			
+
 		}
 
 		if (board.isPawn(attacker.square)) {

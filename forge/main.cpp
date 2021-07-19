@@ -50,8 +50,8 @@ int main(int argc, char ** argv)
 	//forge::test::pins::absolutePins();
 	//forge::test::movegen::genThreatBoard();
 	//forge::test::movegen::genAttackRay();
-	forge::test::movegen::findKingAttackers();
-	//forge::test::movegen::genKingMoves();
+	//forge::test::movegen::findKingAttackers();
+	forge::test::movegen::genKingMoves();
 	//forge::test::moveKings();
 	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();
