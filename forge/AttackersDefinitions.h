@@ -63,9 +63,9 @@ namespace forge
 
 		BoardSquare attacker;
 
-		BitBoard theirAttackers = board.directionals<KNIGHT_DIRECTION_T>() & theirs;
+		BitBoard theirKnights = board.directionals<KNIGHT_DIRECTION_T>() & theirs;
 		BitBoard extents = BitBoard::mask<KNIGHT_DIRECTION_T>(attackedSquare);
-		BitBoard possibleAttackers = theirAttackers & extents;
+		BitBoard possibleAttackers = theirKnights & extents;
 
 		// Was their a Knight at that square
 		if (possibleAttackers.any()) {

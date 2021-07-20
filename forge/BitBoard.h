@@ -222,7 +222,7 @@ namespace forge
 	{
 		BitBoard bb;
 		
-		if (center.isKnight1InBounds()) bb[center.knight0()] = 1; 
+		if (center.isKnight1InBounds()) bb[center.knight1()] = 1; 
 		
 		return bb;
 	}
@@ -232,7 +232,7 @@ namespace forge
 	{
 		BitBoard bb;
 		
-		if (center.isKnight2InBounds()) bb[center.knight0()] = 1; 
+		if (center.isKnight2InBounds()) bb[center.knight2()] = 1; 
 		
 		return bb;
 	}
@@ -242,7 +242,7 @@ namespace forge
 	{
 		BitBoard bb;
 		
-		if (center.isKnight3InBounds()) bb[center.knight0()] = 1; 
+		if (center.isKnight3InBounds()) bb[center.knight3()] = 1; 
 		
 		return bb;
 	}
@@ -252,7 +252,7 @@ namespace forge
 	{
 		BitBoard bb;
 		
-		if (center.isKnight4InBounds()) bb[center.knight0()] = 1; 
+		if (center.isKnight4InBounds()) bb[center.knight4()] = 1; 
 		
 		return bb;
 	}
@@ -262,7 +262,7 @@ namespace forge
 	{
 		BitBoard bb;
 		
-		if (center.isKnight5InBounds()) bb[center.knight0()] = 1; 
+		if (center.isKnight5InBounds()) bb[center.knight5()] = 1; 
 		
 		return bb;
 	}
@@ -272,7 +272,7 @@ namespace forge
 	{
 		BitBoard bb;
 		
-		if (center.isKnight6InBounds()) bb[center.knight0()] = 1; 
+		if (center.isKnight6InBounds()) bb[center.knight6()] = 1; 
 		
 		return bb;
 	}
@@ -282,7 +282,7 @@ namespace forge
 	{
 		BitBoard bb;
 		
-		if (center.isKnight7InBounds()) bb[center.knight0()] = 1; 
+		if (center.isKnight7InBounds()) bb[center.knight7()] = 1; 
 		
 		return bb;
 	}

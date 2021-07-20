@@ -31,12 +31,20 @@ namespace forge
 	private:
 	public:	// <-- Only for testing
 
-		void genPinMoves(const Board & b, bool isWhitesTurn);
+		// Searches for Pins and generates legal moves for those pieces but
+		// only if 'searchOnly' is set to false.
+		// If 'searchOnly' is set to true, then Pins are searched and recorded without 
+		// any moves being generated.
+		// When King is attacked exacly once, 'searchOnly' should be true.
+		// Otherwise 'searchOnly' should be false.
+		void genPinMoves(const Board & b, bool isWhitesTurn, bool searchOnly);
 		
 		// Make sure to only call on valid Pin objects.  
 		// Generated Positions will be push to this->legalMoves
+		// If 'searchOnly' is set to true, then Pins are searched and recorded without 
+		// any moves being generated.
 		template<typename RAY_DIRECTION_T>
-		void genPinMovesFor(Pin pin);
+		void genPinMovesFor(Pin pin, bool searchOnly);
 
 		// Used for forward checking to efficiently verify that a pin is possible before performing
 		// expensive pin search calculations. 
@@ -79,8 +87,9 @@ namespace forge
 
 		// Given a direction and nothing else, this method will search for absolute pins and generate
 		// legal moves for the pinned piece.  Moves are added to legalMoves.
+		// When 'searchOnly' is true, pins are only searched and their moves are not generated.
 		template<typename DIRECTION_T>
-		void searchAndGeneratePins();
+		void searchAndGeneratePins(bool searchOnly);
 
 		// Generates King caputres and pushes.
 		void genKingMoves();

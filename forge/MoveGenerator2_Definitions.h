@@ -5,78 +5,108 @@
 namespace forge
 {
 	template<typename RAY_DIRECTION_T>
-	void MoveGenerator2::genPinMovesFor(Pin pin)
+	void MoveGenerator2::genPinMovesFor(Pin pin, bool searchOnly)
 	{
 		const Board & b = currPositionPtr->board();
 		const pieces::Piece piece = b.at(pin.pinned);
 
-		cout << piece << " is pinned. " << piece.val() << "\n";
+		///cout << piece << " is pinned. " << piece.val() << "\n";
+		
 		// 0.) --- Make sure direction is a Ray
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"RAY_DIRECTION_T must be a ray direction");
 
 		// 1.) --- Mark the pinned piece ---
-		// Mark as an absolut pin so that later we don't generate its free moves.
-		ourAbsolutePins[pin.pinned] = 1;	
+		// Mark as an absolut pin so that later we don't generate free moves for this piece.
+		ourAbsolutePins[pin.pinned] = 1;
 
-		// 2.) --- Mark the bits between the King (exclusive) and Attacker (inclusive) ---
-		BitBoard battleGround = BitBoard::mask<RAY_DIRECTION_T>(ourKing, pin.pinner);
-		battleGround[ourKing] = 0;		// Exclude King
-		battleGround[pin.pinner] = 1;	// Include pinner
+		// Generate legal moves for pins, but only if 'searchOnly' is set to false
+		if (searchOnly == false) {
+			// 2.) --- Mark the bits between the King (exclusive) and Attacker (inclusive) ---
+			BitBoard battleGround = BitBoard::mask<RAY_DIRECTION_T>(ourKing, pin.pinner);
+			battleGround[ourKing] = 0;		// Exclude King
+			battleGround[pin.pinner] = 1;	// Include pinner
 
-		// 3.) --- Calculate Push and Capture Masks ---
-		// Squares pinned piece can push to (same for non-Pawns)
-		// Squares pinned piece can capture on (same for non-Pawns)
-		BitBoard pushMask;			// Squares pinned piece can push to 
-		BitBoard captureMask;		// Squares pinned piece can capture on
-		piece.masks(pin.pinned, pushMask, captureMask);
+			// 3.) --- Calculate Push and Capture Masks ---
+			// Squares pinned piece can push to (same for non-Pawns)
+			// Squares pinned piece can capture on (same for non-Pawns)
+			BitBoard pushMask;			// Squares pinned piece can push to 
+			BitBoard captureMask;		// Squares pinned piece can capture on
+			piece.masks(pin.pinned, pushMask, captureMask);
 
-		// 4.) --- Overlap masks with battleGround and their pieces ---
-		pushMask &= battleGround & (~theirs);		// Should contain 1s where pinned can push to between King and pinner
-		captureMask &= battleGround & (theirs);		// Should contain a 1 on pinner or all zeros
+			// 4.) --- Overlap masks with battleGround and their pieces ---
+			pushMask &= battleGround & (~theirs);		// Should contain 1s where pinned can push to between King and pinner
+			captureMask &= battleGround & (theirs);		// Should contain a 1 on pinner or all zeros
 
-		// 5.) --- Actually generate some moves already ---
-		// --- Look ahead: Are any push moves possible? ---
-		if (pushMask.any()) {
-			// Yes a push move is possible
+			// 5.) --- Actually generate some moves already ---
+			// --- Look ahead: Are any push moves possible? ---
+			if (pushMask.any()) {
+				// Yes a push move is possible
 
-			// What piece is moving?
-			if (piece.isPawn()) {
-				if (piece.isWhite())
-					legalMoves.emplace_back<pieces::WhitePawn, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
-				else
-					legalMoves.emplace_back<pieces::BlackPawn, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
+				// What piece is moving?
+				if (piece.isPawn()) {
+					if (piece.isWhite())
+						legalMoves.emplace_back<pieces::WhitePawn, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
+					else
+						legalMoves.emplace_back<pieces::BlackPawn, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
+				}
+				if (piece.isQueen())
+					legalMoves.emplace_back<pieces::Queen, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
+				if (piece.isBishop())
+					legalMoves.emplace_back<pieces::Bishop, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
+				if (piece.isKnight())
+					legalMoves.emplace_back<pieces::Knight, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
+				if (piece.isRook())
+					legalMoves.emplace_back<pieces::Rook, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
+				// No need to do King because, Kings are never pinned.
 			}
-			if (piece.isQueen()) 
-				legalMoves.emplace_back<pieces::Queen, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
-			if (piece.isBishop()) 
-				legalMoves.emplace_back<pieces::Bishop, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
-			if (piece.isKnight())
-				legalMoves.emplace_back<pieces::Knight, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
-			if (piece.isRook())
-				legalMoves.emplace_back<pieces::Rook, RAY_DIRECTION_T>(ourKing, pin.pinned, pin.pinner, pushMask, *currPositionPtr);
-			// No need to do King because, Kings are never pinned.
-		}
-		// --- Look ahead: Are any capture moves possible? ---
-		if (captureMask.any()) {
-			// Yes a capture move is possible
 
-			// What piece is moving?
-			if (piece.isPawn()) {
-				if (piece.isWhite())
-					legalMoves.emplace_back<pieces::WhitePawn>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
-				else
-					legalMoves.emplace_back<pieces::BlackPawn>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
+			// --- Look ahead: Are any capture moves possible? ---
+			if (captureMask.any()) {
+				// Yes a capture move is possible
+
+				// What piece is moving?
+				if (piece.isPawn()) {
+					// TODO: Pawns can be promoted even when pinned when they capture their pinner.
+					// TODO: Enpassent: Pinned pawns sometimes cannot do enpassent.
+
+					if (piece.isWhite()) {
+						if (pin.pinner.isTopRank()) {
+							// Capture will occur on promotion rank
+							legalMoves.emplace_back<pieces::WhitePawn>(Move{ pin.pinned, pin.pinner, pieces::whiteQueen }, *currPositionPtr);
+							legalMoves.emplace_back<pieces::WhitePawn>(Move{ pin.pinned, pin.pinner, pieces::whiteRook }, *currPositionPtr);
+							legalMoves.emplace_back<pieces::WhitePawn>(Move{ pin.pinned, pin.pinner, pieces::whiteBishop }, *currPositionPtr);
+							legalMoves.emplace_back<pieces::WhitePawn>(Move{ pin.pinned, pin.pinner, pieces::whiteKnight }, *currPositionPtr);
+						}
+						else {
+							// Capture will not occur on promotion rank
+							legalMoves.emplace_back<pieces::WhitePawn>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
+						}
+					}
+					else {
+						if (pin.pinner.isBotRank()) {
+							// Capture will occur on promotion rank
+							legalMoves.emplace_back<pieces::BlackPawn>(Move{ pin.pinned, pin.pinner, pieces::blackQueen }, *currPositionPtr);
+							legalMoves.emplace_back<pieces::BlackPawn>(Move{ pin.pinned, pin.pinner, pieces::blackRook }, *currPositionPtr);
+							legalMoves.emplace_back<pieces::BlackPawn>(Move{ pin.pinned, pin.pinner, pieces::blackBishop }, *currPositionPtr);
+							legalMoves.emplace_back<pieces::BlackPawn>(Move{ pin.pinned, pin.pinner, pieces::blackKnight }, *currPositionPtr);
+						}
+						else {
+							// Capture will not occur on promotion rank
+							legalMoves.emplace_back<pieces::BlackPawn>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
+						}
+					}
+				}
+				if (piece.isQueen())
+					legalMoves.emplace_back<pieces::Queen>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
+				if (piece.isBishop())
+					legalMoves.emplace_back<pieces::Bishop>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
+				if (piece.isKnight())
+					legalMoves.emplace_back<pieces::Knight>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
+				if (piece.isRook())
+					legalMoves.emplace_back<pieces::Rook>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
+				// No need to do King because, Kings are never pinned.
 			}
-			if (piece.isQueen())
-				legalMoves.emplace_back<pieces::Queen>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
-			if (piece.isBishop())
-				legalMoves.emplace_back<pieces::Bishop>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
-			if (piece.isKnight())
-				legalMoves.emplace_back<pieces::Knight>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
-			if (piece.isRook())
-				legalMoves.emplace_back<pieces::Rook>(Move{ pin.pinned, pin.pinner }, *currPositionPtr);
-			// No need to do King because, Kings are never pinned.
 		}
 	}
 
@@ -207,18 +237,18 @@ namespace forge
 	}
 
 	template<typename DIRECTION_T>
-	void MoveGenerator2::searchAndGeneratePins()
+	void MoveGenerator2::searchAndGeneratePins(bool searchOnly)
 	{
 		// Find the pinned and pinner pieces for the absolute pin
 		Pin pin = pinSearch<DIRECTION_T>();
 
-		cout << pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid")
-			<< ' ' << pin.pinner << (pin.pinner.isValid() ? " valid" : " invalid")
-			<< " is "
-			<< (pin.isValid() ? "" : "NOT") << " a pin in "
-			<< typeid(DIRECTION_T).name() << " direction." << endl;
+		///cout << pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid")
+		///	<< ' ' << pin.pinner << (pin.pinner.isValid() ? " valid" : " invalid")
+		///	<< " is "
+		///	<< (pin.isValid() ? "" : "NOT") << " a pin in "
+		///	<< typeid(DIRECTION_T).name() << " direction." << endl;
 
 		// If a valid absolute pin was found, generate its legal moves
-		if (pin.isValid()) { genPinMovesFor<DIRECTION_T>(pin); }
+		if (pin.isValid()) { genPinMovesFor<DIRECTION_T>(pin, searchOnly); }
 	}
 } // namespace forge
