@@ -110,9 +110,6 @@
     <ClCompile Include="MovePositionPair.cpp">
       <Filter>Move</Filter>
     </ClCompile>
-    <ClCompile Include="Position.cpp">
-      <Filter>Move</Filter>
-    </ClCompile>
     <ClCompile Include="DataMonitor.cpp">
       <Filter>Analytics</Filter>
     </ClCompile>
@@ -208,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="Threats.cpp">
       <Filter>MoveGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -354,9 +354,6 @@
     <ClInclude Include="MovePositionPair.h">
       <Filter>Move</Filter>
     </ClInclude>
-    <ClInclude Include="Position.h">
-      <Filter>Move</Filter>
-    </ClInclude>
     <ClInclude Include="Line.h">
       <Filter>Analytics</Filter>
     </ClInclude>
@@ -462,9 +459,6 @@
     <ClInclude Include="BoardDefinitions.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="PositionDefinitions.h">
-      <Filter>Move</Filter>
-    </ClInclude>
     <ClInclude Include="MoveGenerator2_Definitions.h">
       <Filter>MoveGenerator</Filter>
     </ClInclude>
@@ -491,6 +485,12 @@
     </ClInclude>
     <ClInclude Include="AttackersDefinitions.h">
       <Filter>MoveGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionDefinitions.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

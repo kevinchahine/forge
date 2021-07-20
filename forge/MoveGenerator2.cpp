@@ -258,7 +258,7 @@ namespace forge
 	{
 		static_assert(std::is_base_of<directions::LShape, KNIGHT_DIRECTION_T>(),
 			"Error: This function only works on Knight directions.");
-		
+
 		BoardSquare bs = Attackers::findAttackingKnight<KNIGHT_DIRECTION_T>(attacker, pos.board(), ourKnights);
 
 		// If an attacker was found and it is not Absolutely Pinned,
@@ -280,7 +280,6 @@ namespace forge
 		attackingPiece.masks(attacker.square, pushMask, captureMask);
 
 		// Is the attacker a Ray or non-Ray?
-
 		if (attackingPiece.isRay()) {
 			// Yes. Because the attacker is Ray, it can be blocked.
 
@@ -291,29 +290,117 @@ namespace forge
 			const directions::Direction & dir = attacker.dir;
 
 			BoardSquare it = ourKing;
-			while (dir.wouldBeInBounds(it)) {
+			while (dir.wouldBeInBounds(it)) {	// TODO: Optimize: We can probably replace bounds checking with attacker.square
+				// 'it' will reach attacker before edge of board.
+
 				it = dir.move(it);	// Incremented first to skip kings coordinate
+
+				// Did we reach the attacker?
+				if (it == attacker.square) {
+					break; // Yes we can now break from loop and move on to captures
+				}
 
 				// --- Find one of our pieces that can block/capture the attacker ---
 
 				// Find a piece that can move to this square and block the attacker.
 
-				// --- Our Laterals ---
-				///findAndMoveBlockers<directions::Up>(it);
-				///findAndMoveBlockers<directions::Down>(it);
-				///findAndMoveBlockers<directions::Left>(it);
-				///findAndMoveBlockers<directions::Right>(it);
+				// --- Look for Lateral Captures ---
+				{
+					BitBoard attackerCross = BitBoard::mask<directions::Lateral>(it);
+					BitBoard possibleCaptures = ourLaterals & attackerCross & ~ourAbsolutePins;
+
+					// Is it possible that one of our Laterals can capture attacker?
+					if (possibleCaptures.any()) {
+						// Yes. Look in more detail.
+
+						captureAttackerWithRay<directions::Up>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::Down>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::Left>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::Right>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+					}
+				}
 
 				// --- Our Diagonals ---
-				///findAndMoveBlockers<directions::UL>(it);
-				///findAndMoveBlockers<directions::UR>(it);
-				///findAndMoveBlockers<directions::DL>(it);
-				///findAndMoveBlockers<directions::DR>(it);
+				{
+					BitBoard attackerX = BitBoard::mask<directions::Diagonal>(it);
+					BitBoard possibleCaptures = ourDiagonals & attackerX & ~ourAbsolutePins;
+
+					// Is it possible that one of our Laterals can capture attacker?
+					if (possibleCaptures.any()) {
+						// Yes. Look in more detail.
+
+						captureAttackerWithRay<directions::UR>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::UL>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::DR>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::DL>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+					}
+				}
 
 				// --- Our Knights ---
+				{
+					BitBoard attackerOctopus = BitBoard::mask<directions::LShape>(it);
+					BitBoard possibleCaptures = board.knights() & ours & attackerOctopus & ~ourAbsolutePins;
 
+					// Is it possible that one of our Knights can capture attacker?
+					if (possibleCaptures.any()) {
+						// Yes. One or more of our Knights can capture attacker.
+
+						captureAttackerWithKnight<directions::Knight0>(legalMoves, it, *currPositionPtr, possibleCaptures);
+						captureAttackerWithKnight<directions::Knight1>(legalMoves, it, *currPositionPtr, possibleCaptures);
+						captureAttackerWithKnight<directions::Knight2>(legalMoves, it, *currPositionPtr, possibleCaptures);
+						captureAttackerWithKnight<directions::Knight3>(legalMoves, it, *currPositionPtr, possibleCaptures);
+						captureAttackerWithKnight<directions::Knight4>(legalMoves, it, *currPositionPtr, possibleCaptures);
+						captureAttackerWithKnight<directions::Knight5>(legalMoves, it, *currPositionPtr, possibleCaptures);
+						captureAttackerWithKnight<directions::Knight6>(legalMoves, it, *currPositionPtr, possibleCaptures);
+						captureAttackerWithKnight<directions::Knight7>(legalMoves, it, *currPositionPtr, possibleCaptures);
+					}
+				}
 
 				// --- Our Pawns ---
+				{
+					BitBoard pawnCapturers = ours & board.pawns() & ~ourAbsolutePins;
+
+					if (attackingPiece.isWhite()) {
+						// Attacking piece is White. Lets see if we can block it with a Black Pawn.
+						if (it.isTopRank() == false) {
+							BoardSquare pawn = it.upOne();
+
+							if (pawnCapturers[pawn]) {
+								if (it.isBotRank()) {
+									// Push will cause promotion
+									legalMoves.emplace_back<pieces::BlackPawn>(Move{ pawn, it, pieces::blackQueen }, *currPositionPtr);
+									legalMoves.emplace_back<pieces::BlackPawn>(Move{ pawn, it, pieces::blackRook }, *currPositionPtr);
+									legalMoves.emplace_back<pieces::BlackPawn>(Move{ pawn, it, pieces::blackBishop }, *currPositionPtr);
+									legalMoves.emplace_back<pieces::BlackPawn>(Move{ pawn, it, pieces::blackKnight }, *currPositionPtr);
+								}
+								else {
+									// Push will NOT cause promotion
+									legalMoves.emplace_back<pieces::BlackPawn>(Move{ pawn, it }, *currPositionPtr);
+								}
+							}
+						}
+					}
+					else {
+						// Attacking piece is Black. Lets see if we can block it with a White Pawn.
+						if (it.isBotRank() == false) {
+							BoardSquare pawn = it.downOne();
+
+							if (pawnCapturers[pawn]) {
+								if (it.isTopRank()) {
+									// Push will cause promotion
+									legalMoves.emplace_back<pieces::WhitePawn>(Move{ pawn, it, pieces::whiteQueen }, *currPositionPtr);
+									legalMoves.emplace_back<pieces::WhitePawn>(Move{ pawn, it, pieces::whiteRook }, *currPositionPtr);
+									legalMoves.emplace_back<pieces::WhitePawn>(Move{ pawn, it, pieces::whiteBishop }, *currPositionPtr);
+									legalMoves.emplace_back<pieces::WhitePawn>(Move{ pawn, it, pieces::whiteKnight }, *currPositionPtr);
+								}
+								else {
+									// Push will NOT cause promotion
+									legalMoves.emplace_back<pieces::WhitePawn>(Move{ pawn, it }, *currPositionPtr);
+								}
+							}
+						}
+					}
+				}
 
 				// --- Our Kings (Can't block attacks) ---
 				// Excluded because King can't block himself. Nothing to do here
@@ -335,10 +422,10 @@ namespace forge
 			if (possibleCaptures.any()) {
 				// Yes. Look in more detail.
 
-				captureAttackerWithRay<directions::Up>(legalMoves, as, theirs, ours, *currPositionPtr);
-				captureAttackerWithRay<directions::Down>(legalMoves, as, theirs, ours, *currPositionPtr);
-				captureAttackerWithRay<directions::Left>(legalMoves, as, theirs, ours, *currPositionPtr);
-				captureAttackerWithRay<directions::Right>(legalMoves, as, theirs, ours, *currPositionPtr);
+				captureAttackerWithRay<directions::Up>(legalMoves, as, theirs, possibleCaptures, *currPositionPtr);
+				captureAttackerWithRay<directions::Down>(legalMoves, as, theirs, possibleCaptures, *currPositionPtr);
+				captureAttackerWithRay<directions::Left>(legalMoves, as, theirs, possibleCaptures, *currPositionPtr);
+				captureAttackerWithRay<directions::Right>(legalMoves, as, theirs, possibleCaptures, *currPositionPtr);
 			}
 		}
 
@@ -352,10 +439,10 @@ namespace forge
 			if (possibleCaptures.any()) {
 				// Yes. Look in more detail.
 
-				captureAttackerWithRay<directions::UR>(legalMoves, as, theirs, ours, *currPositionPtr);
-				captureAttackerWithRay<directions::UL>(legalMoves, as, theirs, ours, *currPositionPtr);
-				captureAttackerWithRay<directions::DR>(legalMoves, as, theirs, ours, *currPositionPtr);
-				captureAttackerWithRay<directions::DL>(legalMoves, as, theirs, ours, *currPositionPtr);
+				captureAttackerWithRay<directions::UR>(legalMoves, as, theirs, possibleCaptures, *currPositionPtr);
+				captureAttackerWithRay<directions::UL>(legalMoves, as, theirs, possibleCaptures, *currPositionPtr);
+				captureAttackerWithRay<directions::DR>(legalMoves, as, theirs, possibleCaptures, *currPositionPtr);
+				captureAttackerWithRay<directions::DL>(legalMoves, as, theirs, possibleCaptures, *currPositionPtr);
 			}
 		}
 

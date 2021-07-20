@@ -96,7 +96,7 @@ namespace forge
 			bool isBishop() const { return (m_val == WHITE_BISHOP) || (m_val == BLACK_BISHOP); }
 			bool isKnight() const { return (m_val == WHITE_KNIGHT) || (m_val == BLACK_KNIGHT); }
 			bool isPawn() const { return (m_val == WHITE_PAWN) || (m_val == BLACK_PAWN); }
-			bool isRay() const { auto val = m_val & std::bitset<8>(0b0111); return (val == QUEEN && val == BISHOP && val == ROOK); }
+			bool isRay() const { return isQueen() || isRook() || isBishop(); }
 
 			// Flips color of piece:
 			// black -> white

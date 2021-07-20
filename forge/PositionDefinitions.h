@@ -110,11 +110,8 @@ namespace forge
 	{
 #ifdef _DEBUG 
 		if (m_board.pawns()[move.from()] == false || m_board.whites()[move.from()] == false)
-			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+			std::cout << "Error " << __FILE__ << " line " << __LINE__
 			<< ": This method only moves white pawns\n";
-		if (m_board.empty()[move.to()] == false)
-			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
-			<< ": 'to' square must be empty when calling this method.\n";
 #endif
 
 		// --- Was this a capture? ---
@@ -139,9 +136,6 @@ namespace forge
 		if (m_board.pawns()[move.from()] == false || m_board.blacks()[move.from()] == false)
 			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
 			<< ": This method only moves black pawns\n";
-		if (m_board.empty()[move.to()] == false)
-			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
-			<< ": 'to' square must be empty when calling this method.\n";
 #endif
 
 		// --- Was this a capture? ---
