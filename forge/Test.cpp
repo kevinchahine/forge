@@ -37,234 +37,234 @@ namespace forge
 				b.place<pieces::Knight>(BoardSquare{ 'f', '8' }, WHITE);
 			}
 			
-			{
-				BoardSquare s{ 'e', '4' };
-				Board & b = positions.emplace_back().board();
-				b.place<pieces::Knight>(s, WHITE);
-				b.place<pieces::Queen>(s.right(), WHITE);
-				b.place<pieces::Bishop>(s.up(2), BLACK);
-				b.place<pieces::WhitePawn>(s.left(2));
-			}
-			
-			{
-				BoardSquare k{ 'e', '4' };
-				Board & b = positions.emplace_back().board();
-				b.place<pieces::BlackKing>(k);
-				b.place<pieces::Rook>(k.down(2), WHITE);
-				b.place<pieces::Bishop>(k.downLeft(2), WHITE);
-				b.place<pieces::Queen>(k.down(2), WHITE);
-				b.place<pieces::Knight>(k.knight7(), WHITE);
-				b.place<pieces::Pawn>(k.downLeft(), WHITE);
-			}
-			
-			{
-				Board & b = positions.emplace_back().board();
-			
-				BoardSquare wk{ 'c', '3' };
-				b.place<WhiteKing>(wk);
-				//b.place<Knight>(wk.knight0(), BLACK);
-				//b.place<Knight>(wk.knight1(), BLACK);
-				b.place<Knight>(wk.knight2(), BLACK);
-				b.place<Knight>(wk.knight3(), BLACK);
-				b.place<Knight>(wk.knight4(), BLACK);
-				b.place<Knight>(wk.knight5(), BLACK);
-				b.place<Knight>(wk.knight5(), BLACK);
-				b.place<Knight>(wk.knight6(), BLACK);
-				b.place<Knight>(wk.knight7(), BLACK);
-			
-				BoardSquare bk{ 'f', '5' };
-				b.place<BlackKing>(bk);
-				//b.place<Knight>(bk.knight0(), WHITE);
-				//b.place<Knight>(bk.knight1(), WHITE);
-				b.place<Knight>(bk.knight2(), WHITE);
-				b.place<Knight>(bk.knight3(), WHITE);
-				b.place<Knight>(bk.knight4(), WHITE);
-				b.place<Knight>(bk.knight5(), WHITE);
-				b.place<Knight>(bk.knight5(), WHITE);
-				b.place<Knight>(bk.knight6(), WHITE);
-				b.place<Knight>(bk.knight7(), WHITE);
-			}
-			
-			{
-				Board & b = positions.emplace_back().board();
-			
-				BoardSquare wk{ 'e', '3' };
-				b.place<WhiteKing>(wk);
-				b.place<Bishop>(wk.upLeft(2), BLACK);
-				b.place<Bishop>(wk.upRight(2), WHITE);
-				b.place<Queen>(wk.downLeft(2), WHITE);
-				b.place<Queen>(wk.downRight(2), BLACK);
-			
-				BoardSquare bk{ 'e', '7' };
-				b.place<BlackKing>(bk);
-			}
-			
-			{
-				Board & b = positions.emplace_back().board();
-			
-				BoardSquare wk{ 'e', '3' };
-				b.place<WhiteKing>(wk);
-				b.place<Rook>(wk.up(4), BLACK);
-			
-				BoardSquare bk{ 'c', '4' };
-				b.place<BlackKing>(bk);
-				b.place<Rook>(bk.right(4), WHITE);
-			
-				Board & b2 = positions.emplace_back(positions.back()).board();
-				b2.place<Bishop>(wk.upRight(3), BLACK);
-				b2.place<Bishop>(bk.upRight(2), WHITE);
-			
-				Board & b3 = positions.emplace_back(positions.back()).board();
-				b3.place<Queen>(bk.upLeft(2), WHITE);
-				b3.place<Queen>(wk.downRight(2), BLACK);
-			}
-			
-			{
-				Board & b = positions.emplace_back().board();
-			
-				BoardSquare wk{ 'f', '4' };
-				b.place<WhiteKing>(wk);
-				b.place<BlackPawn>(wk.upLeftOne());
-				b.place<BlackPawn>(wk.upRightOne());
-			
-				BoardSquare bk{ 'c', '5' };
-				b.place<BlackKing>(bk);
-				b.place<WhitePawn>(bk.downLeftOne());
-				b.place<WhitePawn>(bk.downRightOne());
-			}
-			
-			{
-				Board & b = positions.emplace_back().board();
-			
-				BoardSquare wk{ 'e', '3' };
-				b.place<Queen>(wk.up(3), BLACK);
-				b.place<BlackPawn>(wk.upLeftOne());
-				b.place<WhitePawn>(wk.downLeftOne());
-			
-			
-				BoardSquare bk{ 'c', '6' };
-				b.place<Queen>(bk.down(3), WHITE);
-				b.place<WhitePawn>(bk.downRightOne());
-				b.place<BlackPawn>(bk.upLeftOne());
-			}
-			
-			{
-				Board & b = positions.emplace_back().board();
-			
-				BoardSquare s{ 5, 4 };
-				b.place<pieces::Knight>(s, WHITE);
-				b.place<pieces::Queen>(s.right(), WHITE);
-				b.place<pieces::Bishop>(s.up(2), BLACK);
-				b.place<pieces::WhitePawn>(s.left(2));
-			}
-			
-			{ // Pins
-				Position & p = positions.emplace_back();
-				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
-				Board & b = p.board();
-			
-				BoardSquare bk{ 'e', '8' };
-				b.place<BlackKing>(bk);
-				b.place<WhiteKing>(BoardSquare{ 'c', '1' });
-				b.place<Rook>(bk.down(2), BLACK);
-				b.place<Queen>(bk.down(5), WHITE);
-			} 
-			
-			{ // Pins
-				Position & p = positions.emplace_back();
-				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
-				Board & b = p.board();
-			
-				BoardSquare bk{ 'e', '8' };
-				b.place<BlackKing>(bk);
-				b.place<WhiteKing>(BoardSquare{ 'c', '1' });
-				b.place<Knight>(bk.down(2), BLACK);
-				b.place<Queen>(bk.down(5), WHITE);
-			}
-			
-			{ // Pins
-				Position & p = positions.emplace_back();
-				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
-				Board & b = p.board();
-			
-				BoardSquare bk{ 'a', '4' };
-				b.place<BlackKing>(bk);
-				b.place<WhiteKing>(BoardSquare{ 'd', '1' });
-				b.place<BlackPawn>(bk.right(3));
-				b.place<Queen>(bk.right(7), WHITE);
-			}
-			
-			{ // Pins
-				Position & p = positions.emplace_back();
-				Board & b = p.board();
-			
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<WhitePawn>(BoardSquare{ 'f', '7' });
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
-				b.place<Bishop>(BoardSquare{ 'e', '8' }, BLACK);
-			}
-
-			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
-				Board & b = p.board();
-
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<WhitePawn>(BoardSquare{ 'h', '7' });
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
-			}
-
-			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
-				Board & b = p.board();
-
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<WhitePawn>(BoardSquare{ 'f', '6' });
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
-			}
-
-			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
-				Board & b = p.board();
-
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<Knight>(BoardSquare{ 'f', '6' }, WHITE);
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
-			}
-
-			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
-				Board & b = p.board();
-
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'b', '8' });
-				b.place<Rook>(BoardSquare{ 'f', '4' }, WHITE);
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
-			}
-
-			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
-				Board & b = p.board();
-
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'b', '8' });
-				b.place<Bishop>(BoardSquare{ 'b', '7' }, WHITE);
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
-			}
-
-			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
-				Board & b = p.board();
-
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'b', '8' });
-				b.place<Rook>(BoardSquare{ 'f', '4' }, WHITE);
-				b.place<Bishop>(BoardSquare{ 'b', '7' }, WHITE);
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
-			}
+			//{
+			//	BoardSquare s{ 'e', '4' };
+			//	Board & b = positions.emplace_back().board();
+			//	b.place<pieces::Knight>(s, WHITE);
+			//	b.place<pieces::Queen>(s.right(), WHITE);
+			//	b.place<pieces::Bishop>(s.up(2), BLACK);
+			//	b.place<pieces::WhitePawn>(s.left(2));
+			//}
+			//
+			//{
+			//	BoardSquare k{ 'e', '4' };
+			//	Board & b = positions.emplace_back().board();
+			//	b.place<pieces::BlackKing>(k);
+			//	b.place<pieces::Rook>(k.down(2), WHITE);
+			//	b.place<pieces::Bishop>(k.downLeft(2), WHITE);
+			//	b.place<pieces::Queen>(k.down(2), WHITE);
+			//	b.place<pieces::Knight>(k.knight7(), WHITE);
+			//	b.place<pieces::Pawn>(k.downLeft(), WHITE);
+			//}
+			//
+			//{
+			//	Board & b = positions.emplace_back().board();
+			//
+			//	BoardSquare wk{ 'c', '3' };
+			//	b.place<WhiteKing>(wk);
+			//	//b.place<Knight>(wk.knight0(), BLACK);
+			//	//b.place<Knight>(wk.knight1(), BLACK);
+			//	b.place<Knight>(wk.knight2(), BLACK);
+			//	b.place<Knight>(wk.knight3(), BLACK);
+			//	b.place<Knight>(wk.knight4(), BLACK);
+			//	b.place<Knight>(wk.knight5(), BLACK);
+			//	b.place<Knight>(wk.knight5(), BLACK);
+			//	b.place<Knight>(wk.knight6(), BLACK);
+			//	b.place<Knight>(wk.knight7(), BLACK);
+			//
+			//	BoardSquare bk{ 'f', '5' };
+			//	b.place<BlackKing>(bk);
+			//	//b.place<Knight>(bk.knight0(), WHITE);
+			//	//b.place<Knight>(bk.knight1(), WHITE);
+			//	b.place<Knight>(bk.knight2(), WHITE);
+			//	b.place<Knight>(bk.knight3(), WHITE);
+			//	b.place<Knight>(bk.knight4(), WHITE);
+			//	b.place<Knight>(bk.knight5(), WHITE);
+			//	b.place<Knight>(bk.knight5(), WHITE);
+			//	b.place<Knight>(bk.knight6(), WHITE);
+			//	b.place<Knight>(bk.knight7(), WHITE);
+			//}
+			//
+			//{
+			//	Board & b = positions.emplace_back().board();
+			//
+			//	BoardSquare wk{ 'e', '3' };
+			//	b.place<WhiteKing>(wk);
+			//	b.place<Bishop>(wk.upLeft(2), BLACK);
+			//	b.place<Bishop>(wk.upRight(2), WHITE);
+			//	b.place<Queen>(wk.downLeft(2), WHITE);
+			//	b.place<Queen>(wk.downRight(2), BLACK);
+			//
+			//	BoardSquare bk{ 'e', '7' };
+			//	b.place<BlackKing>(bk);
+			//}
+			//
+			//{
+			//	Board & b = positions.emplace_back().board();
+			//
+			//	BoardSquare wk{ 'e', '3' };
+			//	b.place<WhiteKing>(wk);
+			//	b.place<Rook>(wk.up(4), BLACK);
+			//
+			//	BoardSquare bk{ 'c', '5' };
+			//	b.place<BlackKing>(bk);
+			//	b.place<Rook>(bk.right(4), WHITE);
+			//
+			//	Board & b2 = positions.emplace_back(positions.back()).board();
+			//	b2.place<Bishop>(wk.upRight(3), BLACK);
+			//	b2.place<Bishop>(bk.upRight(2), WHITE);
+			//
+			//	Board & b3 = positions.emplace_back(positions.back()).board();
+			//	b3.place<Queen>(bk.upLeft(2), WHITE);
+			//	b3.place<Queen>(wk.downRight(2), BLACK);
+			//}
+			//
+			//{
+			//	Board & b = positions.emplace_back().board();
+			//
+			//	BoardSquare wk{ 'f', '4' };
+			//	b.place<WhiteKing>(wk);
+			//	b.place<BlackPawn>(wk.upLeftOne());
+			//	b.place<BlackPawn>(wk.upRightOne());
+			//
+			//	BoardSquare bk{ 'c', '5' };
+			//	b.place<BlackKing>(bk);
+			//	b.place<WhitePawn>(bk.downLeftOne());
+			//	b.place<WhitePawn>(bk.downRightOne());
+			//}
+			//
+			//{
+			//	Board & b = positions.emplace_back().board();
+			//
+			//	BoardSquare wk{ 'e', '3' };
+			//	b.place<Queen>(wk.up(3), BLACK);
+			//	b.place<BlackPawn>(wk.upLeftOne());
+			//	b.place<WhitePawn>(wk.downLeftOne());
+			//
+			//
+			//	BoardSquare bk{ 'c', '6' };
+			//	b.place<Queen>(bk.down(3), WHITE);
+			//	b.place<WhitePawn>(bk.downRightOne());
+			//	b.place<BlackPawn>(bk.upLeftOne());
+			//}
+			//
+			//{
+			//	Board & b = positions.emplace_back().board();
+			//
+			//	BoardSquare s{ 5, 4 };
+			//	b.place<pieces::Knight>(s, WHITE);
+			//	b.place<pieces::Queen>(s.right(), WHITE);
+			//	b.place<pieces::Bishop>(s.up(2), BLACK);
+			//	b.place<pieces::WhitePawn>(s.left(2));
+			//}
+			//
+			//{ // Pins
+			//	Position & p = positions.emplace_back();
+			//	const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
+			//	Board & b = p.board();
+			//
+			//	BoardSquare bk{ 'e', '8' };
+			//	b.place<BlackKing>(bk);
+			//	b.place<WhiteKing>(BoardSquare{ 'c', '1' });
+			//	b.place<Rook>(bk.down(2), BLACK);
+			//	b.place<Queen>(bk.down(5), WHITE);
+			//} 
+			//
+			//{ // Pins
+			//	Position & p = positions.emplace_back();
+			//	const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
+			//	Board & b = p.board();
+			//
+			//	BoardSquare bk{ 'e', '8' };
+			//	b.place<BlackKing>(bk);
+			//	b.place<WhiteKing>(BoardSquare{ 'c', '1' });
+			//	b.place<Knight>(bk.down(2), BLACK);
+			//	b.place<Queen>(bk.down(5), WHITE);
+			//}
+			//
+			//{ // Pins
+			//	Position & p = positions.emplace_back();
+			//	const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
+			//	Board & b = p.board();
+			//
+			//	BoardSquare bk{ 'a', '4' };
+			//	b.place<BlackKing>(bk);
+			//	b.place<WhiteKing>(BoardSquare{ 'd', '1' });
+			//	b.place<BlackPawn>(bk.right(3));
+			//	b.place<Queen>(bk.right(7), WHITE);
+			//}
+			//
+			//{ // Pins
+			//	Position & p = positions.emplace_back();
+			//	Board & b = p.board();
+			//
+			//	b.place<WhiteKing>(BoardSquare{ 'b', '3' });
+			//	b.place<BlackKing>(BoardSquare{ 'a', '8' });
+			//	b.place<WhitePawn>(BoardSquare{ 'f', '7' });
+			//	b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+			//	b.place<Bishop>(BoardSquare{ 'e', '8' }, BLACK);
+			//}
+			//
+			//{ // Block and Capture Attacker
+			//	Position & p = positions.emplace_back();
+			//	Board & b = p.board();
+			//
+			//	b.place<WhiteKing>(BoardSquare{ 'b', '3' });
+			//	b.place<BlackKing>(BoardSquare{ 'a', '8' });
+			//	b.place<WhitePawn>(BoardSquare{ 'h', '7' });
+			//	b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+			//}
+			//
+			//{ // Block and Capture Attacker
+			//	Position & p = positions.emplace_back();
+			//	Board & b = p.board();
+			//
+			//	b.place<WhiteKing>(BoardSquare{ 'b', '3' });
+			//	b.place<BlackKing>(BoardSquare{ 'a', '8' });
+			//	b.place<WhitePawn>(BoardSquare{ 'f', '6' });
+			//	b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+			//}
+			//
+			//{ // Block and Capture Attacker
+			//	Position & p = positions.emplace_back();
+			//	Board & b = p.board();
+			//
+			//	b.place<WhiteKing>(BoardSquare{ 'b', '3' });
+			//	b.place<BlackKing>(BoardSquare{ 'a', '8' });
+			//	b.place<Knight>(BoardSquare{ 'f', '6' }, WHITE);
+			//	b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+			//}
+			//
+			//{ // Block and Capture Attacker
+			//	Position & p = positions.emplace_back();
+			//	Board & b = p.board();
+			//
+			//	b.place<WhiteKing>(BoardSquare{ 'b', '3' });
+			//	b.place<BlackKing>(BoardSquare{ 'b', '8' });
+			//	b.place<Rook>(BoardSquare{ 'f', '4' }, WHITE);
+			//	b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+			//}
+			//
+			//{ // Block and Capture Attacker
+			//	Position & p = positions.emplace_back();
+			//	Board & b = p.board();
+			//
+			//	b.place<WhiteKing>(BoardSquare{ 'b', '3' });
+			//	b.place<BlackKing>(BoardSquare{ 'b', '8' });
+			//	b.place<Bishop>(BoardSquare{ 'b', '7' }, WHITE);
+			//	b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+			//}
+			//
+			//{ // Block and Capture Attacker
+			//	Position & p = positions.emplace_back();
+			//	Board & b = p.board();
+			//
+			//	b.place<WhiteKing>(BoardSquare{ 'b', '3' });
+			//	b.place<BlackKing>(BoardSquare{ 'b', '8' });
+			//	b.place<Rook>(BoardSquare{ 'f', '4' }, WHITE);
+			//	b.place<Bishop>(BoardSquare{ 'b', '7' }, WHITE);
+			//	b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+			//}
 		}
 
 		void boardSquare()
@@ -819,6 +819,7 @@ namespace forge
 		{
 			for (const auto & p : positions) {
 				const forge::Board & b = p.board();
+				b.print();
 
 				forge::MoveGenerator2 mg2;
 				forge::MoveList moves =
@@ -842,6 +843,10 @@ namespace forge
 					const auto & elem = moves.at(i);
 
 					guten::core::Matrix mini = elem.position.board().getMiniBoard();
+					BoardSquare from = elem.move.from();
+					BoardSquare to = elem.move.to();
+					mini.at(from.row(), from.col()).color.setbg(guten::color::cyan);
+					mini.at(to.row(), to.col()).color.setbg(guten::color::lightcyan);
 
 					guten::core::Matrix miniText;
 					guten::Size sz = mini.size();

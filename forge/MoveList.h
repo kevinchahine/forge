@@ -68,7 +68,8 @@ namespace forge
 #ifdef _DEBUG
 		// 3.) --- Make sure it was a legal move ---
 		if (AttackChecker::isKingAttacked(pair.position.board(), currPos.moveCounter().isWhitesTurn())) {
-			printError(move, __FILE__);
+			printError(move, __FUNCTION__);
+			if (move == Move{"a8e2"} /*{ a8g1 }*/) throw std::exception();
 
 			this->pop_back(); // Illegal Move
 		}

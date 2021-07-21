@@ -89,6 +89,7 @@ namespace forge
 		template<> void move<pieces::Rook>(Move move);
 		template<> void move<pieces::WhitePawn>(Move move);
 		template<> void move<pieces::BlackPawn>(Move move);
+		template<> void move<pieces::Pawn>(Move move);
 		template<> void move<pieces::Piece>(Move move);
 
 		bool isOccupied(BoardSquare square) const { return occupied()[square]; }

@@ -31,11 +31,17 @@ namespace forge
 		// primary specialization works for all but Kings, Rooks and Pawns
 		template <typename PIECE_T> void move(Move move) {
 #ifndef _DEBUG
-			///if (m_board.at(move.from()).isKing() == false) {
-			///	std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
-			///		<< ": This method only moves Kings\n";
-			///}
+			if (m_board.at(move.from()).isKing() == false) {
+				std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+					<< ": This method only moves Kings\n";
+			}
 #endif // _DEBUG
+
+			static_assert(
+				(!std::is_base_of<PIECE_T, pieces::King>() &&
+				!std::is_base_of<PIECE_T, pieces::Pawn>() &&
+				!std::is_same<PIECE_T, pieces::Rook>()),
+				"This specialization can't be called on Kings, Rooks or Pawns.");
 
 			// --- Was this a capture? ---
 			if (m_board.isOccupied(move.to()))
@@ -48,23 +54,24 @@ namespace forge
 
 			m_moveCounter++;
 		}
-		///template<> void move<pieces::King>(Move move);
-		///template<> void move<pieces::WhiteKing>(Move move);
-		///template<> void move<pieces::BlackKing>(Move move);
+		template<> void move<pieces::King>(Move move);
+		template<> void move<pieces::WhiteKing>(Move move);
+		template<> void move<pieces::BlackKing>(Move move);
 		///template<> void move<pieces::Queen>(Move move);
 		///template<> void move<pieces::Bishop>(Move move);
 		///template<> void move<pieces::Knight>(Move move);
 		///template<> void move<pieces::QBN_Piece>(Move move);
-		///template<> void move<pieces::Rook>(Move move);
+		template<> void move<pieces::Rook>(Move move);
 		// Intended to be used from class MoveGenerator to move pieces
 		// efficiently. 
 		// Automatically applies "50 move rule" and increments move counter.
 		// !!! Warning: This method is intended to be more efficient than robust.
 		// Calling incorrectly can cause errors. Follow these rules when calling.
 		//	- 'from' should point to piece of player whos turn it is.
-		//	- move should a simple move: (not a capture, not promotion, not castling, not enpassent)
+		// Works with captures, promotions, castling and enpassent
 		template<> void move<pieces::WhitePawn>(Move move);
 		template<> void move<pieces::BlackPawn>(Move move);
+		template<> void move<pieces::Pawn>(Move move);
 		template<> void move<pieces::Piece>(Move move);
 
 		// TODO: Add capture() and push() versions of move() that will be more efficient

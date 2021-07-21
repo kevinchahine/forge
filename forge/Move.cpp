@@ -121,6 +121,14 @@ namespace forge
 		return is;
 	}
 
+	Move::Move(const std::string & notation)
+	{
+		// --- LAN notation ---
+		from(notation[0], notation[1]);
+		to(notation[2], notation[3]);
+		if (notation.size() >= 5)	promotion(notation[4]);
+	}
+
 	void Move::from(char file, char rank)
 	{
 		file = tolower(file);

@@ -213,6 +213,18 @@ namespace forge
 		place<pieces::Empty>(move.from(), true);
 	}
 
+	template<> void Board::move<pieces::Pawn>(Move move)
+	{
+		if (isWhite(move.from())) {
+			// === White Pawn ===
+			this->move<pieces::WhitePawn>(move);
+		}
+		else {
+			// === Black Pawn ===
+			this->move<pieces::BlackPawn>(move);
+		}
+	}
+
 	template<> void Board::move<pieces::Piece>(Move move)
 	{
 		pieces::Piece p = this->at(move.from());

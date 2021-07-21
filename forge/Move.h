@@ -21,7 +21,7 @@ namespace forge
 			m_val((promotion.val().to_ulong() << 12) | (to.val() << 6) | (from.val())) {}
 		// Constructs move based on string
 		// string can be stored in PGN or LAN notation
-		Move(std::string notation);
+		Move(const std::string & notation);
 		Move(const Move &) = default;
 		Move(Move &&) noexcept = default;
 		~Move() noexcept = default;
