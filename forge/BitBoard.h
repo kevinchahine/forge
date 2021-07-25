@@ -190,100 +190,84 @@ namespace forge
 		return bb;
 	}
 
-	template<>
-	BitBoard BitBoard::mask<directions::LShape>(BoardSquare center)
-	{
-		BitBoard bb;
-
-		if (center.isKnight0InBounds()) bb[center.knight0()] = 1;
-		if (center.isKnight1InBounds()) bb[center.knight1()] = 1;
-		if (center.isKnight2InBounds()) bb[center.knight2()] = 1;
-		if (center.isKnight3InBounds()) bb[center.knight3()] = 1;
-		if (center.isKnight4InBounds()) bb[center.knight4()] = 1;
-		if (center.isKnight5InBounds()) bb[center.knight5()] = 1;
-		if (center.isKnight6InBounds()) bb[center.knight6()] = 1;
-		if (center.isKnight7InBounds()) bb[center.knight7()] = 1;
-
-		return bb;
-	}
 
 	template<>
 	inline BitBoard BitBoard::mask<directions::Knight0>(BoardSquare center)
 	{
 		BitBoard bb;
-		
-		if (center.isKnight0InBounds()) bb[center.knight0()] = 1; 
-		
+
+		if (center.isKnight0InBounds()) bb[center.knight0()] = 1;
+
 		return bb;
 	}
-	
+
 	template<>
 	inline BitBoard BitBoard::mask<directions::Knight1>(BoardSquare center)
 	{
 		BitBoard bb;
-		
-		if (center.isKnight1InBounds()) bb[center.knight1()] = 1; 
-		
+
+		if (center.isKnight1InBounds()) bb[center.knight1()] = 1;
+
 		return bb;
 	}
-	
+
 	template<>
 	inline BitBoard BitBoard::mask<directions::Knight2>(BoardSquare center)
 	{
 		BitBoard bb;
-		
-		if (center.isKnight2InBounds()) bb[center.knight2()] = 1; 
-		
+
+		if (center.isKnight2InBounds()) bb[center.knight2()] = 1;
+
 		return bb;
 	}
-	
+
 	template<>
 	inline BitBoard BitBoard::mask<directions::Knight3>(BoardSquare center)
 	{
 		BitBoard bb;
-		
-		if (center.isKnight3InBounds()) bb[center.knight3()] = 1; 
-		
+
+		if (center.isKnight3InBounds()) bb[center.knight3()] = 1;
+
 		return bb;
 	}
-	
+
 	template<>
 	inline BitBoard BitBoard::mask<directions::Knight4>(BoardSquare center)
 	{
 		BitBoard bb;
-		
-		if (center.isKnight4InBounds()) bb[center.knight4()] = 1; 
-		
+
+		if (center.isKnight4InBounds()) bb[center.knight4()] = 1;
+
 		return bb;
 	}
-	
+
 	template<>
 	inline BitBoard BitBoard::mask<directions::Knight5>(BoardSquare center)
 	{
 		BitBoard bb;
-		
-		if (center.isKnight5InBounds()) bb[center.knight5()] = 1; 
-		
+
+		if (center.isKnight5InBounds()) bb[center.knight5()] = 1;
+
 		return bb;
 	}
-	
+
 	template<>
 	inline BitBoard BitBoard::mask<directions::Knight6>(BoardSquare center)
 	{
 		BitBoard bb;
-		
-		if (center.isKnight6InBounds()) bb[center.knight6()] = 1; 
-		
+
+		if (center.isKnight6InBounds()) bb[center.knight6()] = 1;
+
 		return bb;
 	}
-	
+
 	template<>
 	inline BitBoard BitBoard::mask<directions::Knight7>(BoardSquare center)
 	{
 		BitBoard bb;
-		
-		if (center.isKnight7InBounds()) bb[center.knight7()] = 1; 
-		
+
+		if (center.isKnight7InBounds()) bb[center.knight7()] = 1;
+
 		return bb;
 	}
 
@@ -455,5 +439,4 @@ namespace forge
 
 		return negDiag;
 	}
-
 } // namespace forge

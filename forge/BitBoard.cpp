@@ -5,6 +5,26 @@
 
 namespace forge
 {
+	template<>
+	BitBoard BitBoard::mask<directions::LShape>(BoardSquare center)
+	{
+		BitBoard bb;
+
+		// TODO: OPTIMIZE: This can be optimized to bitwise operations only
+		// no ifs. Also consider making it inline
+
+		if (center.isKnight0InBounds()) bb[center.knight0()] = 1;
+		if (center.isKnight1InBounds()) bb[center.knight1()] = 1;
+		if (center.isKnight2InBounds()) bb[center.knight2()] = 1;
+		if (center.isKnight3InBounds()) bb[center.knight3()] = 1;
+		if (center.isKnight4InBounds()) bb[center.knight4()] = 1;
+		if (center.isKnight5InBounds()) bb[center.knight5()] = 1;
+		if (center.isKnight6InBounds()) bb[center.knight6()] = 1;
+		if (center.isKnight7InBounds()) bb[center.knight7()] = 1;
+
+		return bb;
+	}
+
 	std::ostream & operator<<(std::ostream & os, const BitBoard & bb)
 	{
 		for (size_t bit = 0; bit < 64; bit++) {

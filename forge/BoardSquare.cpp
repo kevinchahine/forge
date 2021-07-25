@@ -14,12 +14,3 @@ namespace forge
 		return s;
 	}
 } // namespace forge
-
-std::ostream & forge::operator<<(std::ostream & os, const BoardSquare & pos)
-{
-	os << pos.toString();
-
-	return os;
-}
-
-

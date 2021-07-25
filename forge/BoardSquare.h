@@ -185,7 +185,12 @@ namespace forge
 		//	return BoardSquare();
 		//}
 
-		friend std::ostream & operator<<(std::ostream & os, const BoardSquare & pos);
+		friend std::ostream & operator<<(std::ostream & os, const BoardSquare & pos)
+		{
+			os << pos.toString();
+
+			return os;
+		}
 
 	private:
 		// bits 0, 1, 2	- col coordinate

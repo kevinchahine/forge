@@ -50,6 +50,7 @@ namespace forge
 
 		m_heuristicPtr = std::make_unique<T>();
 
-		m_heuristicPtr->weights() = weights;
+		//TODO: I don't know.
+		//m_heuristicPtr->weights() = weights;
 	}
 } // namespace forge

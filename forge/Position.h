@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef POSITION_H
+#define POSITION_H
+
 #include "Board.h"
 #include "MoveCounter.h"
 #include "FiftyMoveRule.h"
@@ -103,3 +106,5 @@ namespace forge
 } // namespace forge
 
 #include "PositionDefinitions.h"
+
+#endif //!POSITION_H

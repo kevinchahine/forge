@@ -1249,8 +1249,8 @@ namespace forge
 					unique_ptr<forge::MinimaxSolver> bController = make_unique<forge::MinimaxSolver>();
 
 					// --- Move heuristics into solvers ---
-					wController->heuristicPtr() = move(wHeur);
-					bController->heuristicPtr() = move(bHeur);
+					wController->heuristicPtr() = std::move(wHeur);
+					bController->heuristicPtr() = std::move(bHeur);
 
 					// --- Move Solvers into ChessMatch ---
 					match.whiteController() = std::move(wController);
