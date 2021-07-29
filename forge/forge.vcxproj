@@ -186,6 +186,7 @@
     <ClCompile Include="SolverBase.cpp" />
     <ClCompile Include="StopWatch.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="TestMoveGen.cpp" />
     <ClCompile Include="TextView.cpp" />
     <ClCompile Include="Threats.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -230,6 +231,8 @@
     <ClInclude Include="AttackChecker.h" />
     <ClInclude Include="Attackers.h" />
     <ClInclude Include="AttackersDefinitions.h" />
+    <ClInclude Include="BitBoardDefinitions.h" />
+    <ClInclude Include="HashCombine.h" />
     <ClInclude Include="KingAttackers.h" />
     <ClInclude Include="BitBoard.h" />
     <ClInclude Include="Board.h" />
@@ -281,6 +284,7 @@
     <ClInclude Include="Solvers.hpp" />
     <ClInclude Include="StopWatch.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="TestMoveGen.h" />
     <ClInclude Include="TextView.h" />
     <ClInclude Include="Threats.h" />
     <ClInclude Include="ThreatsDefinitions.h" />

@@ -8,7 +8,9 @@ namespace forge
 	class FiftyMoveRule
 	{
 	public:
+		friend struct std::hash<FiftyMoveRule>;
 
+	public:
 		// Call at start of game.
 		void reset() { halfMoveCount = -1; }
 
@@ -42,3 +44,14 @@ namespace forge
 		int8_t halfMoveCount = 0;
 	};
 } // namespace forge
+
+namespace std
+{
+	template<> struct hash<forge::FiftyMoveRule>
+	{
+		size_t operator()(const forge::FiftyMoveRule& obj) const noexcept
+		{
+			return obj.halfMoveCount;
+		}
+	};
+} // namespace std

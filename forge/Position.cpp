@@ -30,7 +30,7 @@ namespace forge
 				<< ": This method only moves Kings\n";
 		}
 #endif // _DEBUG
-
+		
 		if (m_board.isWhite(move.from())) {
 			this->move<pieces::WhiteKing>(move);
 		}
@@ -73,44 +73,64 @@ namespace forge
 		m_moveCounter++;
 	}
 
-	///	template<> void Position::move<pieces::Queen>(Move move)
-	///	{
-	///		m_board.move<pieces::Queen>(move);
-	///
-	///		m_fiftyMoveRule.update();
-	///
-	///		m_moveCounter++;
-	///	}
-	///
-	///	template<> void Position::move<pieces::Bishop>(Move move)
-	///	{
-	///		m_board.move<pieces::Bishop>(move);
-	///
-	///		m_fiftyMoveRule.update();
-	///
-	///		m_moveCounter++;
-	///	}
-	///
-	///	template<> void Position::move<pieces::Knight>(Move move)
-	///	{
-	///		m_board.move<pieces::Knight>(move);
-	///
-	///		m_fiftyMoveRule.update();
-	///
-	///		m_moveCounter++;
-	///	}
-	///
-	///	template<> void Position::move<pieces::QBN_Piece>(Move move)
-	///	{
-	///		m_board.move<pieces::QBN_Piece>(move);
-	///
-	///		m_fiftyMoveRule.update();
-	///
-	///		m_moveCounter++;
-	///	}
+	template<> void Position::move<pieces::Queen>(Move move)
+	{
+		// --- Was this a capture? ---
+		if (m_board.isOccupied(move.to()))
+			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
+
+		m_board.move<pieces::Queen>(move);
+		
+		m_fiftyMoveRule.update();
+	
+		m_moveCounter++;
+	}
+	
+	template<> void Position::move<pieces::Bishop>(Move move)
+	{
+		// --- Was this a capture? ---
+		if (m_board.isOccupied(move.to()))
+			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
+
+		m_board.move<pieces::Bishop>(move);
+	
+		m_fiftyMoveRule.update();
+	
+		m_moveCounter++;
+	}
+	
+	template<> void Position::move<pieces::Knight>(Move move)
+	{
+		// --- Was this a capture? ---
+		if (m_board.isOccupied(move.to()))
+			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
+
+		m_board.move<pieces::Knight>(move);
+	
+		m_fiftyMoveRule.update();
+	
+		m_moveCounter++;
+	}
+	
+	template<> void Position::move<pieces::QBN_Piece>(Move move)
+	{
+		// --- Was this a capture? ---
+		if (m_board.isOccupied(move.to()))
+			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
+		
+		m_board.move<pieces::QBN_Piece>(move);
+	
+		m_fiftyMoveRule.update();
+	
+		m_moveCounter++;
+	}
 
 	template<> void Position::move<pieces::Rook>(Move move)
 	{
+		// --- Was this a capture? ---
+		if (m_board.isOccupied(move.to()))
+			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
+
 		m_board.move<pieces::Rook>(move);
 
 		m_fiftyMoveRule.update();
@@ -179,7 +199,7 @@ namespace forge
 	template<> void Position::move<pieces::Piece>(Move move)
 	{
 		pieces::Piece p = m_board.at(move.from());
-
+		
 		if (p.isPawn()) {
 			if (p.isWhite()) {
 				this->move<pieces::WhitePawn>(move);

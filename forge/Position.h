@@ -1,8 +1,8 @@
 #pragma once
 
-#ifndef POSITION_H
-#define POSITION_H
+#include <type_traits>
 
+#include "HashCombine.h"
 #include "Board.h"
 #include "MoveCounter.h"
 #include "FiftyMoveRule.h"
@@ -24,6 +24,7 @@ namespace forge
 	public:
 		// --- Declare Friend Classes ---
 		friend MoveGenerator;
+		friend struct std::hash<Position>;
 
 		void reset();
 
@@ -32,38 +33,14 @@ namespace forge
 
 		// ----- Moves (both push moves and captures) -----
 		// primary specialization works for all but Kings, Rooks and Pawns
-		template <typename PIECE_T> void move(Move move) {
-#ifndef _DEBUG
-			if (m_board.at(move.from()).isKing() == false) {
-				std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
-					<< ": This method only moves Kings\n";
-			}
-#endif // _DEBUG
-
-			static_assert(
-				(!std::is_base_of<PIECE_T, pieces::King>() &&
-				!std::is_base_of<PIECE_T, pieces::Pawn>() &&
-				!std::is_same<PIECE_T, pieces::Rook>()),
-				"This specialization can't be called on Kings, Rooks or Pawns.");
-
-			// --- Was this a capture? ---
-			if (m_board.isOccupied(move.to()))
-				m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
-
-			m_fiftyMoveRule.update();
-			// TODO: Castling
-
-			m_board.move<PIECE_T>(move);
-
-			m_moveCounter++;
-		}
+		template <typename PIECE_T> void move(Move move);
 		template<> void move<pieces::King>(Move move);
 		template<> void move<pieces::WhiteKing>(Move move);
 		template<> void move<pieces::BlackKing>(Move move);
-		///template<> void move<pieces::Queen>(Move move);
-		///template<> void move<pieces::Bishop>(Move move);
-		///template<> void move<pieces::Knight>(Move move);
-		///template<> void move<pieces::QBN_Piece>(Move move);
+		template<> void move<pieces::Queen>(Move move);
+		template<> void move<pieces::Bishop>(Move move);
+		template<> void move<pieces::Knight>(Move move);
+		template<> void move<pieces::QBN_Piece>(Move move);
 		template<> void move<pieces::Rook>(Move move);
 		// Intended to be used from class MoveGenerator to move pieces
 		// efficiently. 
@@ -84,6 +61,17 @@ namespace forge
 		const FiftyMoveRule & fiftyMoveRule() const { return m_fiftyMoveRule; }
 		const MoveCounter & moveCounter() const { return m_moveCounter; }
 
+		std::size_t hash() const noexcept 
+		{
+			std::size_t seed = 0;
+
+			hash_combine(seed, this->board());
+			hash_combine(seed, this->m_fiftyMoveRule);
+			hash_combine(seed, this->m_moveCounter);
+
+			return seed;
+		}
+
 		// Only compares board and current payers turn.
 		bool operator==(const Position & rhs) const
 		{
@@ -92,6 +80,13 @@ namespace forge
 				(m_board == rhs.m_board);
 		}
 		bool operator!=(const Position & rhs) const { return !(*this == rhs); }
+
+		bool operator<(const Position& rhs) const noexcept
+		{
+			return 
+				this->hash() < 
+				rhs.hash();
+		}
 
 	protected:
 		Board m_board;
@@ -107,4 +102,21 @@ namespace forge
 
 #include "PositionDefinitions.h"
 
-#endif //!POSITION_H
+// --- Inject hash into std namespace
+namespace std
+{
+	template<> struct hash<forge::Position>
+	{
+	public:
+		std::size_t operator()(const forge::Position& pos) const noexcept
+		{
+			std::size_t seed = 0;
+
+			hash_combine(seed, pos.board());
+			hash_combine(seed, pos.m_fiftyMoveRule);
+			hash_combine(seed, pos.m_moveCounter);
+
+			return seed;
+		}
+	};
+}

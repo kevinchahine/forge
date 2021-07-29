@@ -1,7 +1,5 @@
 #pragma once
 
-///#include "BitBoard.h"
-
 #include <iostream>
 #include <string>
 
@@ -22,23 +20,23 @@ namespace forge
 		// file: ['a' - 'h'] (case insensitive)
 		// rank: [ 1  -  8 ]
 		BoardSquare(char file, char rank) :
-			m_val( (tolower(file) - 'a') | ((7 - (tolower(rank) - '1')) << 3) ) {}
-		BoardSquare(const std::string & coord);
-		BoardSquare(const BoardSquare &) = default;
-		BoardSquare(BoardSquare &&) noexcept = default;
+			m_val((tolower(file) - 'a') | ((7 - (tolower(rank) - '1')) << 3)) {}
+		BoardSquare(const std::string& coord);
+		BoardSquare(const BoardSquare&) = default;
+		BoardSquare(BoardSquare&&) noexcept = default;
 		virtual ~BoardSquare() noexcept = default;
-		BoardSquare & operator=(const BoardSquare &) = default;
-		BoardSquare & operator=(BoardSquare &&) noexcept = default;
+		BoardSquare& operator=(const BoardSquare&) = default;
+		BoardSquare& operator=(BoardSquare&&) noexcept = default;
 		//BoardSquare & operator++(int) { ++m_val; }
 		//BoardSquare operator++() { }
 
 		//bool operator==(const BoardSquare & bs) const { return this->m_val == bs.m_val; }
 		//bool operator!=(const BoardSquare & bs) const { return this->m_val != bs.m_val; }
-		
+
 		bool operator==(BoardSquare bs) const { return this->m_val == bs.m_val; }
 		bool operator!=(BoardSquare bs) const { return this->m_val != bs.m_val; }
 
-		void fromString(const std::string & str);
+		void fromString(const std::string& str);
 
 		// Return coordinates in long algebraic notation
 		std::string toString() const;
@@ -139,7 +137,7 @@ namespace forge
 		}
 
 		// Warning: Only call if row != 0
-		BoardSquare upOne() const {	return m_val - 8; }
+		BoardSquare upOne() const { return m_val - 8; }
 		BoardSquare up(uint8_t num) const { return m_val - num * 8; }
 
 		// Warning: Only call if row != 7
@@ -185,7 +183,7 @@ namespace forge
 		//	return BoardSquare();
 		//}
 
-		friend std::ostream & operator<<(std::ostream & os, const BoardSquare & pos)
+		friend std::ostream& operator<<(std::ostream& os, const BoardSquare& pos)
 		{
 			os << pos.toString();
 
@@ -205,3 +203,14 @@ namespace forge
 		static const uint8_t is_invalid_mask = 0b01'000'000;
 	};
 } // namespace forge
+
+namespace std
+{
+	template<> struct hash<forge::BoardSquare>
+	{
+		size_t operator()(forge::BoardSquare const& bs) const noexcept
+		{
+			return bs.val();
+		}
+	};
+} // namespace std

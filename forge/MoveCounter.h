@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <type_traits>	// for std::hash<>
 
 namespace forge
 {
@@ -26,3 +27,15 @@ namespace forge
 		int count = 0;
 	};
 } // namespace forge
+
+// --- Inject hash into std namespace ---
+namespace std
+{
+	template<> struct hash<forge::MoveCounter>
+	{
+		std::size_t operator()(const forge::MoveCounter& b) const noexcept
+		{
+			return b.count;
+		}
+	};
+}

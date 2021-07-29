@@ -24,6 +24,7 @@ namespace forge
 		friend class MoveGenerator;
 		friend class GameState;
 		friend class AttackChecker;
+		friend struct std::hash<Board>;
 
 		// Removes all pieces except Kings.
 		// Places Kings in there starting locations.
@@ -226,3 +227,13 @@ namespace forge
 } // namespace forge
 
 #include "BoardDefinitions.h"
+
+// --- Inject hash into std namespace
+namespace std
+{
+	template<> struct hash<forge::Board>
+	{
+	public:
+		std::size_t operator()(const forge::Board& b) const noexcept;
+	};
+}

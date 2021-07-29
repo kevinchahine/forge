@@ -51,12 +51,12 @@
     <Filter Include="Directions">
       <UniqueIdentifier>{7dd17e2a-86d4-4317-9f2f-fbb56a6da090}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{d237e2f4-5433-4493-8f43-a023e6442f8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BitBoard.cpp">
@@ -209,6 +209,12 @@
     <ClCompile Include="Position.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="TestMoveGen.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -300,9 +306,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Test.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="BitBoard.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -492,5 +495,15 @@
     <ClInclude Include="PositionDefinitions.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestMoveGen.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="BitBoardDefinitions.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="HashCombine.h" />
   </ItemGroup>
 </Project>

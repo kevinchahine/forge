@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "HashCombine.h"
 
 #include <Guten/iocolor.h>
 #include <Guten/Color.h>
@@ -441,3 +442,22 @@ namespace forge
 #endif // _DEBUG
 	}
 } // namespace forge
+
+namespace std
+{
+	std::size_t hash<forge::Board>::operator()(const forge::Board& b) const noexcept
+	{
+		std::size_t seed = 0;
+
+		hash_combine(seed, b.m_whites);
+		hash_combine(seed, b.m_whites);
+		hash_combine(seed, b.m_blacks);
+		hash_combine(seed, b.m_bishops);
+		hash_combine(seed, b.m_rooks);
+		hash_combine(seed, b.m_pawns);
+		hash_combine(seed, b.m_whiteKing);
+		hash_combine(seed, b.m_blackKing);
+
+		return seed;
+	}
+} // namespace std

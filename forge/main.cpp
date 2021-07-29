@@ -18,6 +18,9 @@ Designed to be compatible with a variety of displays including:
 */
 
 #include "Test.h"	// Contains all necessary includes
+#include "TestMoveGen.h"
+
+#include <set> // remove
 
 using namespace std;
 
@@ -54,7 +57,7 @@ int main(int argc, char ** argv)
 	//forge::test::movegen::findKingAttackers();
 	//forge::test::movegen::genKingMoves();
 	//forge::test::moveKings();
-	forge::test::legalMoveGenerator();
+	//forge::test::legalMoveGenerator();
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();
@@ -69,8 +72,18 @@ int main(int argc, char ** argv)
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
 
+	// Rename stockfish and forge
+	forge::test::movegen::lc0AndForge();
+
+	set<forge::Position> setA, setB, setC;
+
+	set_intersection(
+		setA.begin(), setA.end(),
+		setB.begin(), setB.end(),
+		inserter(setC, setC.end()));
+
 	cout << "Done...";
-	//this_thread::sleep_for(chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 	cin.get();
 	return 0;
 }
