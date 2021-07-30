@@ -18,7 +18,7 @@ namespace forge
 		template <typename KNIGHT_DIRECTION_T>
 		static BoardSquare findAttackingKnight(BoardSquare attackedSquare, const Board & board, BitBoard theirs);
 
-		// Creates a BitBoard of all the cells that some attacker can reach until it hits an obstacle
+		// Creates a BitBoard of allToFen the cells that some attacker can reach until it hits an obstacle
 		// This method treats both pieces of colors as obstacles. 
 		// This way an attacker can "attack" its opponents as well as its own pieces.
 		template<typename RAY_DIRECTION_T> 

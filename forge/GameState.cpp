@@ -43,7 +43,7 @@ namespace forge
 		const Position & currPos,
 		std::function<bool()>&& drawByRepetition)
 	{
-		// Blank out all values
+		// Blank out allToFen values
 		reset();
 
 		const Position & position = currPos;

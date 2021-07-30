@@ -41,7 +41,7 @@ namespace forge
 	
 	void Clock::resetAll()
 	{
-		// Reassign all fields with default values
+		// Reassign allToFen fields with default values
 		(*this) = Clock{};
 	}
 	

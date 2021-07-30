@@ -76,7 +76,7 @@ namespace forge
 
 		namespace piece
 		{
-			void all();
+			void allToFen();
 		} // namespace pieces
 
 		namespace direction
@@ -128,6 +128,12 @@ namespace forge
 			void pawn();
 
 		} // namespace piece_moves
+
+		namespace fen {
+			void allToFen();
+
+			void allFromFen();
+		} // namespace fen
 
 		namespace attacked_squares
 		{

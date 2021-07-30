@@ -26,7 +26,7 @@ namespace forge
 		BitBoard bb;
 
 		// TODO: Optimize: This can really be optimized. 
-		// We do not need a loop at all. Only bitwise operations.
+		// We do not need a loop at allToFen. Only bitwise operations.
 		while (begin.operator!=(end)) {
 			bb[begin] = 1;	// Set bit to 1
 

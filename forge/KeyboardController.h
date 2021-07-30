@@ -18,7 +18,7 @@ namespace forge
 	private:
 		
 		// returns true if 'move' is found in 'legalMoves'
-		// 'legalMoves' must contain all valid moves for the current player
+		// 'legalMoves' must contain allToFen valid moves for the current player
 		// for this method to work properly
 		static MoveList::const_iterator findMatchingMove(Move move, const MoveList & legalMoves);
 

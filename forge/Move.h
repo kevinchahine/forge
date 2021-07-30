@@ -115,7 +115,7 @@ namespace forge
 		// the second for the coordinate their moving to (to).
 		// ex: User is prompted to make a move.
 		// User selects 'e4'
-		// Display highlights 'e4' square and all the legal moves for that piece
+		// Display highlights 'e4' square and allToFen the legal moves for that piece
 		// User selects 'e5'
 		// Game applies the move 'e4e5'
 		// When isPartial() returns true, to() and from() will be equal.

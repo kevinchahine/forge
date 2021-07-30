@@ -64,26 +64,26 @@ namespace forge
 				"Instead call a fully specialized overload instead.");
 		}
 
-		// Shift all bits up a number of rows
+		// Shift allToFen bits up a number of rows
 		template<>
 		void shift<directions::Up>(uint8_t numberOfRows) {
 			(*this) = (*this) >> (numberOfRows << 3);
 		}
 
-		// Shift all bits down a number of rows
+		// Shift allToFen bits down a number of rows
 		template<>
 		void shift<directions::Down>(uint8_t numberOfRows) {
 			(*this) = (*this) << (numberOfRows << 3);
 		}
 
-		// Shift all bits left a number of cols.
+		// Shift allToFen bits left a number of cols.
 		// Bits might overflow into downward rows 
 		template<>
 		void shift<directions::Left>(uint8_t numberOfCols) {
 			(*this) = (*this) >> numberOfCols;
 		}
 
-		// Shift all bits left a number of cols.
+		// Shift allToFen bits left a number of cols.
 		// Bits might overflow into upward rows 
 		template<>
 		void shift<directions::Right>(uint8_t numberOfCols) {

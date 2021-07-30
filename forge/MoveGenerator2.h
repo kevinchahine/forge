@@ -54,7 +54,7 @@ namespace forge
 		//	See namespace forge::directions.
 		// theirRays - Squares containing their ray pieces that can attack in direction of RAY_DIRECTION_T.
 		//		ex: Rooks and Queens can attack Up, Down, Left and Right
-		// ourBlockers - Squares of all our pieces that can block our King. In otherwords, all our pieces
+		// ourBlockers - Squares of allToFen our pieces that can block our King. In otherwords, allToFen our pieces
 		//		except our King.
 		template<typename DIRECTION_T>
 		bool isPinPossible() const;

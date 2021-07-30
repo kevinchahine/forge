@@ -84,7 +84,7 @@ namespace forge
 		//	- nLegalMoves - Number of legal moves at currPos
 		//	- currPos - current position game
 		//	- drawByRepetition - function that calculates a draw by repetition.
-		//		Function will need to contain in some way all the moves or positions
+		//		Function will need to contain in some way allToFen the moves or positions
 		//		that lead to currPos, and return true if currPos has been found in 
 		//		game history atleast 3 times (actually 2 times not counting 'currPos'
 		//		itself.

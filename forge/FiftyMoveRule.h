@@ -37,6 +37,10 @@ namespace forge
 		// have been made in 50 full moves (100 half moves)
 		bool isDraw() const { return halfMoveCount >= 100; }
 
+		int count() const { return halfMoveCount; }
+
+		void count(int halfMoveCount) { halfMoveCount = this->halfMoveCount; }
+
 	private:
 		// Counts the number of half moves since the last time a:
 		//	- pawn moved

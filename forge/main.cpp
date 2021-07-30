@@ -17,7 +17,7 @@ Designed to be compatible with a variety of displays including:
 	- Custom command line GUI for systems that don't support graphical output.
 */
 
-#include "Test.h"	// Contains all necessary includes
+#include "Test.h"	// Contains allToFen necessary includes
 #include "TestMoveGen.h"
 
 #include <set> // remove
@@ -36,7 +36,7 @@ int main(int argc, char ** argv)
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
-	//forge::test::piece::all();
+	//forge::test::piece::allToFen();
 	//forge::test::direction::pointingTo();
 	//forge::test::keyboardController();
 	//forge::test::clock();
@@ -50,6 +50,8 @@ int main(int argc, char ** argv)
 	//forge::test::piece_moves::knight();
 	//forge::test::piece_moves::rook();
 	//forge::test::piece_moves::pawn();
+	//forge::test::fen::allToFen();
+	//forge::test::fen::allFromFen();
 	//forge::test::pins::isPinPossible();
 	//forge::test::pins::absolutePins();
 	//forge::test::movegen::genThreatBoard();
@@ -73,14 +75,7 @@ int main(int argc, char ** argv)
 	//forge::test::ai::playApplePie();
 
 	// Rename stockfish and forge
-	forge::test::movegen::lc0AndForge();
-
-	set<forge::Position> setA, setB, setC;
-
-	set_intersection(
-		setA.begin(), setA.end(),
-		setB.begin(), setB.end(),
-		inserter(setC, setC.end()));
+	forge::test::movegen::stockfishAndForge();
 
 	cout << "Done...";
 	this_thread::sleep_for(chrono::seconds(1));

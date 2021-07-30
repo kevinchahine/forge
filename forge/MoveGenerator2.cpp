@@ -82,7 +82,7 @@ namespace forge
 			//	- Non-King captures attacker ***
 			// *** Non-King pieces that are pinned to King can only move between pinner and our King
 
-			// TODO: Find all pinned pieces here
+			// TODO: Find allToFen pinned pieces here
 			genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn(), true);
 
 			// Must evaluate pinned peices before calling this method
@@ -691,8 +691,8 @@ namespace forge
 	// Iterates from 'ray' to edge of board or until an obstacle is hit.
 	// Generates capture and push moves
 	// 'ray' - Coordinate of ray piece of which moves are to be generated
-	// 'obstacles - BitBoard of all pieces
-	// 'theirs' - BitBoard of all pieces of opposite color to piece at 'ray'
+	// 'obstacles - BitBoard of allToFen pieces
+	// 'theirs' - BitBoard of allToFen pieces of opposite color to piece at 'ray'
 	// 'legals' - MoveList of legal moves
 	// 'pos' - Current position
 	template<typename RAY_DIRECTION_T, typename PIECE_T>

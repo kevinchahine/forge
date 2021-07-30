@@ -1,5 +1,7 @@
 #include "Position.h"
 
+#include <sstream>
+
 using namespace std;
 
 namespace forge
@@ -16,10 +18,144 @@ namespace forge
 	void Position::clear()
 	{
 		m_board.reset();
-		
+
 		m_fiftyMoveRule.reset();
 
 		m_moveCounter.reset();
+	}
+
+	void Position::fromFEN(const std::string& fen)
+	{
+		// TODO: fINISH this method
+		throw std::exception("Position::fromFEN() does not work");
+
+		istringstream ss{ fen };
+
+		// 1.) --- Board and Pieces ---
+		{
+			Board& b = this->board();
+
+			BoardSquare bs{ 0, 0 };
+			char ch;
+
+			while (ss.peek() != ' ') {
+				ss >> ch;
+
+				if (isdigit(ch)) {
+					int nSpaces = ch - '0';
+
+					for (int count = 0; count < nSpaces; count++) {
+						b.place<pieces::Empty>(BoardSquare{ bs.row(), bs.col() + count });
+					}
+
+					bs = BoardSquare{ bs.row(), bs.col() + nSpaces };
+				}
+				else if (isalpha(ch)) {
+					bool isWhite = isupper(ch);
+
+					b.placePiece(bs, pieces::Piece{ ch, isWhite });
+				}
+				else if (ch == '/') {
+					bs = BoardSquare{ bs.row() + 1, 0 };
+				}
+			}
+
+			// No need to skip space explicitly.
+			// stream will do it automatically.
+		}
+
+		// 2.) --- Active Piece (Who's turn is it?) ---
+		char activePiece;
+		ss >> activePiece;
+		activePiece = tolower(activePiece);
+
+		bool isWhite = activePiece == 'w';
+
+		// 3.) --- Castling Rights ---
+		// TODO: Castling: Do this
+
+		// 4.) --- Enpassent ---
+		// TODO: Enpassent: Do this
+
+		// 5.) --- 50 Move Rule ---
+		int fiftyMoveCount;
+		ss >> fiftyMoveCount;
+		this->m_fiftyMoveRule.count(fiftyMoveCount);
+
+		// 6.) --- Full move count ---
+		int fullMoveCount;
+		ss >> fullMoveCount;
+		this->m_moveCounter.count = fullMoveCount + (isWhite ? 0 : 1);
+	}
+
+	string Position::toFEN() const
+	{
+		stringstream ss;
+
+		// 1.) --- Board and Pieces ---
+		{
+			const Board& b = this->board();
+			uint16_t emptyCount = 0;
+
+			for (uint16_t row = 0; row < 8; row++) {
+				for (uint16_t col = 0; col < 8; col++) {
+					BoardSquare bs{ row, col };
+
+					if (b.isEmpty(bs)) {
+						emptyCount++;
+					}
+					else {
+						if (emptyCount != 0) {
+							ss << emptyCount;
+						}
+						emptyCount = 0;
+
+						char ch = ' ';
+
+						if (b.isKing(bs)) ch = 'k';
+						else if (b.isQueen(bs)) ch = 'q';
+						else if (b.isBishop(bs)) ch = 'b';
+						else if (b.isKnight(bs)) ch = 'n';
+						else if (b.isRook(bs)) ch = 'r';
+						else if (b.isPawn(bs)) ch = 'p';
+
+						if (b.isWhite(bs)) ch = toupper(ch);
+
+						ss << ch;
+					} // is not empty
+				} // for (col = 0
+
+				if (emptyCount != 0) {
+					ss << emptyCount;
+					emptyCount = 0;
+				}
+
+				if (row != 7) {
+					ss << '/';
+				}
+			} // for (row = 0
+
+			ss << ' ';
+		} // Board and Pieces
+
+		// 2.) --- Active Piece (Who's turn is it?) ---
+		ss << (this->moveCounter().isWhitesTurn() ? 'w' : 'b') << ' ';
+
+		// 3.) --- Castling Rights ---
+		// TODO: Castling: Do this
+		ss << "- ";	// For now
+
+		// 4.) --- Enpassent ---
+		// TODO: Enpassent: Do this
+		ss << "- ";	// For now
+
+		// 5.) --- 50 Move Rule ---
+		ss << this->fiftyMoveRule().count() << ' ';
+
+		// 6.) --- Full move count ---
+		ss << (this->moveCounter().count / 2);
+
+		return ss.str();
 	}
 
 	template<> void Position::move<pieces::King>(Move move)
@@ -30,7 +166,7 @@ namespace forge
 				<< ": This method only moves Kings\n";
 		}
 #endif // _DEBUG
-		
+
 		if (m_board.isWhite(move.from())) {
 			this->move<pieces::WhiteKing>(move);
 		}
@@ -80,12 +216,12 @@ namespace forge
 			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
 
 		m_board.move<pieces::Queen>(move);
-		
+
 		m_fiftyMoveRule.update();
-	
+
 		m_moveCounter++;
 	}
-	
+
 	template<> void Position::move<pieces::Bishop>(Move move)
 	{
 		// --- Was this a capture? ---
@@ -93,12 +229,12 @@ namespace forge
 			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
 
 		m_board.move<pieces::Bishop>(move);
-	
+
 		m_fiftyMoveRule.update();
-	
+
 		m_moveCounter++;
 	}
-	
+
 	template<> void Position::move<pieces::Knight>(Move move)
 	{
 		// --- Was this a capture? ---
@@ -106,22 +242,22 @@ namespace forge
 			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
 
 		m_board.move<pieces::Knight>(move);
-	
+
 		m_fiftyMoveRule.update();
-	
+
 		m_moveCounter++;
 	}
-	
+
 	template<> void Position::move<pieces::QBN_Piece>(Move move)
 	{
 		// --- Was this a capture? ---
 		if (m_board.isOccupied(move.to()))
 			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
-		
+
 		m_board.move<pieces::QBN_Piece>(move);
-	
+
 		m_fiftyMoveRule.update();
-	
+
 		m_moveCounter++;
 	}
 
@@ -199,7 +335,7 @@ namespace forge
 	template<> void Position::move<pieces::Piece>(Move move)
 	{
 		pieces::Piece p = m_board.at(move.from());
-		
+
 		if (p.isPawn()) {
 			if (p.isWhite()) {
 				this->move<pieces::WhitePawn>(move);

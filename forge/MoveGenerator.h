@@ -47,11 +47,11 @@ namespace forge
 		static inline void generateQueenMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 		static inline void generateKingMoves(const Position & position, BoardSquare square, bool isWhite, MoveList & moves);
 
-		// Gets the coordinate of all piece of a specified type that are attacking a square.
+		// Gets the coordinate of allToFen piece of a specified type that are attacking a square.
 		//	- position - Position of game
 		//	- square - coordinate of square on the board that we are interested in
 		//	- PIECE_T - Datatype of attacker piece that we are interested in
-		//	- return - BitBoard representing coorinates of all pieces of both 
+		//	- return - BitBoard representing coorinates of allToFen pieces of both 
 		//				colors that are attacking a square. 
 		template<typename PIECE_T>
 		static BitBoard getAttackers(const Position & position, BoardSquare square);

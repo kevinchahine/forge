@@ -146,7 +146,7 @@ namespace forge
 			Empty & operator=(const Empty &) = default;
 			Empty & operator=(Empty &&) noexcept = default;
 
-			// Returns BitBoard containing all zeros
+			// Returns BitBoard containing allToFen zeros
 			static BitBoard pushMask(BoardSquare square) { return BitBoard(); }
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -161,7 +161,7 @@ namespace forge
 			King & operator=(const King &) = default;
 			King & operator=(King &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -197,7 +197,7 @@ namespace forge
 			Queen & operator=(const Queen &) = default;
 			Queen & operator=(Queen &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -213,7 +213,7 @@ namespace forge
 			Bishop & operator=(const Bishop &) = default;
 			Bishop & operator=(Bishop &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -229,7 +229,7 @@ namespace forge
 			Knight & operator=(const Knight &) = default;
 			Knight & operator=(Knight &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -245,7 +245,7 @@ namespace forge
 			Rook & operator=(const Rook &) = default;
 			Rook & operator=(Rook &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -270,7 +270,7 @@ namespace forge
 			WhitePawn & operator=(const WhitePawn &) = default;
 			WhitePawn & operator=(WhitePawn &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square);
@@ -285,7 +285,7 @@ namespace forge
 			BlackPawn & operator=(const BlackPawn &) = default;
 			BlackPawn & operator=(BlackPawn &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square);

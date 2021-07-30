@@ -26,7 +26,7 @@ namespace forge
 		friend class AttackChecker;
 		friend struct std::hash<Board>;
 
-		// Removes all pieces except Kings.
+		// Removes allToFen pieces except Kings.
 		// Places Kings in there starting locations.
 		void reset();
 
@@ -62,7 +62,7 @@ namespace forge
 		// * See comments for void Board::placePiece(BoardSquare square, pieces::Piece piece)
 		void placePieces(BitBoard squares, pieces::Piece piece);
 
-		// Places all pieces as they would go at the start of a normal chess game.
+		// Places allToFen pieces as they would go at the start of a normal chess game.
 		void placeAllPieces();
 
 		template <typename PIECE_T>	void place(BoardSquare square, bool isWhite = true);
@@ -204,7 +204,7 @@ namespace forge
 				(m_pawns == rhs.m_pawns) &&				// includes enpassent bits
 				(m_whiteKing == rhs.m_whiteKing) &&
 				(m_blackKing == rhs.m_blackKing);
-			// TODO: Don't forget Castling
+			// TODO: Castling: Don't forget Castling
 		}
 		bool operator!=(const Board & rhs) const { return !(*this == rhs); }
 
@@ -217,7 +217,7 @@ namespace forge
 		// corresponding white pawn on rank 4 can be taken en passant. Rank 8 is the
 		// same for black pawns. Those "fake" pawns are not present in our_pieces_ and
 		// their_pieces_ bitboards.
-		BitBoard m_pawns;			// Pawns (Ranks 1 and 8 represent which pawns can do enpassent)
+		BitBoard m_pawns;			// Pawns (Ranks 1 and 8 represent which pawns have just moved 2 squares)
 
 		BoardSquare m_whiteKing{ 60 };
 		BoardSquare m_blackKing{ 4 };

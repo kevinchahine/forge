@@ -265,11 +265,6 @@ namespace forge
 				b.place<Bishop>(BoardSquare{ 'b', '7' }, WHITE);
 				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
 			}
-
-			cout << "Print hash values of test positions" << endl;
-			for (const auto& pos : positions) {
-				cout << std::hash<Position>{}(pos) << endl;
-			}
 		}
 
 		void boardSquare()
@@ -347,7 +342,7 @@ namespace forge
 
 		namespace piece
 		{
-			void all()
+			void allToFen()
 			{
 				cout
 					<< forge::pieces::empty << ' '
@@ -605,6 +600,35 @@ namespace forge
 				templatePiece<pieces::BlackPawn>();
 			}
 		} // namespace piece_moves
+		
+		namespace fen {
+			void allToFen()
+			{
+				for (const auto& pos : positions) {
+					pos.board().printMini();
+
+					cout << pos.toFEN() << endl << endl;
+				}
+			}
+
+			void allFromFen()
+			{
+				for (const auto& pos : positions) {
+					string fen = pos.toFEN();
+
+					Position pos2;
+					pos2.fromFEN(fen);
+					
+					guten::grids::GridView grid;
+					grid.setGridCols(2);
+
+					grid.push(pos.board().getImage().drawMini());
+					grid.push(pos2.board().getImage().drawMini());
+
+					grid.toMatrix().print();
+				}
+			}
+		} // namespace fen
 
 		namespace pins
 		{
@@ -1269,4 +1293,3 @@ namespace forge
 		} // namespace ai
 	} // namespace test
 } // namespace forge
-

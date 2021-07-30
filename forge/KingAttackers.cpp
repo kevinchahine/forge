@@ -63,7 +63,7 @@ namespace forge
 		static_assert(std::is_base_of<directions::LShape, KNIGHT_DIRECTION_T>(),
 			"This method must only be called for a LShape (Knight) direction");
 
-		// First of all, determine if an attacking Knight has already been found.
+		// First of allToFen, determine if an attacking Knight has already been found.
 		// Remember that only 1 Knight can attack the King at a time in a Chess game.
 		if (!isKnightAttack)
 		{

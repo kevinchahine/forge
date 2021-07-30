@@ -6,7 +6,7 @@ namespace forge
 	{
 		namespace movegen
 		{
-			void lc0AndForge();
+			void stockfishAndForge();
 		} // namespace movegen
 	} // namespace test
 } // namespace forge

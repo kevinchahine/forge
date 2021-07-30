@@ -19,7 +19,7 @@ namespace forge
 	//	stacks to store their frontiers. A Node Tree can be used instead to allow for more efficient 
 	//	multi-threading. This is because threads can be assigned to search different 
 	//	branches and will need little inter-thread interactions. Each thread can search a Node
-	//	and all its children without having to communicate with other threads.
+	//	and allToFen its children without having to communicate with other threads.
 	//	Search algorithms that use a queue or stack
 	//	will need a mutex that is constantly locked and unlocked as threads access it greately
 	//	increasing overhead as more and more threads are used.
@@ -173,7 +173,7 @@ namespace forge
 		// TODO: Whould it make sorting slower?
 		std::vector<std::shared_ptr<Node>> m_childrenPtrs;
 
-		// Set to true when all children have been fully searched and pruned.
+		// Set to true when allToFen children have been fully searched and pruned.
 		// Set from the pruneChildren() method
 		enum class STATE : uint8_t {
 			FRESH,		// Node has been created but hasn't been expanded yet
