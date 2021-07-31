@@ -113,7 +113,7 @@ namespace forge
 		// Is a pin possible in a diagonal direction?
 		if (isPinPossible<directions::Diagonal>()) {
 			// Yes, A diagonal pin is possible.
-			cout << "Diagonal pin is possible\n";
+			///cout << "Diagonal pin is possible\n";
 
 			// --- Break it down further into individual ray directions ---
 			searchAndGeneratePins<directions::UR>(searchOnly);
@@ -122,13 +122,13 @@ namespace forge
 			searchAndGeneratePins<directions::DR>(searchOnly);
 		}
 		else {
-			cout << "Diagonal pin NOT possible\n";
+			///cout << "Diagonal pin NOT possible\n";
 		}
 
 		// Is a pin possible in a lateral direction?
 		if (isPinPossible<directions::Lateral>()) {
 			// Yes, A pin is possible.
-			cout << "Lateral pin is possible\n";
+			///cout << "Lateral pin is possible\n";
 
 			// --- Break it down further into individual ray directions ---
 			searchAndGeneratePins<directions::Up>(searchOnly);
@@ -137,7 +137,7 @@ namespace forge
 			searchAndGeneratePins<directions::Right>(searchOnly);
 		}
 		else {
-			cout << "Lateral pin NOT possible\n";
+			///cout << "Lateral pin NOT possible\n";
 		}
 	}
 

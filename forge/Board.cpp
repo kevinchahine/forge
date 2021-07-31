@@ -18,7 +18,7 @@ namespace forge
 	{
 		//os << guten::color::push();
 
-		guten::boards::CheckerBoard cb = std::move(getImage());
+		guten::boards::CheckerBoard cb = std::move(getCheckerBoard());
 		cb.print();
 
 		//os << guten::color::pop();
@@ -31,7 +31,7 @@ namespace forge
 		miniBoard.print(0, os);
 	}
 
-	guten::boards::CheckerBoard Board::getImage() const
+	guten::boards::CheckerBoard Board::getCheckerBoard() const
 	{
 		guten::boards::CheckerBoard disp;
 		disp.draw();

@@ -18,6 +18,11 @@ namespace forge
 		MovePositionPair & operator=(const MovePositionPair &) = default;
 		MovePositionPair & operator=(MovePositionPair &&) noexcept = default;
 
+		bool operator==(const MovePositionPair & pair) const;
+		bool operator<(const MovePositionPair& pair) const;
+
+		size_t hash() const;
+
 	public:
 		Move move;
 		Position position;

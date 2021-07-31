@@ -203,4 +203,9 @@ namespace forge
 
 		return ss.str();
 	}
+	
+	size_t Move::hash() const
+	{
+		return std::hash<std::bitset<16>>{}(m_val);
+	}
 } // namespace forge

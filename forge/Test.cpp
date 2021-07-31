@@ -622,8 +622,8 @@ namespace forge
 					guten::grids::GridView grid;
 					grid.setGridCols(2);
 
-					grid.push(pos.board().getImage().drawMini());
-					grid.push(pos2.board().getImage().drawMini());
+					grid.push(pos.board().getCheckerBoard().drawMini());
+					grid.push(pos2.board().getCheckerBoard().drawMini());
 
 					grid.toMatrix().print();
 				}
@@ -739,7 +739,7 @@ namespace forge
 				for (const Position & pos : positions) {
 					movegen.generate(pos);
 
-					guten::boards::CheckerBoard cb = pos.board().getImage();
+					guten::boards::CheckerBoard cb = pos.board().getCheckerBoard();
 
 					// Highlight threats
 					BitBoard threats = movegen.getThreats();
@@ -783,7 +783,7 @@ namespace forge
 					const Board & b = p.board();
 					pair = KingAttackers::findKingAttackers(b, b.whiteKing(), b.blacks(), b.whites());
 
-					guten::boards::CheckerBoard cb = b.getImage();
+					guten::boards::CheckerBoard cb = b.getCheckerBoard();
 
 					if (pair.size() >= 1)
 						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
@@ -796,7 +796,7 @@ namespace forge
 					cout << endl << endl;
 
 					pair = KingAttackers::findKingAttackers(b, b.blackKing(), b.whites(), b.blacks());
-					cb = b.getImage();
+					cb = b.getCheckerBoard();
 					if (pair.size() >= 1)
 						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
 					if (pair.size() >= 2)
@@ -819,7 +819,7 @@ namespace forge
 
 					MoveList legals = gen.generate(pos);
 
-					auto cb = pos.board().getImage();
+					auto cb = pos.board().getCheckerBoard();
 					cb.highlight(gen.getThreats());
 					cb.print();
 
@@ -855,7 +855,7 @@ namespace forge
 					//forge::MoveGenerator::generateLegalMoves(p);
 					mg2.generate(p);
 
-				guten::boards::CheckerBoard cb = b.getImage();
+				guten::boards::CheckerBoard cb = b.getCheckerBoard();
 				for (const auto & legal : moves) {
 					BoardSquare dst = legal.move.to();
 					cb.highlight(dst.row(), dst.col());

@@ -5,6 +5,7 @@
 
 #include <Guten/Color.h>
 #include <Guten/GridView.h>
+#include <Guten/DrawFunctions.h>
 
 #include <boost/process/child.hpp>
 #include <boost/process/search_path.hpp>
@@ -58,8 +59,8 @@ namespace forge
 					}
 			
 					// --- Set engine to UCI mode ---
-					cout << guten::color::push() << guten::color::green
-						<< "uci" << guten::color::pop() << endl;
+					//cout << guten::color::push() << guten::color::green
+					//	<< "uci" << guten::color::pop() << endl;
 
 					out << "uci" << endl;
 
@@ -67,7 +68,7 @@ namespace forge
 					while (chessEngine.running()) {
 						string line;
 						getline(in, line);
-						cout << line << endl;
+						//cout << line << endl;
 
 						if (boost::algorithm::starts_with(line, "uciok")) {
 							break;
@@ -85,13 +86,15 @@ namespace forge
 				}
 			}
 
-			std::vector<forge::Move> moveGenLC0(
+			std::vector<forge::Move> moveGenSF(
 				bp::child& chessEngine, 
 				bp::opstream& out, 
 				bp::ipstream& in, 
-				const forge::Position & pos)
+				const forge::MovePositionPair & movePos)
 			{
-				std::vector<forge::Move> lc0Moves;
+				const forge::Position& pos = movePos.position;
+
+				std::vector<forge::Move> sfMoves;
 				
 				if (!chessEngine.running()) {
 					runChessEngine(chessEngine, out, in);
@@ -113,7 +116,7 @@ namespace forge
 					
 				string line;
 				getline(in, line);	// ignore 1st line
-				cout << line << endl;
+				///cout << line << endl;
 
 				while (chessEngine.running()) {
 					getline(in, line);
@@ -129,81 +132,92 @@ namespace forge
 
 						string move = line.substr(movePos, movePos + 4);
 
-						cout << guten::color::push() << guten::color::red 
-								<< move << guten::color::pop() << endl;
+						///cout << guten::color::push() << guten::color::red 
+						///		<< move << guten::color::pop() << endl;
 
-						lc0Moves.emplace_back(std::move(move));
+						sfMoves.emplace_back(std::move(move));
 					}
 				}
 				cout << guten::color::pop();
 
-				return lc0Moves;
+				return sfMoves;
 			}
 
-			std::set<forge::Position> movesToPositions(
-				const forge::Position& base,
+			std::set<forge::MovePositionPair> movesToPositions(
+				const forge::MovePositionPair& base,
 				const std::vector<Move>& moves)
 			{
-				std::set<forge::Position> posSet;
+				std::set<forge::MovePositionPair> posSet;
 
 				for (const auto& move : moves) {
-					forge::Position pos = base;
+					forge::MovePositionPair movePos = base;
 
-					pos.move<pieces::Piece>(move);
+					movePos.move = move;
+					movePos.position.move<pieces::Piece>(move);
 
-					posSet.insert(pos);
+					posSet.insert(movePos);
 				}
 
-				cout << guten::color::lightmagenta << "posSet.size() " << posSet.size() << endl;
+				///cout << guten::color::lightmagenta << "posSet.size() " << posSet.size() << endl;
 
 				return posSet;
 			}
 
 			void matchPositions(
-				const std::set<forge::Position>& lc0Poss,
-				const std::set<forge::Position>& forgePoss,
-				std::set<forge::Position>& matches,
-				std::set<forge::Position>& misses,
-				std::set<forge::Position>& faults)
+				const std::set<forge::MovePositionPair>& sfPoss,
+				const std::set<forge::MovePositionPair>& forgePoss,
+				std::set<forge::MovePositionPair>& matches,
+				std::set<forge::MovePositionPair>& misses,
+				std::set<forge::MovePositionPair>& faults)
 			{
-				// --- Find Matches (Found in both LC0 and Forge) ---
+				// --- Find Matches (Found in both SF and Forge) ---
 				set_intersection(
-					lc0Poss.begin(), lc0Poss.end(),
+					sfPoss.begin(), sfPoss.end(),
 					forgePoss.begin(), forgePoss.end(),
 					inserter(matches, matches.end()));
 
-				// --- Find Misses (unique to LC0) ---
+				// --- Find Misses (unique to SF) ---
 				set_difference(
-					lc0Poss.begin(), lc0Poss.end(),
+					sfPoss.begin(), sfPoss.end(),
 					forgePoss.begin(), forgePoss.end(),
 					inserter(misses, misses.end()));
 
 				// --- Find Faults (unique to Forge) ---
 				set_difference(
 					forgePoss.begin(), forgePoss.end(),
-					lc0Poss.begin(), lc0Poss.end(),
+					sfPoss.begin(), sfPoss.end(),
 					inserter(misses, misses.end()));
 			}
 
-			guten::grids::GridView makeGridView(std::set<forge::Position>& poss)
+			guten::grids::GridView makeGridView(std::set<forge::MovePositionPair>& pairs)
 			{
 				guten::grids::GridView grid;
 				grid.setGridCols(10);
 
-				for (const auto& pos : poss) {
-					grid.push(pos.board().getMiniBoard());
+				for (const auto& movePos : pairs) {
+					const Move& move = movePos.move;
+					const Position& pos = movePos.position;
+
+					guten::boards::CheckerBoard cb = pos.board().getCheckerBoard();
+					cb.highlight(move.from().row(), move.from().col());
+					cb.highlight(move.to().row(), move.to().col());
+
+					grid.push(cb.drawMini());
+
+					guten::core::Matrix & mat = grid.back();
+					guten::draw::putText(mat, move.toLAN(), guten::Point{ 0, 4 }, guten::color::lightcyan);
 				}
 
 				return grid;
 			}
 
 			void showResults(
-				const forge::Position& base,
-				std::set<forge::Position>& matches,
-				std::set<forge::Position>& missed,
-				std::set<forge::Position>& faults)
+				const forge::MovePositionPair& base,
+				std::set<forge::MovePositionPair>& matches,
+				std::set<forge::MovePositionPair>& missed,
+				std::set<forge::MovePositionPair>& faults)
 			{
-				base.board().print();
+				base.position.board().print();
 
 				guten::grids::GridView matchGrid = makeGridView(matches);
 				guten::grids::GridView missedGrid = makeGridView(missed);
@@ -228,45 +242,43 @@ namespace forge
 				bp::opstream sfOut;
 				bp::ipstream sfIn;
 
-				stack<forge::Position> frontier;
+				stack<forge::MovePositionPair> frontier;
 
-				forge::Position pos;	// Start with opening position
-				pos.reset();
-
-				frontier.push(pos);
+				forge::MovePositionPair movePos;	// Start with opening position
+				movePos.position.reset();
+				frontier.emplace( movePos );
 
 				while (frontier.size()) {
-					pos = frontier.top();
+					movePos = frontier.top();
 					frontier.pop();
 
 					// 0.) --- Break if exit condition is reached ---
 					// We don't know what exit conditions we want yet
 
 					// 1.) --- Call StockFish's movegen on Position 'pos' ---
-					vector<Move> sfMoves = moveGenLC0(stockfish, sfOut, sfIn, pos);
-					cout << guten::color::magenta << sfMoves.size() << " moves generated by stockfish\n";
+					vector<Move> sfMoves = moveGenSF(stockfish, sfOut, sfIn, movePos);
+					// cout << guten::color::magenta << sfMoves.size() << " moves generated by stockfish\n";
 
 					// 2.) --- Convert Moves to Positions relative to 'pos' ---
 					// 3.) --- Push Positions to a set ---
-					std::set<forge::Position> sfPositions = movesToPositions(pos, sfMoves);
+					std::set<forge::MovePositionPair> sfPositions = movesToPositions(movePos, sfMoves);
 
 					// 4.) --- Call Forge's movegen on Position 'pos' ---
 					MoveGenerator2 movegen;
-					MoveList forgeMoveList = movegen.generate(pos);
-					set<forge::Position> forgePositions;
-					transform(
+					MoveList forgeMoveList = movegen.generate(movePos.position);
+					set<forge::MovePositionPair> forgePositions;
+					copy(
 						forgeMoveList.begin(), forgeMoveList.end(),
-						inserter(forgePositions, forgePositions.end()),
-						[](const MovePositionPair& pair) { return pair.position; });
+						inserter(forgePositions, forgePositions.end()));
 
 					// 5.) --- Match Positions between SF's and forge's Positions ---
 					// Organize into 3 sets:
 					//	- matches - moves generated by both SF and forge
 					//	- misses - moves generated by SF alone (forge missed these)
 					//	- faults - moves generated by forge alone (forge should not have generated theses)
-					std::set<forge::Position> matches;
-					std::set<forge::Position> misses;
-					std::set<forge::Position> faults;
+					std::set<forge::MovePositionPair> matches;
+					std::set<forge::MovePositionPair> misses;
+					std::set<forge::MovePositionPair> faults;
 
 					matchPositions(
 						sfPositions,
@@ -276,12 +288,12 @@ namespace forge
 						faults);
 
 					// 6.) --- Push Positions from SF into frontier so that we can search them later ---
-					for (const auto& pos : sfPositions) {
-						frontier.push(pos);
+					for (const auto& pair : sfPositions) {
+						frontier.push(pair);
 					}
 
 					// 7.) --- Show results ---
-					showResults(pos, matches, misses, faults);
+					showResults(movePos, matches, misses, faults);
 
 					cout << "Press any key...";
 					cin.get();

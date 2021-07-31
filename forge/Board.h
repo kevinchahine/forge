@@ -36,7 +36,7 @@ namespace forge
 		void print(std::ostream & os = std::cout) const;
 		void printMini(std::ostream & os = std::cout) const;
 
-		guten::boards::CheckerBoard getImage() const;
+		guten::boards::CheckerBoard getCheckerBoard() const;
 		guten::core::Matrix getMiniBoard(
 			const guten::color::Color & lightPiece = guten::color::white,
 			const guten::color::Color & darkPiece = guten::color::black,

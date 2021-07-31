@@ -142,6 +142,8 @@ namespace forge
 		// ex: 'e7d8Q'		pawn at e7 will be promoted to Q and capture piece on d8 (PAWN capture only)
 		std::string toLAN() const;
 
+		size_t hash() const;
+
 		// prints move in long algebraic notation
 		// To print using PGN notation use the .toPGN() method instead
 		friend std::ostream & operator<<(std::ostream & os, const Move & move);

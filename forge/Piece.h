@@ -23,6 +23,7 @@ namespace forge
 			using piece_t = uint8_t;
 
 			static const piece_t EMPTY = 0b0000;
+			static const piece_t EMPTY_FLIPPED = 0b1000;
 
 			static const piece_t WHITE_KING   = 0b0001;
 			static const piece_t BLACK_KING   = 0b1001;
@@ -88,7 +89,7 @@ namespace forge
 
 			bool isWhite() const { return m_val[3] == 0; }
 			bool isBlack() const { return !isWhite(); }
-			bool isEmpty() const { return m_val == EMPTY; }
+			bool isEmpty() const { return m_val == EMPTY || m_val == EMPTY_FLIPPED; }
 			bool isOccupied() const { return !isEmpty(); }
 			bool isKing() const { return (m_val == WHITE_KING) || (m_val == BLACK_KING); }
 			bool isQueen() const { return (m_val == WHITE_QUEEN) || (m_val == BLACK_QUEEN); }
