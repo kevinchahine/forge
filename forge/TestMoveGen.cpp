@@ -178,14 +178,14 @@ namespace forge
 
 				// --- Find Misses (unique to SF) ---
 				set_difference(
-					sfPoss.begin(), sfPoss.end(),
 					forgePoss.begin(), forgePoss.end(),
+					sfPoss.begin(), sfPoss.end(),
 					inserter(misses, misses.end()));
 
 				// --- Find Faults (unique to Forge) ---
 				set_difference(
-					forgePoss.begin(), forgePoss.end(),
 					sfPoss.begin(), sfPoss.end(),
+					forgePoss.begin(), forgePoss.end(),
 					inserter(misses, misses.end()));
 			}
 

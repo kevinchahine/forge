@@ -9,11 +9,11 @@ namespace forge
 		(*this) = MoveGenerator2{};
 	}
 
-	void MoveGenerator2::preprocess(const Position & position)
+	void MoveGenerator2::preprocess(const Position& position)
 	{
 		currPositionPtr = &position;
 		bool isWhitesTurn = position.moveCounter().isWhitesTurn();
-		const Board & b = position.board();
+		const Board& b = position.board();
 
 		occupied = b.occupied();
 		empty = b.empty();
@@ -50,7 +50,7 @@ namespace forge
 		threats = Threats::genThreats(b, theirs);
 	}
 
-	MoveList & MoveGenerator2::generate(const Position & pos)
+	MoveList& MoveGenerator2::generate(const Position& pos)
 	{
 		reset();
 
@@ -68,8 +68,8 @@ namespace forge
 
 			// --- King Pushes to Safety ---
 			// --- King captures one attacker ---
-			genKingMoves();	
-			
+			genKingMoves();
+
 			// TODO: OPTIMIZE: genKingMoves() should be called last.
 			// When sorting moves in order of best to worst, King moves will usually be last.
 		}
@@ -103,7 +103,7 @@ namespace forge
 		return legalMoves;
 	}
 
-	void MoveGenerator2::genPinMoves(const Board & b, bool isWhitesTurn, bool searchOnly)
+	void MoveGenerator2::genPinMoves(const Board& b, bool isWhitesTurn, bool searchOnly)
 	{
 		// 1.) --- Starting from our King, search in each ray direction for pins ---
 
@@ -145,10 +145,10 @@ namespace forge
 	// Does not perform bounds checking.
 	template<typename DIRECTION_T>
 	inline void moveKing(
-		MoveList & legals,
-		const BoardSquare & ourKing,
-		const BitBoard & open,	// Every square that is not occupied and not attacked
-		const Position & pos)
+		MoveList& legals,
+		const BoardSquare& ourKing,
+		const BitBoard& open,	// Every square that is not occupied and not attacked
+		const Position& pos)
 	{
 #ifdef _DEBUG
 		if (DIRECTION_T::wouldBeInBounds(ourKing) == false) {
@@ -171,8 +171,8 @@ namespace forge
 
 	void MoveGenerator2::genKingMoves()
 	{
-		const Position & pos = *currPositionPtr;
-		const Board & board = pos.board();
+		const Position& pos = *currPositionPtr;
+		const Board& board = pos.board();
 		const BitBoard open = ~(ours | threats);	// Squares that are not ours and not attacked
 
 		// --- Up ---
@@ -233,11 +233,11 @@ namespace forge
 
 	template<typename RAY_DIRECTION_T>
 	inline void captureAttackerWithRay(
-		MoveList & legals,
-		const BoardSquare & attacker,
-		const BitBoard & theirs,
-		const BitBoard & ours,
-		const Position & pos)
+		MoveList& legals,
+		const BoardSquare& attacker,
+		const BitBoard& theirs,
+		const BitBoard& ours,
+		const Position& pos)
 	{
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"Error: This function only works on Ray directions.");
@@ -254,10 +254,10 @@ namespace forge
 
 	template<typename KNIGHT_DIRECTION_T>
 	inline void captureAttackerWithKnight(
-		MoveList & legals,
-		const BoardSquare & attacker,
-		const Position & pos,
-		const BitBoard & ourKnights)
+		MoveList& legals,
+		const BoardSquare& attacker,
+		const Position& pos,
+		const BitBoard& ourKnights)
 	{
 		static_assert(std::is_base_of<directions::LShape, KNIGHT_DIRECTION_T>(),
 			"Error: This function only works on Knight directions.");
@@ -271,9 +271,9 @@ namespace forge
 		}
 	}
 
-	void MoveGenerator2::genBlockAndCaptureMoves(const KingAttacker & attacker)
+	void MoveGenerator2::genBlockAndCaptureMoves(const KingAttacker& attacker)
 	{
-		const Board & board = currPositionPtr->board();
+		const Board& board = currPositionPtr->board();
 		pieces::Piece attackingPiece = board.at(attacker.square);
 
 		BitBoard pushMask;		// Where the attacker can push to (assuming no obstacles)
@@ -290,7 +290,7 @@ namespace forge
 			// in direction of King because, those pieces would be taken care of as 
 			// pins.
 
-			const directions::Direction & dir = attacker.dir;
+			const directions::Direction& dir = attacker.dir;
 
 			BoardSquare it = ourKing;
 			while (dir.wouldBeInBounds(it)) {	// TODO: Optimize: We can probably replace bounds checking with attacker.square
@@ -417,7 +417,7 @@ namespace forge
 
 		// --- Look for Lateral Captures ---
 		{
-			const BoardSquare & as = attacker.square;
+			const BoardSquare& as = attacker.square;
 			BitBoard attackerCross = BitBoard::mask<directions::Lateral>(as);
 			BitBoard possibleCaptures = ourLaterals & attackerCross & ~ourAbsolutePins;
 
@@ -434,7 +434,7 @@ namespace forge
 
 		// --- Look for Diagonal Captures ---
 		{
-			const BoardSquare & as = attacker.square;
+			const BoardSquare& as = attacker.square;
 			BitBoard attackerX = BitBoard::mask<directions::Diagonal>(as);
 			BitBoard possibleCaptures = ourDiagonals & attackerX & ~ourAbsolutePins;
 
@@ -451,7 +451,7 @@ namespace forge
 
 		// --- Look for Knight Captures ---
 		{
-			const BoardSquare & as = attacker.square;
+			const BoardSquare& as = attacker.square;
 			BitBoard attackerOctopus = BitBoard::mask<directions::LShape>(as);
 			BitBoard possibleCaptures = board.knights() & ours & attackerOctopus & ~ourAbsolutePins;
 
@@ -472,7 +472,7 @@ namespace forge
 
 		// --- Look for Pawn Captures ---
 		{
-			const BoardSquare & as = attacker.square;
+			const BoardSquare& as = attacker.square;
 			BitBoard pawnCapturers = ours & board.pawns() & ~ourAbsolutePins;
 
 			if (attackingPiece.isWhite()) {
@@ -566,7 +566,7 @@ namespace forge
 
 	void MoveGenerator2::genFreeMoves()
 	{
-		const Board & b = currPositionPtr->board();
+		const Board& b = currPositionPtr->board();
 
 		for (uint8_t row = 0; row < 8; row++) {
 			for (uint8_t col = 0; col < 8; col++) {
@@ -605,8 +605,8 @@ namespace forge
 
 	void MoveGenerator2::genFreePawnMoves(BoardSquare pawn)
 	{
-		const Board & board = currPositionPtr->board();
-		const Position & pos = *currPositionPtr;
+		const Board& board = currPositionPtr->board();
+		const Position& pos = *currPositionPtr;
 
 #ifdef _DEBUG
 		if (board.isPawn(pawn) == false) {
@@ -657,7 +657,7 @@ namespace forge
 		}
 
 		// === PUSH 1 ===
-		if (!ours[push1]) {
+		if (empty[push1]) {
 			if (push1 == promotionRank) {
 				legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, push1, q }, pos);
 				legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, push1, r }, pos);
@@ -667,11 +667,11 @@ namespace forge
 			else {
 				legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, push1 }, pos);
 			}
-		}
 
-		// === PUSH 2 ===
-		if (push2.isValid() && !ours[push2]) {
-			legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, push2 }, pos);
+			// === PUSH 2 ===
+			if (push2.isValid() && empty[push2]) {
+				legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, push2 }, pos);
+			}
 		}
 
 		// === CAPTURE LEFT ===
@@ -696,7 +696,7 @@ namespace forge
 	// 'legals' - MoveList of legal moves
 	// 'pos' - Current position
 	template<typename RAY_DIRECTION_T, typename PIECE_T>
-	void genRayMoves(BoardSquare ray, BitBoard occupied, BitBoard theirs, MoveList & legals, const Position & pos)
+	void genRayMoves(BoardSquare ray, BitBoard occupied, BitBoard theirs, MoveList& legals, const Position& pos)
 	{
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"This function can only be called on a Ray direction");
@@ -713,7 +713,7 @@ namespace forge
 					// Capture Piece
 					legals.emplace_back<PIECE_T>(Move{ ray, it }, pos);
 				}
-			
+
 				// Break at every obstacle
 				break;
 			}
@@ -726,8 +726,8 @@ namespace forge
 
 	void MoveGenerator2::genFreeRookMoves(BoardSquare rook)
 	{
-		const Position & pos = *currPositionPtr;
-		const Board & b = pos.board();
+		const Position& pos = *currPositionPtr;
+		const Board& b = pos.board();
 
 #ifdef _DEBUG
 		if (b.isRook(rook) == false) {
@@ -744,7 +744,7 @@ namespace forge
 	}
 
 	template<typename KNIGHT_DIRECTION_T>
-	void genKnightMoves(BoardSquare knight, BitBoard ours, MoveList & legals, const Position & pos)
+	void genKnightMoves(BoardSquare knight, BitBoard ours, MoveList& legals, const Position& pos)
 	{
 		if (KNIGHT_DIRECTION_T::wouldBeInBounds(knight)) {
 			BoardSquare to = KNIGHT_DIRECTION_T::move(knight);
@@ -757,8 +757,8 @@ namespace forge
 
 	void MoveGenerator2::genFreeKnightMoves(BoardSquare knight)
 	{
-		const Position & pos = *currPositionPtr;
-		const Board & b = pos.board();
+		const Position& pos = *currPositionPtr;
+		const Board& b = pos.board();
 
 #ifdef _DEBUG
 		if (b.isKnight(knight) == false) {
@@ -783,8 +783,8 @@ namespace forge
 
 	void MoveGenerator2::genFreeBishopMoves(BoardSquare bishop)
 	{
-		const Position & pos = *currPositionPtr;
-		const Board & b = pos.board();
+		const Position& pos = *currPositionPtr;
+		const Board& b = pos.board();
 
 #ifdef _DEBUG
 		if (b.isBishop(bishop) == false) {
@@ -802,8 +802,8 @@ namespace forge
 
 	void MoveGenerator2::genFreeQueenMoves(BoardSquare queen)
 	{
-		const Position & pos = *currPositionPtr;
-		const Board & b = pos.board();
+		const Position& pos = *currPositionPtr;
+		const Board& b = pos.board();
 
 #ifdef _DEBUG
 		if (b.isQueen(queen) == false) {
@@ -812,12 +812,12 @@ namespace forge
 				<< " " << queen << " is a " << b.at(queen) << " and not a pawn" << endl;
 		}
 #endif // _DEBUG
-		
+
 		genRayMoves<directions::Up, pieces::Queen>(queen, occupied, theirs, legalMoves, pos);
 		genRayMoves<directions::Down, pieces::Queen>(queen, occupied, theirs, legalMoves, pos);
 		genRayMoves<directions::Left, pieces::Queen>(queen, occupied, theirs, legalMoves, pos);
 		genRayMoves<directions::Right, pieces::Queen>(queen, occupied, theirs, legalMoves, pos);
-		
+
 		genRayMoves<directions::UL, pieces::Queen>(queen, occupied, theirs, legalMoves, pos);
 		genRayMoves<directions::UR, pieces::Queen>(queen, occupied, theirs, legalMoves, pos);
 		genRayMoves<directions::DL, pieces::Queen>(queen, occupied, theirs, legalMoves, pos);
