@@ -77,6 +77,8 @@ int main(int argc, char ** argv)
 	// Rename stockfish and forge
 	forge::test::movegen::stockfishAndForge();
 
+	// 1nbB2qr/rp2k3/2nbp3/1N3p1p/P2p3P/R2BPp2/1PP2KP1/4QR2 b - - 2 26
+
 	cout << "Done...";
 	this_thread::sleep_for(chrono::seconds(1));
 	cin.get();

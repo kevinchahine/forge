@@ -107,6 +107,8 @@ namespace forge
 			m_val |= is_invalid_mask;	// set bit to 1
 		}
 
+		static BoardSquare invalid() { BoardSquare bs; bs.setAsInvalid(); return bs; }
+
 		// Returns true iff square refers to a light square. ex: a1, a3, a5
 		bool isLightSquare() const { return (row() & 0b0001) == (col() & 0b0001); }	// '& 0b1' is same as 'modulus 2'
 		// Returns true iff square referse to a dark square. ex: a2, a4, a6

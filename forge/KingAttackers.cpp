@@ -15,7 +15,7 @@ namespace forge
 
 	// -------------------------------- STATIC METHODS ------------------------
 	
-	// !!!VERY IMPORTANT: IF RAY_DIRECTION_T is a Lateral direction, always set 'isRayAttacking'
+	// !!!VERY IMPORTANT: IF RAY_DIRECTION_T is a Lateral direction, always set 'isRayAttacking' to true
 	//	so that promotions to Rook/Queens are accounted for.
 	template<typename RAY_DIRECTION_T>
 	inline void pushIfRayIsAttackingKing(

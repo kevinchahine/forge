@@ -82,7 +82,7 @@ namespace forge
 			//	- Non-King captures attacker ***
 			// *** Non-King pieces that are pinned to King can only move between pinner and our King
 
-			// TODO: Find allToFen pinned pieces here
+			// TODO: Find all pinned pieces here
 			genPinMoves(pos.board(), pos.moveCounter().isWhitesTurn(), true);
 
 			// Must evaluate pinned peices before calling this method
@@ -285,6 +285,7 @@ namespace forge
 		// Is the attacker a Ray or non-Ray?
 		if (attackingPiece.isRay()) {
 			// Yes. Because the attacker is Ray, it can be blocked.
+			// Lets find a piece that can block or capture the attacker. 
 
 			// TODO: Optimize: There is no need to search for blockers and capturers
 			// in direction of King because, those pieces would be taken care of as 
@@ -292,20 +293,18 @@ namespace forge
 
 			const directions::Direction& dir = attacker.dir;
 
+			// Iterate from King's square to attacker and look for blocker/captures
 			BoardSquare it = ourKing;
-			while (dir.wouldBeInBounds(it)) {	// TODO: Optimize: We can probably replace bounds checking with attacker.square
-				// 'it' will reach attacker before edge of board.
+			while (dir.wouldBeInBounds(it)) {	
+				// TODO: Optimize: We can probably replace bounds checking with attacker.square
+				// 'it' will always reach attacker before edge of board.
 
 				it = dir.move(it);	// Incremented first to skip kings coordinate
-
-				// Did we reach the attacker?
-				if (it == attacker.square) {
-					break; // Yes we can now break from loop and move on to captures
-				}
 
 				// --- Find one of our pieces that can block/capture the attacker ---
 
 				// Find a piece that can move to this square and block the attacker.
+				// Hint: If a piece can 'attack' a square then it can block/capture at that square.
 
 				// --- Look for Lateral Captures ---
 				{
@@ -407,6 +406,11 @@ namespace forge
 
 				// --- Our Kings (Can't block attacks) ---
 				// Excluded because King can't block himself. Nothing to do here
+
+				// Did we reach the attacker?
+				if (it == attacker.square) {
+					break; // Yes we can now break from loop and move on to captures
+				}
 			}
 		}
 
@@ -632,10 +636,9 @@ namespace forge
 		if (board.isWhite(pawn)) {
 			// === White Pawn ===
 			push1 = pawn.upOne();
-			if (pawn.row() == 6) push2 = pawn.up(2);
-			else push2.setAsInvalid();
-			captLeft = pawn.upLeftOne();
-			captRight = pawn.upRightOne();
+			push2 = (pawn.row() == 6 ? pawn.up(2) : BoardSquare::invalid());
+			captLeft = (!pawn.isLeftFile() ? pawn.upLeftOne() : BoardSquare::invalid());
+			captRight = (!pawn.isRightFile() ? pawn.upRightOne() : BoardSquare::invalid());
 			promotionRank = 0;
 			q = pieces::whiteQueen;
 			r = pieces::whiteRook;
@@ -645,10 +648,9 @@ namespace forge
 		else {
 			// === Black Pawn ===
 			push1 = pawn.downOne();
-			if (pawn.row() == 1) push2 = pawn.down(2);
-			else push2.setAsInvalid();
-			captLeft = pawn.downLeftOne();
-			captRight = pawn.downRightOne();
+			push2 = (pawn.row() == 1 ? pawn.down(2) : BoardSquare::invalid());
+			captLeft = (!pawn.isLeftFile() ? pawn.downLeftOne() : BoardSquare::invalid());
+			captRight = (!pawn.isRightFile() ? pawn.downRightOne() : BoardSquare::invalid());
 			promotionRank = 7;
 			q = pieces::blackQueen;
 			r = pieces::blackRook;
@@ -675,12 +677,12 @@ namespace forge
 		}
 
 		// === CAPTURE LEFT ===
-		if (theirs[captLeft]) {
+		if (captLeft.isValid() && theirs[captLeft]) {
 			legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, captLeft }, pos);
 		}
 
 		// === CAPTURE RIGHT ===
-		if (theirs[captRight]) {
+		if (captRight.isValid() && theirs[captRight]) {
 			legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, captRight }, pos);
 		}
 

@@ -15,15 +15,15 @@
 #include <boost/algorithm/string.hpp>
 
 #include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <iomanip>
-#include <vector>
+#include <thread>
 #include <string>
 #include <sstream>
 #include <stack>
 #include <set>
-#include <thread>
-#include <chrono>
+#include <vector>
 
 using namespace std;
 namespace fs = boost::filesystem;
@@ -246,6 +246,7 @@ namespace forge
 
 				forge::MovePositionPair movePos;	// Start with opening position
 				movePos.position.reset();
+				//movePos.position.fromFEN(R"dil(1nbB2qr/rp2k3/2nbp3/1N3p1p/P2p3P/R2BPp2/1PP2KP1/4QR2 b - - 2 26)dil");
 				frontier.emplace( movePos );
 
 				while (frontier.size()) {
@@ -295,8 +296,10 @@ namespace forge
 					// 7.) --- Show results ---
 					showResults(movePos, matches, misses, faults);
 
-					cout << "Press any key...";
-					cin.get();
+					if (misses.size() || faults.size()) {
+						cout << "Press any key...";
+						cin.get();
+					}
 				} // while(
 			} // stockfishAndForge()
 		} // namespace movegen
