@@ -78,6 +78,7 @@ int main(int argc, char ** argv)
 	forge::test::movegen::stockfishAndForge();
 
 	// 1nbB2qr/rp2k3/2nbp3/1N3p1p/P2p3P/R2BPp2/1PP2KP1/4QR2 b - - 2 26
+	// 8/1P6/7k/b7/2n5/8/8/3K4 w - - 1 101
 
 	cout << "Done...";
 	this_thread::sleep_for(chrono::seconds(1));

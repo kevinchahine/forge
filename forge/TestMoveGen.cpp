@@ -97,6 +97,9 @@ namespace forge
 				std::vector<forge::Move> sfMoves;
 				
 				if (!chessEngine.running()) {
+					cout << guten::color::push() << guten::color::lightgreen
+						<< "Running Engine" << guten::color::pop() << endl;
+
 					runChessEngine(chessEngine, out, in);
 				}
 
@@ -224,16 +227,18 @@ namespace forge
 				guten::grids::GridView faultsGrid = makeGridView(faults);
 
 				cout << endl << guten::color::push() << guten::color::green
-					<< "=== Matches (Good) ===" << guten::color::pop() << endl;
+					<< "=== Matches (Good) " << matches.size() << " ===" << guten::color::pop() << endl;
 				matchGrid.toMatrix().print();
 
 				cout << endl << guten::color::push() << guten::color::yellow
-					<< "=== Missed (Getting There) ===" << guten::color::pop() << endl;
+					<< "=== Missed (Getting There) " << missed.size() << " ===" << guten::color::pop() << endl;
 				missedGrid.toMatrix().print();
 
 				cout << endl << guten::color::push() << guten::color::red
-					<< "=== Faults (Bad We should not have generated these) ===" << guten::color::pop() << endl;
+					<< "=== Faults (Bad We should not have generated these) " << faults.size() << " ===" << guten::color::pop() << endl;
 				faultsGrid.toMatrix().print();
+
+				cout << endl;
 			}
 
 			void stockfishAndForge()

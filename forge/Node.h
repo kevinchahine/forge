@@ -65,12 +65,12 @@ namespace forge
 		// Designed to work with Minimax
 		// For MTCS, we may need to implemente a different iterator.
 		// see Node::prune()
-		class iterator : public std::iterator<
+		class iterator /*: public std::iterator<
 			std::forward_iterator_tag,
 			Node,
 			long,
 			Node*,
-			Node>
+			Node>*/
 		{
 		public:
 

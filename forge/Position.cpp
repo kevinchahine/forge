@@ -288,10 +288,10 @@ namespace forge
 		if (m_board.isOccupied(move.to()))
 			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
 
-		m_board.place<pieces::Empty>(move.from(), bool());
+		m_board.place<pieces::Empty>(move.from(), bool());	// bool() is a place holder
 
-		if (move.to().isTopRank()) m_board.placePiece(move.to(), move.promotion());
-		else m_board.place<pieces::WhitePawn>(move.to(), true);
+		if (move.to().isTopRank()) {m_board.placePiece(move.to(), move.promotion()); }
+		else m_board.place<pieces::WhitePawn>(move.to());
 
 		m_fiftyMoveRule.pawnHasMoved();
 		m_fiftyMoveRule.update();
@@ -307,18 +307,18 @@ namespace forge
 			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
 			<< ": This method only moves black pawns\n";
 #endif
-
+		
 		// --- Was this a capture? ---
 		if (m_board.isOccupied(move.to()))
 			m_fiftyMoveRule.pieceCaptured();	// Yes. Capture occured
 
-		m_board.place<pieces::Empty>(move.from(), true);
-		if (move.to().isBotRank()) m_board.placePiece(move.to(), move.promotion());
+		m_board.place<pieces::Empty>(move.from(), bool());	// bool() is a place holder
+
+		if (move.to().isBotRank()) { m_board.placePiece(move.to(), move.promotion()); }
 		else m_board.place<pieces::BlackPawn>(move.to());
 
 		m_fiftyMoveRule.pawnHasMoved();
 		m_fiftyMoveRule.update();
-
 		// TODO: Still need enpassent 
 
 		m_moveCounter++;

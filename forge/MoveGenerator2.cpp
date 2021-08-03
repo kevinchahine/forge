@@ -315,10 +315,10 @@ namespace forge
 					if (possibleCaptures.any()) {
 						// Yes. Look in more detail.
 
-						captureAttackerWithRay<directions::Up>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
-						captureAttackerWithRay<directions::Down>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
-						captureAttackerWithRay<directions::Left>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
-						captureAttackerWithRay<directions::Right>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::Up>(legalMoves, it, ours, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::Down>(legalMoves, it, ours, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::Left>(legalMoves, it, ours, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::Right>(legalMoves, it, ours, theirs, *currPositionPtr);
 					}
 				}
 
@@ -331,10 +331,10 @@ namespace forge
 					if (possibleCaptures.any()) {
 						// Yes. Look in more detail.
 
-						captureAttackerWithRay<directions::UR>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
-						captureAttackerWithRay<directions::UL>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
-						captureAttackerWithRay<directions::DR>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
-						captureAttackerWithRay<directions::DL>(legalMoves, it, possibleCaptures, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::UR>(legalMoves, it, ours, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::UL>(legalMoves, it, ours, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::DR>(legalMoves, it, ours, theirs, *currPositionPtr);
+						captureAttackerWithRay<directions::DL>(legalMoves, it, ours, theirs, *currPositionPtr);
 					}
 				}
 
@@ -627,7 +627,7 @@ namespace forge
 		BoardSquare push2;
 		BoardSquare captLeft;
 		BoardSquare captRight;
-		uint8_t promotionRank;
+		uint8_t promotionRow;
 		pieces::Piece q;
 		pieces::Piece r;
 		pieces::Piece b;
@@ -639,7 +639,7 @@ namespace forge
 			push2 = (pawn.row() == 6 ? pawn.up(2) : BoardSquare::invalid());
 			captLeft = (!pawn.isLeftFile() ? pawn.upLeftOne() : BoardSquare::invalid());
 			captRight = (!pawn.isRightFile() ? pawn.upRightOne() : BoardSquare::invalid());
-			promotionRank = 0;
+			promotionRow = 0;
 			q = pieces::whiteQueen;
 			r = pieces::whiteRook;
 			b = pieces::whiteBishop;
@@ -651,7 +651,7 @@ namespace forge
 			push2 = (pawn.row() == 1 ? pawn.down(2) : BoardSquare::invalid());
 			captLeft = (!pawn.isLeftFile() ? pawn.downLeftOne() : BoardSquare::invalid());
 			captRight = (!pawn.isRightFile() ? pawn.downRightOne() : BoardSquare::invalid());
-			promotionRank = 7;
+			promotionRow = 7;
 			q = pieces::blackQueen;
 			r = pieces::blackRook;
 			b = pieces::blackBishop;
@@ -660,7 +660,7 @@ namespace forge
 
 		// === PUSH 1 ===
 		if (empty[push1]) {
-			if (push1 == promotionRank) {
+			if (push1.row() == promotionRow) {
 				legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, push1, q }, pos);
 				legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, push1, r }, pos);
 				legalMoves.emplace_back<pieces::Pawn>(Move{ pawn, push1, b }, pos);
