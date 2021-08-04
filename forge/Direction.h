@@ -36,6 +36,11 @@ namespace forge
 					static_cast<int8_t>(square.col()) + horizontal < 8;
 			}
 
+			//bool isLateral() const { return vertical }
+			bool isDiagonal() const { return abs(vertical) == abs(horizontal); }
+			bool isVertical() const { return vertical != 0 && horizontal == 0; }
+			bool isHorizontal() const { return vertical == 0 && horizontal != 0; }
+
 			static std::string str() { return "Direction"; }
 
 		public:

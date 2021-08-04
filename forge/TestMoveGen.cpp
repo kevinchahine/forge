@@ -14,6 +14,8 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/algorithm/string.hpp>
 
+#include <conio.h>	// remove this for Linux compatibility
+
 #include <algorithm>
 #include <chrono>
 #include <iostream>
@@ -243,11 +245,15 @@ namespace forge
 
 			void stockfishAndForge()
 			{
+				set<forge::MovePositionPair> allMisses;
+				set<forge::MovePositionPair> allFaults;
+
 				boost::process::child stockfish;
 				bp::opstream sfOut;
 				bp::ipstream sfIn;
 
 				stack<forge::MovePositionPair> frontier;
+				const int DEPTH_LIMIT = 4;
 
 				forge::MovePositionPair movePos;	// Start with opening position
 				movePos.position.reset();
@@ -257,6 +263,11 @@ namespace forge
 				while (frontier.size()) {
 					movePos = frontier.top();
 					frontier.pop();
+
+					// --- Limit Search Depth ---
+					if (movePos.position.moveCounter().count >= DEPTH_LIMIT) {
+						continue; // Skip this position. It is deeper than we want
+					}
 
 					// 0.) --- Break if exit condition is reached ---
 					// We don't know what exit conditions we want yet
@@ -301,10 +312,31 @@ namespace forge
 					// 7.) --- Show results ---
 					showResults(movePos, matches, misses, faults);
 
-					if (misses.size() || faults.size()) {
+					copy(misses.begin(), misses.end(), inserter(allMisses, allMisses.end()));
+					copy(faults.begin(), faults.end(), inserter(allFaults, allMisses.end()));
+
+					if (_kbhit()) {
+						char ch = _getch();
+
+						forge::MovePositionPair pairPH; // placeholder
+						set<forge::MovePositionPair> allMatches;	// placeholder
+
+						cout << guten::color::push() << guten::color::yellow
+							<< "========================================================" << endl
+							<< "=============== Showing All Results ====================" << endl
+							<< "========================================================" << endl
+							<< guten::color::pop();
+
+						showResults(pairPH, allMatches, allMisses, allFaults);
+
 						cout << "Press any key...";
 						cin.get();
 					}
+
+					//if (misses.size() || faults.size()) {
+					//	cout << "Press any key...";
+					//	cin.get();
+					//}
 				} // while(
 			} // stockfishAndForge()
 		} // namespace movegen

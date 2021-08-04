@@ -159,7 +159,7 @@ namespace forge
 	{
 		pieces::Piece p;
 
-		switch (promotionCh)
+		switch (tolower(promotionCh))
 		{
 		case 'q':	p = pieces::whiteQueen;		break;
 		case 'r':	p = pieces::whiteRook;		break;
@@ -169,6 +169,7 @@ namespace forge
 		default:
 			cout << "Error: " << __FUNCTION__ << " " << promotionCh
 				<< " is not a promotion pieces\n";
+
 			this->isInvalid();
 #endif
 		}

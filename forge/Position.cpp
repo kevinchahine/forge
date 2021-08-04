@@ -27,7 +27,7 @@ namespace forge
 	void Position::fromFEN(const std::string& fen)
 	{
 		// TODO: fINISH this method
-		throw std::exception("Position::fromFEN() does not work");
+		///throw std::exception("Position::fromFEN() does not work");
 
 		istringstream ss{ fen };
 
@@ -35,29 +35,35 @@ namespace forge
 		{
 			Board& b = this->board();
 
+			// Move Kings to lower right corner so that they don't interfer with piece placement
+			b.place<pieces::WhiteKing>(BoardSquare{ 7, 7 });
+			b.place<pieces::BlackKing>(BoardSquare{ 7, 7 });
+
 			BoardSquare bs{ 0, 0 };
 			char ch;
 
 			while (ss.peek() != ' ') {
-				ss >> ch;
+				ch = ss.get();
 
 				if (isdigit(ch)) {
 					int nSpaces = ch - '0';
 
 					for (int count = 0; count < nSpaces; count++) {
-						b.place<pieces::Empty>(BoardSquare{ bs.row(), bs.col() + count });
+						b.place<pieces::Empty>(bs.right(count));
 					}
 
-					bs = BoardSquare{ bs.row(), bs.col() + nSpaces };
+					bs = bs.right(nSpaces);
 				}
 				else if (isalpha(ch)) {
 					bool isWhite = isupper(ch);
 
 					b.placePiece(bs, pieces::Piece{ ch, isWhite });
+
+					bs = bs.rightOne();
 				}
-				else if (ch == '/') {
-					bs = BoardSquare{ bs.row() + 1, 0 };
-				}
+				//else if (ch == '/') {
+				//	bs = BoardSquare{ bs.row() + 1, 0 };
+				//}
 			}
 
 			// No need to skip space explicitly.
