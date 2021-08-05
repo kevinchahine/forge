@@ -21,6 +21,7 @@
 #include <iostream>
 #include <iomanip>
 #include <thread>
+#include <tuple>
 #include <string>
 #include <sstream>
 #include <stack>
@@ -106,18 +107,18 @@ namespace forge
 				}
 
 				// --- Set Position --- 
-				cout << guten::color::push() << guten::color::green 
-					<< "position fen " << pos.toFEN() << endl
-					<< guten::color::pop();
+				//cout << guten::color::push() << guten::color::green 
+				//	<< "position fen " << pos.toFEN() << endl
+				//	<< guten::color::pop();
 				out << "position fen " << pos.toFEN() << endl;
 
 				// --- Get Legal Moves ---
-				cout << guten::color::push() << guten::color::green
-					<< "go depth 1" << endl
-					<< guten::color::pop();
+				//cout << guten::color::push() << guten::color::green
+				//	<< "go depth 1" << endl
+				//	<< guten::color::pop();
 				out << "go depth 1" << endl;
 
-				cout << guten::color::push() << guten::color::brown;
+				//cout << guten::color::push() << guten::color::brown;
 					
 				string line;
 				getline(in, line);	// ignore 1st line
@@ -125,7 +126,7 @@ namespace forge
 
 				while (chessEngine.running()) {
 					getline(in, line);
-					cout << line << endl;
+					//cout << line << endl;
 
 					if (boost::algorithm::starts_with(line, "bestmove")) {
 						break;
@@ -143,7 +144,7 @@ namespace forge
 						sfMoves.emplace_back(std::move(move));
 					}
 				}
-				cout << guten::color::pop();
+				//cout << guten::color::pop();
 
 				return sfMoves;
 			}
@@ -222,7 +223,16 @@ namespace forge
 				std::set<forge::MovePositionPair>& missed,
 				std::set<forge::MovePositionPair>& faults)
 			{
-				base.position.board().print();
+				{
+					BoardSquare to = base.move.to();
+					BoardSquare from = base.move.from();
+					guten::boards::CheckerBoard cb = base.position.board().getCheckerBoard();
+					cb.highlight(to.row(), to.col());
+					cb.highlight(from.row(), from.col());
+					cb.print();
+
+					cout << base.position.toFEN() << endl;
+				}
 
 				guten::grids::GridView matchGrid = makeGridView(matches);
 				guten::grids::GridView missedGrid = makeGridView(missed);
@@ -231,33 +241,81 @@ namespace forge
 				cout << endl << guten::color::push() << guten::color::green
 					<< "=== Matches (Good) " << matches.size() << " ===" << guten::color::pop() << endl;
 				matchGrid.toMatrix().print();
+				for (const auto& elem : matches) {
+					cout << elem.position.toFEN() << endl;
+				}
 
 				cout << endl << guten::color::push() << guten::color::yellow
 					<< "=== Missed (Getting There) " << missed.size() << " ===" << guten::color::pop() << endl;
 				missedGrid.toMatrix().print();
+				for (const auto& elem : missed) {
+					cout << elem.position.toFEN() << endl;
+				}
 
 				cout << endl << guten::color::push() << guten::color::red
 					<< "=== Faults (Bad We should not have generated these) " << faults.size() << " ===" << guten::color::pop() << endl;
 				faultsGrid.toMatrix().print();
+				for (const auto& elem : faults) {
+					cout << elem.position.toFEN() << endl;
+				}
+
+				cout << endl;
+			}
+
+			void showResults(
+				const vector<pair<forge::Position, forge::Move>> & allMisses,
+				const vector<pair<forge::Position, forge::Move>> & allFaults)
+			{
+				cout << endl << guten::color::push() << guten::color::yellow
+					<< "=== All Missed (Getting There) " << allMisses.size() << " ===" << guten::color::pop() << endl;
+				
+				for (const auto& elem : allMisses) {
+					guten::boards::CheckerBoard cb = elem.first.board().getCheckerBoard();
+
+					BoardSquare to = elem.second.to();
+					BoardSquare from = elem.second.from();
+
+					cb.highlight(to.row(), to.col());
+					cb.highlight(from.row(), from.col());
+
+					cb.printMini();
+					cout << elem.first.toFEN() << endl;
+				}
+
+				cout << endl << guten::color::push() << guten::color::red
+					<< "=== Faults (Bad We should not have generated these) " << allFaults.size() << " ===" << guten::color::pop() << endl;
+				
+				for (const auto& elem : allFaults) {
+					guten::boards::CheckerBoard cb = elem.first.board().getCheckerBoard();
+
+					BoardSquare to = elem.second.to();
+					BoardSquare from = elem.second.from();
+
+					cb.highlight(to.row(), to.col());
+					cb.highlight(from.row(), from.col());
+
+					cb.printMini();
+					cout << elem.first.toFEN() << endl;
+				}
 
 				cout << endl;
 			}
 
 			void stockfishAndForge()
 			{
-				set<forge::MovePositionPair> allMisses;
-				set<forge::MovePositionPair> allFaults;
+				vector<pair<forge::Position, forge::Move>> allMisses;
+				vector<pair<forge::Position, forge::Move>> allFaults;
 
 				boost::process::child stockfish;
 				bp::opstream sfOut;
 				bp::ipstream sfIn;
 
 				stack<forge::MovePositionPair> frontier;
-				const int DEPTH_LIMIT = 4;
+				const int DEPTH_LIMIT = 5;
 
 				forge::MovePositionPair movePos;	// Start with opening position
+				//movePos.position.fromFEN("rnb1kbnr/pppp1ppp/4p3/8/6Pq/5P2/PPPPP2P/RNBQKBNR w - - 1 2");
 				movePos.position.reset();
-				//movePos.position.fromFEN(R"dil(1nbB2qr/rp2k3/2nbp3/1N3p1p/P2p3P/R2BPp2/1PP2KP1/4QR2 b - - 2 26)dil");
 				frontier.emplace( movePos );
 
 				while (frontier.size()) {
@@ -275,6 +333,11 @@ namespace forge
 					// 1.) --- Call StockFish's movegen on Position 'pos' ---
 					vector<Move> sfMoves = moveGenSF(stockfish, sfOut, sfIn, movePos);
 					// cout << guten::color::magenta << sfMoves.size() << " moves generated by stockfish\n";
+
+					// --- Skip Finished Games ---
+					if (sfMoves.empty()) {
+						continue;	// Skip this position. It is the last position
+					}
 
 					// 2.) --- Convert Moves to Positions relative to 'pos' ---
 					// 3.) --- Push Positions to a set ---
@@ -310,15 +373,21 @@ namespace forge
 					}
 
 					// 7.) --- Show results ---
-					showResults(movePos, matches, misses, faults);
+					//showResults(movePos, matches, misses, faults);
 
-					copy(misses.begin(), misses.end(), inserter(allMisses, allMisses.end()));
-					copy(faults.begin(), faults.end(), inserter(allFaults, allMisses.end()));
+					for (const auto& elem : misses) {
+						allMisses.push_back(std::make_pair(movePos.position, elem.move));
+					}
+					for (const auto& elem : faults) {
+						allMisses.push_back(std::make_pair(movePos.position, elem.move));
+					}
+					//copy(misses.begin(), misses.end(), inserter(allMisses, allMisses.end()));
+					//copy(faults.begin(), faults.end(), inserter(allFaults, allMisses.end()));
 
 					if (_kbhit()) {
 						char ch = _getch();
 
-						forge::MovePositionPair pairPH; // placeholder
+						forge::MovePositionPair pairPH;				// placeholder
 						set<forge::MovePositionPair> allMatches;	// placeholder
 
 						cout << guten::color::push() << guten::color::yellow
@@ -327,7 +396,7 @@ namespace forge
 							<< "========================================================" << endl
 							<< guten::color::pop();
 
-						showResults(pairPH, allMatches, allMisses, allFaults);
+						showResults(allMisses, allFaults);
 
 						cout << "Press any key...";
 						cin.get();
@@ -338,6 +407,11 @@ namespace forge
 					//	cin.get();
 					//}
 				} // while(
+
+				cout << "Done. All Results" << endl;
+				forge::MovePositionPair pairPH;				// placeholder
+				set<forge::MovePositionPair> allMatches;	// placeholder
+				showResults(allMisses, allFaults);
 			} // stockfishAndForge()
 		} // namespace movegen
 	} // namespace test

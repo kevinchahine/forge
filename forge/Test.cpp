@@ -274,6 +274,47 @@ namespace forge
 				b.place<BlackKing>(BoardSquare{ 'h', '6' });
 				b.place<WhitePawn>(BoardSquare{ 'b', '7' });
 			}
+
+			{
+				Position& p = positions.emplace_back();
+				Board& b = p.board();
+
+				p.move<WhiteKing>(Move{ b.whiteKing(), BoardSquare{ 'e', '1' } });
+				b.place<BlackKing>(BoardSquare{ 'e', '7' });
+				b.place<Rook>(BoardSquare{ 'b', '8' }, BLACK);
+				b.place<BlackPawn>(BoardSquare{ 'b', '7' }, BLACK);
+				b.place<Queen>(BoardSquare{ 'b', '4' }, WHITE);
+			}
+
+			{
+				Position& p = positions.emplace_back();
+				p.reset();
+				Board& b = p.board();
+
+				p.move<WhitePawn>(Move{ "f2f3" });
+				p.move<BlackPawn>(Move{ "e7e6" });
+				p.move<WhitePawn>(Move{ "g2g4" });
+				p.move<Queen>(Move{ "d8h4" });
+			}
+
+			{
+				Position& p = positions.emplace_back();
+				p.reset();
+				Board& b = p.board();
+
+				p.move<WhitePawn>(Move{ "f2f3" });
+				p.move<BlackPawn>(Move{ "e7e6" });
+				p.move<WhitePawn>(Move{ "g2g4" });
+				p.move<BlackPawn>(Move{ "a7a6" });
+				p.move<Bishop>(Move{ "c1f4" });
+				p.move<Queen>(Move{ "d8h4" });
+			}
+
+			{
+				Position& p = positions.emplace_back();
+				p.fromFEN(R"dil(rnb1kbnr/pppp1ppp/4p3/8/6Pq/5P2/PPPPP2P/RNBQKBNR w - - 1 2)dil");
+				p.move<BlackKing>(Move{ "e8e7" });
+			}
 		}
 
 		void boardSquare()
@@ -856,7 +897,9 @@ namespace forge
 
 		void legalMoveGenerator()
 		{
-			for (const auto & p : positions) {
+			const forge::Position& p = positions.back();
+			{
+			//for (const auto & p : positions) {
 				const forge::Board & b = p.board();
 				b.print();
 

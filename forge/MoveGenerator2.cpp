@@ -106,6 +106,7 @@ namespace forge
 	void MoveGenerator2::genPinMoves(const Board& b, bool isWhitesTurn, bool searchOnly)
 	{
 		// 1.) --- Starting from our King, search in each ray direction for pins ---
+		// Remember: Pins can only be delivered from Ray Pieces (Not knights, kings or pawns)
 
 		// --- Forward Checking ---
 		// Is there a possibility of a pin in some direction?
@@ -247,7 +248,7 @@ namespace forge
 		// If an attacker was found and bs is not Absolutely Pinned,
 		// Apply capture move.
 		if (bs.isValid()) {
-			// TODO: OPTIMIZE: Replace template param with RayPiece
+			// TODO: OPTIMIZE: Replace template param with pieces::RayPiece
 			legals.emplace_back<pieces::Piece>(Move{ bs, attacker }, pos);
 		}
 	}
@@ -377,8 +378,8 @@ namespace forge
 
 		// Attacker must be either a Pawn or Knight.
 		// Since we can't block bs, lets see if we can capture bs.
-
-		// --- Look for Lateral Captures ---
+		
+		// --- Look for Captures from our Lateral Pieces ---
 		{
 			const BoardSquare& as = attacker.square;
 			BitBoard attackerCross = BitBoard::mask<directions::Lateral>(as);
@@ -388,31 +389,31 @@ namespace forge
 			if (possibleCaptures.any()) {
 				// Yes. Look in more detail.
 
-				captureAttackerWithRay<directions::Up>(legalMoves, as, theirs, possibleCaptures, pos);
-				captureAttackerWithRay<directions::Down>(legalMoves, as, theirs, possibleCaptures, pos);
-				captureAttackerWithRay<directions::Left>(legalMoves, as, theirs, possibleCaptures, pos);
-				captureAttackerWithRay<directions::Right>(legalMoves, as, theirs, possibleCaptures, pos);
+				captureAttackerWithRay<directions::Up>(legalMoves, as, theirs, ours, pos);
+				captureAttackerWithRay<directions::Down>(legalMoves, as, theirs, ours, pos);
+				captureAttackerWithRay<directions::Left>(legalMoves, as, theirs, ours, pos);
+				captureAttackerWithRay<directions::Right>(legalMoves, as, theirs, ours, pos);
 			}
 		}
-
-		// --- Look for Diagonal Captures ---
+		
+		// --- Look for Captures from our Diagonal Pieces ---
 		{
 			const BoardSquare& as = attacker.square;
 			BitBoard attackerX = BitBoard::mask<directions::Diagonal>(as);
 			BitBoard possibleCaptures = ourDiagonals & attackerX & ~ourAbsolutePins;
 
-			// Is bs possible that one of our Laterals can capture attacker?
+			// Is bs possible that one of our Diagonals can capture attacker?
 			if (possibleCaptures.any()) {
 				// Yes. Look in more detail.
 
-				captureAttackerWithRay<directions::UR>(legalMoves, as, theirs, possibleCaptures, pos);
-				captureAttackerWithRay<directions::UL>(legalMoves, as, theirs, possibleCaptures, pos);
-				captureAttackerWithRay<directions::DR>(legalMoves, as, theirs, possibleCaptures, pos);
-				captureAttackerWithRay<directions::DL>(legalMoves, as, theirs, possibleCaptures, pos);
+				captureAttackerWithRay<directions::UR>(legalMoves, as, theirs, ours, pos);
+				captureAttackerWithRay<directions::UL>(legalMoves, as, theirs, ours, pos);
+				captureAttackerWithRay<directions::DR>(legalMoves, as, theirs, ours, pos);
+				captureAttackerWithRay<directions::DL>(legalMoves, as, theirs, ours, pos);
 			}
 		}
 
-		// --- Look for Knight Captures ---
+		// --- Look for Captures from our Knights ---
 		{
 			const BoardSquare& as = attacker.square;
 			BitBoard attackerOctopus = BitBoard::mask<directions::LShape>(as);
@@ -422,21 +423,21 @@ namespace forge
 			if (possibleCaptures.any()) {
 				// Yes. One or more of our Knights can capture attacker.
 
-				captureAttackerWithKnight<directions::Knight0>(legalMoves, as, pos, possibleCaptures);
-				captureAttackerWithKnight<directions::Knight1>(legalMoves, as, pos, possibleCaptures);
-				captureAttackerWithKnight<directions::Knight2>(legalMoves, as, pos, possibleCaptures);
-				captureAttackerWithKnight<directions::Knight3>(legalMoves, as, pos, possibleCaptures);
-				captureAttackerWithKnight<directions::Knight4>(legalMoves, as, pos, possibleCaptures);
-				captureAttackerWithKnight<directions::Knight5>(legalMoves, as, pos, possibleCaptures);
-				captureAttackerWithKnight<directions::Knight6>(legalMoves, as, pos, possibleCaptures);
-				captureAttackerWithKnight<directions::Knight7>(legalMoves, as, pos, possibleCaptures);
+				captureAttackerWithKnight<directions::Knight0>(legalMoves, as, pos, ours);
+				captureAttackerWithKnight<directions::Knight1>(legalMoves, as, pos, ours);
+				captureAttackerWithKnight<directions::Knight2>(legalMoves, as, pos, ours);
+				captureAttackerWithKnight<directions::Knight3>(legalMoves, as, pos, ours);
+				captureAttackerWithKnight<directions::Knight4>(legalMoves, as, pos, ours);
+				captureAttackerWithKnight<directions::Knight5>(legalMoves, as, pos, ours);
+				captureAttackerWithKnight<directions::Knight6>(legalMoves, as, pos, ours);
+				captureAttackerWithKnight<directions::Knight7>(legalMoves, as, pos, ours);
 			}
 		}
 
-		// --- Look for Pawn Captures ---
+		// --- Look for Captures from our Pawns ---
 		genPawnBlockAndCaptureRay(attacker, captureMask);
 
-		// --- Exclude King Captures (Those are taken care of in genKingMoves() ---
+		// --- Exclude Captures from Kings (Those are taken care of in genKingMoves() ---
 	}
 
 	void MoveGenerator2::genPawnBlockAndCaptureRay(const KingAttacker& attacker, BitBoard captureMask)
@@ -509,7 +510,8 @@ namespace forge
 				// === PUSH 1 ===
 				BoardSquare pawn1 = (dir1.wouldBeInBounds(square) ? dir1.move(square) : BoardSquare::invalid());
 
-				if (pawn1.isValid() && usefullPawns[pawn1]) {
+				// Hint: square will always be empty because if it wasn't then an attack would not be possible
+				if (pawn1.isValid() && usefullPawns[pawn1]/* && empty[square]*/) {
 					// Would push lead to promotion?
 					if (pawn1.row() == promotionRow) {
 						// Yes promote pawn.
@@ -521,16 +523,21 @@ namespace forge
 					else {
 						// No Promotion. Just a push.
 						legalMoves.emplace_back<pieces::Pawn>(Move{ pawn1, square }, pos);
-
-						// === PUSH 2 ===
-						BoardSquare pawn2 = 
-							(square.row() == startingRow && empty[pawn1] && usefullPawns[pawn2] ?
-								dir2.move(square) : BoardSquare::invalid());
-
-						if (pawn2.isValid()) {
-							legalMoves.emplace_back<pieces::Pawn>(Move{ pawn2, square }, pos);
-						}
 					}
+				}
+
+				// === PUSH 2 ===
+				BoardSquare pawn2 = (dir2.wouldBeInBounds(square) ? dir2.move(square) : BoardSquare::invalid());
+				pawn2 = (
+					pawn2.isValid() &&				// Make sure pawn2 is on the board
+					empty[pawn1] &&					// Make sure pawn1 is empty (so that we don't jump another piece)
+					usefullPawns[pawn2] &&			// Make sure pawn2 is the square of a pawn we can use and not something else
+					pawn2.row() == startingRow ?	// Make sure pawn2 is a starting square where pawns can do double pushes
+					pawn2 :							// True: leave pawn2 with the same value
+					BoardSquare::invalid());		// False: make pawn2 invalid.
+
+				if (pawn2.isValid()) {
+					legalMoves.emplace_back<pieces::Pawn>(Move{ pawn2, square }, pos);
 				}
 			} // for (
 		} // if Horizontal or Diagonal

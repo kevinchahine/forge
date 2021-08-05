@@ -14,7 +14,7 @@ namespace forge
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"RAY_DIRECTION_T must be a ray direction");
 
-		BoardSquare attacker;
+		BoardSquare attacker = BoardSquare::invalid();
 
 		BitBoard theirAttackers = board.directionals<RAY_DIRECTION_T>() & theirs;
 		BitBoard extents = BitBoard::mask<RAY_DIRECTION_T>(attackedSquare);
@@ -40,14 +40,20 @@ namespace forge
 					// It is our pieces, which means it is blocking a possible attacker. 
 					// --- Or ---
 					// It is one of their other pieces, but one which can't attack in our direction.
-					attacker.setAsInvalid();
+					//attacker.setAsInvalid();	
 					break;
 				}
+				/* else { // It must be empty } */
 			}
 		}
 		else {
 			// No. Its not possible, non of their attackers line up with the square
-			attacker.setAsInvalid();	// No attacker was found
+			//attacker.setAsInvalid();	// No attacker was found
+		}
+
+		if (attacker == BoardSquare{ 'a', '8' }) {
+			std::cout << "Bingooo" << attacker.isValid() << std::endl;
+			std::cin.get();
 		}
 
 		return attacker;

@@ -51,7 +51,7 @@ int main(int argc, char ** argv)
 	//forge::test::piece_moves::rook();
 	//forge::test::piece_moves::pawn();
 	//forge::test::fen::allToFen();
-	forge::test::fen::allFromFen();
+	//forge::test::fen::allFromFen();
 	//forge::test::pins::isPinPossible();
 	//forge::test::pins::absolutePins();
 	//forge::test::movegen::genThreatBoard();
@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
 	//forge::test::movegen::findKingAttackers();
 	//forge::test::movegen::genKingMoves();
 	//forge::test::moveKings();
-	//forge::test::legalMoveGenerator();
+	forge::test::legalMoveGenerator();	// ***
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();
@@ -75,10 +75,7 @@ int main(int argc, char ** argv)
 	//forge::test::ai::playApplePie();
 
 	// Rename stockfish and forge
-	//forge::test::movegen::stockfishAndForge();
-
-	// 1nbB2qr/rp2k3/2nbp3/1N3p1p/P2p3P/R2BPp2/1PP2KP1/4QR2 b - - 2 26
-	// 8/1P6/7k/b7/2n5/8/8/3K4 w - - 1 101
+	forge::test::movegen::stockfishAndForge();
 
 	cout << "Done...";
 	this_thread::sleep_for(chrono::seconds(1));
