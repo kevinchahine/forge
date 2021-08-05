@@ -107,9 +107,9 @@ namespace forge
 				}
 
 				// --- Set Position --- 
-				//cout << guten::color::push() << guten::color::green 
-				//	<< "position fen " << pos.toFEN() << endl
-				//	<< guten::color::pop();
+				cout << guten::color::push() << guten::color::green 
+					<< "position fen " << pos.toFEN() << endl
+					<< guten::color::pop();
 				out << "position fen " << pos.toFEN() << endl;
 
 				// --- Get Legal Moves ---
@@ -311,11 +311,11 @@ namespace forge
 				bp::ipstream sfIn;
 
 				stack<forge::MovePositionPair> frontier;
-				const int DEPTH_LIMIT = 5;
+				const int DEPTH_LIMIT = 2;
 
 				forge::MovePositionPair movePos;	// Start with opening position
-				//movePos.position.fromFEN("rnb1kbnr/pppp1ppp/4p3/8/6Pq/5P2/PPPPP2P/RNBQKBNR w - - 1 2");
-				movePos.position.reset();
+				movePos.position.fromFEN("rnbqkbnr/pp1p1ppp/3N4/2p1p3/8/8/PPPPPPPP/R1BQKBNR b - - 1 2");
+				//movePos.position.reset();
 				frontier.emplace( movePos );
 
 				while (frontier.size()) {
@@ -373,7 +373,7 @@ namespace forge
 					}
 
 					// 7.) --- Show results ---
-					//showResults(movePos, matches, misses, faults);
+					showResults(movePos, matches, misses, faults);
 
 					for (const auto& elem : misses) {
 						allMisses.push_back(std::make_pair(movePos.position, elem.move));

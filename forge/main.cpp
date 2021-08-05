@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
 	//forge::test::movegen::findKingAttackers();
 	//forge::test::movegen::genKingMoves();
 	//forge::test::moveKings();
-	forge::test::legalMoveGenerator();	// ***
+	//forge::test::legalMoveGenerator();	// ***
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();
