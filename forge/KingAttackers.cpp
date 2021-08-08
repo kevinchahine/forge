@@ -38,8 +38,7 @@ namespace forge
 			BoardSquare attacker = Attackers::findAttackingRay<RAY_DIRECTION_T>(
 				ourKing,
 				board,
-				theirs,
-				ours);
+				theirs);
 
 			// 2.) --- Did we find a Ray attacker? ---
 			if (attacker.isValid()) {

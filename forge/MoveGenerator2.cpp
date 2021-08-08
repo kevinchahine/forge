@@ -143,7 +143,7 @@ namespace forge
 	}
 
 	// !!!WARNING: Make sure move is in bounds before calling this function.
-	// Does not perform bounds checking.
+	// Does not perform bounds checking in Release Mode.
 	template<typename DIRECTION_T>
 	inline void moveKing(
 		MoveList& legals,
@@ -232,24 +232,28 @@ namespace forge
 		}
 	}
 
+	// RAY_DIRECTION_T - Direction from 'victim' piece to an attacking Piece
+	// legals - MoveList that we are to generate moves into.
+	// victim - Square of the piece which we are trying to capture. (An empty square can be a "victim")
+	// aggressors - All pieces which can capture the victim square. (Exclude absolute pins)
+	// pos - Current Position of the game. Used to generate the next position.
 	template<typename RAY_DIRECTION_T>
-	inline void captureAttackerWithRay(
-		MoveList& legals,
-		const BoardSquare& attacker,
-		const BitBoard& theirs,
-		const BitBoard& ours,
-		const Position& pos)
+	inline void captureWithRay(
+		MoveList& legals,			
+		const BoardSquare& victim,	
+		const BitBoard& aggressors,
+		const Position& pos)		
 	{
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"Error: This function only works on Ray directions.");
 
-		BoardSquare bs = Attackers::findAttackingRay<RAY_DIRECTION_T>(attacker, pos.board(), theirs, ours);
+		BoardSquare attacker = Attackers::findAttackingRay<RAY_DIRECTION_T>(victim, pos.board(), aggressors);
 
-		// If an attacker was found and bs is not Absolutely Pinned,
-		// Apply capture move.
-		if (bs.isValid()) {
+		// If an attacker was found then apply capture move.
+		if (attacker.isValid()) {
 			// TODO: OPTIMIZE: Replace template param with pieces::RayPiece
-			legals.emplace_back<pieces::Piece>(Move{ bs, attacker }, pos);
+			// Move will be from 'attacker' to 'victim'
+			legals.emplace_back<pieces::Piece>(Move{ attacker, victim }, pos);
 		}
 	}
 
@@ -277,21 +281,22 @@ namespace forge
 		const Position& pos = *currPositionPtr;
 		const Board& board = pos.board();
 		BitBoard pushMask;		// Where the attacker can push to (assuming no obstacles)
-		BitBoard captureMask;	// Where the attacker can capture (assuming each square can be captured)
+		BitBoard captureMask;	// Where the attacker can capture (assuming no obstacles and a capturable piece exists)
 
 		// Generate push and capture masks that tell us where attacker can push and capture to
-		const pieces::Piece& attackingPiece = board.at(attacker.square);
-		attackingPiece.masks(attacker.square, pushMask, captureMask);
+		const pieces::Piece& attackerPiece = board.at(attacker.square);
+		attackerPiece.masks(attacker.square, pushMask, captureMask);
 
 		// Is the attacker a Ray or non-Ray?
-		if (attackingPiece.isRay()) {
-			// Yes. Because the attacker is Ray, bs can be blocked.
+		if (attackerPiece.isRay()) {
+			// Yes. Because the attacker is Ray, it can be blocked and captured.
 			// Lets find a piece that can block or capture the attacker. 
 
 			// TODO: Optimize: There is no need to search for blockers and capturers
 			// in direction of King because, those pieces would be taken care of as 
 			// pins.
 
+			// Direction from our King to attacker.
 			const directions::Direction& dir = attacker.dir;
 
 			// Iterate from King's square to attacker and look for blocker/captures
@@ -318,10 +323,10 @@ namespace forge
 					if (possibleCaptures.any()) {
 						// Yes. Look in more detail.
 
-						captureAttackerWithRay<directions::Up>(legalMoves, bs, ours, theirs, pos);
-						captureAttackerWithRay<directions::Down>(legalMoves, bs, ours, theirs, pos);
-						captureAttackerWithRay<directions::Left>(legalMoves, bs, ours, theirs, pos);
-						captureAttackerWithRay<directions::Right>(legalMoves, bs, ours, theirs, pos);
+						captureWithRay<directions::Up>(legalMoves, bs, ours, pos);
+						captureWithRay<directions::Down>(legalMoves, bs, ours, pos);
+						captureWithRay<directions::Left>(legalMoves, bs, ours, pos);
+						captureWithRay<directions::Right>(legalMoves, bs, ours, pos);
 					}
 				}
 
@@ -334,10 +339,10 @@ namespace forge
 					if (possibleCaptures.any()) {
 						// Yes. Look in more detail.
 
-						captureAttackerWithRay<directions::UR>(legalMoves, bs, ours, theirs, pos);
-						captureAttackerWithRay<directions::UL>(legalMoves, bs, ours, theirs, pos);
-						captureAttackerWithRay<directions::DR>(legalMoves, bs, ours, theirs, pos);
-						captureAttackerWithRay<directions::DL>(legalMoves, bs, ours, theirs, pos);
+						captureWithRay<directions::UR>(legalMoves, bs, ours, pos);
+						captureWithRay<directions::UL>(legalMoves, bs, ours, pos);
+						captureWithRay<directions::DR>(legalMoves, bs, ours, pos);
+						captureWithRay<directions::DL>(legalMoves, bs, ours, pos);
 					}
 				}
 
@@ -363,11 +368,11 @@ namespace forge
 
 				// --- Our Pawns ---
 
+				// --- Our Kings (Skip) ---
+				// King moves are taken care of in genKingMoves()
+				// Nothing to do here
 
-				// --- Our Kings (Can't block attacks) ---
-				// Excluded because King can't block himself. Nothing to do here
-
-				// Did we reach the attacker?
+				// --- Did we reach the attacker? ---
 				if (bs == attacker.square) {
 					break; // Yes we can now break from loop and move on to captures
 				}
@@ -389,10 +394,10 @@ namespace forge
 			if (possibleCaptures.any()) {
 				// Yes. Look in more detail.
 
-				captureAttackerWithRay<directions::Up>(legalMoves, as, theirs, ours, pos);
-				captureAttackerWithRay<directions::Down>(legalMoves, as, theirs, ours, pos);
-				captureAttackerWithRay<directions::Left>(legalMoves, as, theirs, ours, pos);
-				captureAttackerWithRay<directions::Right>(legalMoves, as, theirs, ours, pos);
+				captureWithRay<directions::Up>(legalMoves, as, ours, pos);
+				captureWithRay<directions::Down>(legalMoves, as, ours, pos);
+				captureWithRay<directions::Left>(legalMoves, as, ours, pos);
+				captureWithRay<directions::Right>(legalMoves, as, ours, pos);
 			}
 		}
 		
@@ -406,10 +411,10 @@ namespace forge
 			if (possibleCaptures.any()) {
 				// Yes. Look in more detail.
 
-				captureAttackerWithRay<directions::UR>(legalMoves, as, theirs, ours, pos);
-				captureAttackerWithRay<directions::UL>(legalMoves, as, theirs, ours, pos);
-				captureAttackerWithRay<directions::DR>(legalMoves, as, theirs, ours, pos);
-				captureAttackerWithRay<directions::DL>(legalMoves, as, theirs, ours, pos);
+				captureWithRay<directions::UR>(legalMoves, as, ours, pos);
+				captureWithRay<directions::UL>(legalMoves, as, ours, pos);
+				captureWithRay<directions::DR>(legalMoves, as, ours, pos);
+				captureWithRay<directions::DL>(legalMoves, as, ours, pos);
 			}
 		}
 
