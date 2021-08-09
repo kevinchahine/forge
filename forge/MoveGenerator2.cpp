@@ -239,10 +239,10 @@ namespace forge
 	// pos - Current Position of the game. Used to generate the next position.
 	template<typename RAY_DIRECTION_T>
 	inline void captureWithRay(
-		MoveList& legals,			
-		const BoardSquare& victim,	
+		MoveList& legals,
+		const BoardSquare& victim,
 		const BitBoard& aggressors,
-		const Position& pos)		
+		const Position& pos)
 	{
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"Error: This function only works on Ray directions.");
@@ -287,177 +287,133 @@ namespace forge
 		const pieces::Piece& attackerPiece = board.at(attacker.square);
 		attackerPiece.masks(attacker.square, pushMask, captureMask);
 
+		// Direction from our King to attacker.
+		// Could be a ray or knight direction.
+		const directions::Direction & dir = attacker.dir;
+
+		BoardSquare bs;
+
 		// Is the attacker a Ray or non-Ray?
 		if (attackerPiece.isRay()) {
+			// --- Attacker is a Ray ---
+
 			// Yes. Because the attacker is Ray, it can be blocked and captured.
-			// Lets find a piece that can block or capture the attacker. 
 
 			// TODO: Optimize: There is no need to search for blockers and capturers
 			// in direction of King because, those pieces would be taken care of as 
 			// pins.
 
-			// Direction from our King to attacker.
-			const directions::Direction& dir = attacker.dir;
-
-			// Iterate from King's square to attacker and look for blocker/captures
-			BoardSquare bs = ourKing;
-			while (dir.wouldBeInBounds(bs)) {
-				// TODO: Optimize: We can probably replace bounds checking with attacker.square
-				// 'bs' will always reach attacker before edge of board.
-
-				// TODO: Optimize: We should probably have multiple loops. One loop for each type of piece.
-
-				bs = dir.move(bs);	// Incremented first to skip kings coordinate
-
-				// --- Find one of our pieces that can block/capture the attacker ---
-
-				// Find a piece that can move to this square and block the attacker.
-				// Hint: If a piece can 'attack' a square then bs can block/capture at that square.
-
-				// --- Look for Lateral Captures ---
-				{
-					BitBoard attackerCross = BitBoard::mask<directions::Lateral>(bs);
-					BitBoard possibleCaptures = ourLaterals & attackerCross & ~ourAbsolutePins;
-
-					// Is bs possible that one of our Laterals can capture attacker?
-					if (possibleCaptures.any()) {
-						// Yes. Look in more detail.
-
-						captureWithRay<directions::Up>(legalMoves, bs, ours, pos);
-						captureWithRay<directions::Down>(legalMoves, bs, ours, pos);
-						captureWithRay<directions::Left>(legalMoves, bs, ours, pos);
-						captureWithRay<directions::Right>(legalMoves, bs, ours, pos);
-					}
-				}
-
-				// --- Our Diagonals ---
-				{
-					BitBoard attackerX = BitBoard::mask<directions::Diagonal>(bs);
-					BitBoard possibleCaptures = ourDiagonals & attackerX & ~ourAbsolutePins;
-
-					// Is bs possible that one of our Laterals can capture attacker?
-					if (possibleCaptures.any()) {
-						// Yes. Look in more detail.
-
-						captureWithRay<directions::UR>(legalMoves, bs, ours, pos);
-						captureWithRay<directions::UL>(legalMoves, bs, ours, pos);
-						captureWithRay<directions::DR>(legalMoves, bs, ours, pos);
-						captureWithRay<directions::DL>(legalMoves, bs, ours, pos);
-					}
-				}
-
-				// --- Our Knights ---
-				{
-					BitBoard attackerOctopus = BitBoard::mask<directions::LShape>(bs);
-					BitBoard possibleCaptures = board.knights() & ours & attackerOctopus & ~ourAbsolutePins;
-
-					// Is bs possible that one of our Knights can capture attacker?
-					if (possibleCaptures.any()) {
-						// Yes. One or more of our Knights can capture attacker.
-
-						captureAttackerWithKnight<directions::Knight0>(legalMoves, bs, pos, possibleCaptures);
-						captureAttackerWithKnight<directions::Knight1>(legalMoves, bs, pos, possibleCaptures);
-						captureAttackerWithKnight<directions::Knight2>(legalMoves, bs, pos, possibleCaptures);
-						captureAttackerWithKnight<directions::Knight3>(legalMoves, bs, pos, possibleCaptures);
-						captureAttackerWithKnight<directions::Knight4>(legalMoves, bs, pos, possibleCaptures);
-						captureAttackerWithKnight<directions::Knight5>(legalMoves, bs, pos, possibleCaptures);
-						captureAttackerWithKnight<directions::Knight6>(legalMoves, bs, pos, possibleCaptures);
-						captureAttackerWithKnight<directions::Knight7>(legalMoves, bs, pos, possibleCaptures);
-					}
-				}
-
-				// --- Our Pawns ---
-
-				// --- Our Kings (Skip) ---
-				// King moves are taken care of in genKingMoves()
-				// Nothing to do here
-
-				// --- Did we reach the attacker? ---
-				if (bs == attacker.square) {
-					break; // Yes we can now break from loop and move on to captures
-				}
-			}
+			// Move bs 1 square in direction of attacker.
+			bs = (dir.wouldBeInBounds(ourKing) ? dir.move(ourKing) : attacker.square);
+		} // end if(piece.isRay())
+		else {
+			// --- Attacker is either a Knight or Pawn ---
+			bs = attacker.square;
 		}
 
-		// --- See if we can Capture the Attacker ---
+		// Iterate from King's square to attacker and look for blocker/captures
+		while (true) {
+			// TODO: Optimize: We can probably replace bounds checking with attacker.square
+			// 'bs' will always reach attacker before edge of board.
 
-		// Attacker must be either a Pawn or Knight.
-		// Since we can't block bs, lets see if we can capture bs.
-		
-		// --- Look for Captures from our Lateral Pieces ---
-		{
-			const BoardSquare& as = attacker.square;
-			BitBoard attackerCross = BitBoard::mask<directions::Lateral>(as);
-			BitBoard possibleCaptures = ourLaterals & attackerCross & ~ourAbsolutePins;
+			// TODO: Optimize: We should probably have multiple loops. One loop for each type of piece.
 
-			// Is bs possible that one of our Laterals can capture attacker?
-			if (possibleCaptures.any()) {
-				// Yes. Look in more detail.
+			// --- Find one of our pieces that can block/capture the attacker ---
 
-				captureWithRay<directions::Up>(legalMoves, as, ours, pos);
-				captureWithRay<directions::Down>(legalMoves, as, ours, pos);
-				captureWithRay<directions::Left>(legalMoves, as, ours, pos);
-				captureWithRay<directions::Right>(legalMoves, as, ours, pos);
+			// Find a piece that can move to this square and block the attacker.
+			// Hint: If a piece can 'attack' a square then bs can block/capture at that square.
+
+			// --- Block/Capture with our Laterals ---
+			{
+				BitBoard attackerCross = BitBoard::mask<directions::Lateral>(bs);
+				BitBoard aggressors = ourLaterals & attackerCross & ~ourAbsolutePins;
+
+				// Is bs possible that one of our Laterals can capture attacker?
+				if (aggressors.any()) {
+					// Yes. Look in more detail.
+
+					captureWithRay<directions::Up>(legalMoves, bs, aggressors, pos);
+					captureWithRay<directions::Down>(legalMoves, bs, aggressors, pos);
+					captureWithRay<directions::Left>(legalMoves, bs, aggressors, pos);
+					captureWithRay<directions::Right>(legalMoves, bs, aggressors, pos);
+				}
 			}
-		}
-		
-		// --- Look for Captures from our Diagonal Pieces ---
-		{
-			const BoardSquare& as = attacker.square;
-			BitBoard attackerX = BitBoard::mask<directions::Diagonal>(as);
-			BitBoard possibleCaptures = ourDiagonals & attackerX & ~ourAbsolutePins;
 
-			// Is bs possible that one of our Diagonals can capture attacker?
-			if (possibleCaptures.any()) {
-				// Yes. Look in more detail.
+			// --- Block/Capture with our Diagonals ---
+			{
+				BitBoard attackerX = BitBoard::mask<directions::Diagonal>(bs);
+				BitBoard aggressors = ourDiagonals & attackerX & ~ourAbsolutePins;
 
-				captureWithRay<directions::UR>(legalMoves, as, ours, pos);
-				captureWithRay<directions::UL>(legalMoves, as, ours, pos);
-				captureWithRay<directions::DR>(legalMoves, as, ours, pos);
-				captureWithRay<directions::DL>(legalMoves, as, ours, pos);
+				// Is bs possible that one of our Laterals can capture attacker?
+				if (aggressors.any()) {
+					// Yes. Look in more detail.
+
+					captureWithRay<directions::UR>(legalMoves, bs, aggressors, pos);
+					captureWithRay<directions::UL>(legalMoves, bs, aggressors, pos);
+					captureWithRay<directions::DR>(legalMoves, bs, aggressors, pos);
+					captureWithRay<directions::DL>(legalMoves, bs, aggressors, pos);
+				}
 			}
-		}
 
-		// --- Look for Captures from our Knights ---
-		{
-			const BoardSquare& as = attacker.square;
-			BitBoard attackerOctopus = BitBoard::mask<directions::LShape>(as);
-			BitBoard possibleCaptures = board.knights() & ours & attackerOctopus & ~ourAbsolutePins;
+			// --- Block/Capture with our Knights ---
+			{
+				BitBoard attackerOctopus = BitBoard::mask<directions::LShape>(bs);
+				BitBoard aggressors = board.knights() & ours & attackerOctopus & ~ourAbsolutePins;
 
-			// Is bs possible that one of our Knights can capture attacker?
-			if (possibleCaptures.any()) {
-				// Yes. One or more of our Knights can capture attacker.
+				// Is it possible that one of our Knights can capture the attacker?
+				if (aggressors.any()) {
+					// Yes. One or more of our Knights can capture attacker.
 
-				captureAttackerWithKnight<directions::Knight0>(legalMoves, as, pos, ours);
-				captureAttackerWithKnight<directions::Knight1>(legalMoves, as, pos, ours);
-				captureAttackerWithKnight<directions::Knight2>(legalMoves, as, pos, ours);
-				captureAttackerWithKnight<directions::Knight3>(legalMoves, as, pos, ours);
-				captureAttackerWithKnight<directions::Knight4>(legalMoves, as, pos, ours);
-				captureAttackerWithKnight<directions::Knight5>(legalMoves, as, pos, ours);
-				captureAttackerWithKnight<directions::Knight6>(legalMoves, as, pos, ours);
-				captureAttackerWithKnight<directions::Knight7>(legalMoves, as, pos, ours);
+					captureAttackerWithKnight<directions::Knight0>(legalMoves, bs, pos, aggressors);
+					captureAttackerWithKnight<directions::Knight1>(legalMoves, bs, pos, aggressors);
+					captureAttackerWithKnight<directions::Knight2>(legalMoves, bs, pos, aggressors);
+					captureAttackerWithKnight<directions::Knight3>(legalMoves, bs, pos, aggressors);
+					captureAttackerWithKnight<directions::Knight4>(legalMoves, bs, pos, aggressors);
+					captureAttackerWithKnight<directions::Knight5>(legalMoves, bs, pos, aggressors);
+					captureAttackerWithKnight<directions::Knight6>(legalMoves, bs, pos, aggressors);
+					captureAttackerWithKnight<directions::Knight7>(legalMoves, bs, pos, aggressors);
+				}
 			}
-		}
 
-		// --- Look for Captures from our Pawns ---
-		genPawnBlockAndCaptureRay(attacker, captureMask);
+			// --- Block/Capture with our Pawns ---
+			// --- Look for Captures from our Pawns ---
+			genPawnBlockAndCapture(attacker, captureMask);
 
-		// --- Exclude Captures from Kings (Those are taken care of in genKingMoves() ---
+			// --- Block/Capture with our Kings (Skip) ---
+			// King moves are taken care of in genKingMoves(). Nothing to do here.
+
+			// --- Did we reach the attacker? ---
+			if (bs == attacker.square) {
+				break; // Yes we have now found all block/capture moves.
+			}
+			else if (dir.wouldBeInBounds(bs)) {	// TODO: OPTIMIZE: Is bounds checking necessary.
+				bs = dir.move(bs);	// Incremente 'bs' towards attacker
+			}
+			else {
+#ifdef _DEBUG
+				cout << "Error: " << __FUNCTION__ << " line " << __LINE__
+					<< "\tThis line should never be reached. bs should hit the attacker and always stay inbounds." << endl;
+				cin.get();
+#endif // _DEBUG
+				break;
+			}
+		} // end while (true) 
 	}
 
-	void MoveGenerator2::genPawnBlockAndCaptureRay(const KingAttacker& attacker, BitBoard captureMask)
+	void MoveGenerator2::genPawnBlockAndCapture(const KingAttacker& attacker, BitBoard captureMask)
 	{
 		const Position& pos = *currPositionPtr;
 		const Board& board = pos.board();
 		pieces::Piece attackerPiece = board.at(attacker.square);
 		const directions::Direction& direction = attacker.dir;
 
-#ifdef _DEBUG
-		if (attackerPiece.isRay() == false) {
-			cout << "Error: " << __FUNCTION__ << "() is only ment to be called when attacker is a Ray"
-				<< endl;
-		}
-#endif // _DEBUG
+//#ifdef _DEBUG
+//		// TODO: This method should work even against non-ray attackers
+//		if (attackerPiece.isRay() == false) {
+//			cout << "Error: " << __FUNCTION__ << "() is only ment to be called when attacker is a Ray"
+//				<< endl;
+//	}
+//#endif // _DEBUG
 
 		// Our pawns that might be able to block/capture attacker.
 		BitBoard usefullPawns = ours & board.pawns() & ~ourAbsolutePins;
@@ -508,9 +464,11 @@ namespace forge
 			// Only need to search pawn pushes. No need to look for pawn captures.
 			// Iterate from king in the direction of attacker 
 			// And see if we can block the attacker.
-			for (BoardSquare square = direction.move(ourKing); 
-				square != attacker.square; 
-				square = direction.move(square)) 
+			// *** If attacker is a Knight or Pawn. ***
+			// *** Then this loop will break before the 1st iteration. ***
+			for (BoardSquare square = direction.move(ourKing);
+				square != attacker.square;
+				square = direction.move(square))
 			{
 				// === PUSH 1 ===
 				BoardSquare pawn1 = (dir1.wouldBeInBounds(square) ? dir1.move(square) : BoardSquare::invalid());
@@ -582,7 +540,7 @@ namespace forge
 				legalMoves.emplace_back<pieces::Pawn>(Move{ pawnR, attacker.square }, pos);
 			}
 		}
-	}
+}
 
 	void MoveGenerator2::genLateralBlockAndCaptureRay(const KingAttacker& attacker, BitBoard captureMask)
 	{
@@ -650,7 +608,7 @@ namespace forge
 			cout << guten::color::push() << guten::color::lightred
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << pawn << " is a " << board.at(pawn) << " and not a pawn" << endl;
-		}
+	}
 #endif // _DEBUG
 
 		// TODO: OPTIMIZE: This whole function can be optimized 
@@ -736,7 +694,7 @@ namespace forge
 		}
 
 		// TODO: ENPASSENT: Don't forget enpassent
-	}
+			}
 
 	// Generates moves of a ray piece in some direction.
 	// Iterates from 'ray' to edge of board or until an obstacle is hit.
@@ -785,7 +743,7 @@ namespace forge
 			cout << guten::color::push() << guten::color::lightred
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << rook << " is a " << b.at(rook) << " and not a rook" << endl;
-		}
+	}
 #endif // _DEBUG
 
 		genRayMoves<directions::Up, pieces::Rook>(rook, occupied, theirs, legalMoves, pos);
@@ -816,7 +774,7 @@ namespace forge
 			cout << guten::color::push() << guten::color::lightred
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << knight << " is a " << b.at(knight) << " and not a knight" << endl;
-		}
+	}
 #endif // _DEBUG
 
 		// TODO: OPTIMIZE: Bounds checking is redundant here.
@@ -842,14 +800,14 @@ namespace forge
 			cout << guten::color::push() << guten::color::lightred
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << bishop << " is a " << b.at(bishop) << " and not a bishop" << endl;
-		}
+	}
 #endif // _DEBUG
 
 		genRayMoves<directions::UL, pieces::Bishop>(bishop, occupied, theirs, legalMoves, pos);
 		genRayMoves<directions::UR, pieces::Bishop>(bishop, occupied, theirs, legalMoves, pos);
 		genRayMoves<directions::DL, pieces::Bishop>(bishop, occupied, theirs, legalMoves, pos);
 		genRayMoves<directions::DR, pieces::Bishop>(bishop, occupied, theirs, legalMoves, pos);
-	}
+		}
 
 	void MoveGenerator2::genFreeQueenMoves(BoardSquare queen)
 	{
@@ -861,7 +819,7 @@ namespace forge
 			cout << guten::color::push() << guten::color::lightred
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << queen << " is a " << b.at(queen) << " and not a pawn" << endl;
-		}
+	}
 #endif // _DEBUG
 
 		genRayMoves<directions::Up, pieces::Queen>(queen, occupied, theirs, legalMoves, pos);

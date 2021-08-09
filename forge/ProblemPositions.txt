@@ -1,0 +1,7 @@
+=== Forge ===
+=== MoveGenerator ===
+
+Problematic positions:
+r3kb1r/1pq2ppp/2n1pn2/pBpp4/P2P3N/2PbP3/1P1NKPPP/R1BQ3R w - - 4 -256214754		NOT FIXED
+r2qkb1r/1p3Qpp/2n1p1b1/pBpp4/P2Pn2N/2P1P3/1P1N1PPP/R1B1K2R b - - 0 -256214753	NOT FIXED
+r2q1b1r/1p3ppp/2nkpn2/pBppPb2/P2P3N/2P5/1P1N1PPP/R1BQK2R b - - 0 -256214753		NOT FIXED

@@ -167,7 +167,7 @@ namespace forge
 		case 'n':	p = pieces::whiteKnight;	break;
 #ifdef _DEBUG
 		default:
-			cout << "Error: " << __FUNCTION__ << " " << promotionCh
+			cout << "Error: " << __FUNCTION__ << " \'" << promotionCh << '\''
 				<< " is not a promotion pieces\n";
 
 			this->isInvalid();

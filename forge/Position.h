@@ -32,7 +32,7 @@ namespace forge
 		void clear();
 
 		// ----- Moves (both push moves and captures) -----
-		// primary specialization works for allToFen but Kings, Rooks and Pawns
+		// primary specialization works for all Pieces but Kings, Rooks and Pawns
 		template <typename PIECE_T> void move(Move move);
 		template<> void move<pieces::King>(Move move);
 		template<> void move<pieces::WhiteKing>(Move move);

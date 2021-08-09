@@ -28,7 +28,7 @@ namespace forge
 
 		// Get all squares where an attacker must exist on to effectively attack square.
 		BitBoard extents = BitBoard::mask<RAY_DIRECTION_T>(square);
-
+		
 		// Combine into one BitBoard.
 		// Now possibleAttackers is all the pieces which can attack in the specified
 		// Direction.

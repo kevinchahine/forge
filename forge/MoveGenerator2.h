@@ -100,7 +100,7 @@ namespace forge
 		// moves will be generated twice.
 		void genBlockAndCaptureMoves(const KingAttacker & attacker);
 
-		void genPawnBlockAndCaptureRay(const KingAttacker& attacker, BitBoard captureMask);
+		void genPawnBlockAndCapture(const KingAttacker& attacker, BitBoard captureMask);
 		void genLateralBlockAndCaptureRay(const KingAttacker& attacker, BitBoard captureMask);
 		void genDiagonalBlockAndCaptureRay(const KingAttacker& attacker, BitBoard captureMask);
 		void genKnightBlockAndCaptureRay(const KingAttacker& attacker, BitBoard captureMask);

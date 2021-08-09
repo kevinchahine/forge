@@ -54,6 +54,9 @@
     <Filter Include="Test">
       <UniqueIdentifier>{d237e2f4-5433-4493-8f43-a023e6442f8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Notes\MoveGen">
+      <UniqueIdentifier>{73098ae7-8254-4189-a1b4-da4b4d46c2b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -296,13 +299,16 @@
       <Filter>Notes</Filter>
     </Text>
     <Text Include="MoveGeneratorQuintessential.txt">
-      <Filter>Notes</Filter>
+      <Filter>Notes\MoveGen</Filter>
     </Text>
     <Text Include="MoveGeneratorQuintessential2.txt">
-      <Filter>Notes</Filter>
+      <Filter>Notes\MoveGen</Filter>
     </Text>
     <Text Include="MoveGeneratorSpecial.txt">
-      <Filter>Notes</Filter>
+      <Filter>Notes\MoveGen</Filter>
+    </Text>
+    <Text Include="ProblemPositions.txt">
+      <Filter>Notes\MoveGen</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -504,6 +510,8 @@
     <ClInclude Include="BitBoardDefinitions.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="HashCombine.h" />
+    <ClInclude Include="HashCombine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

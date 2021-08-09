@@ -212,6 +212,7 @@
     <Text Include="NodeTree.txt" />
     <Text Include="Notation.txt" />
     <Text Include="Optimizations.txt" />
+    <Text Include="ProblemPositions.txt" />
     <Text Include="ProgramOptions.txt" />
     <Text Include="Progress.txt" />
     <Text Include="SearchFramework.txt" />
