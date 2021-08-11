@@ -346,6 +346,22 @@ namespace forge
 				Position& p = positions.emplace_back();
 				p.fromFEN("r2qkb1r/ppp1pBpp/2np1nb1/8/4PP2/P7/1PPP2PP/RNBQ1KNR b - - 0 1");
 			}
+
+			{
+				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/RPP1PPPP/1NBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/RPP1PPPP/1NBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnb1kbnr/2qP1ppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnb1kbnr/3Pqppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("1nbqkbnr/3P1ppp/r3p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rn1qkbnr/1b1P1ppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnbqkbnr/3P1pp1/4p3/p6p/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnb1kbnr/3P1ppp/1q2p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnbqkbnr/3P1p1p/4p3/p5p1/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pP6/8/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+			}
 		}
 
 		void boardSquare()
@@ -928,9 +944,11 @@ namespace forge
 
 		void legalMoveGenerator()
 		{
-			const forge::Position& p = positions.back();
-			//for (const auto & p : positions) 
+			///const forge::Position& p = positions.back();
+			///for (const auto & p : positions) 
+			for (int i = positions.size() - 13; i >= 0 && i < positions.size(); i++) 
 			{
+				const forge::Position& p = positions.at(i);
 				const forge::Board & b = p.board();
 				
 				forge::MoveGenerator2 mg2;

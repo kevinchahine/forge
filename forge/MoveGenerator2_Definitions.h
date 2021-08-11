@@ -244,14 +244,14 @@ namespace forge
 		// Find the pinned and pinner pieces for the absolute pin
 		Pin pin = pinSearch<DIRECTION_T>();
 
-		if (!pin.isValid()) {
-			cout << "No pin found in " << DIRECTION_T::str() << " direction." << endl;
-		}
-		else {
-			cout << pin.pinner << (pin.pinned.isValid() ? " valid" : " invalid") << " is pinning "
-				<< pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid") << " to King "
-				<< "from " << DIRECTION_T::str() << " direction." << endl;
-		}
+		//if (!pin.isValid()) {
+		//	cout << "No pin found in " << DIRECTION_T::str() << " direction." << endl;
+		//}
+		//else {
+		//	cout << pin.pinner << (pin.pinned.isValid() ? " valid" : " invalid") << " is pinning "
+		//		<< pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid") << " to King "
+		//		<< "from " << DIRECTION_T::str() << " direction." << endl;
+		//}
 
 		// If a valid absolute pin was found, generate its legal moves
 		if (pin.isValid()) { genPinMovesFor<DIRECTION_T>(pin, searchOnly); }

@@ -91,7 +91,7 @@ namespace forge
 		// 6.) --- Full move count ---
 		int fullMoveCount;
 		ss >> fullMoveCount;
-		this->m_moveCounter.count = fullMoveCount + (isWhite ? 1 : 0);
+		this->m_moveCounter.count = fullMoveCount + (isWhite ? 0 : 1);
 	}
 
 	string Position::toFEN() const

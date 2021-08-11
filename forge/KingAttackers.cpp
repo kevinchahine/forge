@@ -190,13 +190,13 @@ namespace forge
 			// Is it possible for one of their pawns to attack our King?
 			if (theirPawns.any()) {
 				// It is possible.
-				if (!ourKing.isTopRank()) {
-					if (!ourKing.isLeftFile() && board.isPawn(ourKing.upLeftOne())) {
+				if (ourKing.row() >= 2) {	// Black Pawns can only ever attack row 2 and down
+					if (!ourKing.isLeftFile() && theirPawns[ourKing.upLeftOne()]) {
 						// Pawn is attacking our King
 						pair.push_back_non_rays<directions::UL>(ourKing.upLeftOne());
 						isPawnAttack = true;
 					}
-					if (!ourKing.isRightFile() && board.isPawn(ourKing.upRightOne())) {
+					if (!ourKing.isRightFile() && theirPawns[ourKing.upRightOne()]) {
 						// Pawn is attacking our King
 						pair.push_back_non_rays<directions::UR>(ourKing.upRightOne());
 						isPawnAttack = true;
@@ -212,13 +212,13 @@ namespace forge
 
 			// Is it possible for one of their pawns to attack our King?
 			if (theirPawns.any()) {
-				if (!ourKing.isBotRank()) {
-					if (!ourKing.isLeftFile() && board.isPawn(ourKing.downLeftOne())) {
+				if (ourKing.row() <= 5) {	// White Pawns can only ever attack row 5 and up
+					if (!ourKing.isLeftFile() && theirPawns[ourKing.downLeftOne()]) {
 						// Pawn is attacking our King
 						pair.push_back_non_rays<directions::DL>(ourKing.downLeftOne());
 						isPawnAttack = true;
 					}
-					if (!ourKing.isRightFile() && board.isPawn(ourKing.downRightOne())) {
+					if (!ourKing.isRightFile() && theirPawns[ourKing.downRightOne()]) {
 						// Pawn is attacking our King
 						pair.push_back_non_rays<directions::DR>(ourKing.downRightOne());
 						isPawnAttack = true;

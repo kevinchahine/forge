@@ -477,9 +477,12 @@ namespace forge
 				} // while(
 
 				cout << "Done. All Results" << endl;
-				forge::MovePositionPair pairPH;				// placeholder
-				set<forge::MovePositionPair> allMatches;	// placeholder
 				showResults(allMisses, allFaults);
+
+				cout << "Press any key...";
+				this_thread::sleep_for(chrono::seconds(2));
+				cin.get();
+				cin.get();
 			} // stockfishAndForge()
 		} // namespace movegen
 	} // namespace test

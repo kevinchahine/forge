@@ -24,6 +24,8 @@ namespace forge
 		friend std::ostream & operator<<(std::ostream & os, const KingAttackers & pair)
 		{
 			pair.print(Board(), os);
+
+			return os;
 		}
 
 		// Coordinates of one attacker (if it exists)
