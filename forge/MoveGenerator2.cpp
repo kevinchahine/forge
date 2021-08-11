@@ -100,6 +100,14 @@ namespace forge
 			genFreeMoves();
 		}
 
+		cout << "Absolute Pins: " << endl;
+		for (uint8_t bit = 0; bit < 64; bit++) {
+			if (ourAbsolutePins[bit]) {
+				cout << BoardSquare{ bit } << ' ';
+			}
+		}
+		cout << endl;
+
 		return legalMoves;
 	}
 

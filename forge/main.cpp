@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
 	//forge::test::movegen::findKingAttackers();
 	//forge::test::movegen::genKingMoves();
 	//forge::test::moveKings();
-	//forge::test::legalMoveGenerator();	// ***
+	forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();
@@ -75,7 +75,7 @@ int main(int argc, char ** argv)
 	//forge::test::ai::playApplePie();
 
 	// Rename stockfish and forge
-	forge::test::movegen::stockfishAndForge();
+	//forge::test::movegen::stockfishAndForge();
 
 	cout << "Done...";
 	this_thread::sleep_for(chrono::seconds(1));

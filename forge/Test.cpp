@@ -21,6 +21,7 @@ namespace forge
 		void initTestBoards()
 		{
 			using namespace pieces;
+			using bs = BoardSquare;
 
 			{
 				Board & b = positions.emplace_back().board();
@@ -29,16 +30,16 @@ namespace forge
 			
 			{
 				Board & b = positions.emplace_back().board();
-				b.place<pieces::Rook>(BoardSquare{ 'e', '2' }, BLACK);
-				b.place<pieces::BlackPawn>(BoardSquare{ 'c', '2' });
-				b.place<pieces::WhitePawn>(BoardSquare{ 'c', '5' });
-				b.place<pieces::Bishop>(BoardSquare{ 'e', '7' }, WHITE);
-				b.place<pieces::Queen>(BoardSquare{ 'e', '4' }, WHITE);
-				b.place<pieces::Knight>(BoardSquare{ 'f', '8' }, WHITE);
+				b.place<pieces::Rook>(bs{ 'e', '2' }, BLACK);
+				b.place<pieces::BlackPawn>(bs{ 'c', '2' });
+				b.place<pieces::WhitePawn>(bs{ 'c', '5' });
+				b.place<pieces::Bishop>(bs{ 'e', '7' }, WHITE);
+				b.place<pieces::Queen>(bs{ 'e', '4' }, WHITE);
+				b.place<pieces::Knight>(bs{ 'f', '8' }, WHITE);
 			}
 			
 			{
-				BoardSquare s{ 'e', '4' };
+				bs s{ 'e', '4' };
 				Board & b = positions.emplace_back().board();
 				b.place<pieces::Knight>(s, WHITE);
 				b.place<pieces::Queen>(s.right(), WHITE);
@@ -47,7 +48,7 @@ namespace forge
 			}
 			
 			{
-				BoardSquare k{ 'e', '4' };
+				bs k{ 'e', '4' };
 				Board & b = positions.emplace_back().board();
 				b.place<pieces::BlackKing>(k);
 				b.place<pieces::Rook>(k.down(2), WHITE);
@@ -60,7 +61,7 @@ namespace forge
 			{
 				Board & b = positions.emplace_back().board();
 			
-				BoardSquare wk{ 'c', '3' };
+				bs wk{ 'c', '3' };
 				b.place<WhiteKing>(wk);
 				//b.place<Knight>(wk.knight0(), BLACK);
 				//b.place<Knight>(wk.knight1(), BLACK);
@@ -72,7 +73,7 @@ namespace forge
 				b.place<Knight>(wk.knight6(), BLACK);
 				b.place<Knight>(wk.knight7(), BLACK);
 			
-				BoardSquare bk{ 'f', '5' };
+				bs bk{ 'f', '5' };
 				b.place<BlackKing>(bk);
 				//b.place<Knight>(bk.knight0(), WHITE);
 				//b.place<Knight>(bk.knight1(), WHITE);
@@ -88,25 +89,25 @@ namespace forge
 			{
 				Board & b = positions.emplace_back().board();
 			
-				BoardSquare wk{ 'e', '3' };
+				bs wk{ 'e', '3' };
 				b.place<WhiteKing>(wk);
 				b.place<Bishop>(wk.upLeft(2), BLACK);
 				b.place<Bishop>(wk.upRight(2), WHITE);
 				b.place<Queen>(wk.downLeft(2), WHITE);
 				b.place<Queen>(wk.downRight(2), BLACK);
 			
-				BoardSquare bk{ 'e', '7' };
+				bs bk{ 'e', '7' };
 				b.place<BlackKing>(bk);
 			}
 			
 			{
 				Board & b = positions.emplace_back().board();
 			
-				BoardSquare wk{ 'e', '3' };
+				bs wk{ 'e', '3' };
 				b.place<WhiteKing>(wk);
 				b.place<Rook>(wk.up(4), BLACK);
 			
-				BoardSquare bk{ 'c', '5' };
+				bs bk{ 'c', '5' };
 				b.place<BlackKing>(bk);
 				b.place<Rook>(bk.right(4), WHITE);
 			
@@ -122,12 +123,12 @@ namespace forge
 			{
 				Board & b = positions.emplace_back().board();
 			
-				BoardSquare wk{ 'f', '4' };
+				bs wk{ 'f', '4' };
 				b.place<WhiteKing>(wk);
 				b.place<BlackPawn>(wk.upLeftOne());
 				b.place<BlackPawn>(wk.upRightOne());
 			
-				BoardSquare bk{ 'c', '5' };
+				bs bk{ 'c', '5' };
 				b.place<BlackKing>(bk);
 				b.place<WhitePawn>(bk.downLeftOne());
 				b.place<WhitePawn>(bk.downRightOne());
@@ -136,13 +137,13 @@ namespace forge
 			{
 				Board & b = positions.emplace_back().board();
 			
-				BoardSquare wk{ 'e', '3' };
+				bs wk{ 'e', '3' };
 				b.place<Queen>(wk.up(3), BLACK);
 				b.place<BlackPawn>(wk.upLeftOne());
 				b.place<WhitePawn>(wk.downLeftOne());
 			
 			
-				BoardSquare bk{ 'c', '6' };
+				bs bk{ 'c', '6' };
 				b.place<Queen>(bk.down(3), WHITE);
 				b.place<WhitePawn>(bk.downRightOne());
 				b.place<BlackPawn>(bk.upLeftOne());
@@ -151,7 +152,7 @@ namespace forge
 			{
 				Board & b = positions.emplace_back().board();
 			
-				BoardSquare s{ 5, 4 };
+				bs s{ 5, 4 };
 				b.place<pieces::Knight>(s, WHITE);
 				b.place<pieces::Queen>(s.right(), WHITE);
 				b.place<pieces::Bishop>(s.up(2), BLACK);
@@ -163,9 +164,9 @@ namespace forge
 				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
 				Board & b = p.board();
 			
-				BoardSquare bk{ 'e', '8' };
+				bs bk{ 'e', '8' };
 				b.place<BlackKing>(bk);
-				b.place<WhiteKing>(BoardSquare{ 'c', '1' });
+				b.place<WhiteKing>(bs{ 'c', '1' });
 				b.place<Rook>(bk.down(2), BLACK);
 				b.place<Queen>(bk.down(5), WHITE);
 			} 
@@ -175,9 +176,9 @@ namespace forge
 				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
 				Board & b = p.board();
 			
-				BoardSquare bk{ 'e', '8' };
+				bs bk{ 'e', '8' };
 				b.place<BlackKing>(bk);
-				b.place<WhiteKing>(BoardSquare{ 'c', '1' });
+				b.place<WhiteKing>(bs{ 'c', '1' });
 				b.place<Knight>(bk.down(2), BLACK);
 				b.place<Queen>(bk.down(5), WHITE);
 			}
@@ -187,9 +188,9 @@ namespace forge
 				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
 				Board & b = p.board();
 			
-				BoardSquare bk{ 'a', '4' };
+				bs bk{ 'a', '4' };
 				b.place<BlackKing>(bk);
-				b.place<WhiteKing>(BoardSquare{ 'd', '1' });
+				b.place<WhiteKing>(bs{ 'd', '1' });
 				b.place<BlackPawn>(bk.right(3));
 				b.place<Queen>(bk.right(7), WHITE);
 			}
@@ -198,92 +199,92 @@ namespace forge
 				Position & p = positions.emplace_back();
 				Board & b = p.board();
 			
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<WhitePawn>(BoardSquare{ 'f', '7' });
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
-				b.place<Bishop>(BoardSquare{ 'e', '8' }, BLACK);
+				b.place<WhiteKing>(bs{ 'b', '3' });
+				b.place<BlackKing>(bs{ 'a', '8' });
+				b.place<WhitePawn>(bs{ 'f', '7' });
+				b.place<Queen>(bs{ 'g', '8' }, BLACK);
+				b.place<Bishop>(bs{ 'e', '8' }, BLACK);
 			}
 			
 			{ // Block and Capture Attacker
 				Position & p = positions.emplace_back();
 				Board & b = p.board();
 			
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<WhitePawn>(BoardSquare{ 'h', '7' });
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+				b.place<WhiteKing>(bs{ 'b', '3' });
+				b.place<BlackKing>(bs{ 'a', '8' });
+				b.place<WhitePawn>(bs{ 'h', '7' });
+				b.place<Queen>(bs{ 'g', '8' }, BLACK);
 			}
 			
 			{ // Block and Capture Attacker
 				Position & p = positions.emplace_back();
 				Board & b = p.board();
 			
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<WhitePawn>(BoardSquare{ 'f', '6' });
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+				b.place<WhiteKing>(bs{ 'b', '3' });
+				b.place<BlackKing>(bs{ 'a', '8' });
+				b.place<WhitePawn>(bs{ 'f', '6' });
+				b.place<Queen>(bs{ 'g', '8' }, BLACK);
 			}
 			
 			{ // Block and Capture Attacker
 				Position & p = positions.emplace_back();
 				Board & b = p.board();
 			
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<Knight>(BoardSquare{ 'f', '6' }, WHITE);
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+				b.place<WhiteKing>(bs{ 'b', '3' });
+				b.place<BlackKing>(bs{ 'a', '8' });
+				b.place<Knight>(bs{ 'f', '6' }, WHITE);
+				b.place<Queen>(bs{ 'g', '8' }, BLACK);
 			}
 			
 			{ // Block and Capture Attacker
 				Position & p = positions.emplace_back();
 				Board & b = p.board();
 			
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'b', '8' });
-				b.place<Rook>(BoardSquare{ 'f', '4' }, WHITE);
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+				b.place<WhiteKing>(bs{ 'b', '3' });
+				b.place<BlackKing>(bs{ 'b', '8' });
+				b.place<Rook>(bs{ 'f', '4' }, WHITE);
+				b.place<Queen>(bs{ 'g', '8' }, BLACK);
 			}
 			
 			{ // Block and Capture Attacker
 				Position & p = positions.emplace_back();
 				Board & b = p.board();
 			
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'b', '8' });
-				b.place<Bishop>(BoardSquare{ 'b', '7' }, WHITE);
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+				b.place<WhiteKing>(bs{ 'b', '3' });
+				b.place<BlackKing>(bs{ 'b', '8' });
+				b.place<Bishop>(bs{ 'b', '7' }, WHITE);
+				b.place<Queen>(bs{ 'g', '8' }, BLACK);
 			}
 			
 			{ // Block and Capture Attacker
 				Position & p = positions.emplace_back();
 				Board & b = p.board();
 			
-				b.place<WhiteKing>(BoardSquare{ 'b', '3' });
-				b.place<BlackKing>(BoardSquare{ 'b', '8' });
-				b.place<Rook>(BoardSquare{ 'f', '4' }, WHITE);
-				b.place<Bishop>(BoardSquare{ 'b', '7' }, WHITE);
-				b.place<Queen>(BoardSquare{ 'g', '8' }, BLACK);
+				b.place<WhiteKing>(bs{ 'b', '3' });
+				b.place<BlackKing>(bs{ 'b', '8' });
+				b.place<Rook>(bs{ 'f', '4' }, WHITE);
+				b.place<Bishop>(bs{ 'b', '7' }, WHITE);
+				b.place<Queen>(bs{ 'g', '8' }, BLACK);
 			}
 
 			{ // Promotions
 				Position& p = positions.emplace_back();
 				Board& b = p.board();
 
-				b.place<WhiteKing>(BoardSquare{ 'd', '1' });
-				b.place<BlackKing>(BoardSquare{ 'h', '6' });
-				b.place<WhitePawn>(BoardSquare{ 'b', '7' });
+				b.place<WhiteKing>(bs{ 'd', '1' });
+				b.place<BlackKing>(bs{ 'h', '6' });
+				b.place<WhitePawn>(bs{ 'b', '7' });
 			}
 
 			{
 				Position& p = positions.emplace_back();
 				Board& b = p.board();
 
-				p.move<WhiteKing>(Move{ b.whiteKing(), BoardSquare{ 'e', '1' } });
-				b.place<BlackKing>(BoardSquare{ 'e', '7' });
-				b.place<Rook>(BoardSquare{ 'b', '8' }, BLACK);
-				b.place<BlackPawn>(BoardSquare{ 'b', '7' }, BLACK);
-				b.place<Queen>(BoardSquare{ 'b', '4' }, WHITE);
+				p.move<WhiteKing>(Move{ b.whiteKing(), bs{ 'e', '1' } });
+				b.place<BlackKing>(bs{ 'e', '7' });
+				b.place<Rook>(bs{ 'b', '8' }, BLACK);
+				b.place<BlackPawn>(bs{ 'b', '7' }, BLACK);
+				b.place<Queen>(bs{ 'b', '4' }, WHITE);
 			}
 
 			{
@@ -314,6 +315,36 @@ namespace forge
 				Position& p = positions.emplace_back();
 				p.fromFEN(R"dil(rnb1kbnr/pppp1ppp/4p3/8/6Pq/5P2/PPPPP2P/RNBQKBNR w - - 1 2)dil");
 				p.move<BlackKing>(Move{ "e8e7" });
+			}
+
+			{
+				Position& p = positions.emplace_back();
+				
+				Board& b = p.board();
+
+				b.place<BlackKing>(bs{ 'd', '5' });
+				b.place<WhiteKing>(bs{ 'a', '1' });
+				b.place<Queen>(bs{ 'f', '5' }, WHITE);
+				b.place<Queen>(bs{ 'h', '5' }, BLACK);
+				
+				p.move<WhiteKing>(Move{ "a1a2" });	// Now its Blacks Turn
+			}
+
+			{
+				Position& p = positions.emplace_back();
+				Board& b = p.board();
+
+				b.place<BlackKing>(bs{ 'e', '7' });
+				b.place<WhiteKing>(bs{ 'a', '1' });
+				b.place<BlackPawn>(bs{ 'g', '7' });
+				b.place<WhitePawn>(bs{ 'f', '6' });
+
+				p.move<WhiteKing>(Move{ "a1a2" });
+			}
+
+			{
+				Position& p = positions.emplace_back();
+				p.fromFEN("r2qkb1r/ppp1pBpp/2np1nb1/8/4PP2/P7/1PPP2PP/RNBQ1KNR b - - 0 1");
 			}
 		}
 
@@ -898,11 +929,10 @@ namespace forge
 		void legalMoveGenerator()
 		{
 			const forge::Position& p = positions.back();
+			//for (const auto & p : positions) 
 			{
-			//for (const auto & p : positions) {
 				const forge::Board & b = p.board();
-				b.print();
-
+				
 				forge::MoveGenerator2 mg2;
 				forge::MoveList moves =
 					//forge::MoveGenerator::generateLegalMoves(p);
@@ -1037,12 +1067,12 @@ namespace forge
 			); // Clock is still paused
 
 			auto whiteController =
-				make_unique<RandomSolver>();
-			//make_unique<MinimaxSolver>();
+				//make_unique<RandomSolver>();
+			make_unique<MinimaxSolver>();
 
 			auto blackController =
-				make_unique<RandomSolver>();
-			//make_unique<MinimaxSolver>();
+				//make_unique<RandomSolver>();
+			make_unique<MinimaxSolver>();
 
 			whiteController->makeHeuristic<
 				//RandomHeuristic

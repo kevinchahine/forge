@@ -173,7 +173,7 @@ namespace forge
 	template<typename RAY_DIRECTION_T>
 	BoardSquare MoveGenerator2::findPinned() const
 	{
-		BoardSquare pinnedPiece;
+		BoardSquare pinnedPiece = BoardSquare::invalid();
 		BoardSquare bs = ourKing;
 
 		// 1.) --- Find pinned piece (blocker) ---
@@ -187,6 +187,8 @@ namespace forge
 				// Meaning a pin does not exist in this direction. 
 				// It might be a check instead.
 				pinnedPiece.setAsInvalid();
+
+				break;
 			}
 			else if (ourBlockers[bs]) {
 				// This square contain one of our blockers.
@@ -242,11 +244,14 @@ namespace forge
 		// Find the pinned and pinner pieces for the absolute pin
 		Pin pin = pinSearch<DIRECTION_T>();
 
-		///cout << pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid")
-		///	<< ' ' << pin.pinner << (pin.pinner.isValid() ? " valid" : " invalid")
-		///	<< " is "
-		///	<< (pin.isValid() ? "" : "NOT") << " a pin in "
-		///	<< typeid(DIRECTION_T).name() << " direction." << endl;
+		if (!pin.isValid()) {
+			cout << "No pin found in " << DIRECTION_T::str() << " direction." << endl;
+		}
+		else {
+			cout << pin.pinner << (pin.pinned.isValid() ? " valid" : " invalid") << " is pinning "
+				<< pin.pinned << (pin.pinned.isValid() ? " valid" : " invalid") << " to King "
+				<< "from " << DIRECTION_T::str() << " direction." << endl;
+		}
 
 		// If a valid absolute pin was found, generate its legal moves
 		if (pin.isValid()) { genPinMovesFor<DIRECTION_T>(pin, searchOnly); }

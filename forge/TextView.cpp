@@ -14,6 +14,8 @@ namespace forge
 
 	void TextView::show(const Position & pos)
 	{
+		m_img = guten::boards::CheckerBoard{};
+
 		const Board & b = pos.board();
 		
 		for (int row = 0; row < 8; row++) {
@@ -31,6 +33,8 @@ namespace forge
 	// pos - represents the current game.
 	void TextView::show(const Position & pos, const Move & move)
 	{
+		m_img = guten::boards::CheckerBoard{};
+
 		const Board & b = pos.board();
 		
 		for (int row = 0; row < 8; row++) {
@@ -49,6 +53,8 @@ namespace forge
 
 	void TextView::show(const Position & pos, const MoveList & validMoves)
 	{
+		m_img = guten::boards::CheckerBoard{};
+
 		const Board & b = pos.board();
 
 		// Place pieces

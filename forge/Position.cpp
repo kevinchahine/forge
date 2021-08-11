@@ -75,7 +75,7 @@ namespace forge
 		ss >> activePiece;
 		activePiece = tolower(activePiece);
 
-		bool isWhite = activePiece == 'w';
+		bool isWhite = (activePiece == 'w');
 
 		// 3.) --- Castling Rights ---
 		// TODO: Castling: Do this
@@ -91,7 +91,7 @@ namespace forge
 		// 6.) --- Full move count ---
 		int fullMoveCount;
 		ss >> fullMoveCount;
-		this->m_moveCounter.count = fullMoveCount + (isWhite ? 0 : 1);
+		this->m_moveCounter.count = fullMoveCount + (isWhite ? 1 : 0);
 	}
 
 	string Position::toFEN() const
