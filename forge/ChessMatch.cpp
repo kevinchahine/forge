@@ -83,8 +83,10 @@ namespace forge
 			// Show Board with highlights of legal moves but only if move was a partial move.
 			if (pair.move.isPartial()) {
 				if (m_viewPtr != nullptr) {
-					MoveList legals = 
-						MoveGenerator::generateLegalMovesFor(this->position(), pair.move.from());
+					MoveGenerator2 movegen;
+
+					MoveList legals = movegen.generate(this->position());
+					//	MoveGenerator::generateLegalMovesFor(this->position(), pair.move.from());
 
 					m_viewPtr->show(this->position(), legals);
 				}
@@ -118,8 +120,8 @@ namespace forge
 						<< " king in a pin?" << endl;
 					MoveGenerator2 moveGen;
 					moveGen.generate(this->position());
-					cout << "Press any key...";
-					cin.get();
+					//cout << "Press any key...";
+					//cin.get();
 				}
 
 				m_clock.resume();

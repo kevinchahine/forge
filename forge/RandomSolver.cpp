@@ -1,5 +1,5 @@
 #include "RandomSolver.h"
-#include "MoveGenerator.h"
+#include "MoveGenerator2.h"
 
 #include <random>
 #include <chrono>
@@ -10,7 +10,8 @@ namespace forge
 {
 	MovePositionPair RandomSolver::getMove(const Position & position)
 	{
-		const auto validMoves = MoveGenerator::generateLegalMoves(position);
+		MoveGenerator2 movegen;
+		const auto validMoves = movegen.generate(position);
 
 		if (validMoves.size() == 0) {
 			cout << "No valid moves were generated\n";

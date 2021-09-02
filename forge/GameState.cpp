@@ -1,6 +1,6 @@
 #include "GameState.h"
 #include "AttackChecker.h"
-#include "MoveGenerator.h"
+#include "MoveGenerator2.h"
 
 using namespace std;
 
@@ -26,7 +26,9 @@ namespace forge
 	void GameState::operator()(const GameHistory & history)
 	{
 		// Calculate number of legal moves
-		MoveList legals = MoveGenerator::generateLegalMoves(history.current());
+		MoveGenerator2 movegen;
+		MoveList legals = movegen.generate(history.current());
+		//MoveList legals = MoveGenerator::generateLegalMoves(history.current());
 
 		function<bool()> drawByRepetition = [&]() {
 			return GameState::isDrawByRepetition(history);

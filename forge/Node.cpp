@@ -1,6 +1,7 @@
 #include "Node.h"
 
-#include "MoveGenerator.h"
+#include "MoveGenerator.h"	// Remove this
+#include "MoveGenerator2.h"
 
 #include <algorithm>
 
@@ -33,7 +34,9 @@ namespace forge
 
 		// 1.) --- Generate legal moves ---
 		// Figures out wether white or black is playing and generates moves for them.
-		moves = MoveGenerator::generateLegalMoves(m_position);
+		MoveGenerator2 movegen;
+		moves = movegen.generate(m_position);
+		//moves =  MoveGenerator::generateLegalMoves(m_position);
 
 		///cout << moves.size() << " moves generated\n";
 

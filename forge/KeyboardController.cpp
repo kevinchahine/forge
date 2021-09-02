@@ -1,6 +1,7 @@
 #include "KeyboardController.h"
 
-#include "MoveGenerator.h"
+#include "MoveGenerator2.h"
+//#include "MoveGenerator.h"
 
 #include <algorithm>
 #include <functional>
@@ -24,7 +25,9 @@ namespace forge
 		Move input;
 
 		// List of legal moves for current player
-		MoveList legalMoves = MoveGenerator::generateLegalMoves(position);
+		MoveGenerator2 movegen;
+		MoveList legalMoves = movegen.generate(position);
+
 		if (legalMoves.empty()) {
 			cout << "Error: " << __FUNCTION__ << " this player has no legal moves to make.\n";
 			return ret;

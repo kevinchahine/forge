@@ -1,6 +1,6 @@
 #include "ReplayController.h"
 
-#include "MoveGenerator.h"
+#include "MoveGenerator2.h"
 
 using namespace std;
 
@@ -23,7 +23,8 @@ namespace forge
 			this->pop();
 		}
 
-		MoveList legals = MoveGenerator::generateLegalMoves(position);
+		MoveGenerator2 movegen;
+		MoveList legals = movegen.generate(position);
 
 		MoveList::const_iterator it = legals.find(nextMove);
 

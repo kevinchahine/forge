@@ -1086,16 +1086,17 @@ namespace forge
 
 			auto whiteController =
 				//make_unique<RandomSolver>();
-			make_unique<MinimaxSolver>();
+				//make_unique<MinimaxSolver>();
+				make_unique<KeyboardController>();
 
 			auto blackController =
 				//make_unique<RandomSolver>();
 			make_unique<MinimaxSolver>();
 
-			whiteController->makeHeuristic<
-				//RandomHeuristic
-				ApplePieHeuristic
-			>();
+			//whiteController->makeHeuristic<
+			//	//RandomHeuristic
+			//	ApplePieHeuristic
+			//>();
 			blackController->makeHeuristic<
 				//RandomHeuristic
 				ApplePieHeuristic
