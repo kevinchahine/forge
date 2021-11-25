@@ -218,6 +218,9 @@
     <ClCompile Include="TestMoveGen.cpp">
       <Filter>Test</Filter>
     </ClCompile>
+    <ClCompile Include="MCTS_Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -513,5 +516,6 @@
     <ClInclude Include="HashCombine.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="MCTS_Node.h" />
   </ItemGroup>
 </Project>
