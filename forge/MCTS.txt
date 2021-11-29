@@ -1,0 +1,61 @@
+https://philippmuens.com/minimax-and-mcts#:~:text=While%20Minimax%20combined%20with%20Alpha-Beta%20pruning%20is%20a,is%20necessary%20due%20to%20its%20reliance%20on%20randomness
+
+Each node stores:
+	n - number time times node has been visited
+	t - total score of node (sum of t values in all child nodes)
+		(Percentage of wins for White)
+	* To calcualte the average: t / n
+	both are initialized to zero when a node is created.
+	Hint: Use boost::rational (boost/rational.hpp) instead of float or double.
+	Should be much faster especially with multi-threading on CPU which use a shared FPU.
+
+Upper Confidence Bound (UCB)
+	UCB = x_i + C * sqrt( ln(N) / n_i )
+		x_i - average value of game state (t / n)
+		C	- constant "Temperature" (ex: 1.5)
+		N	- Parent node visits
+		n_i - Current node visits (if n_i is 0 then use 1/inf to avoid division by zero)
+
+	* Used to determine which child node to search. The child with the largest UCB 
+	 is favored.
+
+Steps:
+	Rollout
+
+	Backpropagation (not the NN kind):
+		Performed after reaching a leaf node.  When the result of the leaf node is determined
+		(ex: White wins, Black wins, tie) we need to back propagate this result to the parent
+		nodes.  Simply put, we iterate starting from the leaf node all the way up to the root 
+		node.  Then we 
+
+Procedure:
+	1.) Start at the root node and use the UCT formulat to calculate
+	the score for every child node.
+		Involves:
+			- initializing the root node
+			- generating moves (1 for each child node)
+			- initializing each child node
+			- calculating UCT of each child node
+			
+	2.) Pick the child node that has the highest UCT score
+
+	3.) Check if the child has already been visited
+		if not visitied:
+			do a rollout
+		elif visited:
+			use UCT formulat to decide which child node to pick
+	
+	4.) Propagate the result back through the tree until you reach the root node
+
+	5.) Repeat many times (How many times is a question of its own)
+		- run out of times
+		- reach a desired node count
+		- 
+
+Determining the best C "Temperature"
+	C balances "exploration vs exploitation"
+	Large C values puts us into "exploration" mode
+		We spend more time visiting least-explored nodes
+	Small C puts us into "exploitation" mode
+		We revisit already explored nodes to gather
+		more information about them.

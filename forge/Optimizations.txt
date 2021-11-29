@@ -35,7 +35,7 @@ Consider these optimizations:
 
 		Looking for insufficient material only needs to be performed after a capture or 
 		promotion has been made. If no capture or promotion has been made, then condition for
-		insufficient material hasen't changed.
+		insufficient material hasn't changed.
 
 	- Tree Search Algorithms:
 		When searching endgames that are very drauwus (likely to lead to a draw), consider

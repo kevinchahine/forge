@@ -15,7 +15,7 @@ train against another engine
 
 Train for many days effectively
 
-??? Effective distrubuted training maybe ??? 
+??? Effective distributed training maybe ??? 
 
 Play using multiple video cards.
 

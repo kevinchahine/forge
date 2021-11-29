@@ -155,11 +155,13 @@ namespace forge
 				///cout << "FRESH" << endl;
 				ptr->expand();
 
-				// How many children where created?
+				// Were any children created?
 				if (firstChildExists()) {
+					// Yes. Atleast one child was created. Lets search it.
 					goToFirstChild();
 				}
 				else {
+					// No children where created.  Must be a checkmate.
 					// We need to either go to next sibling or parent
 					if (nextSiblingExists()) {
 						goToNextSibling();

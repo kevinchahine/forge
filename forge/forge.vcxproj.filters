@@ -250,9 +250,6 @@
     <Text Include="Progress.txt">
       <Filter>Notes</Filter>
     </Text>
-    <Text Include="ValidMoveGenerator.txt">
-      <Filter>Notes</Filter>
-    </Text>
     <Text Include="GameStates.txt">
       <Filter>Notes</Filter>
     </Text>
@@ -312,6 +309,12 @@
     </Text>
     <Text Include="ProblemPositions.txt">
       <Filter>Notes\MoveGen</Filter>
+    </Text>
+    <Text Include="ValidMoveGenerator.txt">
+      <Filter>Notes\MoveGen</Filter>
+    </Text>
+    <Text Include="MCTS.txt">
+      <Filter>Notes\AI</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

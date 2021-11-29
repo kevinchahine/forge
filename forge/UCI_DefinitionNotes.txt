@@ -31,7 +31,7 @@ Description of the universal chess interface (UCI)    April  2006
 
 * Before the engine is asked to search on a position, there will always be a position command
   to tell the engine about the current position.
-  "good"
+  "perfect. This means we should always know what position to search. We don't need to figure it out"
 
 * by default all the opening book handling is done by the GUI,
   but there is an option for the engine to use its own book ("OwnBook" option, see below)

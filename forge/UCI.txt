@@ -4,7 +4,7 @@
 === But very benificial ===
 
 Questions:
-	1.) Can threads be killed by the same process that created them?
+	1.) Can threads be killed by the process that created them?
 		How?
 
 	2.) 

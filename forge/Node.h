@@ -35,8 +35,9 @@ namespace forge
 		// and replace by the new ones.
 		void expand();
 
-		// Prunes children.
+		// Prunes children. Deletes all their children.
 		// opposite of expand()
+		// Only necessary when saving memory.
 		void prune();
 
 		bool isFresh() const { return m_state == STATE::FRESH; }
@@ -65,12 +66,7 @@ namespace forge
 		// Designed to work with Minimax
 		// For MTCS, we may need to implemente a different iterator.
 		// see Node::prune()
-		class iterator /*: public std::iterator<
-			std::forward_iterator_tag,
-			Node,
-			long,
-			Node*,
-			Node>*/
+		class iterator
 		{
 		public:
 
@@ -173,12 +169,12 @@ namespace forge
 		// TODO: Whould it make sorting slower?
 		std::vector<std::shared_ptr<Node>> m_childrenPtrs;
 
-		// Set to true when allToFen children have been fully searched and pruned.
+		// Set to PRUNED when all children have been fully searched and pruned.
 		// Set from the pruneChildren() method
 		enum class STATE : uint8_t {
-			FRESH,		// Node has been created but hasn't been expanded yet
-			EXPANDED,	// Node has been expanded so it may have children
-			PRUNED,		// Node has been fully searched and its children pruned
+			FRESH,		// Node has been created but hasn't been expanded yet (children have not been generated)
+			EXPANDED,	// Node has been expanded so it may have children (children have been generated)
+			PRUNED,		// Node has been fully searched and its children pruned (no need to search this node anymore)
 		} m_state = STATE::FRESH;
 	};
 } // namespace forge

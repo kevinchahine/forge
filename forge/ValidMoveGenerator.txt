@@ -7,7 +7,8 @@ Perft:
 	https://www.chessprogramming.org/Perft
 
 Psudo-legal moves:
-	- Generates list of possible moves, but may leave king under attack.
+	- Generates list of possible moves, but may leave king under attack. Therefore
+		some moves may be illegal.
 
 Normal Moves (from whites perspective):
 	- pawn: up1, up2, capture\, capture/

@@ -7,18 +7,20 @@ sortme: These should go under switches or options
 switches:
 	--train	= default false	(Can't have this and --play, else show error)
 	--play = default true	(Can't have this and --train, else show error)
-	--uci = default false	(If true, tells engine to listen for commands from a UCI gui. It should do that anyway)
+	--uci = default true	(If true, tells engine to listen for commands from a UCI gui. It should do that anyway)
 	--benchmarck = default false (Tests performance of engine, Must specify what search algorithm to use)
 	
 options:
 	--orientation = [ 
 		<none> |	# white pieces on bottom
+		white |		# white pieces on bottom
 		flip |		# black pieces on bottom
+		black |		# black pieces on bottom
 		alternate 	# displays board with thinking player on bottom (good for 2 human players using same display)
 		]
 
-	--white-controller = [ keyboard | uci | minimax | mcts ]	
-	--black-controller = [ keyboard | uci | minimax | mcts ]
+	--white-controller = [ keyboard | uci | minimax | mcts | random ]	
+	--black-controller = [ keyboard | uci | minimax | mcts | random ]
 
 	--time-control = [ 
 		# Standard time controls
@@ -34,14 +36,14 @@ options:
 		"30 min"	|	"rapid 3"	|
 		"<starttime>/<increment=0> <[days | hours | min | sec]"		# units refer to starttime, increment units will always be in sec
 		]
-		#	/ : and | should all be allowed for separating start time and increment
+		#	'/' ':' and '|' should all be allowed for separating start time and increment
 
 	# AI Options #
 	--weights-file="/c/path/to/weights.xxx"	# (default: "./openings.xxx") if exists
 	--opening-table-file="c/openings.xxx"	# (default: "./openings.xxx")
 	--depth=n								# limit number of plys to search (default ?8?)
-	--nodes=n								# search n nodes only	(default INT_MAX, means search all nodes. )
-	--move-time=t							# search for t msec only
+	--nodes=n								# search n nodes only	(default INT_MAX, means no limit. )
+	--move-time=t							# limit search time, search for 't' msec only
 	--threads=n								# number of threads to use (default: HARDWARE_CONCURENCY)
 
 	# Training Options #
@@ -66,5 +68,5 @@ options:
 												# (Maybe Not) game should be saved to file as it is being played (but can be disabled)
 
 	# Game Set Up #
-	--load-game="/c/path/to/saved/game.xxx"			# could be in pgn format maybe
+	--load-game="/c/path/to/saved/game.xxx"		# could be in pgn format maybe
 

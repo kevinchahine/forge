@@ -205,6 +205,7 @@
     <Text Include="GameStates.txt" />
     <Text Include="Goals.txt" />
     <Text Include="HighLevelDesign.txt" />
+    <Text Include="MCTS.txt" />
     <Text Include="MoveGeneratorQuintessential.txt" />
     <Text Include="MoveGeneratorQuintessential2.txt" />
     <Text Include="MoveGeneratorSpecial.txt" />

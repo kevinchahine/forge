@@ -1085,13 +1085,13 @@ namespace forge
 			); // Clock is still paused
 
 			auto whiteController =
-				//make_unique<RandomSolver>();
+				make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				make_unique<KeyboardController>();
+				//make_unique<KeyboardController>();
 
 			auto blackController =
 				//make_unique<RandomSolver>();
-			make_unique<MinimaxSolver>();
+				make_unique<MinimaxSolver>();
 
 			//whiteController->makeHeuristic<
 			//	//RandomHeuristic

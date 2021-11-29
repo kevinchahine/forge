@@ -6,7 +6,7 @@ Overfitting:
 	training states, consider starting each game with a slightly randomized position.
 	Start each game by making a few random moves by each player, then have the AI's start playing
 	from their. That way the AI's will be forced to train in positions that they may unlikely
-	put themselves in on their own. Also, this is good because it can prepare the AI for opponents 
+	put each other in on their own. Also, this is good because it can prepare the AI for opponents 
 	that may try to use very uncommon moves forcing the AI to play in a positions that it is not 
 	familiar with.
 

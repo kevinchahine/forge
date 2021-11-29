@@ -4,7 +4,7 @@
 Learning Tasks: https://www.tensorflow.org/agents/tutorials/0_intro_rl
 
 7 Parts:
-	- Search Algorithm: (Minimax, Negamax, MCTS) (each preferably with iterative-deepening)
+	- Search Algorithm: (Minimax, Negamax, MCTS) (each preferably with iterative-deepening if applicable)
 	- Evaluation Function: (Heuristic) (DNN, Linear Combination)
 		- For traditional heurists: https://hxim.github.io/Stockfish-Evaluation-Guide/
 	- Exit Condition: (timout, depth limit reached, node limit reached, event requented exit, goal reached)
