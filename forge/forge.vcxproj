@@ -165,6 +165,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
     <ClCompile Include="MCTS_Node.cpp" />
+    <ClCompile Include="MCTS_Solver.cpp" />
     <ClCompile Include="MiniMaxNode.cpp" />
     <ClCompile Include="MinimaxSolver.cpp" />
     <ClCompile Include="Move.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="KingAttackersDefinitions.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MCTS_Node.h" />
+    <ClInclude Include="MCTS_Solver.h" />
     <ClInclude Include="MiniMaxNode.h" />
     <ClInclude Include="MinimaxSolver.h" />
     <ClInclude Include="Move.h" />

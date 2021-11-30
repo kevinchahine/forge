@@ -32,7 +32,7 @@ int main(int argc, char ** argv)
 		<< guten::color::red << "=============\n"
 		<< guten::color::white;
 	
-	forge::test::initTestBoards();
+	//forge::test::initTestBoards();
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();

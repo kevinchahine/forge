@@ -14,9 +14,9 @@ namespace forge
 
 		virtual MovePositionPair getMove(const Position & position) = 0;
 
-		virtual std::string getName() = 0;
+		virtual std::string getName() const = 0;
 
-		virtual std::string getNameVariant() = 0;
+		virtual std::string getNameVariant() const = 0;
 
 	protected:
 

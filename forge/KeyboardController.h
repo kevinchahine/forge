@@ -10,10 +10,10 @@ namespace forge
 		virtual void reset() override;
 
 		virtual MovePositionPair getMove(const Position & position) override;
+		
+		virtual std::string getName() const override { return typeid(*this).name(); }
 
-		virtual std::string getName() override;
-
-		virtual std::string getNameVariant() override { return "Basic"; }
+		virtual std::string getNameVariant() const override { return "Basic"; }
 
 	private:
 		

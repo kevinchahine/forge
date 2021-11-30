@@ -13,14 +13,14 @@ namespace forge
 
 		virtual MovePositionPair getMove(const Position & position) override;
 
-		virtual std::string getName() override;
+		virtual std::string getName() const override { return "Minimax"; }
 
-		virtual std::string getNameVariant() override { return "Basic"; }
+		virtual std::string getNameVariant() const override { return "Basic"; }
 
 	protected:
 		MovePositionPair solve(const Position & position);
 
 	protected:
 		MiniMaxNode m_nodeTree;
-	};
+	}; // class MinimaxSolver
 } // namespace forge

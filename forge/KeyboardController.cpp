@@ -134,11 +134,6 @@ namespace forge
 		return ret;
 	}
 
-	string KeyboardController::getName()
-	{
-		return typeid(*this).name();
-	}
-
 	MoveList::const_iterator KeyboardController::findMatchingMove(Move move, const MoveList & legalMoves)
 	{
 		std::function<bool(const MovePositionPair &)> compPartialMoves =

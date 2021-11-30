@@ -22,9 +22,4 @@ namespace forge
 
 		return validMoves.at(dist(m_randomEngine));
 	}
-
-	string RandomSolver::getName()
-	{
-		return typeid(*this).name();
-	}
 } // namespace forge

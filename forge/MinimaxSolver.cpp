@@ -21,11 +21,6 @@ namespace forge
 		return bestMove;
 	}
 
-	string MinimaxSolver::getName()
-	{
-		return "Minimax";
-	}
-
 	MovePositionPair MinimaxSolver::solve(const Position & position)
 	{
 		m_searchMonitor.timer.expires_from_now(chrono::hours(1));
@@ -56,8 +51,6 @@ namespace forge
 			// --- 4.) Evaluate this position ---
 			// We only want to evaluate leaf nodes
 			if (state.isGameOver()) {
-				///cout << guten::color::brown << "GAME OVER!!!\n";
-
 				// Do we have a winner?
 				if (state.state == GameState::STATE::WIN) {
 					// Yes we have a winner!!!
@@ -65,11 +58,9 @@ namespace forge
 						state.player == GameState::PLAYER::WHITE ?
 						std::numeric_limits<heuristic_t>::max() :		// WHITE won
 						std::numeric_limits<heuristic_t>::lowest());	// BLACK won
-					///cout << guten::color::green << state << '\n';
 				}
 				else if (state.state == GameState::STATE::DRAW) {
 					(*it).fitness() = 0;								// DRAW
-					///cout << guten::color::blue << state << '\n';
 				}
 
 				// TODO: I don't know about this.
@@ -77,13 +68,8 @@ namespace forge
 			}
 			else if (it.isLeafNode()) {
 				(*it).fitness() = heuristicPtr()->eval(pos);
-				///cout << guten::color::push()
-				///	<< guten::color::brown << " Depth limit reached. Eval = "
-				///	<< guten::color::cyan << ' ' << (*it).fitness() << "\n"
-				///	<< guten::color::pop();
 			}
 			else {
-				///cout << guten::color::red << '.';
 			}
 
 			// --- 5.) Move to next node ---
@@ -133,5 +119,4 @@ namespace forge
 
 		m_searchMonitor.stop();
 	}
-
 } // namespace forge

@@ -224,6 +224,9 @@
     <ClCompile Include="MiniMaxNode.cpp">
       <Filter>AI</Filter>
     </ClCompile>
+    <ClCompile Include="MCTS_Solver.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -527,6 +530,9 @@
     </ClInclude>
     <ClInclude Include="MiniMaxNode.h">
       <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="MCTS_Solver.h">
+      <Filter>Controllers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

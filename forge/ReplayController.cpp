@@ -42,9 +42,4 @@ namespace forge
 			return MovePositionPair{ nextMove, position };
 		}
 	}
-
-	std::string ReplayController::getName()
-	{
-		return "ReplayController";
-	}
 } // namespace forge
