@@ -12,13 +12,16 @@ namespace forge
 	MovePositionPair MCTS_Solver::getMove(const Position& position)
 	{
 		MovePositionPair bestMove = solve(position);
-		//m_heuristicPtr->print(position);
 
 		return bestMove;
 	}
 	
 	MovePositionPair MCTS_Solver::solve(const Position& position)
 	{
-		return MovePositionPair();
+		MovePositionPair pair;
+
+
+
+		return pair;
 	}
 } // namespace forge

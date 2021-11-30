@@ -2,6 +2,12 @@
 
 namespace forge
 {
+	float MCTS_Node::uct(float average, float temperature, int parentVisits, int currVisits)
+	{
+		// UCB = x_i + C * sqrt(ln(N) / n_i)
+		return average + temperature * sqrt(log(parentVisits) / currVisits);
+	}
+
 	void MCTS_Node::reset()
 	{
 	}

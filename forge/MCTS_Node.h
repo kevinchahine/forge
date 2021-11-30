@@ -5,6 +5,13 @@ namespace forge {
     class MCTS_Node : public Node
     {
     public:		// ---------- METHODS -----------------------------------------
+		// UCB = x_i + C * sqrt(ln(N) / n_i)
+		// 	x_i - average value of game state(t / n)
+		// 	C - constant "Temperature" (ex : 1.5)
+		// 	N - Parent node visits
+		// 	n_i - Current node visits(if n_i is 0 then use 1 / inf to avoid division by zero)
+		static float uct(float average, float temperature, int parentVisits, int currVisits);
+
 		void reset();
 
 		// Takes the Position of this Node and generates children nodes using a valid move generator
