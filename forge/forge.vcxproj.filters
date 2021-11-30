@@ -219,7 +219,10 @@
       <Filter>Test</Filter>
     </ClCompile>
     <ClCompile Include="MCTS_Node.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMaxNode.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -519,6 +522,11 @@
     <ClInclude Include="HashCombine.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="MCTS_Node.h" />
+    <ClInclude Include="MCTS_Node.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMaxNode.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

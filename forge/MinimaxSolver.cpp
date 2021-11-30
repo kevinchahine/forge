@@ -16,9 +16,6 @@ namespace forge
 	MovePositionPair MinimaxSolver::getMove(const Position & position)
 	{
 		MovePositionPair bestMove = solve(position);
-
-		//m_searchMonitor.print();
-		cout << guten::color::brown;
 		m_heuristicPtr->print(position);
 
 		return bestMove;
@@ -37,7 +34,7 @@ namespace forge
 		m_nodeTree.reset();
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
-		Node::iterator it = m_nodeTree.begin();
+		MiniMaxNode::iterator it = m_nodeTree.begin();
 		it.setDepthLimit(4);
 
 		while (m_searchMonitor.exitConditionReached() == false) {

@@ -6,7 +6,7 @@ using namespace std;
 
 namespace forge
 {
-	void GameState::operator()(Node & node)
+	void GameState::operator()(MiniMaxNode & node)
 	{
 		// Make sure that children nodes have been generated
 		if (node.isExpanded() == false) {
@@ -120,11 +120,11 @@ namespace forge
 		}
 	}
 
-	bool GameState::isDrawByRepetition(const Node & node)
+	bool GameState::isDrawByRepetition(const MiniMaxNode & node)
 	{
 		const Position & currPos = node.position();
 
-		const Node * nPtr = &node;
+		const MiniMaxNode * nPtr = &node;
 		uint8_t matches = 0;
 		
 		// Skip current Node 

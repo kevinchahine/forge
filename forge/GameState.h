@@ -6,7 +6,7 @@
 
 #include "GameHistory.h"
 #include "Position.h"
-#include "Node.h"
+#include "MiniMaxNode.h"
 
 namespace forge
 {
@@ -37,7 +37,7 @@ namespace forge
 		void reset() { (*this) = GameState(); }
 
 		// Calculates and sets game state
-		void operator()(Node & node);
+		void operator()(MiniMaxNode & node);
 		void operator()(const GameHistory & history);
 		//void operator()(const ChessMatch & match);	// TODO:
 
@@ -90,7 +90,7 @@ namespace forge
 		//		itself.
 		void calcGameState(int nLegalMoves, const Position & currPos, std::function<bool()> && drawByRepetition);
 
-		static bool isDrawByRepetition(const Node & node);
+		static bool isDrawByRepetition(const MiniMaxNode & node);
 
 		static bool isDrawByRepetition(const GameHistory & history);
 

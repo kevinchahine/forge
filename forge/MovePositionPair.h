@@ -23,6 +23,12 @@ namespace forge
 
 		size_t hash() const;
 
+		friend std::ostream& operator<<(std::ostream& os, const MovePositionPair& pair) {
+			os << pair.move << '\t' << pair.position.toFEN();
+
+			return os;
+		}
+
 	public:
 		Move move;
 		Position position;

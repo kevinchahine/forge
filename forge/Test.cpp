@@ -1085,18 +1085,18 @@ namespace forge
 			); // Clock is still paused
 
 			auto whiteController =
-				make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
+				//make_unique<RandomSolver>();
+				make_unique<MinimaxSolver>();
 				//make_unique<KeyboardController>();
 
 			auto blackController =
 				//make_unique<RandomSolver>();
 				make_unique<MinimaxSolver>();
 
-			//whiteController->makeHeuristic<
-			//	//RandomHeuristic
-			//	ApplePieHeuristic
-			//>();
+			whiteController->makeHeuristic<
+				//RandomHeuristic
+				ApplePieHeuristic
+			>();
 			blackController->makeHeuristic<
 				//RandomHeuristic
 				ApplePieHeuristic
@@ -1135,10 +1135,10 @@ namespace forge
 
 		void nodeIterator()
 		{
-			Node root;
+			MiniMaxNode root;
 			root.position().reset();
 
-			Node::iterator it = root.begin();
+			MiniMaxNode::iterator it = root.begin();
 			it.setDepthLimit(3);
 
 			while (it != root.end()) {
@@ -1193,7 +1193,7 @@ namespace forge
 
 		void insufficientMaterial()
 		{
-			Node n;
+			MiniMaxNode n;
 			Position & pos = n.position();
 			pos.clear();
 

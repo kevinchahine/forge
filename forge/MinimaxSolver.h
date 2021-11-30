@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SolverBase.h"
-#include "Node.h"
+#include "MiniMaxNode.h"
 #include "Line.h"
 
 namespace forge
@@ -21,6 +21,6 @@ namespace forge
 		MovePositionPair solve(const Position & position);
 
 	protected:
-		Node m_nodeTree;
+		MiniMaxNode m_nodeTree;
 	};
 } // namespace forge
