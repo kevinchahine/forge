@@ -1,8 +1,11 @@
 #pragma once
 #include "Node.h"
 
+#include <limits>
+#include <cmath>
+
 namespace forge {
-    class MCTS_Node : public Node
+    class MCTS_Node : public NodeTemplate<MCTS_Node>
     {
     public:		// ---------- METHODS -----------------------------------------
 		// UCB = x_i + C * sqrt(ln(N) / n_i)
@@ -26,6 +29,8 @@ namespace forge {
 
 		const std::vector<std::shared_ptr<MCTS_Node>>& children() const { return m_childrenPtrs; }
 
+		float ucb() const;
+		
     private:	// ---------- FIELDS ------------------------------------------
         // Address of parent node
         // if nullptr then this object is the root of the tree
@@ -34,6 +39,15 @@ namespace forge {
 
         // Addresses of children nodes
         std::vector<std::shared_ptr<MCTS_Node>> m_childrenPtrs;
+
+		// Total score of all children
+		// % of games won by white
+		float t = 0.0f;
+
+		// Total number of games visited
+		float n = std::numeric_limits<float>::min();
+
+		float temperature = 1.5;
 
     public:		// ---------- ITERATOR ----------------------------------------
         class iterator {

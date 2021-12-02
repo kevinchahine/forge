@@ -6,23 +6,6 @@ using namespace std;
 
 namespace forge
 {
-	void GameState::operator()(MiniMaxNode & node)
-	{
-		// Make sure that children nodes have been generated
-		if (node.isExpanded() == false) {
-			node.expand();	// generate children Nodes
-		}
-
-		function<bool()> drawByRepetition = [&]() {
-			return GameState::isDrawByRepetition(node);
-		};
-
-		calcGameState(
-			node.children().size(),			// Number of legal moves
-			node.position(),				// current position
-			std::move(drawByRepetition));	// calculates draw by repetition using a Node tree
-	}
-
 	void GameState::operator()(const GameHistory & history)
 	{
 		// Calculate number of legal moves
@@ -118,32 +101,6 @@ namespace forge
 			this->reason = REASON::INSUFFICIENT_MATERIAL_ONLY;
 			return;
 		}
-	}
-
-	bool GameState::isDrawByRepetition(const MiniMaxNode & node)
-	{
-		const Position & currPos = node.position();
-
-		const MiniMaxNode * nPtr = &node;
-		uint8_t matches = 0;
-		
-		// Skip current Node 
-		nPtr = &nPtr->parent();	
-
-		while (nPtr != nullptr) {
-			if (nPtr->position() == currPos) {
-				matches++;
-
-				if (matches >= 3) {
-					return true;	// 3 matches found (DRAW by repetition)
-				}
-			}
-
-			// Jump to parent of this node.
-			nPtr = &nPtr->parent();
-		}
-
-		return false;	// did not find 3 matches (No DRAW)
 	}
 
 	bool GameState::isDrawByRepetition(const GameHistory & history)

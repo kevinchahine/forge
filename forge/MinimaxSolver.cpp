@@ -13,15 +13,14 @@ namespace forge
 		m_nodeTree.reset();
 	}
 
-	MovePositionPair MinimaxSolver::getMove(const Position & position)
+	MovePositionPair MinimaxSolver::getMove(const Position& position)
 	{
 		MovePositionPair bestMove = solve(position);
-		m_heuristicPtr->print(position);
 
 		return bestMove;
 	}
 
-	MovePositionPair MinimaxSolver::solve(const Position & position)
+	MovePositionPair MinimaxSolver::solve(const Position& position)
 	{
 		m_searchMonitor.timer.expires_from_now(chrono::hours(1));
 		m_searchMonitor.start();
@@ -32,16 +31,14 @@ namespace forge
 		MiniMaxNode::iterator it = m_nodeTree.begin();
 		it.setDepthLimit(4);
 
-		while (m_searchMonitor.exitConditionReached() == false) {
-			// --- 1.) Get current position to evaluate ---
-			if (it == m_nodeTree.end()) {
-				cout << "Node tree has reached its END.\n";
-				cout << "\tImportant question. Is the best child ptr still valid?\n";
-				break;
-			}
+		while (
+			it != m_nodeTree.end() &&
+			m_searchMonitor.exitConditionReached() == false) {
 
-			Position & pos = (*it).position();
-			
+			// --- 1.) Get current position to evaluate ---
+			Position& pos = (*it).position();
+
+			(*it).expand();
 			// --- 3.) Check game state (is this a terminal node) ---
 			// TODO: WE REALLY NEED TO DO THIS NEXT
 			// Could this be done more easily in isLeafNode() see below vvv
@@ -73,16 +70,7 @@ namespace forge
 			}
 
 			// --- 5.) Move to next node ---
-			if (it != m_nodeTree.end()) {
-				++it;
-			}
-			// Did we reached the root node?
-			else {
-#ifdef _DEBUG
-				cout << guten::color::cyan << "Root node reached :)\n";
-#endif // TODO: Should this ifdef wrap the entire if (it == ..... ?
-				break;
-			}
+			++it;
 
 			m_searchMonitor.nodeCount = it.getNodeCount();
 			m_searchMonitor.plyCount = std::max(it.getDepth(), m_searchMonitor.plyCount);

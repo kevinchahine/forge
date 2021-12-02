@@ -1,5 +1,7 @@
 #include "MCTS_Solver.h"
 
+#include "GameState.h"
+
 using namespace std;
 
 namespace forge
@@ -18,10 +20,8 @@ namespace forge
 	
 	MovePositionPair MCTS_Solver::solve(const Position& position)
 	{
-		MovePositionPair pair;
+		MovePositionPair bestMove;
 
-
-
-		return pair;
+		return bestMove;
 	}
 } // namespace forge
