@@ -21,7 +21,7 @@ namespace forge
 
 		m_nextPtr = nullptr;
 		m_fitness = 0;
-		m_bestChildPtr = nullptr;
+		p_bestChild = nullptr;
 	}
 
 	void MiniMaxNode::expand()

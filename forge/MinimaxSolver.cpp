@@ -29,7 +29,7 @@ namespace forge
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		MiniMaxNode::iterator it = m_nodeTree.begin();
-		it.setDepthLimit(4);
+		it.setDepthLimit(3);
 
 		while (
 			it != m_nodeTree.end() &&
@@ -38,7 +38,6 @@ namespace forge
 			// --- 1.) Get current position to evaluate ---
 			Position& pos = (*it).position();
 
-			(*it).expand();
 			// --- 3.) Check game state (is this a terminal node) ---
 			// TODO: WE REALLY NEED TO DO THIS NEXT
 			// Could this be done more easily in isLeafNode() see below vvv
@@ -47,8 +46,10 @@ namespace forge
 
 			// --- 4.) Evaluate this position ---
 			// We only want to evaluate leaf nodes
+			// Is the game finished?
 			if (state.isGameOver()) {
-				// Do we have a winner?
+				(*it).position().board().printMini();
+				// --- Game Is Finished ---
 				if (state.state == GameState::STATE::WIN) {
 					// Yes we have a winner!!!
 					(*it).fitness() = (
@@ -59,14 +60,12 @@ namespace forge
 				else if (state.state == GameState::STATE::DRAW) {
 					(*it).fitness() = 0;								// DRAW
 				}
-
-				// TODO: I don't know about this.
-				///(*it).prune();	// make sure no children get evaluated
 			}
 			else if (it.isLeafNode()) {
 				(*it).fitness() = heuristicPtr()->eval(pos);
 			}
 			else {
+				// Game is still going
 			}
 
 			// --- 5.) Move to next node ---

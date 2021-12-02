@@ -15,7 +15,7 @@ namespace forge
 		heuristic_t& fitness() { return m_fitness; }
 		const heuristic_t& fitness() const { return m_fitness; }
 
-		const std::shared_ptr<MiniMaxNode>& bestMovePtr() const { return m_bestChildPtr; }
+		const std::shared_ptr<MiniMaxNode>& bestMovePtr() const { return p_bestChild; }
 
 	protected:	// ---------- FIELDS ------------------------------------------
 		// Address of next child node if one exists
@@ -28,7 +28,7 @@ namespace forge
 
 		// Best move cooresponding to child with the best fitness
 		// TODO: Make it std::shared_ptr<const MiniMaxNode>
-		std::shared_ptr<MiniMaxNode> m_bestChildPtr = nullptr;
+		std::shared_ptr<MiniMaxNode> p_bestChild = nullptr;
 
 	public:		// ---------- ITERATOR ----------------------------------------
 		class iterator {
@@ -63,7 +63,7 @@ namespace forge
 			void goToParent()
 			{
 				p_node = p_node->m_parentPtr;	// go to parent (might be nullptr)
-				depth--;				// going up one ply
+				depth--;						// going up one ply
 
 				if (p_node != nullptr) {
 					// *** Now we're at the parent node ***

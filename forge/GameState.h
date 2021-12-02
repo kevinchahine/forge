@@ -126,19 +126,22 @@ namespace forge
 	template<class NODE_T>
 	void GameState::operator()(const NodeTemplate<NODE_T>& node)
 	{
-#ifdef _DEBUG
-		if (node.isExpanded() == false) {
-			std::cout << guten::color::red
-				<< "Error: node should be expanded before calling this method."
-				<< std::endl;
-		}
-#endif
+//#ifdef _DEBUG
+//		if (node.isExpanded() == false) {
+//			std::cout << guten::color::red
+//				<< "Error: node should be expanded before calling this method."
+//				<< std::endl;
+//		}
+//#endif
+		MoveGenerator2 gen;
+		MoveList moves = gen.generate(node.position());
+		
 		function<bool()> drawByRepetition = [&]() {
 			return GameState::isDrawByRepetition(node);
 		};
 
 		calcGameState(
-			node.children().size(),			// Number of legal moves
+			moves.size(),//node.children().size(),			// Number of legal moves
 			node.position(),				// current position
 			std::move(drawByRepetition));	// calculates draw by repetition using a Node tree
 	}
