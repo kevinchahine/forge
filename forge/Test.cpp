@@ -1109,7 +1109,7 @@ namespace forge
 			match.blackController() = std::move(blackController);
 
 			match.makeView<TextView>();
-
+			cin.get();
 			match.runGame();
 		}
 

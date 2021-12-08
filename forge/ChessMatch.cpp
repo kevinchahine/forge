@@ -86,7 +86,6 @@ namespace forge
 					MoveGenerator2 movegen;
 
 					MoveList legals = movegen.generate(this->position());
-					//	MoveGenerator::generateLegalMovesFor(this->position(), pair.move.from());
 
 					m_viewPtr->show(this->position(), legals);
 				}
@@ -114,14 +113,6 @@ namespace forge
 				// Show Board
 				if (m_viewPtr != nullptr) {
 					m_viewPtr->show(m_history.current(), pair.move);
-
-					cout << "Is " 
-						<< (position().moveCounter().isWhitesTurn() ? "whites" : "blacks")
-						<< " king in a pin?" << endl;
-					MoveGenerator2 moveGen;
-					moveGen.generate(this->position());
-					//cout << "Press any key...";
-					//cin.get();
 				}
 
 				m_clock.resume();
