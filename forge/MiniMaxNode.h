@@ -12,6 +12,8 @@ namespace forge
 
 		void expand();
 
+		void prune();
+
 		heuristic_t& fitness() { return m_fitness; }
 		const heuristic_t& fitness() const { return m_fitness; }
 

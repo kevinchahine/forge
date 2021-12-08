@@ -29,7 +29,7 @@ namespace forge
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		MiniMaxNode::iterator it = m_nodeTree.begin();
-		it.setDepthLimit(3);
+		it.setDepthLimit(4);
 
 		while (
 			it != m_nodeTree.end() &&
@@ -48,7 +48,6 @@ namespace forge
 			// We only want to evaluate leaf nodes
 			// Is the game finished?
 			if (state.isGameOver()) {
-				(*it).position().board().printMini();
 				// --- Game Is Finished ---
 				if (state.state == GameState::STATE::WIN) {
 					// Yes we have a winner!!!
