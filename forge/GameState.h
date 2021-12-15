@@ -45,6 +45,15 @@ namespace forge
 
 		bool isGameOver() const { return state != STATE::CONTINUE; }
 		bool isGameOn() const { return state == STATE::CONTINUE; }
+		bool whiteWins() const { return state == STATE::WIN && player == PLAYER::WHITE; }
+		bool blackWins() const { return state == STATE::WIN && player == PLAYER::BLACK; }
+		bool isDraw() const { return state == STATE::DRAW; }
+
+		int getValue() const {
+			if (whiteWins()) return 1;
+			if (blackWins()) return -1;
+			else return 0;	// counts for draws and continues
+		}
 
 		friend std::ostream& operator<<(std::ostream& os, const GameState& gs)
 		{
@@ -155,7 +164,7 @@ namespace forge
 		uint8_t matches = 0;
 
 		// Skip current Node 
-		nPtr = nPtr->parent();
+		nPtr = nPtr->parentPtr();
 
 		while (nPtr != nullptr) {
 			if (nPtr->position() == currPos) {
@@ -167,7 +176,7 @@ namespace forge
 			}
 
 			// Jump to parent of this node.
-			nPtr = nPtr->parent();
+			nPtr = nPtr->parentPtr();
 		}
 
 		return false;	// did not find 3 matches (No DRAW)

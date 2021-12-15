@@ -1,6 +1,9 @@
 === Forge ===
 === DataBase ===
 http://scid.sourceforge.net/
+https://sourceforge.net/projects/codekiddy-chess/files/Databases/Update4/
+https://towardsdatascience.com/train-your-own-chess-ai-66b9ca8d71e4
+https://www.chessprogramming.org/Eval_Tuning_in_Deep_Thought
 
 Purpose:
 	- Can use for supervised training

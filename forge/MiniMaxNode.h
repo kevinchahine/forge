@@ -8,7 +8,7 @@ namespace forge
 		using super_t = NodeTemplate<MiniMaxNode>;
 
 	public:		// ---------- METHODS -----------------------------------------
-		void reset();
+		//void reset();
 
 		void expand();
 

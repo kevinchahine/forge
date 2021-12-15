@@ -57,3 +57,12 @@ Consider these optimizations:
 			of the piece that moved. Starting with comparing those squares will show that two
 			Boards are not equal because, the piece that moved is more likely to be different 
 			that say the top rank.
+
+		*** Big Optimization:
+		For draw by repetition the entire GameHistory needs to be searched for 2 positions that 
+		the back position. Instead of a search, store a count of each position in a hash table.
+		Then each time a move is added to GameHistory, increment the count. When looking for 
+		draw by repetition, simply look up the count and see if it is 3 or more. Will used more memory
+		to store a large enough hashtable, but could prevent us from performing a linear search each
+		time we need to check the game state. :)
+		Make sure hashing function for Position can guarentee uniqueness :|

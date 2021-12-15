@@ -45,11 +45,34 @@ namespace forge
 		bool isExpanded() const { return m_state == STATE::EXPANDED; }
 		bool isPruned() const { return m_state == STATE::PRUNED; }
 
-		NODE_T* parent() { return m_parentPtr; }
-		const NODE_T* parent() const { return m_parentPtr; }
+		// Root node is the top node of the tree.
+		// It has no parent node.
+		bool isRoot() const { return m_parentPtr == nullptr; }
 
-		std::vector<std::shared_ptr<NODE_T>> children() { return m_childrenPtrs; }
-		const std::vector<std::shared_ptr<NODE_T>> children() const { return m_childrenPtrs; }
+		// Leaf nodes are node that do not have children yet. 
+		// After being expanded, leaf nodes become:
+		//	- intermediate nodes if they end up with children.
+		//	- terminal ndoes if they do not.
+		// Basically a leaf node is any node that hasn't been expanded.
+		// A leaf node is not to be confused with a terminal node. 
+		bool isLeaf() const { return m_state == STATE::FRESH; /* implies: children().empty(); */ }
+
+		// Intermediate nodes are any nodes that have children.
+		// Before a node is expanded it is a leaf node.
+		// Warning: A node can only become intermediate after it has been expanded.
+		//	If expanding a node creates no children, then the node is a terminal node meaning game over.
+		bool isIntermediate() const { return m_state == STATE::EXPANDED && children().size(); }
+
+		// Terminal nodes are any nodes that have been expanded but have no children.
+		// After a node is expanded, if no children were generated, then we know
+		// that no moves can be made from it. Its either a win, loss or draw.
+		bool isTerminal() const { return m_state == STATE::EXPANDED && children().empty(); }
+
+		NODE_T* parentPtr() { return m_parentPtr; }
+		const NODE_T* parentPtr() const { return m_parentPtr; }
+
+		std::vector<std::shared_ptr<NODE_T>> & children() { return m_childrenPtrs; }
+		const std::vector<std::shared_ptr<NODE_T>> & children() const { return m_childrenPtrs; }
 
 	protected:
 
@@ -79,10 +102,19 @@ namespace forge
 	template<class NODE_T>
 	void NodeTemplate<NODE_T>::reset()
 	{
-		m_position.clear();
-		m_parentPtr = nullptr;
-		m_childrenPtrs.clear();
-		m_state = STATE::FRESH;
+		// TODO: Code: If this method can be re-written to assign
+		// a default object, then the derived classes would not need to 
+		// implement their own reset() methods.
+		// ex: (*this) = NodeTemplate<NODE_T>(); 
+		// Should do the trick
+
+		(*this) = NodeTemplate<NODE_T>{};	// default constructor
+
+		// Old code
+		//m_position.clear();
+		//m_parentPtr = nullptr;
+		//m_childrenPtrs.clear();
+		//m_state = STATE::FRESH;
 	}
 
 	template<class NODE_T>

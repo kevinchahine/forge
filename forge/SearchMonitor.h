@@ -45,7 +45,7 @@ namespace forge
 			return
 				(nodeCount >= nodeLimit) ||
 				(plyCount >= plyLimit) ||
-				//(timer.is_expired()) ||	// TODO: is_expired() needs some work
+				(timer.is_expired()) ||	// TODO: is_expired() needs some work
 				(stopFlag == true);
 		}
 

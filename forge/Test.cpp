@@ -1087,13 +1087,15 @@ namespace forge
 			auto whiteController =
 				//make_unique<MCTS_Solver>();
 				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				//make_unique<MinimaxSolver>();
+				make_unique<MCTS_Solver>();
 				//make_unique<KeyboardController>();
 
 			auto blackController =
 				//make_unique<MCTS_Solver>();
 				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				//make_unique<MinimaxSolver>();
+				make_unique<MCTS_Solver>();
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
@@ -1109,7 +1111,6 @@ namespace forge
 			match.blackController() = std::move(blackController);
 
 			match.makeView<TextView>();
-			cin.get();
 			match.runGame();
 		}
 

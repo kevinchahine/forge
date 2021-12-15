@@ -32,11 +32,13 @@ namespace forge
 
 	bool Timer::is_expired() const
 	{
-		return expires_from_now().count() > 0;
+		return expires_from_now().count() <= 0;
 	}
 
 	void Timer::expires_from_now(const chrono::nanoseconds & duration)
 	{
+		lastResumed = chrono::high_resolution_clock::now();
+		
 		expiry = duration;
 	}
 

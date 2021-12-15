@@ -16,9 +16,22 @@ namespace forge
 		virtual std::string getNameVariant() const override { return "Basic"; }
 
 	protected:
+		void traverse();
+
+		void expand();
+
+		int rollout();
+
+		void backpropagate(int rolloutResult);
+		
+		// TODO: Could make this constant
+		MovePositionPair selectBestMove();
+
 		MovePositionPair solve(const Position& position);
 
     protected:
         MCTS_Node m_nodeTree;
+
+		MCTS_Node::iterator it;
     };
 } // namespace forge

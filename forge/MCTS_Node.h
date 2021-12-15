@@ -7,39 +7,28 @@
 namespace forge {
     class MCTS_Node : public NodeTemplate<MCTS_Node>
     {
+		using super_t = NodeTemplate<MCTS_Node>;
+
     public:		// ---------- METHODS -----------------------------------------
 		// UCB = x_i + C * sqrt(ln(N) / n_i)
 		// 	x_i - average value of game state(t / n)
 		// 	C - constant "Temperature" (ex : 1.5)
 		// 	N - Parent node visits
 		// 	n_i - Current node visits(if n_i is 0 then use 1 / inf to avoid division by zero)
-		static float uct(float average, float temperature, int parentVisits, int currVisits);
+		static float calcUCB(float average, float temperature, int parentVisits, int currVisits);
 
-		void reset();
+		int nGamesVisited() const { return static_cast<int>(n); }
 
-		// Takes the Position of this Node and generates children nodes using a valid move generator
-		// The Children nodes can be accessed using the .children() method.
-		// Should not be called on a Node with existing children.
-		// If called on a Node with existing children, the original children will be deleted
-		// and replace by the new ones.
-		void expand();
+		float average() const { return t / n; }
 
-		MCTS_Node& parent() { return *m_parentPtr; }
-		const MCTS_Node& parent() const { return *m_parentPtr; }
-
-		const std::vector<std::shared_ptr<MCTS_Node>>& children() const { return m_childrenPtrs; }
-
-		float ucb() const;
+		float ucb() const { return m_ucb; }
 		
+		// Warning: Update should never be called on the root node.
+		void update(int rolloutResult);
+
+		void updateRoot(int rolloutResult);
+
     private:	// ---------- FIELDS ------------------------------------------
-        // Address of parent node
-        // if nullptr then this object is the root of the tree
-        // Do not deallocate
-        MCTS_Node* m_parentPtr = nullptr;
-
-        // Addresses of children nodes
-        std::vector<std::shared_ptr<MCTS_Node>> m_childrenPtrs;
-
 		// Total score of all children
 		// % of games won by white
 		float t = 0.0f;
@@ -47,11 +36,16 @@ namespace forge {
 		// Total number of games visited
 		float n = std::numeric_limits<float>::min();
 
+		// Save ucb here so that it doesn't need to be recalculated each time its used
+		// Precalculate to max value to save time on construction
+		float m_ucb = std::numeric_limits<float>::max(); // 0.0f;
+
 		float temperature = 1.5;
 
     public:		// ---------- ITERATOR ----------------------------------------
         class iterator {
         public:
+			iterator() = default;
 			iterator(MCTS_Node* nodePtr) : p_node(nodePtr) {}
 			iterator(MCTS_Node* nodePtr, int depth, int depthLimit) :
 				p_node(nodePtr) {}
@@ -61,28 +55,30 @@ namespace forge {
 			bool operator!=(const iterator& it) const { return this->p_node != it.p_node; }
 			MCTS_Node& operator*();
 
-		protected:
 			bool parentExists() const { return p_node->m_parentPtr != nullptr; }
-			bool firstChildExists() const { return p_node->m_childrenPtrs.size(); }
+			bool childrenExist() const { return p_node->m_childrenPtrs.size(); }
+			bool isRoot() const { return parentExists() == false; }
 
 			void goToParent()
 			{
-				//p_node = p_node->m_parentPtr;	// go to parent (might be nullptr)
-				//
-				//if (p_node != nullptr) {
-				//	// *** Now we're at the parent node ***
-				//
-				//	// We've already been here so we need to keep iterating to 
-				//	// later nodes
-				//	++(*this);
-				//}
+				p_node = p_node->m_parentPtr;	// go to parent (might be nullptr)
 			}
 
-			void goToFirstChild()
-			{
-				//// One or more children.
-				//p_node = p_node->children().front().get();	// Go the 1st child.
-			}
+			// Selects the child with the highest UCB value
+			// Then moves to that child.
+			// Warning: Before calling this method, make sure that the current node
+			// has been expanded and also has children.
+			// An error will occur, if this method is called on a node without
+			// any children.
+			void goToSelectedChild();
+
+			// Selects child with the best average value.
+			// Then moves to that child
+			// * See comments for goToSelectedChild()
+			void goToBestChild();
+
+			// * See comments of goToSelectedChild()
+			void goToFirstChild();
 
 		private:
 			MCTS_Node* p_node = nullptr;

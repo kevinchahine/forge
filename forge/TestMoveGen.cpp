@@ -316,7 +316,7 @@ namespace forge
 			}
 
 			forge::Position randomMoves(
-				size_t nMoves,
+				size_t nSkips,						// Number of moves to skip based from currPos
 				const forge::Position& currPos,
 				boost::process::child& stockfish,
 				bp::opstream& sfOut,
@@ -324,11 +324,11 @@ namespace forge
 			{
 				forge::Position pos = currPos;
 
-				for (size_t i = 0; i < nMoves; i++) {
+				for (size_t i = 0; i < nSkips; i++) {
 					vector<Move> sfMoves = moveGenSF(stockfish, sfOut, sfIn, pos);
 
 					if (sfMoves.size()) {
-						uniform_int_distribution<size_t> dist(0, sfMoves.size());
+						uniform_int_distribution<size_t> dist(0, sfMoves.size() - 1);
 
 						const Move& m = sfMoves.at(dist(g_rand));
 
@@ -354,7 +354,8 @@ namespace forge
 				bp::ipstream sfIn;
 
 				stack<forge::MovePositionPair> frontier;
-				int depthLimit = 6;
+				int depthLimit = 20000;
+				int nSkips = 200;
 				int nodeCount = 0;
 				int printedCount = 0;
 
@@ -365,7 +366,8 @@ namespace forge
 				movePos.position.reset();
 				//movePos.position.fromFEN("r2qk2r/2p2ppp/2np4/1p6/1b2n1bP/1PN2N2/P2BKPP1/R2Q3R w kq - 0 1");
 
-				movePos.position = randomMoves(depthLimit, movePos.position, stockfish, sfOut, sfIn);
+				// Skip a few moves so that we can test middle and end game positions
+				movePos.position = randomMoves(nSkips, movePos.position, stockfish, sfOut, sfIn);
 
 				frontier.emplace( movePos );
 
@@ -402,6 +404,8 @@ namespace forge
 
 					// --- Skip Finished Games ---
 					if (sfMoves.empty()) {
+						cout << guten::color::brown << "Terminal node\n";
+						movePos.position.board().printMini();
 						continue;	// Skip this position. It is the last position
 					}
 

@@ -25,7 +25,7 @@ namespace forge
 		m_searchMonitor.timer.expires_from_now(chrono::hours(1));
 		m_searchMonitor.start();
 
-		m_nodeTree.reset();
+		m_nodeTree = MiniMaxNode{};
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		MiniMaxNode::iterator it = m_nodeTree.begin();
@@ -82,11 +82,17 @@ namespace forge
 		cout << guten::color::green << "Nodes searched: " << m_searchMonitor.nodeCount << '\t'
 			<< "search time: " << chrono::duration_cast<chrono::milliseconds>(m_searchMonitor.searchTime.elapsed()).count()/1000.0 << " sec\t"
 			<< m_searchMonitor.nodesPerSecond() << " nodes/sec\n";
+		
+		m_searchMonitor.stop();
+
+		// --- Determine the best move ---
+
+		MovePositionPair solution;
 
 		// Was a best move found?
 		if (m_nodeTree.bestMovePtr() != nullptr) {
 			// Yes a best move was found.
-			return MovePositionPair{
+			solution = MovePositionPair{
 				m_nodeTree.bestMovePtr()->move(),
 				m_nodeTree.bestMovePtr()->position() };
 		}
@@ -100,12 +106,12 @@ namespace forge
 				<< guten::color::pop();
 #endif // _DEBUG
 
-			return MovePositionPair{
+			solution = MovePositionPair{
 				m_nodeTree.move(),
 				m_nodeTree.position()
 			};
 		}
 
-		m_searchMonitor.stop();
+		return solution;
 	}
 } // namespace forge

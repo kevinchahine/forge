@@ -181,9 +181,10 @@ namespace forge
 		}
 
 		// 1-4.) --- Pawns ---
-		if (board.isWhite(ourKing)) {
+		// *WhiteKings on row 0 and 1 will never be attacked by BlackPawns
+		if (board.isWhite(ourKing) && ourKing.row() >= 2) {
 			// Our King is White. There Pawns are Black.
-
+			
 			BitBoard captureMask = pieces::WhitePawn::captureMask(ourKing);
 			BitBoard theirPawns = captureMask & board.pawns() & board.blacks();
 
@@ -204,7 +205,8 @@ namespace forge
 				}
 			}
 		}
-		else {
+		// *BlackKings on row 6 and 7 will never be attacked by WhitePawns
+		else if (ourKing.row() <= 5) {
 			// Our King is Black. There Pawns are White.
 
 			BitBoard captureMask = pieces::BlackPawn::captureMask(ourKing);

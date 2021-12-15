@@ -15,20 +15,11 @@ namespace forge
 		return a->fitness() < b->fitness();
 	}
 
-	void MiniMaxNode::reset()
-	{
-		super_t::reset();
-
-		m_nextPtr = nullptr;
-		m_fitness = 0;
-		p_bestChild = nullptr;
-	}
-
 	void MiniMaxNode::expand()
 	{
 		super_t::expand();
 
-		// used to prevent underflow (hint: 0 - 1)
+		// Used to prevent underflow (hint: unsigned 0 - 1 gives yeilds underflow)
 		if (m_childrenPtrs.empty() == false) {
 			// 3.) --- Assign sibling pointers ---
 			for (size_t i = 0; i < m_childrenPtrs.size() - 1; i++) {
