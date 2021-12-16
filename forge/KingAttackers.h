@@ -5,6 +5,10 @@
 
 namespace forge
 {
+	// TODO: Optimize: turns out static_vector implements std::vector meaning it stores
+	//	its data in a dynamically allocated array. Slower than what we want.
+	//	This class should be implemented more like a statically allocated array or 
+	//	even a pair.
 	class KingAttackers : public boost::container::static_vector<KingAttacker, 2>
 	{
 	public:

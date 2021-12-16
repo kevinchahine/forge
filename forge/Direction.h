@@ -22,6 +22,7 @@ namespace forge
 				return BoardSquare{ bs.row() + vertical, bs.col() + horizontal };
 			}
 
+			// TODO: Consider calling this moveFrom()
 			BoardSquare move(const BoardSquare & square) const {
 				return BoardSquare{ square.row() + vertical, square.col() + horizontal };
 			}

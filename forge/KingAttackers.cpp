@@ -17,6 +17,8 @@ namespace forge
 	
 	// !!!VERY IMPORTANT: IF RAY_DIRECTION_T is a Lateral direction, always set 'isRayAttacking' to true
 	//	so that promotions to Rook/Queens are accounted for.
+	// Parameters:
+	//	- isRayAttacking - 
 	template<typename RAY_DIRECTION_T>
 	inline void pushIfRayIsAttackingKing(
 		const Board & board,
@@ -28,7 +30,7 @@ namespace forge
 		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
 			"This method must only be called for a Ray direction");
 
-		// Have we already found a Ray attacker is some direction. 
+		// Have we already found a Ray attacker in some direction. 
 		// Remember: 2 Diagonal attacks are impossible.
 		// 2 Lateral attacks ARE Possible but only from ROOK/QUEEN promotions.
 		// !!! 'isRayAttacking' should always be set to false when 'RAY_DIRECTION_T' is a Lateral direction.
@@ -107,12 +109,13 @@ namespace forge
 		//	- Rook + Rook (promoted)
 		//	
 		// Impossible combinations:
-		//	- King + anything
+		//	- King + anything (Kings can never attack other Kings)
 		//	- 2 Knights
 		//	- 2 Diagonals
 		//		- 2 Bishops
 		//		- Queen (Diagonal) + Bishop
 		//		- 2 Queens (Diagonal)
+		//	- 2 Laterals (Excluding promotions)		??? Verify this please ???
 		//	- 2 Pawns
 		//	- Bishop + Pawn
 
@@ -168,10 +171,16 @@ namespace forge
 			if (theirLaterals.any()) {
 				// A Lateral attack is possible. Lets look in more detail.
 
-				pushIfRayIsAttackingKing<directions::Up>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::Down>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::Left>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
-				pushIfRayIsAttackingKing<directions::Right>(board, ourKing, ours, theirs, pair, isDiagonalAttack);
+				bool a = false;
+				bool b = false;
+				bool c = false;
+				bool d = false;
+				// TODO: BUG: isLateralAttack is causing problems with double attacks. 
+				// It is ignoring attacks coming from pawns that were just promoted to Rook/Queen.
+				pushIfRayIsAttackingKing<directions::Up>(board, ourKing, ours, theirs, pair, a);
+				pushIfRayIsAttackingKing<directions::Down>(board, ourKing, ours, theirs, pair, b);
+				pushIfRayIsAttackingKing<directions::Left>(board, ourKing, ours, theirs, pair, c);
+				pushIfRayIsAttackingKing<directions::Right>(board, ourKing, ours, theirs, pair, d);
 			}
 		} // end Laterals
 
@@ -206,7 +215,7 @@ namespace forge
 			}
 		}
 		// *BlackKings on row 6 and 7 will never be attacked by WhitePawns
-		else if (ourKing.row() <= 5) {
+		else if (board.isBlack(ourKing) && ourKing.row() <= 5) {
 			// Our King is Black. There Pawns are White.
 
 			BitBoard captureMask = pieces::BlackPawn::captureMask(ourKing);

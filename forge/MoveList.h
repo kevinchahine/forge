@@ -8,9 +8,9 @@
 namespace forge
 {
 #ifdef _DEBUG
-	inline void printError(forge::Move m, const string & funcName) {
+	inline void printError(forge::MovePositionPair p, const string & funcName) {
 		std::cout << guten::color::push() << guten::color::red
-			<< "Illegal move found :p, " << m << " in " << funcName << "\n"
+			<< "Illegal move found :p, " << p.position.toFEN() << ' ' << p.move << " in " << funcName << "\n"
 			<< guten::color::pop();
 	}
 #else
@@ -68,7 +68,7 @@ namespace forge
 #ifdef _DEBUG
 		// 3.) --- Make sure it was a legal move ---
 		if (AttackChecker::isKingAttacked(pair.position.board(), currPos.moveCounter().isWhitesTurn())) {
-			printError(move, __FUNCTION__);
+			printError(pair, __FUNCTION__);
 			
 			throw std::exception();
 

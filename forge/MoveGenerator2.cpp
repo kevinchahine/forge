@@ -265,6 +265,7 @@ namespace forge
 		}
 	}
 
+	// See comments for captureWithRay()
 	template<typename KNIGHT_DIRECTION_T>
 	inline void captureAttackerWithKnight(
 		MoveList& legals,
@@ -297,7 +298,7 @@ namespace forge
 
 		// Direction from our King to attacker.
 		// Could be a ray or knight direction.
-		const directions::Direction & dir = attacker.dir;
+		const directions::Direction & dirToAttacker = attacker.dir;
 
 		BoardSquare bs;
 
@@ -312,7 +313,7 @@ namespace forge
 			// pins.
 
 			// Move bs 1 square in direction of attacker.
-			bs = (dir.wouldBeInBounds(ourKing) ? dir.move(ourKing) : attacker.square);
+			bs = (dirToAttacker.wouldBeInBounds(ourKing) ? dirToAttacker.move(ourKing) : attacker.square);
 		} // end if(piece.isRay())
 		else {
 			// --- Attacker is either a Knight or Pawn ---
@@ -383,9 +384,9 @@ namespace forge
 				}
 			}
 
-			// --- Block/Capture with our Pawns ---
-			// --- Look for Captures from our Pawns ---
-			genPawnBlockAndCapture(attacker, captureMask);
+			//// --- Block/Capture with our Pawns ---
+			//// --- Look for Captures from our Pawns ---
+			//genPawnBlockAndCapture(attacker, captureMask);
 
 			// --- Block/Capture with our Kings (Skip) ---
 			// King moves are taken care of in genKingMoves(). Nothing to do here.
@@ -394,18 +395,23 @@ namespace forge
 			if (bs == attacker.square) {
 				break; // Yes we have now found all block/capture moves.
 			}
-			else if (dir.wouldBeInBounds(bs)) {	// TODO: OPTIMIZE: Is bounds checking necessary.
-				bs = dir.move(bs);	// Incremente 'bs' towards attacker
+			else if (dirToAttacker.wouldBeInBounds(bs)) {	// TODO: OPTIMIZE: Is bounds checking necessary. The attacker will always be in bounds
+				bs = dirToAttacker.move(bs);	// Incremente 'bs' towards attacker
 			}
 			else {
 #ifdef _DEBUG
 				cout << "Error: " << __FUNCTION__ << " line " << __LINE__
 					<< "\tThis line should never be reached. bs should hit the attacker and always stay inbounds." << endl;
+				throw std::exception("This line should never be reached");
 				cin.get();
 #endif // _DEBUG
 				break;
 			}
 		} // end while (true) 
+
+		// --- Block/Capture with our Pawns ---
+		// --- Look for Captures from our Pawns ---
+		genPawnBlockAndCapture(attacker, captureMask);
 	}
 
 	void MoveGenerator2::genPawnBlockAndCapture(const KingAttacker& attacker, BitBoard captureMask)
@@ -413,7 +419,7 @@ namespace forge
 		const Position& pos = *currPositionPtr;
 		const Board& board = pos.board();
 		pieces::Piece attackerPiece = board.at(attacker.square);
-		const directions::Direction& direction = attacker.dir;
+		const directions::Direction& dirToAttacker = attacker.dir;
 
 //#ifdef _DEBUG
 //		// TODO: This method should work even against non-ray attackers
@@ -474,17 +480,18 @@ namespace forge
 			// And see if we can block the attacker.
 			// *** If attacker is a Knight or Pawn. ***
 			// *** Then this loop will break before the 1st iteration. ***
-			for (BoardSquare square = direction.move(ourKing);
+			for (BoardSquare square = dirToAttacker.move(ourKing);
 				square != attacker.square;
-				square = direction.move(square))
+				square = dirToAttacker.move(square))
 			{
 				// === PUSH 1 ===
 				BoardSquare pawn1 = (dir1.wouldBeInBounds(square) ? dir1.move(square) : BoardSquare::invalid());
 
 				// Hint: square will always be empty because if it wasn't then an attack would not be possible
+				//					   No need to test for this vvvvvvvvvvvvv
 				if (pawn1.isValid() && usefullPawns[pawn1]/* && empty[square]*/) {
 					// Would push lead to promotion?
-					if (pawn1.row() == promotionRow) {
+					if (square.row() == promotionRow) {
 						// Yes promote pawn.
 						legalMoves.emplace_back<pieces::Pawn>(Move{ pawn1, square, q }, pos);
 						legalMoves.emplace_back<pieces::Pawn>(Move{ pawn1, square, r }, pos);
@@ -512,11 +519,14 @@ namespace forge
 				}
 			} // for (
 		} // if Horizontal or Diagonal
-		else if (direction.isVertical()) {
+		else if (dirToAttacker.isVertical()) {
 			// No need to search pawn pushes. Only look for pawn captures.
 		}
 		else {
 			// This line should never be reached
+#ifdef _DEBUG
+			throw std::exception("This line should never be reached");
+#endif
 		}
 
 		// --- Look for a Pawn that can CAPTURE attacker ---

@@ -2,12 +2,15 @@
 === MoveGenerator ===
 
 Problematic positions:
-r3kb1r/1pq2ppp/2n1pn2/pBpp4/P2P3N/2PbP3/1P1NKPPP/R1BQ3R w - - 4 -256214754		NOT FIXED
-r2qkb1r/1p3Qpp/2n1p1b1/pBpp4/P2Pn2N/2P1P3/1P1N1PPP/R1B1K2R b - - 0 -256214753	NOT FIXED
-r2q1b1r/1p3ppp/2nkpn2/pBppPb2/P2P3N/2P5/1P1N1PPP/R1BQK2R b - - 0 -256214753		NOT FIXED
-1r3B1r/p2k4/nppR4/P5p1/2B4p/2P1PPPQ/7P/5K1R b - - 1 35							NOT FIXED	g5g4 was generated
-4k1b1/1r6/8/p3P3/3PNP2/RK3P2/8/8 w - - 5 75										NOT FIXED	d4d5 double attack
-k7/1r5p/8/3P4/b6R/1K2B3/5p2/4R3 w - - 2 70										NOT FIXED	h4a4 double attack
-2k5/1rR5/np2Bnp1/6p1/3P2P1/7r/3N4/2b3KR b - - 1 56								NOT FIXED	f6d7 double attack
-rnbqkb1r/pppppppp/7n/8/8/P7/1PPPPPPP/RNBQKBNR w - - 1 1							NOT FIXED	f7f8 weird
-8/8/8/8/5p2/p7/4Kp2/k6R b - - 1 91												NOT FIXED	f2f1 
+r3kb1r/1pq2ppp/2n1pn2/pBpp4/P2P3N/2PbP3/1P1NKPPP/R1BQ3R w - - 4 -256214754		FIXED
+r2qkb1r/1p3Qpp/2n1p1b1/pBpp4/P2Pn2N/2P1P3/1P1N1PPP/R1B1K2R b - - 0 -256214753	FIXED
+r2q1b1r/1p3ppp/2nkpn2/pBppPb2/P2P3N/2P5/1P1N1PPP/R1BQK2R b - - 0 -256214753		FIXED
+1r3B1r/p2k4/nppR4/P5p1/2B4p/2P1PPPQ/7P/5K1R b - - 1 35							FIXED	g5g4 was generated
+4k1b1/1r6/8/p3P3/3PNP2/RK3P2/8/8 w - - 5 75										FIXED	d4d5 double attack
+k7/1r5p/8/3P4/b6R/1K2B3/5p2/4R3 w - - 2 70										FIXED	h4a4 double attack
+2k5/1rR5/np2Bnp1/6p1/3P2P1/7r/3N4/2b3KR b - - 1 56								FIXED	f6d7 double attack
+rnbqkb1r/pppppppp/7n/8/8/P7/1PPPPPPP/RNBQKBNR w - - 1 1							FIXED	f7f8 weird
+8/8/8/8/5p2/p7/4Kp2/k6R b - - 1 91												FIXED	f2f1 
+8/b4r1r/1ppk4/1q2p2p/p1P3bP/3P1KP1/4P2N/5R1R w - - 2 47							FIXED	h2g4 double attack
+5r2/p2k2r1/P1p5/bp1R2p1/3P1PB1/1P6/3N4/5KN1 b - - 0 69							FIXED	f8f5 double attack
+b3kQ2/q7/1ppp1r2/1P5K/1B5p/2PPR2N/8/1N3B2 b - - 0 55							FIXED	a7e7 double attack (after pawn promotion)

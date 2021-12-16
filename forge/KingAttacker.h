@@ -16,7 +16,7 @@ namespace forge
 		// BitBoard containing a line of 1s between the King(exclusive) and Attacker(inclusive)
 		// Square where king stands is a 0
 		// Square where attacker stands is a 1
-		// Squares inbetween are 1s also.
+		// Squares in between are 1s also.
 		// If attacker is a Knight or Pawn then its square will contain the only 1
 		BitBoard lineOfFire;
 
