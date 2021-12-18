@@ -1,0 +1,106 @@
+=== FORGE ===
+=== Dataset Generator ===
+
+Purpose: To generate a training dataset for machine learning.
+
+Example:
+	+-----+-------------------+
+	| FEN | Eval (centiPawns) |
+	+-----+-------------------+
+	| ... |        ...        |
+	+-----+-------------------+
+	| ... |        ...        |
+	+-----+-------------------+
+	| ... |        ...        |
+
+Format:
+	Stores dataset in a CSV file where:
+		1st column is a position represented in FEN notation
+		2nd column is an evaluation of that position in units of centi pawns. 
+			Can be calculated from a chess dataset or by another chess engine.
+		Remaining columns might include:
+			- % wins by White
+			- % wins by Black
+			- % draws
+
+	* CSV is a good option because:
+		- it is human readable
+		- can be opened as a spreadsheet
+		- 3rd party libraries can open csv for C++ and Python
+			*We might need to use python to train a NN 
+
+Implementation:
+	Containers:
+		Hashtable (specifically unordered_multimap):
+			Dataset can be stored as a hashtable as it is being filed
+			and before it is written to a file.
+			
+			- Key: FEN of a position - string
+			- Value: Evaluation position - 
+				{ can be an int for a single value or a class that stores other values as well}
+			
+			Pros:
+				- Efficient look up.
+				- Ignores duplicates positions. Stores each position only once.
+				- Iterable.
+				- allows for duplicate hash values to unique keys (all containers do this)
+
+			Cons:
+				- Does not allow for duplicate keys (No problem. We don't want duplicate keys them)
+
+	Position generation:
+		We can generate positions using the RandomSolver. 
+			This will work great because:
+				- it is the most efficient solver
+				- it can generate positions at any point in the game especially endgame
+					- it wont generate only opening and middle game positions but endgames also.
+				- already implemented
+		Each time a Position is generated, we can:
+			Evaluate it with stockfish.
+			Push it's FEN and eval into hashtable.
+
+	Saving to File:
+		Use rapidcsv (managed by vcpkg)
+
+	Algorithm:
+		1.) Chose output file name:
+			default - dataset_<date_time>.csv
+			* lock the file (Don't know how to do this):
+
+		2.) Initialize Stockfish:
+			2-1.) Create child process
+			2-2.) Make sure stockfish loaded properly
+			2-3.) Do this UCI stuff:
+				- uci
+				- position ...
+				- uciok
+				- something like that. Just figure it out.
+
+		3.) Initialize:
+			map - unordered_map
+			curr - Position
+			solver - RandomSolver
+
+		4.) Loop until:
+			- a number of positions have been generated or
+			- an amount of time has passed
+			- keyboard event stops
+			- program is forcefully closed (???Probably to hard. Not worth the effort???)
+			
+			4-1.) Select a random position using RandomSolver
+				curr = solver.getMove(curr);	// More or less
+
+			4-2.) Generate FEN
+				string fen = curr.toFEN();
+
+			4-3.) Evaluate using stockfish:
+				int eval = evalSF(curr);
+
+			4-4.) Push to map
+				map.insert(fen, eval);
+
+		5.) Write to file:
+			writeToFile(fs::path filename, map);
+
+	* Make a class for Stockfish because it seems like we are using it a looooot.
+

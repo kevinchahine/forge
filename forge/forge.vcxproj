@@ -144,6 +144,7 @@
     <ClCompile Include="ApplePieWeights.cpp" />
     <ClCompile Include="AttackChecker.cpp" />
     <ClCompile Include="Attackers.cpp" />
+    <ClCompile Include="DatasetGenerator.cpp" />
     <ClCompile Include="KingAttackers.cpp" />
     <ClCompile Include="BitBoard.cpp" />
     <ClCompile Include="Board.cpp" />
@@ -193,6 +194,11 @@
     <ClCompile Include="TextView.cpp" />
     <ClCompile Include="Threats.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UciBase.cpp" />
+    <ClCompile Include="UciEngine.cpp" />
+    <ClCompile Include="UciGui.cpp" />
+    <ClCompile Include="UciOptions.cpp" />
+    <ClCompile Include="UciSearchCommands.cpp" />
     <ClCompile Include="ViewBase.cpp" />
     <ClCompile Include="WeightsArchive.cpp" />
     <ClCompile Include="WeightsBase.cpp" />
@@ -204,6 +210,7 @@
     <Text Include="Bugs.txt" />
     <Text Include="Classes.txt" />
     <Text Include="Database.txt" />
+    <Text Include="DatasetGenerator.txt" />
     <Text Include="GameStates.txt" />
     <Text Include="Goals.txt" />
     <Text Include="HighLevelDesign.txt" />
@@ -221,11 +228,13 @@
     <Text Include="Progress.txt" />
     <Text Include="SearchFramework.txt" />
     <Text Include="SearchMonitor.txt" />
+    <Text Include="Stockfish.txt" />
     <Text Include="TimeManagement.txt" />
     <Text Include="Training.txt" />
     <Text Include="UCI.txt" />
     <Text Include="UCI_Definition.txt" />
     <Text Include="UCI_DefinitionNotes.txt" />
+    <Text Include="UCI_UML.txt" />
     <Text Include="ValidMoveGenerator.txt" />
     <Text Include="Versions.txt" />
     <Text Include="View.txt" />
@@ -237,6 +246,7 @@
     <ClInclude Include="Attackers.h" />
     <ClInclude Include="AttackersDefinitions.h" />
     <ClInclude Include="BitBoardDefinitions.h" />
+    <ClInclude Include="DatasetGenerator.h" />
     <ClInclude Include="HashCombine.h" />
     <ClInclude Include="KingAttackers.h" />
     <ClInclude Include="BitBoard.h" />
@@ -297,6 +307,11 @@
     <ClInclude Include="Threats.h" />
     <ClInclude Include="ThreatsDefinitions.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="UciBase.h" />
+    <ClInclude Include="UciEngine.h" />
+    <ClInclude Include="UciGui.h" />
+    <ClInclude Include="UciOptions.h" />
+    <ClInclude Include="UciSearchCommands.h" />
     <ClInclude Include="ViewBase.h" />
     <ClInclude Include="Weights.hpp" />
     <ClInclude Include="WeightsArchive.h" />

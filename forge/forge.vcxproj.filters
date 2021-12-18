@@ -57,6 +57,18 @@
     <Filter Include="Notes\MoveGen">
       <UniqueIdentifier>{73098ae7-8254-4189-a1b4-da4b4d46c2b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ML">
+      <UniqueIdentifier>{371c1987-6eaa-4524-aad1-aee616fd419f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Notes\ML">
+      <UniqueIdentifier>{028d54c6-4a20-44b4-b39a-9d2c5203c806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UCI">
+      <UniqueIdentifier>{a5d73224-2245-48c4-8f2f-72124c457c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Notes\UCI">
+      <UniqueIdentifier>{a184ff4e-263b-4d91-9374-75d03305f850}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -227,6 +239,24 @@
     <ClCompile Include="MCTS_Solver.cpp">
       <Filter>Controllers</Filter>
     </ClCompile>
+    <ClCompile Include="DatasetGenerator.cpp">
+      <Filter>ML</Filter>
+    </ClCompile>
+    <ClCompile Include="UciSearchCommands.cpp">
+      <Filter>UCI</Filter>
+    </ClCompile>
+    <ClCompile Include="UciOptions.cpp">
+      <Filter>UCI</Filter>
+    </ClCompile>
+    <ClCompile Include="UciGui.cpp">
+      <Filter>UCI</Filter>
+    </ClCompile>
+    <ClCompile Include="UciEngine.cpp">
+      <Filter>UCI</Filter>
+    </ClCompile>
+    <ClCompile Include="UciBase.cpp">
+      <Filter>UCI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -245,9 +275,6 @@
       <Filter>Notes</Filter>
     </Text>
     <Text Include="Classes.txt">
-      <Filter>Notes</Filter>
-    </Text>
-    <Text Include="UCI.txt">
       <Filter>Notes</Filter>
     </Text>
     <Text Include="NameSpaces.txt">
@@ -286,16 +313,10 @@
     <Text Include="Multi_threading.txt">
       <Filter>Notes</Filter>
     </Text>
-    <Text Include="UCI_Definition.txt">
-      <Filter>Notes</Filter>
-    </Text>
     <Text Include="Bugs.txt">
       <Filter>Notes</Filter>
     </Text>
     <Text Include="Versions.txt">
-      <Filter>Notes</Filter>
-    </Text>
-    <Text Include="UCI_DefinitionNotes.txt">
       <Filter>Notes</Filter>
     </Text>
     <Text Include="BenchmarkTesting.txt">
@@ -321,6 +342,24 @@
     </Text>
     <Text Include="MCTS.txt">
       <Filter>Notes\AI</Filter>
+    </Text>
+    <Text Include="DatasetGenerator.txt">
+      <Filter>Notes\ML</Filter>
+    </Text>
+    <Text Include="Stockfish.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="UCI.txt">
+      <Filter>Notes\UCI</Filter>
+    </Text>
+    <Text Include="UCI_Definition.txt">
+      <Filter>Notes\UCI</Filter>
+    </Text>
+    <Text Include="UCI_DefinitionNotes.txt">
+      <Filter>Notes\UCI</Filter>
+    </Text>
+    <Text Include="UCI_UML.txt">
+      <Filter>Notes\UCI</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -533,6 +572,24 @@
     </ClInclude>
     <ClInclude Include="MCTS_Solver.h">
       <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="DatasetGenerator.h">
+      <Filter>ML</Filter>
+    </ClInclude>
+    <ClInclude Include="UciSearchCommands.h">
+      <Filter>UCI</Filter>
+    </ClInclude>
+    <ClInclude Include="UciOptions.h">
+      <Filter>UCI</Filter>
+    </ClInclude>
+    <ClInclude Include="UciGui.h">
+      <Filter>UCI</Filter>
+    </ClInclude>
+    <ClInclude Include="UciEngine.h">
+      <Filter>UCI</Filter>
+    </ClInclude>
+    <ClInclude Include="UciBase.h">
+      <Filter>UCI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

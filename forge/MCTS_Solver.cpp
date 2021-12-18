@@ -30,7 +30,15 @@ namespace forge
 	{
 		(*it).expand();
 
-		it.goToFirstChild();
+		// Where any children generated?
+		if ((*it).children().size()) {
+			// Yes we must be at an intermediate node. Got to 1st child
+			it.goToFirstChild();
+		}
+		else {
+			// No children were generated. We are at a terminal node.
+			// Stay here and let rollout discover the result.
+		}
 	}
 
 	int MCTS_Solver::rollout()

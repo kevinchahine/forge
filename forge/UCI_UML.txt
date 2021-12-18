@@ -1,0 +1,94 @@
+=== FORGE ===
+=== UCI ===
+
+class UciBase
+	- out - ostream		// stream to parent process
+	- in - istream		// stream from parent process
+	* What exactly should the stream be? Is it always cin and cout or
+		can they be another process stream, file stream, 
+		or even a network stream like to a TCP socket?
+
+	+ init()
+	
+	+ close()
+
+// ------------------------------------ UCI ENGINE ----------------------------
+
+// Sends messages to a UCI Engine
+class UciEngine : public UCI_Base
+	// method						uci command							Comments
+	uci() - void					// uci
+	debug(isDebug: false)			// debug [ on | off ]
+	isready()						// isready							blocks until engine replies with "readyok"
+	setOption(opName, opVal)		// setoption <opName> <opVal>
+	setOptionOp1(opVal)				// 
+	setOptionOp2(opVal)				// 
+	...
+	register(name, val)				// register <name> <val>			
+	registerLater()					// register later
+	registerName(<name>)			// register name <name>
+	registerCode(<code>)			// register name <code>
+	ucinewgame()					// ucinewgame \n isready			blocks until engine replies "readyok"
+	position()						// position startpos				sends start position
+	position(fen - string, m)		// position fen <fen> moves <m>		sends fen of position and moves to play m can be empty
+	position(pos - Position, m)		// position pos.toFEN()	moves <m>	sends fen of position and moves to play m can be empty
+	go()							// go								tells engine to start searching
+	go(sCMD - UciSearchCommands)	// go sCMD.to_string()				tells engine to start searching. Sends search commands also.
+	stop()							// stop								stop calculating as soon as possible
+	ponderhit()						// ponderhit						
+	quit()							// quit								quit the program as soon as possible
+
+class UciSearchCommands
+	*** Any command that is not set should be interpreted as it would not influence the search.
+	*** Store each object as an optional<T>
+	*** command is not sent if optional is set
+	- searchmoves - vector<Move>	// restricts search to these moves (default: empty)
+	- ponder - bool					// execute search in "ponder" mode (default: false)
+	- wtime - int					// how many msec white has on the clock (default: negative)
+	- btime - int					// how many msec white has on the clock (default: negative)
+	- winc - int					// whites increment per move in msec (default: 0)
+	- binc - int					// blacks increment per move in msec (default: 0)
+	- movestogo - int				// # of moves to next time control (default: negative)
+    - depth - int					// search `depth` plies only (limitless: negative) 
+	- nodes - int					// search `nodes` nodes only (limitless: negative)
+	- mate - int					// search for a mate in x moves (default: negative)
+	- movetime <x>					// search exactly `movetime` msecs 
+	- infinite						// search until "stop" command. Do not exit search until "stop" cmd is issued
+
+--------------------------------------- UCI_GUI -------------------------------
+
+// Sends messages to a UCI GUI.
+class UciGui : public UciBase
+	+ id(name, author)				// id <name> \n id <author>
+	+ idName(name)					// id <name> 
+	+ idAuthor(author)				// id <author>
+	+ uciok()						// uciok
+	+ readyok()						// readyok
+	+ bestmove(move)				// bestmove <move.to_string()>
+	+ bestmoveAndPonder(move, ponder) // bestmove <move> ponder <ponder>
+	+ copyprotection()				// copyprotection checking \n copyprotection [ ok | error ]
+	+ registration()
+	+ info(sinfo - SearchInfo)		// info <sinfo.to_string())
+	+ infoDepth(int)				// info depth <depth>
+	+ infoSelDepth(int)				// info seldepth <seldepth>
+	+ infoTime(int)					// info time <time>
+	+ infoNodes(int)				// info nodes <nodes>				send this regularly
+	+ infoPV(vector<Move>)			// info pv <move1> ... <movei>		the best line found
+	+ infoMultipv(int)				// info multipv <num>				
+	+ infoScoreCentiPawns(int)		// info cp <cp>
+	+ infoScoreMate(int)			// 
+	+ infoScoreLowerBound(int)		// 
+	+ infoScoreUpperBound(int)		// 
+	+ infoCurrMove(Move)			// info currmove <move>				currently searching this move
+	+ infoCurrMoveNumber(int)		
+	+ infoHashFull(int)
+	+ infoNodesPerSec(int)			// info nps <nps>					nodes per second searched (send regularly)
+	+ infoTableHits(int)
+	+ infoShreaderEndgameDatabases(int)
+	+ infoCpuLoad(int)				// info cpuload <cpuload>			cpu usage of the engine in x permill
+	+ string(str - string)			// info string <str>				any string to be displayed on engine
+	+ refutation(vector<Move>)		// info refutation <m1> ... <mi>	
+	+ currLine(vector<Move>)		// info <m1> ... <mi>
+	+ currLine(int, vector<Move>)	// info <cpunr> <m1> ... <mi>
+	+ option(UciOptions)
+		...

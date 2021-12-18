@@ -1076,6 +1076,7 @@ namespace forge
 			forge::ChessMatch match;
 
 			match.reset();
+			//match.position().fromFEN("1RK5/k6p/4Q3/p4n1P/8/p5p1/8/2B1NBNR b - - 3 112");
 
 			match.clock().synchronize(
 				chrono::minutes(5),

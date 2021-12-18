@@ -16,7 +16,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include <conio.h>	// remove this for Linux compatibility
+#include <conio.h>	// TODO: Cross-Platform: remove this for Linux compatibility
 
 #include <algorithm>
 #include <chrono>
@@ -69,6 +69,7 @@ namespace forge
 
 					out << "uci" << endl;
 
+					// Ignore engine output until "uciok"
 					cout << guten::color::push() << guten::color::brown;
 					while (chessEngine.running()) {
 						string line;

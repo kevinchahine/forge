@@ -102,7 +102,7 @@ These are all the command the engine gets from the interface.
 	for example do not use <name> = "draw value".
 	Here are some strings for the example below:
 	   "setoption name Nullmove value true\n"
-      "setoption name Selectivity value 3\n"
+	   "setoption name Selectivity value 3\n"
 	   "setoption name Style value Risky\n"
 	   "setoption name Clear Hash\n"
 	   "setoption name NalimovPath value c:\chess\tb\4;c:\chess\tb\5\n"
@@ -223,7 +223,7 @@ Engine to GUI:
 	the the GUI has the complete statistics about the last search.
 
 * copyprotection
-	this is needed for copyprotected engines. After the uciok command the engine can tell the GUI,
+	this is needed for copyprotected engines. After the uciok command, the engine can tell the GUI
 	that it will check the copy protection now. This is done by "copyprotection checking".
 	If the check is ok the engine should send "copyprotection ok", otherwise "copyprotection error".
 	If there is an error the engine should not function properly but should not quit alone.

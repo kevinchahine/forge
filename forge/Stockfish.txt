@@ -1,0 +1,32 @@
+=== FORGE ===
+=== Class Stockfish ===
+
+Purpose:
+	This class is used to interface with a stockfish process running as a child of this process.
+	Encapsulates the whole process of:
+		- finding the stockfish executable
+		- running it as a child process
+		- connecting to it using pipes (or streams)
+		- interacting with it using the UCI
+			- create and parse UCI messages
+
+Uses:
+	- generate legal moves
+	- evaluate a position using stockfish
+
+Class UML:
+	class Stockfish : UciEngine
+		- process - boost::process::child
+		- out - boost::process::opstream
+		- in - boost::process::ipstream
+
+		// Starts stockfish as a child process. Redirects its std_in std_out streams to pipes.
+		+ start()
+		+ start(path_to_stockfish_exe)
+		
+		+ eval(Position) - int			// gets eval from stockfish
+		+ movegen(Position)	- MoveList	// generates legal moves 
+
+		+ print()
+
+		+ close()	// Optional: Closes stockfish app. Will close from destructor automatically.
