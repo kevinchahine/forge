@@ -43,7 +43,7 @@ namespace forge
 				throw std::exception("Could not run chess engine");
 			}
 
-			// 4.) --- Up engine in UCI mode ---
+			// 4.) --- Put engine in UCI mode ---
 			uci();
 
 			// *** Here engine will: ***
@@ -51,22 +51,78 @@ namespace forge
 			//	- identify itself with the id message
 			//	- list options that it supports (if any)
 			//	- finish by replying "uciok"
+			// readId();
+			// readOptions();
+			// readUciok();
 
-			// 5.) --- 
+			// 5.) --- Send options is any ---
+			// ... Nothing yet
+
+			// 6.) --- Wait for "readyok" ---
+			isready();
+			// readReadyOk();
 		}
 
 		int UciEngine::eval(const Position& pos)
 		{
+			// 1.) --- Tell engine to expect a new game ---
+			ucinewgame();
+
+			// 2.) --- Set current position ---
+			position(pos);
+
+			// 3.) --- Start eval ---
+			UciSearchCommands sCmd;
+			sCmd.nodes = 100'000;
+			go(sCmd);
+
+			// *** Here engine will evaluate current position ***
+			// And periodically print 'info' messages about its progress
+			// When it finishes it will print 'bestmove <move> ...'
+			// Warning: If engine was given the 'go infinite' or 'go' command
+			//	we need to tell it to stop by issuing the 'stop' command
+
+			// 4.) --- Wait till engine finishes ---
+			//int eval = readBestMove();
+
 			return 0;
 		}
 		
 		MoveList UciEngine::movegen(const Position& pos)
 		{
-			return MoveList();
+			MoveList moves;
+
+			// 1.) --- Tell engine to expect a new game ---
+			ucinewgame();
+
+			// 2.) --- Set options (Optional) ---
+			setOption("MultiPV", "500");
+
+			// 2.) --- Set current position ---
+			position(pos);
+
+			// 3.) --- Start Move Generation ---
+			UciSearchCommands sCmd;
+			sCmd.depth = 1;
+			go(sCmd);
+
+			// *** Here engine will evaluate current position ***
+			// And periodically print 'info' messages about its progress
+			// When it finishes it will print 'bestmove <move> ...'
+			// Warning: If engine was given the 'go infinite' or 'go' command
+			//	we need to tell it to stop by issuing the 'stop' command
+
+			// 4.) --- Wait till engine finishes ---
+			// int eval = readEval();
+			
+			return moves;
 		}
 
 		void UciEngine::close()
 		{
+			quit();	// engine process should close on its own as soon as it can.
+
+			// If engine doesn't close, the destructor will forcefully close it.
 		}
 
 		// ------------------------ UCI COMMANDS ------------------------------------
@@ -75,6 +131,66 @@ namespace forge
 		{
 			pout << "uci" << endl;
 		}
+
+		void UciEngine::debug(bool isDebug)
+		{
+			pout << "debug " << (isDebug ? "on" : "off") << endl;
+		}
+
+		void UciEngine::isready()
+		{
+			pout << "isready" << endl;
+		}
+
+		void UciEngine::setOption(const std::string& opName, const std::string& opVal)
+		{
+			pout << "setoption name " << opName << " value " << opVal << endl;
+		}
 		
+		void UciEngine::ucinewgame()
+		{
+			pout << "ucinewgame" << endl;
+		}
+
+		void UciEngine::position()
+		{
+			pout << "position startpos" << endl;
+		}
+
+		void UciEngine::position(const std::string& fen)
+		{
+			pout << "position " << fen << endl;
+		}
+
+		void UciEngine::position(const Position& pos)
+		{
+			pout << "position " << pos.toFEN() << endl;
+		}
+
+		void UciEngine::go()
+		{
+			pout << "go" << endl;
+		}
+
+		void UciEngine::go(const UciSearchCommands& sCMD)
+		{
+			pout << "go " << sCMD << endl;
+		}
+
+		void UciEngine::stop()
+		{
+			pout << "stop" << endl;
+		}
+
+		void UciEngine::ponderhit()
+		{
+			pout << "ponderhit" << endl;
+		}
+
+		void UciEngine::quit()
+		{
+			pout << "quit" << endl;
+		}
+
 	} // namespace uci
 } // namespace forge

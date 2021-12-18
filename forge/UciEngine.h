@@ -1,8 +1,9 @@
 #pragma once
 
-#include "UciBase.h"
 #include "Position.h"
 #include "MoveList.h"
+#include "UciBase.h"
+#include "UciSearchCommands.h"
 
 #include <boost/process/child.hpp>
 #include <boost/process/pipe.hpp>
@@ -62,26 +63,17 @@ namespace forge
 			
 			void isready();					
 			
-			void setOption(const std::string & opName, const std::string & opVal);	
-			
-			//void setOptionOp1(const std::string& opNameopVal);
-			
-			//void setOptionOp2(const std::string& opNameopVal);
-			
-			// ...
-			
-			void registerEngine(const std::string& name, const std::string& val);
-			
-			void registerLater();			
-			
-			void registerName(const std::string & name);		
-			
-			void registerCode(const std::string & code);		
+			// TODO: there is more to options than just this. See UCI Definition
+			void setOption(const std::string & opName, const std::string & opVal);
 			
 			void ucinewgame();				
 			
 			void position();				
 			
+			void position(const std::string& fen);
+
+			void position(const Position& pos);
+
 			// C - container storing type forge::Move
 			// example: vector<Move>, list<Move>, ...
 			template <typename C>
@@ -92,9 +84,13 @@ namespace forge
 			template <typename C>
 			void position(const Position& pos, const C & moves);
 			
+			// Tells engine to search the position until the "stop" command is issued
+			// Same as "go infinite"
+			// Non-blocking call.
 			void go();						
 			
-			//void go(const UciSearchCommands& sCMD);
+			// Non-blocking call.
+			void go(const UciSearchCommands& sCMD);
 			
 			void stop();					
 			
@@ -107,5 +103,23 @@ namespace forge
 			boost::process::ipstream pin;
 			boost::process::opstream pout;
 		};
+		
+		template<typename C>
+		void UciEngine::position(const std::string fen, const C& moves)
+		{
+			pout << "position " << fen << " moves ";
+
+			for (const Move& m : moves) {
+				pout << m << ' ';
+			}
+
+			pout << endl;
+		}
+		
+		template<typename C>
+		void UciEngine::position(const Position& pos, const C& moves)
+		{
+			position(pos.toFEN(), moves);
+		}
 	} // namespace uci
 } // namespace forge

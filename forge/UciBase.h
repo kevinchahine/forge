@@ -1,5 +1,7 @@
 #pragma once
 
+//#include <boost/asio/io_context.hpp>
+
 #include <iostream>
 
 namespace forge
@@ -16,6 +18,7 @@ namespace forge
 		protected:
 			std::ostream& out;
 			std::istream& in;
+
 		};
 	} // namespace uci
 } // namespace forge

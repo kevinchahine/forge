@@ -11,6 +11,6 @@ namespace forge
 	{
 		uci::UciEngine stockfish;
 		stockfish.launch();
-
+		
 	}
 } // namespace forge
