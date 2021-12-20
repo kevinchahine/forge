@@ -1,13 +1,12 @@
 #pragma once
 
+#include <boost/process/child.hpp>
+#include <boost/filesystem/path.hpp>
+
+#include "UciBase.h"
 #include "Position.h"
 #include "MoveList.h"
-#include "UciBase.h"
 #include "UciSearchCommands.h"
-
-#include <boost/process/child.hpp>
-#include <boost/process/pipe.hpp>
-#include <boost/filesystem/path.hpp>
 
 namespace forge
 {
@@ -20,7 +19,7 @@ namespace forge
 		class UciEngine : public UciBase
 		{
 		public:
-			UciEngine() : UciBase(pin, pout) {}
+			UciEngine() = default;
 			virtual ~UciEngine() noexcept { close(); }
 
 			// Attempts to start a chess engine. Searches for UCI compatible chess engine
@@ -57,55 +56,100 @@ namespace forge
 
 		public:	// ---------------- UCI COMMANDS ------------------------------------
 
-			void uci();						
+			// ----------------------- SEND COMMANDS -----------------------------------
+
+			void send_uci();						
 			
-			void debug(bool isDebug);		
+			void send_debug(bool isDebug);		
 			
-			void isready();					
+			void send_isready();					
 			
 			// TODO: there is more to options than just this. See UCI Definition
-			void setOption(const std::string & opName, const std::string & opVal);
+			void send_setoption(const std::string & opName, const std::string & opVal);
 			
-			void ucinewgame();				
+			void send_ucinewgame();				
 			
-			void position();				
+			void send_position();				
 			
-			void position(const std::string& fen);
+			void send_position(const std::string& fen);
 
-			void position(const Position& pos);
-
-			// C - container storing type forge::Move
-			// example: vector<Move>, list<Move>, ...
-			template <typename C>
-			void position(const std::string fen, const C & moves);	
+			void send_position(const Position& pos);
 
 			// C - container storing type forge::Move
 			// example: vector<Move>, list<Move>, ...
 			template <typename C>
-			void position(const Position& pos, const C & moves);
+			void send_position(const std::string fen, const C & moves);	
+
+			// C - container storing type forge::Move
+			// example: vector<Move>, list<Move>, ...
+			template <typename C>
+			void send_position(const Position& pos, const C & moves);
 			
 			// Tells engine to search the position until the "stop" command is issued
 			// Same as "go infinite"
 			// Non-blocking call.
-			void go();						
+			void send_go();						
 			
 			// Non-blocking call.
-			void go(const UciSearchCommands& sCMD);
+			void send_go(const UciSearchCommands& sCMD);
 			
-			void stop();					
+			void send_stop();					
 			
-			void ponderhit();				
+			void send_ponderhit();				
 			
-			void quit();					
+			void send_quit();					
+
+			// ----------------------- HANDLERS ----------------------------------------
+
+			void handle_id(std::istream & is);
+
+			void handle_uciok(std::istream & is);
+
+			void handle_readyok(std::istream & is);
+
+			void handle_bestmove(std::istream & is);
+
+			void handle_copyprotection(std::istream & is);
+
+			void handle_registration(std::istream & is);
+
+			void handle_info(std::istream & is);
+
+			void handle_option(std::istream & is);
+
+			// Only called from handle_option()
+			void handle_option_name(std::istream & is);
+
+			// Only called from handle_option()
+			void handle_option_type(std::istream & is);
+
+			// Only called from handle_option()
+			void handle_option_default(std::istream & is);
+
+			// Only called from handle_option()
+			void handle_option_min(std::istream & is);
+
+			// Only called from handle_option()
+			void handle_option_max(std::istream & is);
+
+			// Only called from handle_option()
+			void handle_option_var(std::istream & is);
+
+			// ----------------------- WAIT METHODS ------------------------------------
+			// These are blocking methods to to wait until a specific command is received
+			// or a certain event occures. They can be used to turn an asynchronous 
+			// operation into a synchronous one.
+			// Calling these methods do not stop the object from reading from the 
+			// 
+
+			//void waitFor_
 
 		private:
 			boost::process::child m_child;
-			boost::process::ipstream pin;
-			boost::process::opstream pout;
 		};
 		
 		template<typename C>
-		void UciEngine::position(const std::string fen, const C& moves)
+		void UciEngine::send_position(const std::string fen, const C& moves)
 		{
 			pout << "position " << fen << " moves ";
 
@@ -117,7 +161,7 @@ namespace forge
 		}
 		
 		template<typename C>
-		void UciEngine::position(const Position& pos, const C& moves)
+		void UciEngine::send_position(const Position& pos, const C& moves)
 		{
 			position(pos.toFEN(), moves);
 		}

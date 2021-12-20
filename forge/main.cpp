@@ -77,9 +77,9 @@ int main(int argc, char ** argv)
 	forge::DatasetGenerator dsGen;
 	dsGen.run();
 
-	cout << "Done";
+	//cout << "Done";
 	//this_thread::sleep_for(chrono::seconds(1));
-	cin.get();
-	cout << "Press any key..." << endl;
+	//cout << "Press any key..." << endl;
+	//cin.get();
 	return 0;
 }

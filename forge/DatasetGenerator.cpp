@@ -1,6 +1,6 @@
-#include "DatasetGenerator.h"
-
 #include "UciEngine.h"
+
+#include "DatasetGenerator.h"
 
 using namespace std;
 using namespace forge::uci;
