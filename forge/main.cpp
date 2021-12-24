@@ -17,8 +17,9 @@ Designed to be compatible with a variety of displays including:
 	- Custom command line GUI for systems that don't support graphical output.
 */
 
-#include "Test.h"	// Contains all necessary includes
+#include "Test.h"
 #include "TestMoveGen.h"
+#include "TestUci.h"
 #include "DatasetGenerator.h"
 
 using namespace std;
@@ -73,9 +74,11 @@ int main(int argc, char ** argv)
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
 
+	forge::uci::test::info();
+
 	//forge::test::movegen::stockfishAndForge();
-	forge::DatasetGenerator dsGen;
-	dsGen.run();
+	//forge::DatasetGenerator dsGen;
+	//dsGen.run();
 
 	//cout << "Done";
 	//this_thread::sleep_for(chrono::seconds(1));

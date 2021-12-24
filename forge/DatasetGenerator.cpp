@@ -10,7 +10,8 @@ namespace forge
 	void DatasetGenerator::run()
 	{
 		uci::UciEngine stockfish;
-		stockfish.launch();
 		
+		stockfish.launch();
+		stockfish.eval(Position{});
 	}
 } // namespace forge

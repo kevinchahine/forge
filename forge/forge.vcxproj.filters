@@ -257,6 +257,18 @@
     <ClCompile Include="UciBase.cpp">
       <Filter>UCI</Filter>
     </ClCompile>
+    <ClCompile Include="UciInfo.cpp">
+      <Filter>UCI</Filter>
+    </ClCompile>
+    <ClCompile Include="UciScore.cpp">
+      <Filter>UCI</Filter>
+    </ClCompile>
+    <ClCompile Include="UciCurrLine.cpp">
+      <Filter>UCI</Filter>
+    </ClCompile>
+    <ClCompile Include="TestUci.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -590,6 +602,18 @@
     </ClInclude>
     <ClInclude Include="UciBase.h">
       <Filter>UCI</Filter>
+    </ClInclude>
+    <ClInclude Include="UciInfo.h">
+      <Filter>UCI</Filter>
+    </ClInclude>
+    <ClInclude Include="UciScore.h">
+      <Filter>UCI</Filter>
+    </ClInclude>
+    <ClInclude Include="UciCurrLine.h">
+      <Filter>UCI</Filter>
+    </ClInclude>
+    <ClInclude Include="TestUci.h">
+      <Filter>Test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

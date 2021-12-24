@@ -101,6 +101,8 @@ namespace forge
 
 			// ----------------------- HANDLERS ----------------------------------------
 
+			void handle(std::istream & is);
+
 			void handle_id(std::istream & is);
 
 			void handle_uciok(std::istream & is);
@@ -140,12 +142,17 @@ namespace forge
 			// or a certain event occures. They can be used to turn an asynchronous 
 			// operation into a synchronous one.
 			// Calling these methods do not stop the object from reading from the 
-			// 
-
-			//void waitFor_
+			
 
 		private:
 			boost::process::child m_child;
+
+			// --- Data about the engine ---
+			std::string name;
+			std::string author;
+
+			Move bestMove;
+			int bestMoveEval;
 		};
 		
 		template<typename C>

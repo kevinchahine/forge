@@ -1,11 +1,15 @@
 #include "UciEngine.h"
 
-#include <boost/asio/read.hpp>
+#include "UciInfo.h"
+
+#include <boost/asio/read_until.hpp>
+#include <boost/bind.hpp>
 #include <boost/process/search_path.hpp>
 #include <boost/process/io.hpp>
 
 #include <string>
 #include <functional>
+#include <chrono>
 
 using namespace std;
 namespace fs = boost::filesystem;
@@ -15,105 +19,152 @@ namespace forge
 {
 	namespace uci
 	{
-		// ------------------------ COROUTINES --------------------------------------
+		// ------------------------ HANDLER CHAINS ----------------------------------
 
-		void on_recv_launch1(UciEngine & engine, const boost::system::error_code& ec, size_t size)
+		void on_recv_launch1(UciEngine& engine, const boost::system::error_code& ec, size_t size);
+		void on_recv_launch2(UciEngine& engine, const boost::system::error_code& ec, size_t size);
+		
+		// TODO: Reimplement these callback functions as classes with functors.
+		// Then make a single template function for async_read_until in such a way that we can 
+		// do:
+		//	async_read_until<OnRecvLaunch1>(engine);
+		// --- instead of ---
+		// boost::asio::async_read_until(
+		//	engine.pin,
+		// 		engine.buf_in,
+		// 		'\n',
+		// 		[&](const boost::system::error_code& ec, size_t size) { on_recv_launch1(engine, ec, size); }
+		//	);
+
+		void on_recv_launch1(UciEngine& engine, const boost::system::error_code& ec, size_t size)
 		{
-			cout << __FUNCTION__ << endl;
+			// 1.) --- Get the line that we just read ---
+			stringstream ss = engine.readLine();
 
-			// Tokenize command
-			engine.streambufIn.commit(size + 1);
+			cout << ss.str() << endl;
 
-			// *** Here engine will: ***
+			// 2.) --- Extract the command token ---
 			string cmd;
-			engine.in >> cmd;
-			cout << "cmd = " << cmd;
-			string str;
-			getline(engine.in, str);
-			cout << str << endl;
-			if (cmd == "id") {
-				engine.handle_id(engine.in);
+			ss >> cmd;
 
-				boost::asio::async_read(
-					engine.apIn,
-					engine.streambuf_mbt_in,
-					[&](const boost::system::error_code& ec, size_t size) {
-					on_recv_launch1(engine, ec, size); });
+			// 3.) --- Determine how to handle the command ---
+
+			if (cmd == "id") { 
+				engine.handle_id(ss); 
+			
+				boost::asio::async_read_until(
+					engine.pin,
+					engine.buf_in,
+					'\n',
+					[&](const boost::system::error_code& ec, size_t size) { on_recv_launch1(engine, ec, size); }
+				);
 			}
-			else if (cmd == "option") {
-				engine.handle_option(engine.in);
+			else if (cmd == "option") { 
+				engine.handle_option(ss); 
 				
-				boost::asio::async_read(
-					engine.apIn,
-					engine.streambuf_mbt_in,
-					[&](const boost::system::error_code& ec, size_t size) {
-					on_recv_launch1(engine, ec, size); });
+				boost::asio::async_read_until(
+					engine.pin,
+					engine.buf_in,
+					'\n',
+					[&](const boost::system::error_code& ec, size_t size) { on_recv_launch1(engine, ec, size); }
+				);
 			}
-			else if (cmd == "uciok") {
-				engine.handle_uciok(engine.in);
-				// Don't re-establish on_recv_launch1 as a callback
-				//send_setoption();
-				// ...
-				//send_setoption();
-				
+			else if (cmd == "uciok") { 
+				engine.handle_uciok(ss); 
+			
 				engine.send_isready();
 
-				boost::asio::async_read(
-					engine.apIn,
-					engine.streambuf_mbt_in,
-					[&](const boost::system::error_code& ec, size_t size) {
-					on_recv_launch2(engine, ec, size); });
+				boost::asio::async_read_until(
+					engine.pin,
+					engine.buf_in,
+					'\n',
+					[&](const boost::system::error_code& ec, size_t size) { on_recv_launch2(engine, ec, size); }
+				);
 			}
-			else {
-				// Ignore all other messages
-				string str;
-				getline(engine.in, str);
-				cout << "else: " << str << endl;
-				boost::asio::async_read(
-					engine.apIn,
-					engine.streambuf_mbt_in,
-					[&](const boost::system::error_code& ec, size_t size) {
-					on_recv_launch1(engine, ec, size); });
+			else { 
+				// Quietly ignore all other commands and continue reading  
+				boost::asio::async_read_until(
+					engine.pin,
+					engine.buf_in,
+					'\n',
+					[&](const boost::system::error_code& ec, size_t size) { on_recv_launch1(engine, ec, size); }
+				);
 			}
 		}
 
 		void on_recv_launch2(UciEngine& engine, const boost::system::error_code& ec, size_t size)
 		{
-			// Tokenize command
-			vector<string> tokens;
-			tokens.push_back("Just to prevent errors");	// remove this line
-			// tokenize(something)
+			// 1.) --- Get the line that we just read ---
+			stringstream ss = engine.readLine();
 
-			const string& cmd = tokens.front();
-			if (cmd == "readyok") {
-				//handle_readyok();
-				// Do not establish any more callbacks. Handler chain is complete.
+			cout << ss.str() << endl;
+
+			// 2.) --- Extract the command token ---
+			string cmd;
+			ss >> cmd;
+
+			// 3.) --- Determine how to handle the command ---
+			if (cmd == "copyprotection") {
+				engine.handle_copyprotection(ss);
+				
+				boost::asio::async_read_until(
+					engine.pin,
+					engine.buf_in,
+					'\n',
+					[&](const boost::system::error_code& ec, size_t size) { on_recv_launch2(engine, ec, size); }
+				);
+			}
+			else if (cmd == "readyok") {
+				engine.handle_readyok(ss);
+
+				// Do not re-establish the callback. Simply return.
 			}
 			else {
-				// Ignore all other messages 
-				//context.post(on_recv_launch2);
+				// Quietly ignore all other commands and continue reading  
+				boost::asio::async_read_until(
+					engine.pin,
+					engine.buf_in,
+					'\n',
+					[&](const boost::system::error_code& ec, size_t size) { on_recv_launch2(engine, ec, size); }
+				);
 			}
 		}
 
-		void on_recv_eval()
+		void on_recv_eval(UciEngine& engine, const boost::system::error_code& ec, size_t size)
 		{
-			// Tokenize command
-			vector<string> tokens;
-			tokens.push_back("Just to prevent errors");	// remove this line
-			// tokenize(something)
+			// 1.) --- Get the line that we just read ---
+			stringstream ss = engine.readLine();
 
-			const string& cmd = tokens.front();
+			cout << ss.str() << endl;
+
+			// 2.) --- Extract the command token ---
+			string cmd;
+			ss >> cmd;
+
+			// 3.) --- Determine how to handle the command ---
 			if (cmd == "info") {
-				// handle_info();
-				// context.post(on_recv_eval);
+				engine.handle_info(ss);
+
+				boost::asio::async_read_until(
+					engine.pin,
+					engine.buf_in,
+					'\n',
+					[&](const boost::system::error_code& ec, size_t size) { on_recv_eval(engine, ec, size); }
+				);
 			}
 			else if (cmd == "bestmove") {
-				// handle_bestmove();
-				// Do not establish any more callbacks. Handler chain is complete.
+				engine.handle_bestmove(ss);
+
+				// Do not re-establish the callback. Simply return.
 			}
 			else {
-				// Ignore all other messages 
-				//context.post(on_recv_eval);
+				// Quietly ignore all other commands and continue reading  
+				boost::asio::async_read_until(
+					engine.pin,
+					engine.buf_in,
+					'\n',
+					[&](const boost::system::error_code& ec, size_t size) { on_recv_eval(engine, ec, size); }
+				);
 			}
 		}
 
@@ -122,10 +173,10 @@ namespace forge
 		void UciEngine::launch()
 		{
 			// 1.) --- Search for the stockfish executable ---
-			fs::path pathToEngine = 
-				//bp::search_path();
-				R"dil(C:\Program Files\stockfish_13_win_x64_bmi2\stockfish_13_win_x64_bmi2.exe)dil";
-			
+			fs::path pathToEngine =
+				bp::search_path("stockfish_13_win_x64_bmi2");
+				//R"dil(C:\Program Files\stockfish_13_win_x64_bmi2\stockfish_13_win_x64_bmi2.exe)dil";
+
 			launch(pathToEngine);
 		}
 
@@ -144,7 +195,7 @@ namespace forge
 			}
 
 			// 2.) --- Open as a child process ---
-			m_child = bp::child(path, bp::std_in < pout, bp::std_out > apIn);
+			m_child = bp::child(path, bp::std_in < pout, bp::std_out > pin);
 
 			// 3.) --- Make sure chess engine is running ---
 			if (m_child.running() == false) {
@@ -154,15 +205,15 @@ namespace forge
 			// 1.) --- Put engine in UCI mode ---
 			this->send_uci();
 
-			boost::asio::async_read(
-				apIn,
-				streambuf_mbt_in,
-				[&](const boost::system::error_code& ec, size_t size) { 
-					on_recv_launch1(*this, ec, size); });
+			boost::asio::async_read_until(
+				pin,
+				buf_in,
+				'\n',
+				[&](const boost::system::error_code& ec, size_t size) { on_recv_launch1(*this, ec, size); }
+			);
 
-			cout << "Start running" << endl;
-			context.run();
-			cout << "Stop running" << endl;
+			ioc.run();	// blocking call
+			ioc.reset();
 		}
 
 		int UciEngine::eval(const Position& pos)
@@ -190,14 +241,20 @@ namespace forge
 			//	we need to tell it to stop by issuing the 'stop' command
 
 			// 4.) --- Wait till engine finishes ---
-			//context.post(on_recv_eval);
-			context.run();
+			boost::asio::async_read_until(
+				pin,
+				buf_in,
+				'\n',
+				[&](const boost::system::error_code& ec, size_t size) { on_recv_eval(*this, ec, size); }
+			);
 
-			int eval = 0; // ???
+			ioc.reset();
+			ioc.run();	// blocking call
+			ioc.reset();
 
-			return eval;
+			return bestMoveEval;	// Should be set from handle_bestmove
 		}
-		
+
 		MoveList UciEngine::movegen(const Position& pos)
 		{
 			MoveList moves;
@@ -224,7 +281,7 @@ namespace forge
 
 			// 4.) --- Wait till engine finishes ---
 			// int eval = readEval();
-			
+
 			return moves;
 		}
 
@@ -236,7 +293,7 @@ namespace forge
 		}
 
 		// ------------------------ UCI COMMANDS ------------------------------------
-		
+
 		// ------------------------ SEND COMMANDS -----------------------------------
 
 		void UciEngine::send_uci()
@@ -258,7 +315,7 @@ namespace forge
 		{
 			pout << "setoption name " << opName << " value " << opVal << endl;
 		}
-		
+
 		void UciEngine::send_ucinewgame()
 		{
 			pout << "ucinewgame" << endl;
@@ -306,51 +363,94 @@ namespace forge
 
 		// ------------------------ HANDLERS ----------------------------------------
 
-		void UciEngine::handle_id(std::istream & is) 
+		void UciEngine::handle(std::istream& is)
 		{
-			//string str;
-			//getline(is, str);
+			string cmd;
+			is >> cmd;
+
+			if (cmd == "id")					handle_id(is);
+			else if (cmd == "uciok")			handle_uciok(is);
+			else if (cmd == "readyok")			handle_readyok(is);
+			else if (cmd == "bestmove")			handle_bestmove(is);
+			else if (cmd == "copyprotection")	handle_copyprotection(is);
+			else if (cmd == "registration")		handle_registration(is);
+			else if (cmd == "info")				handle_info(is);
+			else if (cmd == "option")			handle_option(is);
+			else {
+#ifdef _DEBUG
+				string rest;
+				getline(is, rest);
+				cout << "Command not recognized: " << cmd << ' ' << rest << endl;
+#endif // _DEBUG
+			}
 		}
 
-		void UciEngine::handle_uciok(std::istream & is) 
+		void UciEngine::handle_id(std::istream& is)
 		{
+			string key;
+			is >> key;
+
+			string val;
+			getline(is, val);	// get rest of line
+
+			if (key == "name") {
+				name = val;
+			}
+			else if (key == "author") {
+				author = val;
+			}
+		}
+
+		void UciEngine::handle_uciok(std::istream& is)
+		{
+
+		}
+
+		void UciEngine::handle_readyok(std::istream& is) {}
+
+		void UciEngine::handle_bestmove(std::istream& is) 
+		{
+			string bestMove;
+			string ponder;
+			string ponderMove;
+
+			is >> bestMove >> ponder >> ponderMove;	// TODO: Might be blocking if "ponder <move>" is not in `is`
+
+			this->bestMove = Move{ bestMove };
+		}
+
+		void UciEngine::handle_copyprotection(std::istream& is) {}
+
+		void UciEngine::handle_registration(std::istream& is) {}
+
+		void UciEngine::handle_info(std::istream& is) 
+		{
+			UciInfo info;
+			is >> info;
+		}
+
+		void UciEngine::handle_option(std::istream& is) {
 			//string str;
 			//getline(is, str);
 		}
 
-		void UciEngine::handle_readyok(std::istream & is) {}
-
-		void UciEngine::handle_bestmove(std::istream & is) {}
-
-		void UciEngine::handle_copyprotection(std::istream & is) {}
-
-		void UciEngine::handle_registration(std::istream & is) {}
-
-		void UciEngine::handle_info(std::istream & is) {}
-
-		void UciEngine::handle_option(std::istream & is) {
-
-			//string str;
-			//getline(is, str);
-		}
+		// Only called from handle_option()
+		void UciEngine::handle_option_name(std::istream& is) {}
 
 		// Only called from handle_option()
-		void UciEngine::handle_option_name(std::istream & is) {}
+		void UciEngine::handle_option_type(std::istream& is) {}
 
 		// Only called from handle_option()
-		void UciEngine::handle_option_type(std::istream & is) {}
+		void UciEngine::handle_option_default(std::istream& is) {}
 
 		// Only called from handle_option()
-		void UciEngine::handle_option_default(std::istream & is) {}
+		void UciEngine::handle_option_min(std::istream& is) {}
 
 		// Only called from handle_option()
-		void UciEngine::handle_option_min(std::istream & is) {}
+		void UciEngine::handle_option_max(std::istream& is) {}
 
 		// Only called from handle_option()
-		void UciEngine::handle_option_max(std::istream & is) {}
-
-		// Only called from handle_option()
-		void UciEngine::handle_option_var(std::istream & is) {}
+		void UciEngine::handle_option_var(std::istream& is) {}
 
 	} // namespace uci
 } // namespace forge

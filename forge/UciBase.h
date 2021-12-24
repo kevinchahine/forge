@@ -1,11 +1,12 @@
 #pragma once
 
+#include <boost/asio/io_context.hpp>
 #include <boost/asio/streambuf.hpp>
 #include <boost/process/pipe.hpp>
 #include <boost/process/async_pipe.hpp>
-#include <boost/asio/io_context.hpp>
 
 #include <iostream>
+#include <sstream>
 
 namespace forge
 {
@@ -14,31 +15,29 @@ namespace forge
 		class UciBase
 		{
 		public:
-			//UciBase(/*std::istream& in = std::cin, std::ostream& out = std::cout*/) /*:
-			//	/*in(in),
-			//	out(out)*/ {}
-
 			UciBase() :
-				in(&streambufIn),
-				apIn(context),
-				streambuf_mbt_in(streambufIn.prepare(512))
-				{}
-			
+				pin(ioc),
+				buf_in(512)	// a line will unlikely contain more than 512 char before it is extracted
+			{};
+
+			// Extracts a line of text from stream (or async_pipe) `pin` and returns
+			// it as a stringstream.
+			// This method can be either blocking or non-blocking depending
+			// on the text in `pin`.
+			// If a full line of text ending with '\n' is in `pin`,
+			// then this method is non-blocking.
+			// To ensure a non-blocking call to this method, only call when a '\n' is in the stream
+			// for example during a call back to async_read_until(...) where the terminal character 
+			//	is a '\n'
+			std::stringstream readLine();
+
 		protected:
-		public:	// TODO: <-- REMOVE THIS
-			boost::asio::io_context context;
+			boost::asio::io_context ioc;
 
+		public:
 			boost::process::opstream pout;
-			//boost::process::async_pipe apOut;
-			//boost::asio::streambuf sBufOut;
-			//boost::asio::streambuf::mutable_buffers_type bufsOut;
-
-			std::istream in;
-			//std::ostream out;
-			//boost::process::ipstream pin;
-			boost::process::async_pipe apIn;
-			boost::asio::streambuf streambufIn;
-			boost::asio::streambuf::mutable_buffers_type streambuf_mbt_in;
+			boost::process::async_pipe pin;
+			boost::asio::streambuf buf_in;
 		};
 	} // namespace uci
 } // namespace forge
