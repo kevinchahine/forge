@@ -25,6 +25,7 @@ namespace forge
 
 			return os;
 		}
+
 		std::istream& operator>>(std::istream& is, UciCurrLine& line)
 		{
 			is >> line.cpunr.get();

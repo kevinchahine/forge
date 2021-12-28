@@ -165,6 +165,7 @@ namespace forge
 		case 'r':	p = pieces::whiteRook;		break;
 		case 'b':	p = pieces::whiteBishop;	break;
 		case 'n':	p = pieces::whiteKnight;	break;
+		case ' ':	p = pieces::empty;			break;
 #ifdef _DEBUG
 		default:
 			cout << "Error: " << __FUNCTION__ << " \'" << promotionCh << '\''

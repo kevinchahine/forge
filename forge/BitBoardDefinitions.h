@@ -39,7 +39,7 @@ namespace forge
 	template<typename DIRECTION_T>
 	BitBoard BitBoard::mask(BoardSquare center)
 	{
-		static_assert(true, "Call the explicit specializations instead of the primary call the method");
+		static_assert(true, "Call the explicit specializations instead of the primary specialization of the method");
 
 		BitBoard bb;
 

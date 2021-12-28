@@ -12,10 +12,13 @@ namespace forge
 {
 	namespace uci
 	{
-		// An interface to communicate with a UCI compatible chess engine
-		// running as a child process.
-		// Sends messages to the engine
-		// Receives messages from the engine
+		// This class is, an interface to communicate with a UCI compatible chess engine.
+		// This class will open a chess engine as a child process, and interface with
+		// it using IO pipes. When a UciEngine object is destroyed, the chess engine
+		// process is closed automatically. 
+		// Sends messages to the engine that runs as a child process.
+		// This class is not intended to interface with a UCI GUI. 
+		// For that, use class UciGui instead.
 		class UciEngine : public UciBase
 		{
 		public:
