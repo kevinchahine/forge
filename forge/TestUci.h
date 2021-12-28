@@ -10,6 +10,8 @@ namespace forge
 	{
 		namespace test
 		{
+			void engineToGui();
+
 			void info();
 
 		} // namespace test

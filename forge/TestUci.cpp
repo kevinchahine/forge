@@ -8,6 +8,19 @@ namespace forge
 	{
 		namespace test
 		{
+			void engineToGui()
+			{
+				stringstream cmd;
+				cmd << "info depth 1 seldepth 1 multipv 1 score cp 29 nodes 20 nps 20000 tbhits 0 time 1 pv d2d4";
+
+				cout << "This:             \'" << cmd.str() << '\'' << endl;
+
+				UciInfo info;
+				cmd >> info;
+
+				cout << "Should look like: \'" << info << '\'' << endl;
+			}
+
 			void info()
 			{
 				UciInfo info;

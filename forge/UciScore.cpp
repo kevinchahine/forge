@@ -1,5 +1,7 @@
 #include "UciScore.h"
 
+#include <boost/optional/optional_io.hpp>
+
 #include <string>
 
 using namespace std;
@@ -26,14 +28,15 @@ namespace forge
 		{
 			string token;
 
-			// TODO: Fix this
-			while (false) {
+			while (is.eof() == false) {
+				string token;
+
 				is >> token;
-				
-				if (token == "cp")				is >> *score.cp;
-				else if (token == "mate")		is >> *score.mate;
-				else if (token == "lowerbound")	is >> *score.lowerbound;
-				else if (token == "upperbound")	is >> *score.upperbound;
+
+				if (token == "cp")				is >> score.cp;
+				else if (token == "mate")		is >> score.mate;
+				else if (token == "lowerbound")	is >> score.lowerbound;
+				else if (token == "upperbound")	is >> score.upperbound;
 			}
 
 			return is;

@@ -16,6 +16,8 @@ namespace forge
 		{
 		public:
 			friend std::ostream & operator<<(std::ostream & os, const UciInfo & info);
+
+			// Reads until end of line
 			friend std::istream & operator>>(std::istream & is, UciInfo & info);
 
 		public:

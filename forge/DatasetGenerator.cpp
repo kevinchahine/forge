@@ -12,6 +12,8 @@ namespace forge
 		uci::UciEngine stockfish;
 		
 		stockfish.launch();
-		stockfish.eval(Position{});
+		int eval = stockfish.eval(Position{});
+		
+		cout << "Eval is " << eval << " centipawns" << endl;
 	}
 } // namespace forge

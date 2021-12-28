@@ -12,6 +12,8 @@ namespace forge
 		{
 		public:
 			friend std::ostream & operator<<(std::ostream& os, const UciScore& score);
+
+			// Extracts until the end of the line.
 			friend std::istream & operator>>(std::istream& is, UciScore& score);
 
 		public:

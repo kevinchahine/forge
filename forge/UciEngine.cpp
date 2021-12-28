@@ -1,7 +1,5 @@
 #include "UciEngine.h"
 
-#include "UciInfo.h"
-
 #include <boost/asio/read_until.hpp>
 #include <boost/bind.hpp>
 #include <boost/process/search_path.hpp>
@@ -408,7 +406,7 @@ namespace forge
 
 		void UciEngine::handle_readyok(std::istream& is) {}
 
-		void UciEngine::handle_bestmove(std::istream& is) 
+		void UciEngine::handle_bestmove(std::istream& is)
 		{
 			string bestMove;
 			string ponder;
@@ -417,6 +415,12 @@ namespace forge
 			is >> bestMove >> ponder >> ponderMove;	// TODO: Might be blocking if "ponder <move>" is not in `is`
 
 			this->bestMove = Move{ bestMove };
+
+			if (info.score.is_initialized()) {
+				if (info.score->cp.is_initialized()) {
+					this->bestMoveEval = info.score->cp.get();
+				}
+			}
 		}
 
 		void UciEngine::handle_copyprotection(std::istream& is) {}
@@ -425,7 +429,6 @@ namespace forge
 
 		void UciEngine::handle_info(std::istream& is) 
 		{
-			UciInfo info;
 			is >> info;
 		}
 

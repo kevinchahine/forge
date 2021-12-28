@@ -4,9 +4,10 @@
 #include <boost/filesystem/path.hpp>
 
 #include "UciBase.h"
+#include "UciInfo.h"
+#include "UciSearchCommands.h"
 #include "Position.h"
 #include "MoveList.h"
-#include "UciSearchCommands.h"
 
 namespace forge
 {
@@ -156,6 +157,7 @@ namespace forge
 
 			Move bestMove;
 			int bestMoveEval;
+			UciInfo info;
 		};
 		
 		template<typename C>

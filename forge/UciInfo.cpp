@@ -20,6 +20,7 @@ namespace std
 		return os;
 	}
 
+	// Reads until end of stream
 	istream& operator>>(istream& is, vector<forge::Move>& moves)
 	{
 		while (is.eof() == false) {
@@ -28,7 +29,7 @@ namespace std
 			is >> token;
 			
 			if (token.size()) {
-				moves.emplace_back(token);
+				moves.emplace_back(forge::Move{ token });
 			}
 		}
 
@@ -51,7 +52,7 @@ namespace forge
 		{
 			size_t pos = line.find(keyword);
 
-			if (pos <= end) {
+			if (pos <= end && pos != string::npos) {
 				keywords.push(pos);
 			}
 		}
@@ -94,23 +95,23 @@ namespace forge
 			// --- Ignore keywords found after "string" --- 
 			size_t stringBegin = line.find("string");
 
-			findAndPushKeyword(keywords, line, "string", string::npos);
-			findAndPushKeyword(keywords, line, "depth", stringBegin);
-			findAndPushKeyword(keywords, line, "seldepth", stringBegin);
-			findAndPushKeyword(keywords, line, "time", stringBegin);
-			findAndPushKeyword(keywords, line, "nodes", stringBegin);
-			findAndPushKeyword(keywords, line, "pv", stringBegin);
-			findAndPushKeyword(keywords, line, "multipv", stringBegin);
-			findAndPushKeyword(keywords, line, "score", stringBegin);
-			findAndPushKeyword(keywords, line, "currmove", stringBegin);
-			findAndPushKeyword(keywords, line, "currmovenumber", stringBegin);
-			findAndPushKeyword(keywords, line, "hashfull", stringBegin);
-			findAndPushKeyword(keywords, line, "nps", stringBegin);
-			findAndPushKeyword(keywords, line, "tbhits", stringBegin);
-			findAndPushKeyword(keywords, line, "sbhits", stringBegin);
-			findAndPushKeyword(keywords, line, "cpuload", stringBegin);
-			findAndPushKeyword(keywords, line, "refutation", stringBegin);
-			findAndPushKeyword(keywords, line, "currline", stringBegin);
+			findAndPushKeyword(keywords, line, " string", string::npos);
+			findAndPushKeyword(keywords, line, " depth", stringBegin);
+			findAndPushKeyword(keywords, line, " seldepth", stringBegin);
+			findAndPushKeyword(keywords, line, " time", stringBegin);
+			findAndPushKeyword(keywords, line, " nodes", stringBegin);
+			findAndPushKeyword(keywords, line, " pv", stringBegin);
+			findAndPushKeyword(keywords, line, " multipv", stringBegin);
+			findAndPushKeyword(keywords, line, " score", stringBegin);
+			findAndPushKeyword(keywords, line, " currmove", stringBegin);
+			findAndPushKeyword(keywords, line, " currmovenumber", stringBegin);
+			findAndPushKeyword(keywords, line, " hashfull", stringBegin);
+			findAndPushKeyword(keywords, line, " nps", stringBegin);
+			findAndPushKeyword(keywords, line, " tbhits", stringBegin);
+			findAndPushKeyword(keywords, line, " sbhits", stringBegin);
+			findAndPushKeyword(keywords, line, " cpuload", stringBegin);
+			findAndPushKeyword(keywords, line, " refutation", stringBegin);
+			findAndPushKeyword(keywords, line, " currline", stringBegin);
 			keywords.push(line.size());	// Push the end so the last token isn't ignored
 
 			// --- Split each section by keywords ---
@@ -159,7 +160,7 @@ namespace forge
 				else if (token == "cpuload")		ss >> info.cpuload;
 				else if (token == "refutation")		ss >> info.refutation;
 				else if (token == "currline")		ss >> info.currline;
-				else if (token == "string")			info.string = ss.str();
+				else if (token == "string") { info.string = ""; getline(ss, info.string.get());	}
 				else {
 					cout << "Uhho: " << token << ss.str() << endl;
 				}
