@@ -360,4 +360,11 @@ namespace forge
 			this->move<pieces::King>(move);
 		}
 	}
+
+	std::ostream& operator<<(std::ostream& os, const Position& pos)
+	{
+		os << pos.toFEN();
+
+		return os;
+	}
 } // namespace forge

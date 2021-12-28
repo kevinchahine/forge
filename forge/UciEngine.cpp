@@ -39,7 +39,7 @@ namespace forge
 			// 1.) --- Get the line that we just read ---
 			stringstream ss = engine.readLine();
 
-			cout << ss.str() << endl;
+			////cout << ss.str() << endl;
 
 			// 2.) --- Extract the command token ---
 			string cmd;
@@ -95,7 +95,7 @@ namespace forge
 			// 1.) --- Get the line that we just read ---
 			stringstream ss = engine.readLine();
 
-			cout << ss.str() << endl;
+			////cout << ss.str() << endl;
 
 			// 2.) --- Extract the command token ---
 			string cmd;
@@ -133,7 +133,7 @@ namespace forge
 			// 1.) --- Get the line that we just read ---
 			stringstream ss = engine.readLine();
 
-			cout << ss.str() << endl;
+			////cout << ss.str() << endl;
 
 			// 2.) --- Extract the command token ---
 			string cmd;

@@ -92,6 +92,8 @@ namespace forge
 				rhs.hash();
 		}
 
+		friend std::ostream& operator<<(std::ostream& os, const Position& pos);
+
 	protected:
 		Board m_board;
 
