@@ -4,6 +4,7 @@
 #include <boost/bind.hpp>
 #include <boost/process/search_path.hpp>
 #include <boost/process/io.hpp>
+#include <boost/optional/optional_io.hpp>
 
 #include <string>
 #include <functional>
@@ -230,6 +231,7 @@ namespace forge
 			// 3.) --- Start eval ---
 			UciSearchCommands sCmd;
 			sCmd.nodes = 100'000;
+			sCmd.depth = 5;
 			send_go(sCmd);
 
 			// *** Here engine will evaluate current position ***
@@ -331,7 +333,7 @@ namespace forge
 
 		void UciEngine::send_position(const Position& pos)
 		{
-			pout << "position " << pos.toFEN() << endl;
+			pout << "position fen " << pos.toFEN() << endl;
 		}
 
 		void UciEngine::send_go()
@@ -416,6 +418,9 @@ namespace forge
 
 			this->bestMove = Move{ bestMove };
 
+			cout << "Best move:" << this->bestMove << endl
+				<< "Info: " << info << endl;
+			
 			if (info.score.is_initialized()) {
 				if (info.score->cp.is_initialized()) {
 					this->bestMoveEval = info.score->cp.get();
@@ -430,6 +435,11 @@ namespace forge
 		void UciEngine::handle_info(std::istream& is) 
 		{
 			is >> info;
+
+			cout << info << endl;
+			
+			if (info.score.is_initialized() && info.score->cp.is_initialized())
+				cout << "score: " << info.score->cp.get() << " cp" << endl;
 		}
 
 		void UciEngine::handle_option(std::istream& is) {

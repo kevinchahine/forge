@@ -2,6 +2,7 @@
 #include "UciEngine.h"
 #include "RandomSolver.h"
 
+#include <iomanip>
 #include <unordered_map>
 
 using namespace std;
@@ -23,9 +24,6 @@ namespace forge
 		stockfish.launch();
 
 		while (true) {
-			cout << pos << endl;
-			eval = stockfish.eval(pos);
-
 			MovePositionPair pair = solver.getMove(pos);
 
 			if (pair.move.isValid()) {
@@ -36,13 +34,21 @@ namespace forge
 				pos = Position{};
 			}
 
-			cout << "Eval is " << eval << " centipawns" << endl;
+			cout << guten::color::push() << guten::color::red 
+				<< "Evaluating: " << pair 
+				<< guten::color::pop() << endl;
+
+			eval = stockfish.eval(pos);
+
+			cout << guten::color::push() << guten::color::red << setw(30) 
+				<< pos << " Eval is " << eval << " centipawns" 
+				<< guten::color::pop() << endl << endl;
 
 			evals.emplace(pos, eval);
 		}
 
 		for (const auto& elem : evals) {
-			cout << elem.first.toFEN() << "\t\t" << elem.second << endl;
+			cout << setw(30) << elem.first.toFEN() << elem.second << endl;
 		}
 	}
 } // namespace forge

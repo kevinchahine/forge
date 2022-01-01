@@ -367,4 +367,14 @@ namespace forge
 
 		return os;
 	}
+	
+	std::istream& operator>>(std::istream& is, Position& pos)
+	{
+		string fen;
+
+		cout << __FUNCTION__ << "This doesn't work yet" << endl;
+		pos.fromFEN(fen);
+
+		return is;
+	}
 } // namespace forge

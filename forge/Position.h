@@ -92,7 +92,9 @@ namespace forge
 				rhs.hash();
 		}
 
+		// Streams Position in FEN notation
 		friend std::ostream& operator<<(std::ostream& os, const Position& pos);
+		friend std::istream& operator>>(std::istream& is, Position& pos);
 
 	protected:
 		Board m_board;
