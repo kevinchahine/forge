@@ -2,15 +2,16 @@
 ------- FORGE ---------
 *** Forged by Fire ***
 A Chess engine designed to reach an elo of atleast 1400.
-Designed to use a variety of search algorithms including:
+Designed to use a variety of decision making algorithms including:
 	- negamax (minimax)
 	- monte carlo tree search (mcts)
+	- random (for testing)
 
 Designed to use a variety of evaluation functions including:
 	- traditional chess engine evaluation functions using:
-		- Linear combinations
-		- Neural Networks
+		- Single Layer Perceptrons (SLP) (traditional evaluation functions)
 	- deep neural network (DNN)
+		- Multilayer Perceptrons (MLP)
 
 Designed to be compatible with a variety of displays including:
 	- Universal Chess Interface (UCI) GUIs
@@ -19,6 +20,7 @@ Designed to be compatible with a variety of displays including:
 
 #include "Test.h"
 #include "TestMoveGen.h"
+#include "TestOptimizer.h"
 #include "TestUci.h"
 #include "DatasetGenerator.h"
 
@@ -62,7 +64,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	//forge::test::chessMatch();				// **************
+	forge::test::chessMatch();				// **************
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
@@ -74,12 +76,14 @@ int main(int argc, char ** argv)
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
 
+	//forge::test::optimizer();
+
 	//forge::uci::test::engineToGui();
 	//forge::uci::test::info();
 
 	//forge::test::movegen::stockfishAndForge();
-	forge::DatasetGenerator dsGen;
-	dsGen.run();
+	//forge::DatasetGenerator dsGen;
+	//dsGen.run();
 
 	//cout << "Done";
 	//this_thread::sleep_for(chrono::seconds(1));

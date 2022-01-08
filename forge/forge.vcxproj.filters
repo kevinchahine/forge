@@ -269,6 +269,12 @@
     <ClCompile Include="TestUci.cpp">
       <Filter>Test</Filter>
     </ClCompile>
+    <ClCompile Include="Optimizer.cpp">
+      <Filter>ML</Filter>
+    </ClCompile>
+    <ClCompile Include="TestOptimizer.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -372,6 +378,9 @@
     </Text>
     <Text Include="UCI_UML.txt">
       <Filter>Notes\UCI</Filter>
+    </Text>
+    <Text Include="ML.txt">
+      <Filter>Notes\ML</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -613,6 +622,12 @@
       <Filter>UCI</Filter>
     </ClInclude>
     <ClInclude Include="TestUci.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Optimizer.h">
+      <Filter>ML</Filter>
+    </ClInclude>
+    <ClInclude Include="TestOptimizer.h">
       <Filter>Test</Filter>
     </ClInclude>
   </ItemGroup>

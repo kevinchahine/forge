@@ -34,6 +34,15 @@ namespace forge
 			const guten::color::Color & darkColor,
 			guten::boards::CheckerBoard & board);
 
+	protected:
+		void placePieces(const Board & board);
+
+		guten::core::Matrix placeInfo(const Position& pos, bool isWhite);
+
+		void placeMoveHistory(const Position& pos);
+
+		guten::core::Matrix combineMats(guten::core::Matrix& theirInfo, guten::core::Matrix& ourInfo);
+
 	private:
 
 		guten::boards::CheckerBoard m_img;

@@ -28,26 +28,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -180,6 +180,7 @@
     <ClCompile Include="MovePositionPair.cpp" />
     <ClCompile Include="Movers.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Optimizer.cpp" />
     <ClCompile Include="OWeightsArchive.cpp" />
     <ClCompile Include="PerformanceLogger.cpp" />
     <ClCompile Include="PerformanceTester.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="StopWatch.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="TestMoveGen.cpp" />
+    <ClCompile Include="TestOptimizer.cpp" />
     <ClCompile Include="TestUci.cpp" />
     <ClCompile Include="TextView.cpp" />
     <ClCompile Include="Threats.cpp" />
@@ -222,6 +224,7 @@
     <Text Include="Goals.txt" />
     <Text Include="HighLevelDesign.txt" />
     <Text Include="MCTS.txt" />
+    <Text Include="ML.txt" />
     <Text Include="MoveGeneratorQuintessential.txt" />
     <Text Include="MoveGeneratorQuintessential2.txt" />
     <Text Include="MoveGeneratorSpecial.txt" />
@@ -292,6 +295,7 @@
     <ClInclude Include="MovePositionPair.h" />
     <ClInclude Include="Movers.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Optimizer.h" />
     <ClInclude Include="OWeightsArchive.h" />
     <ClInclude Include="PerformanceLogger.h" />
     <ClInclude Include="PerformanceTester.h" />
@@ -310,6 +314,7 @@
     <ClInclude Include="StopWatch.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="TestMoveGen.h" />
+    <ClInclude Include="TestOptimizer.h" />
     <ClInclude Include="TestUci.h" />
     <ClInclude Include="TextView.h" />
     <ClInclude Include="Threats.h" />

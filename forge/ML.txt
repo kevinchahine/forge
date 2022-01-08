@@ -1,0 +1,37 @@
+https://towardsdatascience.com/creating-a-chess-ai-using-deep-learning-d5278ea7dcf		Not great
+https://lczero.org/play/networks/basics/							Not great	
+https://cp4space.hatsya.com/2021/01/08/the-neural-network-of-the-stockfish-chess-engine/	Great
+https://saumikn.com/blog/a-brief-guide-to-stockfish-nnue/					Not great (Too brief)
+https://www.chessprogramming.org/Stockfish_NNUE							Great (Details about SF NNUE) (Has external links)
+https://github.com/official-stockfish/Stockfish/blob/master/src/nnue/layers/clipped_relu.h	Code
+https://github.com/official-stockfish/Stockfish/tree/master/src/nnue				Code
+
+# --- Explains how he did supervised learning for regression using SF data ---
+https://medium.com/@nihalpuram/training-a-chess-ai-using-tensorflow-e795e1377af2		Not great
+
+# Downloadable NNs
+https://tests.stockfishchess.org/nns								Not great (because we don't know what the inputs should be yet)
+
+Stockfish NN (from https://www.chessprogramming.org/Stockfish_NNUE)
+	Input: 64 + 64 + 41024 nodes
+		64 nodes for Our King (One hot encoding)
+		64 nodes for Their King (One hot encoding)
+		64x641 = 41024 nodes for other features:
+			For each feature: (I think) (Each are One hot encoding)
+				64 nodes for Our Queen (One hot encoding)
+				64 nodes for Their Queen
+				...
+				64 nodes for Our Pawns
+				64 nodes for Their Pawns
+				*** Now were at 640 out of 41024 nodes ***
+				(The remaining are only my guesses. Not sure if stockfish does this)
+				64 nodes for Squares attacked by Our pieces
+				64 nodes for Squares attacked by Their pieces
+				64 nodes for Squares attacked by Our Kings
+				64 nodes for Squares attacked by Their Kings
+				64 nodes for Squares attacked by Our Queens
+				64 nodes for Squares attacked by Their Queens
+				...
+				64 nodes for Squares attacked by Our Pawns
+				64 nodes for Squares attacked by Their Pawns
+				*** Now were at 640 + 896 = 1536 out of 41024 nodes ***
