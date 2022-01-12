@@ -34,24 +34,29 @@ namespace forge
 		const Position & position = currPos;
 		const Board & board = position.board();
 
-		// Who's turn is it anyway?
-		bool isWhitesTurn = position.moveCounter().isWhitesTurn();
+		// Which player made the move anyway?
+		// Once a move is made, the current player becomes the next player.
+		// When calculating the current game state. We must calculate it from the perspective of the last player instead.
+		// ex: 
+		//	If white just moved: Current player becomes black. But we still calculate from whites perspective.
+		//	If black just moved: Current player becomes white. But we still calculate from blacks perspective.
+		bool wasWhitesTurn = !position.moveCounter().isWhitesTurn();
 
 		// --- Player can't move (WINS or DRAWS) ---
 		if (nLegalMoves == 0) {
 			// There are no valid moves for current player. It is either a WIN or DRAW
-			if (isWhitesTurn) {
-				// --- WHITE'S TURN ---
-				if (AttackChecker::isAttacked(board, board.m_whiteKing)) {
-					// White's King is attacked and can't move.
-					// Black wins
+			if (wasWhitesTurn) {
+				// --- WAS WHITE'S TURN (Now BLACK) ---
+				if (AttackChecker::isAttacked(board, board.m_blackKing)) {
+					// Blacks's King is attacked and can't move.
+					// White wins
 					this->player = PLAYER::WHITE;
 					this->state = STATE::WIN;
 					this->reason = REASON::CHECKMATE;
 					return;
 				}
 				else {
-					// White's King is not attacked but white can't move.
+					// Blacks's King is not attacked but black can't move.
 					// It's a draw
 					this->state = STATE::DRAW;
 					this->reason = REASON::STALEMATE;
@@ -59,17 +64,17 @@ namespace forge
 				}
 			}
 			else {
-				// --- BLACK'S TURN ---
-				if (AttackChecker::isAttacked(board, board.m_blackKing)) {
-					// Black's King is attacked and can't move.
-					// White wins
+				// --- WAS BLACK'S TURN (NOW WHITE) ---
+				if (AttackChecker::isAttacked(board, board.m_whiteKing)) {
+					// Whites's King is attacked and can't move.
+					// Black wins
 					this->player = PLAYER::BLACK;
 					this->state = STATE::WIN;
 					this->reason = REASON::CHECKMATE;
 					return;
 				}
 				else {
-					// Black's King is not attacked and black can't move.
+					// Whites's King is not attacked and white can't move.
 					// It's a draw
 					this->state = STATE::DRAW;
 					this->reason = REASON::STALEMATE;

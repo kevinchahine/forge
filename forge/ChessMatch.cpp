@@ -102,6 +102,7 @@ namespace forge
 			gstate(m_history);
 			if (gstate.state != GameState::STATE::CONTINUE) {
 				cout << "Game over: " << gstate << '\n';
+				m_viewPtr->show(m_history.current());
 				break;
 			}
 

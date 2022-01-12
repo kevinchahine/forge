@@ -144,16 +144,30 @@ namespace forge
 				// --- 5.) Backpropagation ---
 				backpropagate(result);
 
+				// --- 6.) Start back at the top (root node) ---
 				it = m_nodeTree.begin();
 			}
 			else {
-				// Yes this node does have kids. 
-				// Simply select a child and continue traversing.
+				// This node has been expanded so it probably has kids. 
+				// Make sure it has kids then, simply select a child and
+				// continue traversing.
+				// If it doesn't have kids, then we've reached a terminal node
+				// and its game over.
 				
-				// *** Here we can safely assume that the node has kids ***
-				traverse();
+				// Does it have children?
+				if ((*it).children().size()) {
+					// Yes. this node does have children.
+					// *** Here we can safely assume that the node has kids ***
+					traverse();
 
-				m_searchMonitor.nodeCount++;
+					m_searchMonitor.nodeCount++;
+				}
+				else {
+					// No. Expanding this node resulted in no children.
+					// TODO: MCTS: IF we don't have children where do we go?
+					// Parent? Root? 
+					it.goToParent();	// TODO: THIS MIGHT BE WRONG
+				}
 			}
 		}
 

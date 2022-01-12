@@ -16,7 +16,7 @@ options:
 		white |		# white pieces on bottom
 		flip |		# black pieces on bottom
 		black |		# black pieces on bottom
-		alternate 	# displays board with thinking player on bottom (good for 2 human players using same display)
+		alternate 	# displays board with thinking player on bottom (good for 2 human players sharing same display)
 		]
 
 	--white-controller = [ keyboard | uci | minimax | mcts | random ]	
@@ -39,7 +39,7 @@ options:
 		#	'/' ':' and '|' should all be allowed for separating start time and increment
 
 	# AI Options #
-	--weights-file="/c/path/to/weights.xxx"	# (default: "./openings.xxx") if exists
+	--weights-file="/c/path/to/weights.xxx"	# (default: "./weights.xxx") if exists
 	--opening-table-file="c/openings.xxx"	# (default: "./openings.xxx")
 	--depth=n								# limit number of plys to search (default ?8?)
 	--nodes=n								# search n nodes only	(default INT_MAX, means no limit. )

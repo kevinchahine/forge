@@ -12,11 +12,13 @@ Long Algebraic Notation:
 	- UCI GUIs support this notation
 	- more machine readable
 
+FEN:
+	- 
+	
 Both:
 	- string no longer than ??? characters
 	- must be parsed
 	- Can PGN be distinguished from LAN by a machine?
 
 What about?
-	- fen
 	- san

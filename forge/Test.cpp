@@ -1086,14 +1086,12 @@ namespace forge
 			); // Clock is still paused
 
 			auto whiteController =
-				//make_unique<MCTS_Solver>();
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
 				make_unique<MCTS_Solver>();
 				//make_unique<KeyboardController>();
-
+			 
 			auto blackController =
-				//make_unique<MCTS_Solver>();
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
 				make_unique<MCTS_Solver>();

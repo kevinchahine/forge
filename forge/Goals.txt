@@ -8,7 +8,7 @@ Play using a UCI GUI
 Play against another engine
 
 Against atleast one well known professional engine (like Stockfish, LC0, Dragon, DeepBlue)
-	- score atleast 1 win for every 10 losses, or 
+	- score atleast 1 win for every 10 losses, or (Upon further evaluation, this is too ambitious. But do it anyway!!!)
 	- draw atleast 9 out of 10 games
 
 train against another engine
