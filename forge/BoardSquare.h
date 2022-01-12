@@ -87,6 +87,20 @@ namespace forge
 			m_val |= (colCoord << 0);	// set col bits to colCoord
 		}
 
+		// Returns index of BoardSquare that can be used to access bits on a BitBoard or bitset
+		// Range: [0, 63]
+		// ex:
+		//	BoardSquare bs;
+		//	BitBoard bb;				
+		//	
+		//	bs.setCoords(4, 5);			// row 4, col 5
+		//	uint8_t i = bs.index();		// Returns 4 * 8 + 5 = 37
+		//	bb[i] = 1;					// Access bit using the index
+		uint8_t index() const
+		{
+			return row() * 8 + col();
+		}
+
 		bool isValid() const
 		{
 			return !isInValid();

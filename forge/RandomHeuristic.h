@@ -19,7 +19,7 @@ namespace forge
 
 		virtual heuristic_t eval(const Position & pos) const override;
 
-		virtual std::unique_ptr<HeuristicBase> clone() const override;
+		virtual std::unique_ptr<HeuristicBase> clone() const override;	// TODO: Optimize: Why can't this be inlined. See other derivations as well.
 
 		virtual std::string name() const override { return "RandomHeuristic"; }
 

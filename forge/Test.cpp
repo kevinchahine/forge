@@ -1099,11 +1099,13 @@ namespace forge
 
 			whiteController->makeHeuristic<
 				//RandomHeuristic
-				ApplePieHeuristic
+				//ApplePieHeuristic
+				NeuralNetworkHeuristic
 			>();
 			blackController->makeHeuristic<
 				//RandomHeuristic
-				ApplePieHeuristic
+				//ApplePieHeuristic
+				NeuralNetworkHeuristic
 			>();
 
 			match.whiteController() = std::move(whiteController);

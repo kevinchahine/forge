@@ -12,5 +12,11 @@ View:
 			- threatened cells (red and lightred)
 			- moveable cells (yellow and brown)
 		- Show player names (very important)
+			- For solvers, show search algorithm, variation and heuristic
 		- Show evaluation after making a move.
-
+		- Show History of game in PGN
+		- Show notes section that might print stuff like: 
+			- "Good move"
+			- "What where you thinking"
+			- "That move was brilliant"
+		

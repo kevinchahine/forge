@@ -1,0 +1,35 @@
+=== FORGE ===
+=== FEATURES ===
+
+https://hxim.github.io/Stockfish-Evaluation-Guide/
+
+These are some of the possible features that we could extract for evaluating positions.
+
+Each (or most) features can be applied to each piece type:
+	K
+	Q
+	B
+	N
+	R
+	P
+
+Each feature can have a different set of weights based on game (openning, middle, end)
+	* Does not apply to openning if we are using an opening table 
+
+Material (Piece value)		Number of pieces of each type
+PSTB						Piece Square Table Bonus
+Mobility					How much can each piece type move
+Defended Pieces				Number of pieces of each type that are defended
+Threats						Number of their pieces which are attacked by your own
+Pins						
+Absolute Pins
+Skewers						
+Passed (Pawns)				Number of passed pawns
+Space						* See hxim.github...
+King
+King Danger
+King Shelter Strength
+King Flank Attack
+King Pawnless Flank
+
+

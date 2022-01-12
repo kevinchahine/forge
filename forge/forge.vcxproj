@@ -179,6 +179,7 @@
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="MovePositionPair.cpp" />
     <ClCompile Include="Movers.cpp" />
+    <ClCompile Include="NeuralNetworkHeuristic.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Optimizer.cpp" />
     <ClCompile Include="OWeightsArchive.cpp" />
@@ -220,6 +221,7 @@
     <Text Include="Classes.txt" />
     <Text Include="Database.txt" />
     <Text Include="DatasetGenerator.txt" />
+    <Text Include="Features.txt" />
     <Text Include="GameStates.txt" />
     <Text Include="Goals.txt" />
     <Text Include="HighLevelDesign.txt" />
@@ -230,6 +232,7 @@
     <Text Include="MoveGeneratorSpecial.txt" />
     <Text Include="Multi_threading.txt" />
     <Text Include="NameSpaces.txt" />
+    <Text Include="NN.txt" />
     <Text Include="NodeTree.txt" />
     <Text Include="Notation.txt" />
     <Text Include="Optimizations.txt" />
@@ -294,6 +297,7 @@
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="MovePositionPair.h" />
     <ClInclude Include="Movers.h" />
+    <ClInclude Include="NeuralNetworkHeuristic.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Optimizer.h" />
     <ClInclude Include="OWeightsArchive.h" />

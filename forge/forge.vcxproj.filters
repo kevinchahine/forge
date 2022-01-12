@@ -275,6 +275,9 @@
     <ClCompile Include="TestOptimizer.cpp">
       <Filter>Test</Filter>
     </ClCompile>
+    <ClCompile Include="NeuralNetworkHeuristic.cpp">
+      <Filter>Heuristics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HighLevelDesign.txt">
@@ -381,6 +384,12 @@
     </Text>
     <Text Include="ML.txt">
       <Filter>Notes\ML</Filter>
+    </Text>
+    <Text Include="Features.txt">
+      <Filter>Notes\AI</Filter>
+    </Text>
+    <Text Include="NN.txt">
+      <Filter>Notes\AI</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -629,6 +638,9 @@
     </ClInclude>
     <ClInclude Include="TestOptimizer.h">
       <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="NeuralNetworkHeuristic.h">
+      <Filter>Heuristics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

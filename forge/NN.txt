@@ -1,0 +1,8 @@
+=== FORGE ===
+=== Neural Networks ===
+
+Explains why opencv has a fast neural network
+	https://learnopencv.com/deep-learning-with-opencvs-dnn-module-a-definitive-guide/
+
+For future optimizations, we can try to use an nnue model to get even faster feed forwards.
+
