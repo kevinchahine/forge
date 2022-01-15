@@ -9,8 +9,8 @@ add_subdirectory(guten)
 
 # --- Specify the header files ---
 set(HEADER_FILES
-	#forge/ApplePieHeuristic.h
-	#forge/ApplePieWeights.h
+	forge/ApplePieHeuristic.h
+	forge/ApplePieWeights.h
 	forge/AttackChecker.h
 	forge/AttackersDefinitions.h
 	forge/Attackers.h
@@ -20,21 +20,21 @@ set(HEADER_FILES
 	forge/Board.h
 	forge/BoardSquare.h
 	#forge/ChessMatch.h
-	#forge/Clock.h
+	forge/Clock.h
 	forge/Color.h
 	#forge/ControllerBase.h
 	#forge/DataMonitor.h
 	#forge/DatasetGenerator.h
 	forge/Direction.h
-	#forge/EvaluationBase.h
+	forge/EvaluationBase.h
 	#forge/ExitCondition.h
 	#forge/FiftyMoveRule.h
 	forge/GameHistory.h
 	forge/GameState.h
 	forge/globals.h
-	#forge/HashCombine.h
-	#forge/HeuristicBase.h
-	#forge/IWeightsArchive.h
+	forge/HashCombine.h
+	forge/HeuristicBase.h
+	forge/IWeightsArchive.h
 	#forge/KeyboardController.h
 	forge/KingAttacker.h
 	forge/KingAttackersDefinitions.h
@@ -56,7 +56,7 @@ set(HEADER_FILES
 	#forge/NeuralNetworkHeuristic.h
 	#forge/Node.h
 	#forge/Optimizer.h
-	#forge/OWeightsArchive.h
+	forge/OWeightsArchive.h
 	#forge/PerformanceLogger.h
 	#forge/PerformanceTester.h
 	forge/Piece.h
@@ -64,7 +64,7 @@ set(HEADER_FILES
 	#forge/Pin.h
 	forge/PositionDefinitions.h
 	forge/Position.h
-	#forge/PositionTable.h
+	forge/PositionTable.h
 	#forge/PseudoMoveGenerator.h
 	#forge/RandomHeuristic.h
 	#forge/RandomSolver.h
@@ -89,35 +89,35 @@ set(HEADER_FILES
 	#forge/UciScore.h
 	#forge/UciSearchCommands.h
 	#forge/ViewBase.h
-	#forge/WeightsArchive.h
-	#forge/WeightsBase.h
+	forge/WeightsArchive.h
+	forge/WeightsBase.h
 )
 
 # --- Specify the source files ---
 set(SOURCE_FILES
 	forge/main.cpp
-	#forge/ApplePieHeuristic.cpp
-	#forge/ApplePieWeights.cpp
+	forge/ApplePieHeuristic.cpp
+	forge/ApplePieWeights.cpp
 	forge/AttackChecker.cpp
 	forge/Attackers.cpp
 	forge/BitBoard.cpp
 	forge/Board.cpp
 	forge/BoardSquare.cpp
 	#forge/ChessMatch.cpp
-	#forge/Clock.cpp
+	forge/Clock.cpp
 	forge/Color.cpp
-	#forge/ControllerBase.cpp
+	forge/ControllerBase.cpp
 	#forge/DataMonitor.cpp
 	#forge/DatasetGenerator.cpp
 	forge/Direction.cpp
-	#forge/EvaluationBase.cpp
-	#forge/ExitCondition.cpp
-	#forge/FiftyMoveRule.cpp
+	forge/EvaluationBase.cpp
+	forge/ExitCondition.cpp
+	forge/FiftyMoveRule.cpp
 	forge/GameHistory.cpp
 	forge/GameState.cpp
 	forge/globals.cpp
-	#forge/HeuristicBase.cpp
-	#forge/IWeightsArchive.cpp
+	forge/HeuristicBase.cpp
+	forge/IWeightsArchive.cpp
 	#forge/KeyboardController.cpp
 	forge/KingAttacker.cpp
 	forge/KingAttackers.cpp
@@ -141,7 +141,7 @@ set(SOURCE_FILES
 	#forge/PerformanceTester.cpp
 	forge/Piece.cpp
 	forge/Position.cpp
-	#forge/PositionTable.cpp
+	forge/PositionTable.cpp
 	#forge/PseudoMoveGenerator.cpp
 	#forge/RandomHeuristic.cpp
 	#forge/RandomSolver.cpp
@@ -165,8 +165,8 @@ set(SOURCE_FILES
 	#forge/UciScore.cpp
 	#forge/UciSearchCommands.cpp
 	#forge/ViewBase.cpp
-	#forge/WeightsArchive.cpp
-	#forge/WeightsBase.cpp
+	forge/WeightsArchive.cpp
+	forge/WeightsBase.cpp
 )
 
 # --- Specify the text files ---

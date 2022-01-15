@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <sstream>
 
-#include <Guten/iocolor.h>
+#include <Guten/color/iocolor.h>
 
 using namespace std;
 

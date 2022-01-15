@@ -21,7 +21,7 @@ namespace forge
 	public:
 		// Serialize data from object into archive
 		template <typename T>
-		friend WeightsArchive & operator<<(const WeightsArchive & ar, T & data)
+		friend WeightsArchive & operator<<(WeightsArchive & ar, T & data)
 		{
 			data.serialize(ar);
 

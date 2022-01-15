@@ -51,6 +51,7 @@ namespace forge
 		return make_unique<ApplePieHeuristic>(*this);
 	}
 
+	// TODO: Can we rewrite this as a single function
 	template<typename F, typename W>
 	class PrintHelper {
 	public:
