@@ -9,6 +9,16 @@ namespace forge
 	class NeuralNetworkHeuristic : public HeuristicBase
 	{
 	public:
+		NeuralNetworkHeuristic() = default;
+		// Creates a NN from the tensorflow model directory specified by `model_file_name`
+		// `model_file_name` must be the address of a tensorflow model directory 
+		NeuralNetworkHeuristic(const std::string& model_file_name);
+		NeuralNetworkHeuristic(const NeuralNetworkHeuristic&) = default;
+		NeuralNetworkHeuristic(NeuralNetworkHeuristic&&) = default;
+		virtual ~NeuralNetworkHeuristic() noexcept = default;
+		NeuralNetworkHeuristic& operator=(const NeuralNetworkHeuristic&) = default;
+		NeuralNetworkHeuristic& operator=(NeuralNetworkHeuristic&&) noexcept = default;
+
 		virtual heuristic_t eval(const Position& pos) const override;
 
 		virtual std::unique_ptr<HeuristicBase> clone() const override;
@@ -17,8 +27,8 @@ namespace forge
 
 		virtual void print(const Position& pos, std::ostream& os = std::cout) const override;
 
-		cv::dnn::Model& model() { return m_model; }
-		const cv::dnn::Model& model() const { return m_model; }
+		//cv::dnn::Model& model() { return m_model; }
+		//const cv::dnn::Model& model() const { return m_model; }
 
 	protected:
 		cv::Mat preprocess(const Position & pos) const;
@@ -51,6 +61,6 @@ namespace forge
 		//		9  - their queens
 		//		10 - our kings
 		//		11 - their kings
-		cv::dnn::Model m_model;
+		//cv::dnn::Model m_model;
 	};
 } // namespace forge

@@ -6,6 +6,11 @@ using namespace std;
 
 namespace forge
 {
+	NeuralNetworkHeuristic::NeuralNetworkHeuristic(const std::string& model_file_name)
+	{
+
+	}
+
 	heuristic_t NeuralNetworkHeuristic::eval(const Position& pos) const
 	{
 		// --- Preprocess ---
@@ -14,7 +19,7 @@ namespace forge
 
 		// --- Feed Forward ---
 		vector<int> output{ 1, 1 };
-		m_model.predict(input, output);
+		//m_model.predict(input, output);
 
 		// --- Return ---
 		heuristic_t evaluation = 0;

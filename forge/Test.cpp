@@ -1098,15 +1098,14 @@ namespace forge
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
-				//RandomHeuristic
-				//ApplePieHeuristic
-				NeuralNetworkHeuristic
-			>();
+				//RandomHeuristic>();
+				//ApplePieHeuristic>();
+				NeuralNetworkHeuristic>(R"dil(D:\code\source\repos\AI\forge\data\NNModels\model2057)dil");
+
 			blackController->makeHeuristic<
-				//RandomHeuristic
-				//ApplePieHeuristic
-				NeuralNetworkHeuristic
-			>();
+				//RandomHeuristic>();
+				//ApplePieHeuristic>();
+				NeuralNetworkHeuristic>(R"dil(D:\code\source\repos\AI\forge\data\NNModels\model2057)dil");
 
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);
