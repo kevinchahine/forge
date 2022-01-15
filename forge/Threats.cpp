@@ -4,6 +4,37 @@ using namespace std;
 
 namespace forge
 {
+	template<> BitBoard Threats::genThreatsFor<pieces::Rook>(BoardSquare attacker, BitBoard obstacles)
+	{
+		BitBoard threats;
+
+		threats |= Attackers::genAttackLineSegment<directions::Up>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::Down>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::Left>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::Right>(attacker, obstacles);
+
+		return threats;
+	}
+
+	template<> BitBoard Threats::genThreatsFor<pieces::Bishop>(BoardSquare attacker, BitBoard obstacles)
+	{
+		BitBoard threats;
+
+		threats |= Attackers::genAttackLineSegment<directions::UL>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::UR>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::DR>(attacker, obstacles);
+		threats |= Attackers::genAttackLineSegment<directions::DL>(attacker, obstacles);
+
+		return threats;
+	}
+
+	template<> BitBoard Threats::genThreatsFor<pieces::Queen>(BoardSquare attacker, BitBoard obstacles)
+	{
+		return
+			Threats::genThreatsFor<pieces::Bishop>(attacker, obstacles) |
+			Threats::genThreatsFor<pieces::Rook>(attacker, obstacles);
+	}
+
 	BitBoard Threats::genThreats(const Board & board, BitBoard attackers)
 	{
 		BitBoard threats;
@@ -48,34 +79,4 @@ namespace forge
 		return threats;
 	}
 
-	template<> BitBoard Threats::genThreatsFor<pieces::Rook>(BoardSquare attacker, BitBoard obstacles)
-	{
-		BitBoard threats;
-
-		threats |= Attackers::genAttackLineSegment<directions::Up>(attacker, obstacles);
-		threats |= Attackers::genAttackLineSegment<directions::Down>(attacker, obstacles);
-		threats |= Attackers::genAttackLineSegment<directions::Left>(attacker, obstacles);
-		threats |= Attackers::genAttackLineSegment<directions::Right>(attacker, obstacles);
-
-		return threats;
-	}
-
-	template<> BitBoard Threats::genThreatsFor<pieces::Bishop>(BoardSquare attacker, BitBoard obstacles)
-	{
-		BitBoard threats;
-
-		threats |= Attackers::genAttackLineSegment<directions::UL>(attacker, obstacles);
-		threats |= Attackers::genAttackLineSegment<directions::UR>(attacker, obstacles);
-		threats |= Attackers::genAttackLineSegment<directions::DR>(attacker, obstacles);
-		threats |= Attackers::genAttackLineSegment<directions::DL>(attacker, obstacles);
-
-		return threats;
-	}
-
-	template<> BitBoard Threats::genThreatsFor<pieces::Queen>(BoardSquare attacker, BitBoard obstacles)
-	{
-		return
-			Threats::genThreatsFor<pieces::Bishop>(attacker, obstacles) |
-			Threats::genThreatsFor<pieces::Rook>(attacker, obstacles);
-	}
 } // namespace forge

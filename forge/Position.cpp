@@ -164,23 +164,6 @@ namespace forge
 		return ss.str();
 	}
 
-	template<> void Position::move<pieces::King>(Move move)
-	{
-#ifdef _DEBUG
-		if (m_board.at(move.from()).isKing() == false) {
-			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
-				<< ": This method only moves Kings\n";
-		}
-#endif // _DEBUG
-
-		if (m_board.isWhite(move.from())) {
-			this->move<pieces::WhiteKing>(move);
-		}
-		else {
-			this->move<pieces::BlackKing>(move);
-		}
-	}
-
 	template<> void Position::move<pieces::WhiteKing>(Move move)
 	{
 #ifdef _DEBUG
@@ -213,6 +196,23 @@ namespace forge
 		// TODO: Castling
 
 		m_moveCounter++;
+	}
+
+	template<> void Position::move<pieces::King>(Move move)
+	{
+#ifdef _DEBUG
+		if (m_board.at(move.from()).isKing() == false) {
+			std::cout << "Error " << __FUNCTION__ << " line " << __LINE__
+				<< ": This method only moves Kings\n";
+		}
+#endif // _DEBUG
+
+		if (m_board.isWhite(move.from())) {
+			this->move<pieces::WhiteKing>(move);
+		}
+		else {
+			this->move<pieces::BlackKing>(move);
+		}
 	}
 
 	template<> void Position::move<pieces::Queen>(Move move)

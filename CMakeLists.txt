@@ -11,12 +11,12 @@ add_subdirectory(guten)
 set(HEADER_FILES
 	#forge/ApplePieHeuristic.h
 	#forge/ApplePieWeights.h
-	#forge/AttackChecker.h
-	#forge/AttackersDefinitions.h
-	#forge/Attackers.h
+	forge/AttackChecker.h
+	forge/AttackersDefinitions.h
+	forge/Attackers.h
 	forge/BitBoardDefinitions.h
 	forge/BitBoard.h
-	#forge/BoardDefinitions.h
+	forge/BoardDefinitions.h		# TODO: Do we need this anymore
 	forge/Board.h
 	forge/BoardSquare.h
 	#forge/ChessMatch.h
@@ -29,26 +29,26 @@ set(HEADER_FILES
 	#forge/EvaluationBase.h
 	#forge/ExitCondition.h
 	#forge/FiftyMoveRule.h
-	#forge/GameHistory.h
-	#forge/GameState.h
-	#forge/globals.h
+	forge/GameHistory.h
+	forge/GameState.h
+	forge/globals.h
 	#forge/HashCombine.h
 	#forge/HeuristicBase.h
 	#forge/IWeightsArchive.h
 	#forge/KeyboardController.h
-	#forge/KingAttacker.h
-	#forge/KingAttackersDefinitions.h
-	#forge/KingAttackers.h
-	#forge/Line.h
+	forge/KingAttacker.h
+	forge/KingAttackersDefinitions.h
+	forge/KingAttackers.h
+	forge/Line.h				# TODO: do we need this
 	#forge/MCTS_Node.h
 	#forge/MCTS_Solver.h
 	#forge/MiniMaxNode.h
 	#forge/MinimaxSolver.h
 	#forge/MoveCounter.h
-	#forge/MoveGenerator2_Definitions.h
-	#forge/MoveGenerator2.h
-	#forge/MoveGenerator.h
-	#forge/MoveGeneratorInline.h
+	forge/MoveGenerator2_Definitions.h
+	forge/MoveGenerator2.h
+	forge/MoveGenerator.h
+	forge/MoveGeneratorInline.h
 	forge/Move.h
 	#forge/MoveList.h
 	#forge/MovePositionPair.h
@@ -62,8 +62,8 @@ set(HEADER_FILES
 	forge/Piece.h
 	#forge/PinDefinitions.h
 	#forge/Pin.h
-	#forge/PositionDefinitions.h
-	#forge/Position.h
+	forge/PositionDefinitions.h
+	forge/Position.h
 	#forge/PositionTable.h
 	#forge/PseudoMoveGenerator.h
 	#forge/RandomHeuristic.h
@@ -77,9 +77,9 @@ set(HEADER_FILES
 	#forge/TestOptimizer.h
 	#forge/TestUci.h
 	#forge/TextView.h
-	#forge/ThreatsDefinitions.h
-	#forge/Threats.h
-	#forge/Timer.h
+	forge/ThreatsDefinitions.h
+	forge/Threats.h
+	forge/Timer.h
 	#forge/UciBase.h
 	#forge/UciCurrLine.h
 	#forge/UciEngine.h
@@ -98,8 +98,8 @@ set(SOURCE_FILES
 	forge/main.cpp
 	#forge/ApplePieHeuristic.cpp
 	#forge/ApplePieWeights.cpp
-	#forge/AttackChecker.cpp
-	#forge/Attackers.cpp
+	forge/AttackChecker.cpp
+	forge/Attackers.cpp
 	forge/BitBoard.cpp
 	forge/Board.cpp
 	forge/BoardSquare.cpp
@@ -113,23 +113,23 @@ set(SOURCE_FILES
 	#forge/EvaluationBase.cpp
 	#forge/ExitCondition.cpp
 	#forge/FiftyMoveRule.cpp
-	#forge/GameHistory.cpp
-	#forge/GameState.cpp
-	#forge/globals.cpp
+	forge/GameHistory.cpp
+	forge/GameState.cpp
+	forge/globals.cpp
 	#forge/HeuristicBase.cpp
 	#forge/IWeightsArchive.cpp
 	#forge/KeyboardController.cpp
-	#forge/KingAttacker.cpp
-	#forge/KingAttackers.cpp
-	#forge/Line.cpp
+	forge/KingAttacker.cpp
+	forge/KingAttackers.cpp
+	forge/Line.cpp
 	#forge/MCTS_Node.cpp
 	#forge/MCTS_Solver.cpp
 	#forge/MiniMaxNode.cpp
 	#forge/MinimaxSolver.cpp
 	#forge/MoveCounter.cpp
 	forge/Move.cpp
-	#forge/MoveGenerator2.cpp
-	#forge/MoveGenerator.cpp
+	forge/MoveGenerator2.cpp
+	forge/MoveGenerator.cpp
 	#forge/MoveList.cpp
 	#forge/MovePositionPair.cpp
 	#forge/Movers.cpp
@@ -140,7 +140,7 @@ set(SOURCE_FILES
 	#forge/PerformanceLogger.cpp
 	#forge/PerformanceTester.cpp
 	forge/Piece.cpp
-	#forge/Position.cpp
+	forge/Position.cpp
 	#forge/PositionTable.cpp
 	#forge/PseudoMoveGenerator.cpp
 	#forge/RandomHeuristic.cpp
@@ -154,8 +154,8 @@ set(SOURCE_FILES
 	#forge/TestOptimizer.cpp
 	#forge/TestUci.cpp
 	#forge/TextView.cpp
-	#forge/Threats.cpp
-	#forge/Timer.cpp
+	forge/Threats.cpp
+	forge/Timer.cpp
 	#forge/UciBase.cpp
 	#forge/UciCurrLine.cpp
 	#forge/UciEngine.cpp

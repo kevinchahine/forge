@@ -29,48 +29,7 @@ namespace forge
 		(*this) = (*this) << numberOfCols;
 	}
 
-	template<typename RAY_DIRECTION_T>
-	BitBoard BitBoard::mask(BoardSquare begin, BoardSquare end)
-	{
-		static_assert(std::is_base_of<directions::Ray, RAY_DIRECTION_T>(),
-			"RAY_DIRECTION_T must be a ray direction like forge::directions::Up or forge::directions::UL");
-
-#ifdef _DEBUG
-		int rise = abs((int)begin.row() - (int)end.row());
-		int run = abs((int)begin.col() - (int)end.col());
-
-		if (rise == 0 || run == 0 || rise == run) {
-		}
-		else {
-			std::cout << "Error: " << __FILE__ << " line " << __LINE__
-				<< ": begin and end are not on the same lateral or diagonal\n";
-		}
-#endif
-
-		BitBoard bb;
-
-		// TODO: Optimize: This can really be optimized. 
-		// We do not need a loop at allToFen. Only bitwise operations.
-		while (begin.operator!=(end)) {
-			bb[begin] = 1;	// Set bit to 1
-
-			begin = RAY_DIRECTION_T{}(begin);
-		}
-
-		return bb;
-	}
-
-	// Unspecialized definition
-	template<typename DIRECTION_T>
-	BitBoard BitBoard::mask(BoardSquare center)
-	{
-		static_assert(true, "Call the explicit specializations instead of the primary specialization of the method");
-
-		BitBoard bb;
-
-		return bb;
-	}
-
+	// ---------------------- MASK --------------------------------------------
 	template<>
 	BitBoard BitBoard::mask<directions::Knight0>(BoardSquare center)
 	{

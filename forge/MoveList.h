@@ -60,7 +60,8 @@ namespace forge
 	{
 		// 1.) --- Copy move and position to back of container ---
 		// Specify base class to prevent infinite recursion
-		MovePositionPair & pair = std::vector<MovePositionPair>::emplace_back(move, currPos);
+		std::vector<MovePositionPair>::emplace_back(move, currPos);
+		MovePositionPair & pair = this->std::vector<MovePositionPair>::back();
 
 		// 2.) --- Apply move to the pushed position ---
 		pair.position.move<PIECE_T>(move);

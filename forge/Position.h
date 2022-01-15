@@ -34,9 +34,9 @@ namespace forge
 		// ----- Moves (both push moves and captures) -----
 		// primary specialization works for all Pieces but Kings, Rooks and Pawns
 		template <typename PIECE_T> void move(Move move);
-		//////////////template<> void move<pieces::King>(Move move);
 		//////////////template<> void move<pieces::WhiteKing>(Move move);
 		//////////////template<> void move<pieces::BlackKing>(Move move);
+		//////////////template<> void move<pieces::King>(Move move);
 		//////////////template<> void move<pieces::Queen>(Move move);
 		//////////////template<> void move<pieces::Bishop>(Move move);
 		//////////////template<> void move<pieces::Knight>(Move move);

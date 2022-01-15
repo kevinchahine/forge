@@ -18,9 +18,11 @@ Designed to be compatible with a variety of displays including:
 	- Custom command line GUI for systems that don't support graphical output.
 */
 
+// TODO: REMOVE ALL THESE
 #include <iostream>
 #include <Guten/guten.hpp>	// REMOVE thid
 #include "BitBoard.h"
+#include "Position.h"
 
 /////////////#include "Test.h"
 /////////////#include "TestMoveGen.h"
