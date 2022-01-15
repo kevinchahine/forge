@@ -64,32 +64,6 @@ namespace forge
 				"Instead call a fully specialized overload instead.");
 		}
 
-		// Shift allToFen bits up a number of rows
-		template<>
-		void shift<directions::Up>(uint8_t numberOfRows) {
-			(*this) = (*this) >> (numberOfRows << 3);
-		}
-
-		// Shift allToFen bits down a number of rows
-		template<>
-		void shift<directions::Down>(uint8_t numberOfRows) {
-			(*this) = (*this) << (numberOfRows << 3);
-		}
-
-		// Shift allToFen bits left a number of cols.
-		// Bits might overflow into downward rows 
-		template<>
-		void shift<directions::Left>(uint8_t numberOfCols) {
-			(*this) = (*this) >> numberOfCols;
-		}
-
-		// Shift allToFen bits left a number of cols.
-		// Bits might overflow into upward rows 
-		template<>
-		void shift<directions::Right>(uint8_t numberOfCols) {
-			(*this) = (*this) << numberOfCols;
-		}
-
 		// Draws a line of 1s between begin and end.
 		// Inclusive on begin
 		// Exclusive on end
@@ -104,50 +78,12 @@ namespace forge
 		template<typename DIRECTION_T>
 		static BitBoard mask(BoardSquare center);
 
-		// Generates a BitBoard with 8 1s surrounding 'center'.
-		// The 1s represent the squares a knight can move to from 'center'.
-		template<> static BitBoard mask<directions::LShape>(BoardSquare center);
-		template<> static BitBoard mask<directions::Knight0>(BoardSquare center);
-		template<> static BitBoard mask<directions::Knight1>(BoardSquare center);
-		template<> static BitBoard mask<directions::Knight2>(BoardSquare center);
-		template<> static BitBoard mask<directions::Knight3>(BoardSquare center);
-		template<> static BitBoard mask<directions::Knight4>(BoardSquare center);
-		template<> static BitBoard mask<directions::Knight5>(BoardSquare center);
-		template<> static BitBoard mask<directions::Knight6>(BoardSquare center);
-		template<> static BitBoard mask<directions::Knight7>(BoardSquare center);
-
-		// Generates a BitBoard with 1s in orientation of 'LINE_T'.
-		// 'LINE_T' can be any type derived from forge::direction::Line.
-		// ex: Horizontal, Vertical, MainDiagonal, OffDiagonal
-		// The 1s represet the squares a Rook, Bishop or Queen can move to from 'center'.
-
-		// --- Line Masks (As in not Rays) ---
-		template<> static BitBoard mask<directions::Lateral>(BoardSquare center);
-		template<> static BitBoard mask<directions::Diagonal>(BoardSquare center);
-		template<> static BitBoard mask<directions::Horizontal>(BoardSquare center);
-		template<> static BitBoard mask<directions::Vertical>(BoardSquare center);
-		template<> static BitBoard mask<directions::MainDiagonal>(BoardSquare center);
-		template<> static BitBoard mask<directions::OffDiagonal>(BoardSquare center);
-
-		// --- Lateral Ray Masks (As in not Lines) ---
-		template<> static BitBoard mask<directions::Up>(BoardSquare center);
-		template<> static BitBoard mask<directions::Down>(BoardSquare center);
-		template<> static BitBoard mask<directions::Left>(BoardSquare center);
-		template<> static BitBoard mask<directions::Right>(BoardSquare center);
-
-		// --- Diagonal Ray Masks (As in not Lines) ---
-		template<> static BitBoard mask<directions::UL>(BoardSquare center);
-		template<> static BitBoard mask<directions::UR>(BoardSquare center);
-		template<> static BitBoard mask<directions::DL>(BoardSquare center);
-		template<> static BitBoard mask<directions::DR>(BoardSquare center);
-
 		friend std::ostream& operator<<(std::ostream& os, const BitBoard& bb);
 
 		void print(std::ostream& os = std::cout) const;
 
 	private:
-
-	};
+	}; // class BitBoard
 } // namespace forge
 
 // --- Inject hash into std namespace ---

@@ -1,9 +1,9 @@
 #include "Board.h"
 #include "HashCombine.h"
 
-#include <Guten/iocolor.h>
-#include <Guten/Color.h>
-#include <Guten/CheckerBoard.h>
+#include <Guten/color/iocolor.h>
+#include <Guten/color/Color.h>
+#include <Guten/boards/CheckerBoard.h>
 
 using namespace std;
 
@@ -107,92 +107,8 @@ namespace forge
 		return piece;
 	}
 
-	// -------------------------------- PLACE ---------------------------------
-
-	void Board::placePiece(BoardSquare square, pieces::Piece piece)
-	{
-		if (piece.isEmpty()) {
-			m_whites[square] = 0;
-			m_blacks[square] = 0;
-			m_bishops[square] = 0;
-			m_rooks[square] = 0;
-			m_pawns[square] = 0;
-	
-			// Do not worry about removing the King, we can't do that anyway
-		}
-		else {
-			if (piece.isWhite()) {
-				m_whites[square] = 1;
-				m_blacks[square] = 0;
-			}
-			else /*if Black */ {
-				m_whites[square] = 0;
-				m_blacks[square] = 1;
-			}
-	
-			if (piece.isPawn()) {
-				m_bishops[square] = 0;
-				m_rooks[square] = 0;
-				m_pawns[square] = 1;
-			}
-			else if (piece.isBishop()) {
-				m_bishops[square] = 1;
-				m_rooks[square] = 0;
-				m_pawns[square] = 0;
-			}
-			else if (piece.isRook()) {
-				m_bishops[square] = 0;
-				m_rooks[square] = 1;
-				m_pawns[square] = 0;
-			}
-			else if (piece.isQueen()) {
-				m_bishops[square] = 1;
-				m_rooks[square] = 1;
-				m_pawns[square] = 0;
-			}
-			else if (piece.isKnight()) {
-				m_bishops[square] = 0;
-				m_rooks[square] = 0;
-				m_pawns[square] = 0;
-			}
-			else if (piece.isKing()) {
-				if (piece.isWhite()) {
-					m_whiteKing = square;
-				}
-				else {
-					m_blackKing = square;
-				}
-			}
-		}
-	}
-	
-	void Board::placePieces(BitBoard squares, pieces::Piece piece)
-	{
-		for (int row = 0; row < 8; row++) {
-			for (int col = 0; col < 8; col++) {
-				BoardSquare bs(row, col);
-	
-				if (squares[bs] == 1) {
-					placePiece(bs, piece);
-				}
-			}
-		}
-	}
-
-	void Board::placeAllPieces()
-	{
-		m_whites =	0b11111111'11111111'00000000'00000000'00000000'00000000'00000000'00000000;
-		m_blacks =	0b00000000'00000000'00000000'00000000'00000000'00000000'11111111'11111111;
-		m_bishops = 0b00101100'00000000'00000000'00000000'00000000'00000000'00000000'00101100;
-		m_rooks =	0b10001001'00000000'00000000'00000000'00000000'00000000'00000000'10001001;
-		m_pawns =	0b00000000'11111111'00000000'00000000'00000000'00000000'11111111'00000000;
-
-		m_blackKing = BoardSquare{ 0, 4 };
-		m_whiteKing = BoardSquare{ 7, 4 };
-		
-		return;
-	}
-
+	// TODO: This method is placed above Board::move<>() methods because some of them call it.
+	// Try to move this method near the other place<>() methods.
 	template<> void Board::place<pieces::Empty>(BoardSquare square, bool isWhite)
 	{
 		m_whites[square] = 0;	// Both are necessary
@@ -202,95 +118,31 @@ namespace forge
 		m_pawns[square] = 0;
 	}
 
-	template<> void Board::place<pieces::King>(BoardSquare square, bool isWhite)
-	{
-		if (isWhite) {
-			place<pieces::WhiteKing>(square, true);
-		}
-		else {
-			place<pieces::BlackKing>(square, false);
-		}
-	}
-
-	template<> void Board::place<pieces::WhiteKing>(BoardSquare square, bool isWhite)
-	{
-		if (square != m_whiteKing)
-			move<pieces::WhiteKing>(Move{ m_whiteKing, square });
-	}
-
-	template<> void Board::place<pieces::BlackKing>(BoardSquare square, bool isWhite)
-	{
-		if (square != m_blackKing)
-			move<pieces::BlackKing>(Move{ m_blackKing, square });
-	}
-
-	template<> void Board::place<pieces::Queen>(BoardSquare square, bool isWhite)
-	{
-		m_whites[square] = isWhite;
-		m_blacks[square] = !isWhite;
-		m_bishops[square] = 1;
-		m_rooks[square] = 1;
-		m_pawns[square] = 0;
-	}
-
-	template<> void Board::place<pieces::Bishop>(BoardSquare square, bool isWhite)
-	{
-		m_whites[square] = isWhite;
-		m_blacks[square] = !isWhite;
-		m_bishops[square] = 1;
-		//m_rooks[square] = 0;
-		//m_pawns[square] = 0;
-	}
-
-	template<> void Board::place<pieces::Knight>(BoardSquare square, bool isWhite)
-	{
-		m_whites[square] = isWhite;
-		m_blacks[square] = !isWhite;
-		m_bishops[square] = 0;
-		m_rooks[square] = 0;
-		m_pawns[square] = 0;
-	}
-
-	template<> void Board::place<pieces::Rook>(BoardSquare square, bool isWhite)
-	{
-		m_whites[square] = isWhite;
-		m_blacks[square] = !isWhite;
-		m_bishops[square] = 0;
-		m_rooks[square] = 1;
-		m_pawns[square] = 0;
-	}
-
-	template<> void Board::place<pieces::Pawn>(BoardSquare square, bool isWhite)
-	{
-		m_whites[square] = isWhite;
-		m_blacks[square] = !isWhite;
-		m_bishops[square] = 0;
-		m_rooks[square] = 0;
-		m_pawns[square] = 1;
-	}
-
-	template<> void Board::place<pieces::WhitePawn>(BoardSquare square, bool isWhite)
-	{
-		// isWhite is irrelevent
-		m_whites[square] = 1;
-		m_blacks[square] = 0;
-		m_bishops[square] = 0;
-		m_rooks[square] = 0;
-		m_pawns[square] = 1;
-	}
-
-	template<> void Board::place<pieces::BlackPawn>(BoardSquare square, bool isWhite)
-	{
-		// isWhite is irrelevent
-
-		m_whites[square] = 0;
-		m_blacks[square] = 1;
-		m_bishops[square] = 0;
-		m_rooks[square] = 0;
-		m_pawns[square] = 1;
-	}
-
 	// ---------------------- MOVE METHODS (both push moves and captures) -----
+
+	template<> void Board::move<pieces::WhiteKing>(Move move)
+	{
+		m_whites[move.to()] = 1;
+		m_blacks[move.to()] = 0;
+		m_bishops[move.to()] = 0;
+		m_rooks[move.to()] = 0;
+		m_pawns[move.to()] = 0;
+		m_whiteKing = move.to();
+
+		place<pieces::Empty>(move.from(), true);
+	}
+
+	template<> void Board::move<pieces::BlackKing>(Move move)
+	{
+		m_whites[move.to()] = 0;
+		m_blacks[move.to()] = 1;
+		m_bishops[move.to()] = 0;
+		m_rooks[move.to()] = 0;
+		m_pawns[move.to()] = 0;
+		m_blackKing = move.to();
+
+		place<pieces::Empty>(move.from(), true);
+	}
 
 	template<> void Board::move<pieces::King>(Move move)
 	{
@@ -313,30 +165,6 @@ namespace forge
 			m_blackKing = move.to();
 			m_blacks[move.to()] = 1;
 		}
-
-		place<pieces::Empty>(move.from(), true);
-	}
-
-	template<> void Board::move<pieces::WhiteKing>(Move move)
-	{
-		m_whites[move.to()] = 1;
-		m_blacks[move.to()] = 0;
-		m_bishops[move.to()] = 0;
-		m_rooks[move.to()] = 0;
-		m_pawns[move.to()] = 0;
-		m_whiteKing = move.to();
-
-		place<pieces::Empty>(move.from(), true);
-	}
-
-	template<> void Board::move<pieces::BlackKing>(Move move)
-	{
-		m_whites[move.to()] = 0;
-		m_blacks[move.to()] = 1;
-		m_bishops[move.to()] = 0;
-		m_rooks[move.to()] = 0;
-		m_pawns[move.to()] = 0;
-		m_blackKing = move.to();
 
 		place<pieces::Empty>(move.from(), true);
 	}
@@ -441,6 +269,222 @@ namespace forge
 		}
 #endif // _DEBUG
 	}
+
+	// -------------------------------- PLACE ---------------------------------
+
+	void Board::placePiece(BoardSquare square, pieces::Piece piece)
+	{
+		if (piece.isEmpty()) {
+			m_whites[square] = 0;
+			m_blacks[square] = 0;
+			m_bishops[square] = 0;
+			m_rooks[square] = 0;
+			m_pawns[square] = 0;
+	
+			// Do not worry about removing the King, we can't do that anyway
+		}
+		else {
+			if (piece.isWhite()) {
+				m_whites[square] = 1;
+				m_blacks[square] = 0;
+			}
+			else /*if Black */ {
+				m_whites[square] = 0;
+				m_blacks[square] = 1;
+			}
+	
+			if (piece.isPawn()) {
+				m_bishops[square] = 0;
+				m_rooks[square] = 0;
+				m_pawns[square] = 1;
+			}
+			else if (piece.isBishop()) {
+				m_bishops[square] = 1;
+				m_rooks[square] = 0;
+				m_pawns[square] = 0;
+			}
+			else if (piece.isRook()) {
+				m_bishops[square] = 0;
+				m_rooks[square] = 1;
+				m_pawns[square] = 0;
+			}
+			else if (piece.isQueen()) {
+				m_bishops[square] = 1;
+				m_rooks[square] = 1;
+				m_pawns[square] = 0;
+			}
+			else if (piece.isKnight()) {
+				m_bishops[square] = 0;
+				m_rooks[square] = 0;
+				m_pawns[square] = 0;
+			}
+			else if (piece.isKing()) {
+				if (piece.isWhite()) {
+					m_whiteKing = square;
+				}
+				else {
+					m_blackKing = square;
+				}
+			}
+		}
+	}
+	
+	void Board::placePieces(BitBoard squares, pieces::Piece piece)
+	{
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				BoardSquare bs(row, col);
+	
+				if (squares[bs] == 1) {
+					placePiece(bs, piece);
+				}
+			}
+		}
+	}
+
+	void Board::placeAllPieces()
+	{
+		m_whites =	0b11111111'11111111'00000000'00000000'00000000'00000000'00000000'00000000;
+		m_blacks =	0b00000000'00000000'00000000'00000000'00000000'00000000'11111111'11111111;
+		m_bishops = 0b00101100'00000000'00000000'00000000'00000000'00000000'00000000'00101100;
+		m_rooks =	0b10001001'00000000'00000000'00000000'00000000'00000000'00000000'10001001;
+		m_pawns =	0b00000000'11111111'00000000'00000000'00000000'00000000'11111111'00000000;
+
+		m_blackKing = BoardSquare{ 0, 4 };
+		m_whiteKing = BoardSquare{ 7, 4 };
+		
+		return;
+	}
+
+	template<> void Board::place<pieces::WhiteKing>(BoardSquare square, bool isWhite)
+	{
+		if (square != m_whiteKing)
+			move<pieces::WhiteKing>(Move{ m_whiteKing, square });
+	}
+
+	template<> void Board::place<pieces::BlackKing>(BoardSquare square, bool isWhite)
+	{
+		if (square != m_blackKing)
+			move<pieces::BlackKing>(Move{ m_blackKing, square });
+	}
+
+	template<> void Board::place<pieces::King>(BoardSquare square, bool isWhite)
+	{
+		if (isWhite) {
+			place<pieces::WhiteKing>(square, true);
+		}
+		else {
+			place<pieces::BlackKing>(square, false);
+		}
+	}
+
+	template<> void Board::place<pieces::Queen>(BoardSquare square, bool isWhite)
+	{
+		m_whites[square] = isWhite;
+		m_blacks[square] = !isWhite;
+		m_bishops[square] = 1;
+		m_rooks[square] = 1;
+		m_pawns[square] = 0;
+	}
+
+	template<> void Board::place<pieces::Bishop>(BoardSquare square, bool isWhite)
+	{
+		m_whites[square] = isWhite;
+		m_blacks[square] = !isWhite;
+		m_bishops[square] = 1;
+		//m_rooks[square] = 0;
+		//m_pawns[square] = 0;
+	}
+
+	template<> void Board::place<pieces::Knight>(BoardSquare square, bool isWhite)
+	{
+		m_whites[square] = isWhite;
+		m_blacks[square] = !isWhite;
+		m_bishops[square] = 0;
+		m_rooks[square] = 0;
+		m_pawns[square] = 0;
+	}
+
+	template<> void Board::place<pieces::Rook>(BoardSquare square, bool isWhite)
+	{
+		m_whites[square] = isWhite;
+		m_blacks[square] = !isWhite;
+		m_bishops[square] = 0;
+		m_rooks[square] = 1;
+		m_pawns[square] = 0;
+	}
+
+	template<> void Board::place<pieces::Pawn>(BoardSquare square, bool isWhite)
+	{
+		m_whites[square] = isWhite;
+		m_blacks[square] = !isWhite;
+		m_bishops[square] = 0;
+		m_rooks[square] = 0;
+		m_pawns[square] = 1;
+	}
+
+	template<> void Board::place<pieces::WhitePawn>(BoardSquare square, bool isWhite)
+	{
+		// isWhite is irrelevent
+		m_whites[square] = 1;
+		m_blacks[square] = 0;
+		m_bishops[square] = 0;
+		m_rooks[square] = 0;
+		m_pawns[square] = 1;
+	}
+
+	template<> void Board::place<pieces::BlackPawn>(BoardSquare square, bool isWhite)
+	{
+		// isWhite is irrelevent
+		m_whites[square] = 0;
+		m_blacks[square] = 1;
+		m_bishops[square] = 0;
+		m_rooks[square] = 0;
+		m_pawns[square] = 1;
+	}
+
+	template<> BitBoard Board::pieces<pieces::King>() const { return kings(); }
+	template<> BitBoard Board::pieces<pieces::Queen>() const { return queens(); }
+	template<> BitBoard Board::pieces<pieces::Bishop>() const { return bishops(); }
+	template<> BitBoard Board::pieces<pieces::Knight>() const { return knights(); }
+	template<> BitBoard Board::pieces<pieces::Rook>() const { return rooks(); }
+	template<> BitBoard Board::pieces<pieces::Pawn>() const { return pawns(); }
+
+	template<> bool Board::isPiece<pieces::King>(BoardSquare square) const { return isKing(square); }
+	template<> bool Board::isPiece<pieces::Queen>(BoardSquare square) const { return isQueen(square); }
+	template<> bool Board::isPiece<pieces::Bishop>(BoardSquare square) const { return isBishop(square); }
+	template<> bool Board::isPiece<pieces::Knight>(BoardSquare square) const { return isKnight(square); }
+	template<> bool Board::isPiece<pieces::Rook>(BoardSquare square) const { return isRook(square); }
+	template<> bool Board::isPiece<pieces::WhitePawn>(BoardSquare square) const { return isWhite(square) && isPawn(square); }
+	template<> bool Board::isPiece<pieces::BlackPawn>(BoardSquare square) const { return isBlack(square) && isPawn(square); }
+	template<> bool Board::isPiece<colors::White>(BoardSquare square) const { return isWhite(square); }
+	template<> bool Board::isPiece<colors::Black>(BoardSquare square) const { return isBlack(square); }
+
+	template<> BitBoard Board::directionals<directions::Linear>() const { return laterals() & diagonals(); }
+	template<> BitBoard Board::directionals<directions::Lateral>() const { return laterals(); }
+	template<> BitBoard Board::directionals<directions::Diagonal>() const { return diagonals(); }
+	template<> BitBoard Board::directionals<directions::LShape>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Knight0>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Knight1>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Knight2>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Knight3>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Knight4>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Knight5>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Knight6>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Knight7>() const { return knights(); }
+	template<> BitBoard Board::directionals<directions::Ray>() const { return rays(); }
+	template<> BitBoard Board::directionals<directions::Up>() const { return laterals(); }
+	template<> BitBoard Board::directionals<directions::Down>() const { return laterals(); }
+	template<> BitBoard Board::directionals<directions::Left>() const { return laterals(); }
+	template<> BitBoard Board::directionals<directions::Right>() const { return laterals(); }
+	template<> BitBoard Board::directionals<directions::UR>() const { return diagonals(); }
+	template<> BitBoard Board::directionals<directions::UL>() const { return diagonals(); }
+	template<> BitBoard Board::directionals<directions::DL>() const { return diagonals(); }
+	template<> BitBoard Board::directionals<directions::DR>() const { return diagonals(); }
+
+	template<> BitBoard Board::colors<colors::White>() const { return whites(); }
+	template<> BitBoard Board::colors<colors::Black>() const { return blacks(); }
+
 } // namespace forge
 
 namespace std

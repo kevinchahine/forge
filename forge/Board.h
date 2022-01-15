@@ -6,12 +6,13 @@
 #include "Piece.h"
 #include "Move.h"
 
-#include <Guten/Color.h>
-#include <Guten/CheckerBoard.h>
+#include <Guten/color/Color.h>
+#include <Guten/boards/CheckerBoard.h>
 
 #include <iostream>
 #include <vector>
 #include <tuple>
+#include <assert.h>	// for assert() // TODO: dO WE STILL need this
 
 namespace forge
 {
@@ -66,32 +67,32 @@ namespace forge
 		void placeAllPieces();
 
 		template <typename PIECE_T>	void place(BoardSquare square, bool isWhite = true);
-		template<> void place<pieces::Empty>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::King>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::WhiteKing>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::BlackKing>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::Queen>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::Bishop>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::Knight>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::Rook>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::Pawn>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::WhitePawn>(BoardSquare square, bool isWhite);
-		template<> void place<pieces::BlackPawn>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::Empty>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::King>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::WhiteKing>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::BlackKing>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::Queen>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::Bishop>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::Knight>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::Rook>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::Pawn>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::WhitePawn>(BoardSquare square, bool isWhite);
+		/////////////template<> void place<pieces::BlackPawn>(BoardSquare square, bool isWhite);
 
 		// Works for both push moves and captures
 		template <typename PIECE_T> void move(Move move);
-		template<> void move<pieces::King>(Move move);
-		template<> void move<pieces::WhiteKing>(Move move);
-		template<> void move<pieces::BlackKing>(Move move);
-		template<> void move<pieces::QBN_Piece>(Move move);
-		template<> void move<pieces::Queen>(Move move);
-		template<> void move<pieces::Bishop>(Move move);
-		template<> void move<pieces::Knight>(Move move);
-		template<> void move<pieces::Rook>(Move move);
-		template<> void move<pieces::WhitePawn>(Move move);
-		template<> void move<pieces::BlackPawn>(Move move);
-		template<> void move<pieces::Pawn>(Move move);
-		template<> void move<pieces::Piece>(Move move);
+		//////////////template<> void move<pieces::King>(Move move);
+		//////////////template<> void move<pieces::WhiteKing>(Move move);
+		//////////////template<> void move<pieces::BlackKing>(Move move);
+		//////////////template<> void move<pieces::QBN_Piece>(Move move);
+		//////////////template<> void move<pieces::Queen>(Move move);
+		//////////////template<> void move<pieces::Bishop>(Move move);
+		//////////////template<> void move<pieces::Knight>(Move move);
+		//////////////template<> void move<pieces::Rook>(Move move);
+		//////////////template<> void move<pieces::WhitePawn>(Move move);
+		//////////////template<> void move<pieces::BlackPawn>(Move move);
+		//////////////template<> void move<pieces::Pawn>(Move move);
+		//////////////template<> void move<pieces::Piece>(Move move);
 
 		bool isOccupied(BoardSquare square) const { return occupied()[square]; }
 		bool isEmpty(BoardSquare square) const { return empty()[square]; }
@@ -105,23 +106,13 @@ namespace forge
 		bool isBlack(BoardSquare square) const { return blacks()[square]; }
 
 		template <typename PIECE_T> bool isPiece(BoardSquare square) const;
-		template<> bool isPiece<pieces::King>(BoardSquare square) const { return isKing(square); }
-		template<> bool isPiece<pieces::Queen>(BoardSquare square) const { return isQueen(square); }
-		template<> bool isPiece<pieces::Bishop>(BoardSquare square) const { return isBishop(square); }
-		template<> bool isPiece<pieces::Knight>(BoardSquare square) const { return isKnight(square); }
-		template<> bool isPiece<pieces::Rook>(BoardSquare square) const { return isRook(square); }
-		template<> bool isPiece<pieces::WhitePawn>(BoardSquare square) const { return isWhite(square) && isPawn(square); }
-		template<> bool isPiece<pieces::BlackPawn>(BoardSquare square) const { return isBlack(square) && isPawn(square); }
-		template<> bool isPiece<colors::White>(BoardSquare square) const { return isWhite(square); }
-		template<> bool isPiece<colors::Black>(BoardSquare square) const { return isBlack(square); }
-
+		
+		template<typename COLOR_T> BitBoard colors() const;
+		
 		BitBoard occupied() const { return m_whites | m_blacks; }
 		BitBoard empty() const { return ~occupied(); }
 		BitBoard whites() const { return m_whites; }
 		BitBoard blacks() const { return m_blacks; }
-		template<typename COLOR_T> BitBoard colors() const;
-		template<> BitBoard colors<colors::White>() const { return whites(); }
-		template<> BitBoard colors<colors::Black>() const { return blacks(); }
 		BitBoard pawns() const { return m_pawns & pawn_mask; }
 		BitBoard en_passent() const { return m_pawns & ~pawn_mask; }
 		BitBoard rooks() const { return m_rooks & ~m_bishops; }
@@ -161,40 +152,15 @@ namespace forge
 		template<typename PIECE_T>
 		BitBoard pieces() const
 		{
-			static_assert(false, "Don't use this method. Use full specialization overloads instead\n");
+			std::cout << "Don't use this method. Use full specialization overloads instead. PIECE_T = " << typeid(PIECE_T).name() << "\n";
+			assert(false);
+			///static_assert(false, "Don't use this method. Use full specialization overloads instead\n");
 
 			return BitBoard();
 		}
-		template<> BitBoard pieces<pieces::King>() const { return kings(); }
-		template<> BitBoard pieces<pieces::Queen>() const { return queens(); }
-		template<> BitBoard pieces<pieces::Bishop>() const { return bishops(); }
-		template<> BitBoard pieces<pieces::Knight>() const { return knights(); }
-		template<> BitBoard pieces<pieces::Rook>() const { return rooks(); }
-		template<> BitBoard pieces<pieces::Pawn>() const { return pawns(); }
-
+		
 		template<typename DIRECTION_T> BitBoard directionals() const;
-		template<> BitBoard directionals<directions::Linear>() const { return laterals() & diagonals(); }
-		template<> BitBoard directionals<directions::Lateral>() const { return laterals(); }
-		template<> BitBoard directionals<directions::Diagonal>() const { return diagonals(); }
-		template<> BitBoard directionals<directions::LShape>() const { return knights(); }
-		template<> BitBoard directionals<directions::Knight0>() const { return knights(); }
-		template<> BitBoard directionals<directions::Knight1>() const { return knights(); }
-		template<> BitBoard directionals<directions::Knight2>() const { return knights(); }
-		template<> BitBoard directionals<directions::Knight3>() const { return knights(); }
-		template<> BitBoard directionals<directions::Knight4>() const { return knights(); }
-		template<> BitBoard directionals<directions::Knight5>() const { return knights(); }
-		template<> BitBoard directionals<directions::Knight6>() const { return knights(); }
-		template<> BitBoard directionals<directions::Knight7>() const { return knights(); }
-		template<> BitBoard directionals<directions::Ray>() const { return rays(); }
-		template<> BitBoard directionals<directions::Up>() const { return laterals(); }
-		template<> BitBoard directionals<directions::Down>() const { return laterals(); }
-		template<> BitBoard directionals<directions::Left>() const { return laterals(); }
-		template<> BitBoard directionals<directions::Right>() const { return laterals(); }
-		template<> BitBoard directionals<directions::UR>() const { return diagonals(); }
-		template<> BitBoard directionals<directions::UL>() const { return diagonals(); }
-		template<> BitBoard directionals<directions::DL>() const { return diagonals(); }
-		template<> BitBoard directionals<directions::DR>() const { return diagonals(); }
-
+		
 		bool operator==(const Board & rhs) const {
 			return
 				(m_whites == rhs.m_whites) &&
@@ -223,7 +189,10 @@ namespace forge
 		BoardSquare m_blackKing{ 4 };
 
 		// TODO: Still need castiling
-	};
+	}; // class Board
+
+	// -------------------------------- EXPLICIT SPECIALIZATIONS --------------
+
 } // namespace forge
 
 #include "BoardDefinitions.h"

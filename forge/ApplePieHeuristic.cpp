@@ -79,11 +79,11 @@ namespace forge
 	{
 		os
 			<< "Piece Imbalances:\n"
-			<< "\tQueen  " << PrintHelper(imbalance<pieces::Queen>(pos), m_weights.queenMaterial) << endl
-			<< "\tBishop " << PrintHelper(imbalance<pieces::Bishop>(pos), m_weights.bishopMaterial) << endl
-			<< "\tKnight " << PrintHelper(imbalance<pieces::Knight>(pos), m_weights.knightMaterial) << endl
-			<< "\tRook   " << PrintHelper(imbalance<pieces::Rook>(pos), m_weights.rookMaterial) << endl
-			<< "\tPawn   " << PrintHelper(imbalance<pieces::Pawn>(pos), m_weights.pawnMaterial) << endl
+			<< "\tQueen  " << PrintHelper<int, heuristic_t>(imbalance<pieces::Queen>(pos), m_weights.queenMaterial) << endl
+			<< "\tBishop " << PrintHelper<int, heuristic_t>(imbalance<pieces::Bishop>(pos), m_weights.bishopMaterial) << endl
+			<< "\tKnight " << PrintHelper<int, heuristic_t>(imbalance<pieces::Knight>(pos), m_weights.knightMaterial) << endl
+			<< "\tRook   " << PrintHelper<int, heuristic_t>(imbalance<pieces::Rook>(pos), m_weights.rookMaterial) << endl
+			<< "\tPawn   " << PrintHelper<int, heuristic_t>(imbalance<pieces::Pawn>(pos), m_weights.pawnMaterial) << endl
 
 			<< "Total = " << 
 				imbalance<pieces::Queen>(pos) * m_weights.queenMaterial +

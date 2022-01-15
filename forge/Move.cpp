@@ -6,6 +6,8 @@
 
 using namespace std;
 
+unsigned char my_tolower(unsigned char c) { return std::tolower(c); }
+
 namespace forge
 {
 	ostream & operator<<(ostream & os, const Move & move)
@@ -46,7 +48,7 @@ namespace forge
 		getline(is, input);
 
 		// Make lower case
-		transform(input.begin(), input.end(), input.begin(), tolower);
+		transform(input.begin(), input.end(), input.begin(), my_tolower);
 
 		if (size_t sz = input.size(); sz == 0 || sz > 5) {
 			move.setInvalid();

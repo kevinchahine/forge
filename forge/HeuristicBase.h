@@ -52,7 +52,7 @@ namespace forge
 		// in checkmate.
 		///template<Piece::piece_t PIECE_VAL>
 		///int mobility(const Position & pos) const;
-	};
+	}; // class HeuristicBase
 
 	template<typename T>
 	std::unique_ptr<T> HeuristicBase::cloneAs() const
@@ -68,7 +68,7 @@ namespace forge
 		BitBoard pieces = pos.board().pieces<PIECE_T>();	// pieces of some type
 		BitBoard whites = pieces & pos.board().whites();	// white pieces of that type
 		BitBoard blacks = pieces & pos.board().blacks();	// black pieces of that type
-
+		
 		return 
 			static_cast<int>(whites.count()) - 
 			static_cast<int>(blacks.count());		// difference between number of each piece

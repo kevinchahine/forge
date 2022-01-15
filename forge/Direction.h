@@ -37,7 +37,7 @@ namespace forge
 					static_cast<int8_t>(square.col()) + horizontal < 8;
 			}
 
-			//bool isLateral() const { return vertical }
+			bool isLateral() const { return isHorizontal() || isVertical(); }
 			bool isDiagonal() const { return abs(vertical) == abs(horizontal); }
 			bool isVertical() const { return vertical != 0 && horizontal == 0; }
 			bool isHorizontal() const { return vertical == 0 && horizontal != 0; }
@@ -51,10 +51,10 @@ namespace forge
 
 		// --- Line Directions (Mixin Class)  ---
 
-		class Linear : public virtual Direction {};
-		class NonLinear : public virtual Direction {};
-		class Line : public virtual Linear {};
-		class Ray : public virtual Linear {};
+		class Linear : public virtual Direction {};		// Lines and Rays
+		class NonLinear : public virtual Direction {};	// L-shaped Knight directions
+		class Line : public virtual Linear {};			// Points in 2 opposite directions
+		class Ray : public virtual Linear {};			// Points in 1 direction
 
 		// --- Shape ---
 
@@ -70,11 +70,11 @@ namespace forge
 
 		class Vertical : public virtual Lateral, public virtual Line {};
 
-		// Direction: \ 
-		class MainDiagonal : public virtual Diagonal, public virtual Line {};
-
 		// Direction: /
 		class OffDiagonal : public virtual Diagonal, public virtual Line {};
+
+		// Direction: \ (Leave this to prevent '\' from causing problems)
+		class MainDiagonal : public virtual Diagonal, public virtual Line {};
 
 		// --- Lateral Rays: Up, Down, Left, Right ---
 

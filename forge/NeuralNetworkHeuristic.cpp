@@ -66,18 +66,18 @@ namespace forge
 	template<typename PIECE_T>
 	void BitBoardToCvMat(cv::Mat& mat, const Board& board, const BitBoard & ours, const BitBoard & theirs, int rowIndex) 
 	{
-		BitBoard pieces = board.pieces<PIECE_T>();
-		BitBoard ourPieces = pieces & ours;
-		BitBoard theirPieces = pieces & theirs;
-
-		for (size_t index = 0; index < 64; index++) {
-			if (ourPieces[index] == 1) {
-				mat.at<int8_t>(cv::Point(index, rowIndex)) = 1;
-			}
-			else if (theirPieces[index] == 1) {
-				mat.at<int8_t>(cv::Point(index, rowIndex + 1)) = 1;
-			}
-		}
+		////////////BitBoard pieces = board.pieces<PIECE_T>();
+		////////////BitBoard ourPieces = pieces & ours;
+		////////////BitBoard theirPieces = pieces & theirs;
+////////////
+		////////////for (size_t index = 0; index < 64; index++) {
+		////////////	if (ourPieces[index] == 1) {
+		////////////		mat.at<int8_t>(cv::Point(index, rowIndex)) = 1;
+		////////////	}
+		////////////	else if (theirPieces[index] == 1) {
+		////////////		mat.at<int8_t>(cv::Point(index, rowIndex + 1)) = 1;
+		////////////	}
+		////////////}
 	}
 
 	// Does what BitBoardToCvMat does but flips indices of each piece so that 
@@ -85,20 +85,20 @@ namespace forge
 	template<typename PIECE_T>
 	void BitBoardToCvMatFlipped(cv::Mat& mat, const Board& board, const BitBoard& ours, const BitBoard& theirs, int rowIndex)
 	{
-		BitBoard pieces = board.pieces<PIECE_T>();
-		BitBoard ourPieces = pieces & ours;
-		BitBoard theirPieces = pieces & theirs;
-
-		for (size_t index = 0; index < 64; index++) {
-			auto flippedIndex = 64 - index;
-
-			if (ourPieces[index] == 1) {
-				mat.at<int8_t>(cv::Point(flippedIndex, rowIndex)) = 1;
-			}
-			else if (theirPieces[index] == 1) {
-				mat.at<int8_t>(cv::Point(flippedIndex, rowIndex + 1)) = 1;
-			}
-		}
+		/////////BitBoard pieces = board.pieces<PIECE_T>();
+		/////////BitBoard ourPieces = pieces & ours;
+		/////////BitBoard theirPieces = pieces & theirs;
+/////////
+		/////////for (size_t index = 0; index < 64; index++) {
+		/////////	auto flippedIndex = 64 - index;
+/////////
+		/////////	if (ourPieces[index] == 1) {
+		/////////		mat.at<int8_t>(cv::Point(flippedIndex, rowIndex)) = 1;
+		/////////	}
+		/////////	else if (theirPieces[index] == 1) {
+		/////////		mat.at<int8_t>(cv::Point(flippedIndex, rowIndex + 1)) = 1;
+		/////////	}
+		/////////}
 	}
 	
 	cv::Mat NeuralNetworkHeuristic::preprocess(const Position& pos) const

@@ -6,8 +6,8 @@
 #include <iostream>
 #include <bitset>
 
-#include <Guten/Color.h>
-#include <Guten/iocolor.h>
+#include <Guten/color/Color.h>
+#include <Guten/color/iocolor.h>
 
 namespace forge
 {
@@ -170,8 +170,8 @@ namespace forge
 
 		class WhiteKing : public King {
 		public:
-			WhiteKing() : King{ Piece::WHITE_KING } {}
-			WhiteKing(bool isWhite) : King{ (isWhite ? Piece::WHITE_KING : Piece::BLACK_KING) } {}
+			WhiteKing() : King{ forge::WHITE } {}
+			WhiteKing(bool isWhite) : King{ isWhite } {}
 			WhiteKing(WhiteKing &&) noexcept = default;
 			virtual ~WhiteKing() noexcept = default;
 			WhiteKing & operator=(const WhiteKing &) = default;
@@ -180,8 +180,8 @@ namespace forge
 
 		class BlackKing : public King {
 		public:
-			BlackKing() : King{ Piece::BLACK_KING } {}
-			BlackKing(bool isWhite) : King{ (isWhite ? Piece::WHITE_KING : Piece::BLACK_KING) } {}
+			BlackKing() : King{ forge::BLACK } {}
+			BlackKing(bool isWhite) : King{ isWhite } {}
 			BlackKing(BlackKing &&) noexcept = default;
 			virtual ~BlackKing() noexcept = default;
 			BlackKing & operator=(const BlackKing &) = default;

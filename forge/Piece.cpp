@@ -246,6 +246,7 @@ namespace forge
 			cout << "Error: " << __FILE__ << " line " << __LINE__
 				<< " Piece type could not be identified. Square might be empty.\n";
 #endif // _DEBUG
+			return BitBoard();
 		}
 
 		BitBoard Piece::captureMask(BoardSquare square) const
@@ -265,6 +266,8 @@ namespace forge
 			cout << "Error: " << __FILE__ << " line " << __LINE__
 				<< " Piece type could not be identified. Square might be empty.\n";
 #endif // _DEBUG
+
+			return BitBoard();
 		}
 
 		void Piece::masks(BoardSquare square, BitBoard & pushMask, BitBoard & captureMask) const

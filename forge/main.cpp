@@ -18,11 +18,15 @@ Designed to be compatible with a variety of displays including:
 	- Custom command line GUI for systems that don't support graphical output.
 */
 
-#include "Test.h"
-#include "TestMoveGen.h"
-#include "TestOptimizer.h"
-#include "TestUci.h"
-#include "DatasetGenerator.h"
+#include <iostream>
+#include <Guten/guten.hpp>	// REMOVE thid
+#include "BitBoard.h"
+
+/////////////#include "Test.h"
+/////////////#include "TestMoveGen.h"
+/////////////#include "TestOptimizer.h"
+/////////////#include "TestUci.h"
+/////////////#include "DatasetGenerator.h"
 
 using namespace std;
 
@@ -64,7 +68,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	forge::test::chessMatch();				// **************
+	//forge::test::chessMatch();				// **************
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();

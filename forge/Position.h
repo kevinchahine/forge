@@ -34,14 +34,15 @@ namespace forge
 		// ----- Moves (both push moves and captures) -----
 		// primary specialization works for all Pieces but Kings, Rooks and Pawns
 		template <typename PIECE_T> void move(Move move);
-		template<> void move<pieces::King>(Move move);
-		template<> void move<pieces::WhiteKing>(Move move);
-		template<> void move<pieces::BlackKing>(Move move);
-		template<> void move<pieces::Queen>(Move move);
-		template<> void move<pieces::Bishop>(Move move);
-		template<> void move<pieces::Knight>(Move move);
-		template<> void move<pieces::QBN_Piece>(Move move);
-		template<> void move<pieces::Rook>(Move move);
+		//////////////template<> void move<pieces::King>(Move move);
+		//////////////template<> void move<pieces::WhiteKing>(Move move);
+		//////////////template<> void move<pieces::BlackKing>(Move move);
+		//////////////template<> void move<pieces::Queen>(Move move);
+		//////////////template<> void move<pieces::Bishop>(Move move);
+		//////////////template<> void move<pieces::Knight>(Move move);
+		//////////////template<> void move<pieces::QBN_Piece>(Move move);
+		//////////////template<> void move<pieces::Rook>(Move move);
+
 		// Intended to be used from class MoveGenerator to move pieces
 		// efficiently. 
 		// Automatically applies "50 move rule" and increments move counter.
@@ -49,10 +50,10 @@ namespace forge
 		// Calling incorrectly can cause errors. Follow these rules when calling.
 		//	- 'from' should point to piece of player whos turn it is.
 		// Works with captures, promotions, castling and enpassent
-		template<> void move<pieces::WhitePawn>(Move move);
-		template<> void move<pieces::BlackPawn>(Move move);
-		template<> void move<pieces::Pawn>(Move move);
-		template<> void move<pieces::Piece>(Move move);
+		///////////////////template<> void move<pieces::WhitePawn>(Move move);
+		///////////////////template<> void move<pieces::BlackPawn>(Move move);
+		///////////////////template<> void move<pieces::Pawn>(Move move);
+		///////////////////template<> void move<pieces::Piece>(Move move);
 
 		// TODO: Add capture() and push() versions of move() that will be more efficient
 
