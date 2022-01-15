@@ -17,7 +17,7 @@ namespace forge
 		RandomHeuristic & operator=(const RandomHeuristic &) = default;
 		RandomHeuristic & operator=(RandomHeuristic &&) noexcept = default;
 
-		virtual heuristic_t eval(const Position & pos) const override;
+		virtual heuristic_t eval(const Position & pos) override;
 
 		virtual std::unique_ptr<HeuristicBase> clone() const override;	// TODO: Optimize: Why can't this be inlined. See other derivations as well.
 

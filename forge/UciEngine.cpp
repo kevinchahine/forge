@@ -190,7 +190,7 @@ namespace forge
 		{
 			// 1.) --- Make sure file exists and is an executable ---
 			if (fs::exists(path) == false) {
-				throw exception("Could not open executable");
+				throw runtime_error("Could not open executable");
 			}
 
 			// 2.) --- Open as a child process ---
@@ -198,7 +198,7 @@ namespace forge
 
 			// 3.) --- Make sure chess engine is running ---
 			if (m_child.running() == false) {
-				throw exception("Could not run chess engine");
+				throw runtime_error("Could not run chess engine");
 			}
 
 			// 1.) --- Put engine in UCI mode ---

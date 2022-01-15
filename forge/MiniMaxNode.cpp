@@ -159,7 +159,7 @@ namespace forge
 				}
 
 				break;
-			default:	throw std::exception("New State");			break;
+			default:	throw std::runtime_error("New State");			break;
 			}
 		}
 
@@ -173,7 +173,7 @@ namespace forge
 		case STATE::FRESH:		/*p_node->expand();	*/	break;
 		case STATE::EXPANDED:							break;
 		case STATE::PRUNED:								break;
-		default:	throw std::exception("New State");	break;
+		default:	throw std::runtime_error("New State");	break;
 		}
 
 		return *p_node;

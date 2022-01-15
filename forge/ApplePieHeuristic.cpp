@@ -4,7 +4,7 @@ using namespace std;
 
 namespace forge
 {
-	heuristic_t ApplePieHeuristic::eval(const Position & pos) const
+	heuristic_t ApplePieHeuristic::eval(const Position & pos)
 	{
 		return
 			// --- Material ---

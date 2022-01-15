@@ -3,7 +3,7 @@
 #include "ViewBase.h"
 
 #include "MoveGenerator.h"
-#include "Guten/CheckerBoard.h"
+#include "Guten/boards/CheckerBoard.h"
 #include "MoveList.h"
 
 namespace forge

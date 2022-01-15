@@ -1,12 +1,11 @@
 #include "PerformanceLogger.h"
 
-#include <Guten/iocolor.h>
+#include <Guten/color/iocolor.h>
 
 #include <algorithm>
 #include <filesystem>
 
 #include <boost/date_time.hpp>	// TODO: Minimize this into only what we need
-#include <xlnt/xlnt.hpp>
 
 using namespace std;
 
@@ -56,6 +55,7 @@ namespace forge
 		const string & evaluationFunction, 
 		const string & moveGeneratorVersion)
 	{
+		#ifdef _WIN32
 		filesystem::path currDir = filesystem::current_path();
 
 		filesystem::directory_iterator it(filesystem::current_path());
@@ -99,6 +99,7 @@ namespace forge
 		sheet.cell(5, 4).value("Search Duration");
 
 		book.save(filePath);
+		#endif
 	}
 
 	void PerformanceLogger::log(
@@ -108,6 +109,7 @@ namespace forge
 		float pliesPerSecond, 
 		chrono::nanoseconds searchDuration)
 	{
+		#ifdef _WIN32 // TODO: Linux make this work on linux or find a replacement
 		filesystem::path currDir = filesystem::current_path();
 
 		filesystem::directory_iterator it(currDir);
@@ -146,5 +148,6 @@ namespace forge
 		sheet.cell(5, row).value(chrono::duration<float, ratio<1, 1>>(searchDuration).count());
 
 		book.save(filePath);
+		#endif
 	}
 } // namespace forge

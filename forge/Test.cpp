@@ -1,15 +1,16 @@
-#pragma once
-
 #include "Test.h"
 #include "TextView.h"
 
-#include "Guten/GridView.h"
+#include <Guten/view/GridView.h>
 
 #include <sstream>
+
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace forge::pieces;
 
+using namespace boost;
 
 namespace forge
 {
@@ -24,12 +25,14 @@ namespace forge
 			using bs = BoardSquare;
 
 			{
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 				b.placeAllPieces();
 			}
 			
 			{
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 				b.place<pieces::Rook>(bs{ 'e', '2' }, BLACK);
 				b.place<pieces::BlackPawn>(bs{ 'c', '2' });
 				b.place<pieces::WhitePawn>(bs{ 'c', '5' });
@@ -40,7 +43,8 @@ namespace forge
 			
 			{
 				bs s{ 'e', '4' };
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 				b.place<pieces::Knight>(s, WHITE);
 				b.place<pieces::Queen>(s.right(), WHITE);
 				b.place<pieces::Bishop>(s.up(2), BLACK);
@@ -49,7 +53,8 @@ namespace forge
 			
 			{
 				bs k{ 'e', '4' };
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 				b.place<pieces::BlackKing>(k);
 				b.place<pieces::Rook>(k.down(2), WHITE);
 				b.place<pieces::Bishop>(k.downLeft(2), WHITE);
@@ -59,7 +64,8 @@ namespace forge
 			}
 			
 			{
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 			
 				bs wk{ 'c', '3' };
 				b.place<WhiteKing>(wk);
@@ -87,7 +93,8 @@ namespace forge
 			}
 			
 			{
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 			
 				bs wk{ 'e', '3' };
 				b.place<WhiteKing>(wk);
@@ -101,7 +108,8 @@ namespace forge
 			}
 			
 			{
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 			
 				bs wk{ 'e', '3' };
 				b.place<WhiteKing>(wk);
@@ -111,17 +119,20 @@ namespace forge
 				b.place<BlackKing>(bk);
 				b.place<Rook>(bk.right(4), WHITE);
 			
-				Board & b2 = positions.emplace_back(positions.back()).board();
+				positions.emplace_back(positions.back());
+				Board & b2 = positions.back().board();
 				b2.place<Bishop>(wk.upRight(3), BLACK);
 				b2.place<Bishop>(bk.upRight(2), WHITE);
 			
-				Board & b3 = positions.emplace_back(positions.back()).board();
+				positions.emplace_back(positions.back());
+				Board & b3 = positions.back().board();
 				b3.place<Queen>(bk.upLeft(2), WHITE);
 				b3.place<Queen>(wk.downRight(2), BLACK);
 			}
 			
 			{
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 			
 				bs wk{ 'f', '4' };
 				b.place<WhiteKing>(wk);
@@ -135,7 +146,8 @@ namespace forge
 			}
 			
 			{
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 			
 				bs wk{ 'e', '3' };
 				b.place<Queen>(wk.up(3), BLACK);
@@ -150,7 +162,8 @@ namespace forge
 			}
 			
 			{
-				Board & b = positions.emplace_back().board();
+				positions.emplace_back();
+				Board & b = positions.back().board();
 			
 				bs s{ 5, 4 };
 				b.place<pieces::Knight>(s, WHITE);
@@ -160,7 +173,8 @@ namespace forge
 			}
 			
 			{ // Pins
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
 				Board & b = p.board();
 			
@@ -172,7 +186,8 @@ namespace forge
 			} 
 			
 			{ // Pins
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
 				Board & b = p.board();
 			
@@ -184,7 +199,8 @@ namespace forge
 			}
 			
 			{ // Pins
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				const_cast<MoveCounter &>(p.moveCounter())++;	// Make it Blacks turn
 				Board & b = p.board();
 			
@@ -196,7 +212,8 @@ namespace forge
 			}
 			
 			{ // Pins
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board & b = p.board();
 			
 				b.place<WhiteKing>(bs{ 'b', '3' });
@@ -207,7 +224,8 @@ namespace forge
 			}
 			
 			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board & b = p.board();
 			
 				b.place<WhiteKing>(bs{ 'b', '3' });
@@ -217,7 +235,8 @@ namespace forge
 			}
 			
 			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board & b = p.board();
 			
 				b.place<WhiteKing>(bs{ 'b', '3' });
@@ -227,7 +246,8 @@ namespace forge
 			}
 			
 			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board & b = p.board();
 			
 				b.place<WhiteKing>(bs{ 'b', '3' });
@@ -237,7 +257,8 @@ namespace forge
 			}
 			
 			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board & b = p.board();
 			
 				b.place<WhiteKing>(bs{ 'b', '3' });
@@ -247,7 +268,8 @@ namespace forge
 			}
 			
 			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board & b = p.board();
 			
 				b.place<WhiteKing>(bs{ 'b', '3' });
@@ -257,7 +279,8 @@ namespace forge
 			}
 			
 			{ // Block and Capture Attacker
-				Position & p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board & b = p.board();
 			
 				b.place<WhiteKing>(bs{ 'b', '3' });
@@ -268,7 +291,8 @@ namespace forge
 			}
 
 			{ // Promotions
-				Position& p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board& b = p.board();
 
 				b.place<WhiteKing>(bs{ 'd', '1' });
@@ -277,7 +301,8 @@ namespace forge
 			}
 
 			{
-				Position& p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				Board& b = p.board();
 
 				p.move<WhiteKing>(Move{ b.whiteKing(), bs{ 'e', '1' } });
@@ -288,7 +313,8 @@ namespace forge
 			}
 
 			{
-				Position& p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				p.reset();
 				Board& b = p.board();
 
@@ -299,7 +325,8 @@ namespace forge
 			}
 
 			{
-				Position& p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				p.reset();
 				Board& b = p.board();
 
@@ -312,13 +339,15 @@ namespace forge
 			}
 
 			{
-				Position& p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				p.fromFEN(R"dil(rnb1kbnr/pppp1ppp/4p3/8/6Pq/5P2/PPPPP2P/RNBQKBNR w - - 1 2)dil");
 				p.move<BlackKing>(Move{ "e8e7" });
 			}
 
 			{
-				Position& p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
 				
 				Board& b = p.board();
 
@@ -331,7 +360,9 @@ namespace forge
 			}
 
 			{
-				Position& p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
+				
 				Board& b = p.board();
 
 				b.place<BlackKing>(bs{ 'e', '7' });
@@ -343,24 +374,26 @@ namespace forge
 			}
 
 			{
-				Position& p = positions.emplace_back();
+				positions.emplace_back();
+				Position & p = positions.back();
+				
 				p.fromFEN("r2qkb1r/ppp1pBpp/2np1nb1/8/4PP2/P7/1PPP2PP/RNBQ1KNR b - - 0 1");
 			}
 
 			{
-				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/RPP1PPPP/1NBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/RPP1PPPP/1NBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnb1kbnr/2qP1ppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnb1kbnr/3Pqppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("1nbqkbnr/3P1ppp/r3p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rn1qkbnr/1b1P1ppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnbqkbnr/3P1pp1/4p3/p6p/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnb1kbnr/3P1ppp/1q2p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnbqkbnr/3P1p1p/4p3/p5p1/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
-				positions.emplace_back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pP6/8/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/RPP1PPPP/1NBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/RPP1PPPP/1NBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pp6/P7/5N2/1PPBPPPP/RN1QKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnb1kbnr/2qP1ppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnb1kbnr/3Pqppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("1nbqkbnr/3P1ppp/r3p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rn1qkbnr/1b1P1ppp/4p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnbqkbnr/3P1pp1/4p3/p6p/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnb1kbnr/3P1ppp/1q2p3/p7/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnbqkbnr/3P1p1p/4p3/p5p1/3P4/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
+				positions.emplace_back();positions.back().fromFEN("rnbq1bnr/2ppk1pp/3Ppp2/pP6/8/5N2/1PP1PPPP/RNBQKB1R b - - 0 5");
 			}
 		}
 
@@ -517,16 +550,18 @@ namespace forge
 
 			while (true)
 			{
+			#ifdef _WIN32
 				if (_kbhit()) {
 					char ch = _getch();
 
 					clock.click();
 				}
-
+			#endif
 				cout << clock << '\n';
 
 				this_thread::sleep_for(chrono::seconds(1));
 			}
+
 		}
 
 		void stopWatch()
@@ -740,9 +775,10 @@ namespace forge
 					theirRays |= b.laterals();
 				}
 
-				bool isPinPossible =
-					moveGen.isPinPossible<directions::Up>(b.laterals() & b.blacks(), b.blockers());
-
+				// TODO: tHIS IS weird. Look into this
+				bool isPinPossible = moveGen.isPinPossible<directions::Up>();
+				//bool isPinPossible =
+				//	moveGen.isPinPossible<directions::Up>(b.laterals() & b.blacks(), b.blockers());
 			}
 
 			void isPinPossible()
@@ -1278,7 +1314,7 @@ namespace forge
 		{
 			PerformanceLogger logger;
 
-			filesystem::path currDir = filesystem::current_path();
+			boost::filesystem::path currDir = boost::filesystem::current_path();
 			logger.start(
 				"Some Solver",
 				"Some Variant",
@@ -1313,15 +1349,15 @@ namespace forge
 				w.kingMobility = 13;
 
 				// --- Piece Square Table Bonus ---
-				w.queenPSTB = { {
-					1, 1, 1, 1, 1, 1, 1, 1,
-					2, 2, 2, 2, 2, 2, 2, 2,
-					3, 3, 3, 3, 3, 3, 3, 3,
-					4, 4, 4, 4, 4, 4, 4, 4,
-					5, 5, 5, 5, 5, 5, 5, 5,
-					6, 6, 6, 6, 6, 6, 6, 6,
-					7, 7, 7, 7, 7, 7, 7, 7,
-					8, 8, 8, 8, 8, 8, 8, 8, } };
+				w.queenPSTB;// = { 
+					//{ 1, 1, 1, 1, 1, 1, 1, 1 },
+					//{ 2, 2, 2, 2, 2, 2, 2, 2 },
+					//{ 3, 3, 3, 3, 3, 3, 3, 3 },
+					//{ 4, 4, 4, 4, 4, 4, 4, 4 },
+					//{ 5, 5, 5, 5, 5, 5, 5, 5 },
+					//{ 6, 6, 6, 6, 6, 6, 6, 6 },
+					//{ 7, 7, 7, 7, 7, 7, 7, 7 },
+					//{ 8, 8, 8, 8, 8, 8, 8, 8 } };
 				w.rookPSTB = w.queenPSTB;
 				w.bishopPSTB = w.queenPSTB;
 				w.knightPSTB = w.queenPSTB;

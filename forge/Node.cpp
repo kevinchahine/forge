@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Node.h"
 
 #include "MoveGenerator2.h"

@@ -2,7 +2,12 @@
 
 #include "HeuristicBase.h"
 
+// TODO: CLEAN THIS UP
+#ifdef _WIN32
 #include <opencv2/dnn/dnn.hpp>
+#else
+#include <opencv4/opencv2/dnn/dnn.hpp>
+#endif
 
 namespace forge
 {
@@ -19,7 +24,7 @@ namespace forge
 		NeuralNetworkHeuristic& operator=(const NeuralNetworkHeuristic&) = default;
 		NeuralNetworkHeuristic& operator=(NeuralNetworkHeuristic&&) noexcept = default;
 
-		virtual heuristic_t eval(const Position& pos) const override;
+		virtual heuristic_t eval(const Position& pos) override;
 
 		virtual std::unique_ptr<HeuristicBase> clone() const override;
 

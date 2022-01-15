@@ -1,7 +1,5 @@
 #include "NeuralNetworkHeuristic.h"
 
-#include <opencv2/core/mat.hpp>
-
 using namespace std;
 
 namespace forge
@@ -11,7 +9,7 @@ namespace forge
 
 	}
 
-	heuristic_t NeuralNetworkHeuristic::eval(const Position& pos) const
+	heuristic_t NeuralNetworkHeuristic::eval(const Position& pos)
 	{
 		// --- Preprocess ---
 		cv::Mat input = this->preprocess(pos);

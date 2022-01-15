@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-#include <type_traits>	// for std::hash<>
+#include <functional>	// for std::hash<>
 
 namespace forge
 {

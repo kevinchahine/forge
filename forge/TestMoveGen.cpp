@@ -5,9 +5,9 @@
 #include "StopWatch.h"
 #include "globals.h"
 
-#include <Guten/Color.h>
-#include <Guten/GridView.h>
-#include <Guten/DrawFunctions.h>
+#include <Guten/color/Color.h>
+#include <Guten/view/GridView.h>
+#include <Guten/draw/DrawFunctions.h>
 
 #include <boost/process/child.hpp>
 #include <boost/process/search_path.hpp>
@@ -16,7 +16,9 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/algorithm/string.hpp>
 
+#ifdef _WIN32	// TODO: fIX THIS
 #include <conio.h>	// TODO: Cross-Platform: remove this for Linux compatibility
+#endif 
 
 #include <algorithm>
 #include <chrono>
@@ -481,7 +483,7 @@ namespace forge
 						break;
 					}
 					default:
-						throw std::exception("You idiot");
+						throw std::runtime_error("You idiot");
 						break;
 					}
 					
@@ -497,6 +499,7 @@ namespace forge
 						allMisses.push_back(std::make_pair(movePos.position, elem.move));
 					}
 
+					#ifdef _WIN32	 // TODO: fix this
 					if (_kbhit()) {
 						char ch = _getch();
 
@@ -514,6 +517,7 @@ namespace forge
 						cout << "Press any key...";
 						cin.get();
 					}
+					#endif
 
 					//if (misses.size() || faults.size()) {
 					//	cout << "Press any key...";

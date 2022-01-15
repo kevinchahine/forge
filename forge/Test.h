@@ -27,7 +27,9 @@
 
 #include <Guten/guten.hpp>
 
+#ifdef _WIN32		// TODO: Fix this
 #include <conio.h>	// Only for testing (Only Windows compatible)
+#endif
 
 namespace forge
 {

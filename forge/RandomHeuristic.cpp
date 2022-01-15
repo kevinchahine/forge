@@ -6,7 +6,7 @@ using namespace std;
 
 namespace forge
 {
-	heuristic_t RandomHeuristic::eval(const Position & pos) const
+	heuristic_t RandomHeuristic::eval(const Position & pos)
 	{
 		// We will break the rules a bit here. Since RandomHeuristic is only
 		// intended for testing, we are going to const_cast our random engine.
