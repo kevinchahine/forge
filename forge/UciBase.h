@@ -1,9 +1,9 @@
 #pragma once
 
-#include <boost/asio/io_context.hpp>
-#include <boost/asio/streambuf.hpp>
-#include <boost/process/pipe.hpp>
-#include <boost/process/async_pipe.hpp>
+//pthread_error #include <boost/asio/io_context.hpp>
+//pthread_error #include <boost/asio/streambuf.hpp>
+//pthread_error #include <boost/process/pipe.hpp>
+//pthread_error #include <boost/process/async_pipe.hpp>
 
 #include <iostream>
 #include <sstream>
@@ -16,9 +16,9 @@ namespace forge
 		class UciBase
 		{
 		public:
-			UciBase() :
-				pin(ioc),
-				buf_in(512)	// a line will unlikely contain more than 512 char before it is extracted
+			UciBase() //pthread_error :
+				//pthread_error pin(ioc),
+				//pthread_error buf_in(512)	// a line will unlikely contain more than 512 char before it is extracted
 			{};
 
 			// Extracts a line of text from stream (or async_pipe) `pin` and returns
@@ -33,12 +33,12 @@ namespace forge
 			std::stringstream readLine();
 
 		protected:
-			boost::asio::io_context ioc;
+			//pthread_error boost::asio::io_context ioc;
 
 		public:
-			boost::process::opstream pout;
-			boost::process::async_pipe pin;
-			boost::asio::streambuf buf_in;
+			//pthread_error boost::process::opstream pout;
+			//pthread_error boost::process::async_pipe pin;
+			//pthread_error boost::asio::streambuf buf_in;
 		};
 	} // namespace uci
 } // namespace forge

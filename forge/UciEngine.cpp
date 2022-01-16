@@ -1,10 +1,10 @@
 #include "UciEngine.h"
 
-#include <boost/asio/read_until.hpp>
-#include <boost/bind.hpp>
-#include <boost/process/search_path.hpp>
-#include <boost/process/io.hpp>
-#include <boost/optional/optional_io.hpp>
+//pthread_error #include <boost/asio/read_until.hpp>
+//pthread_error #include <boost/bind.hpp>
+//pthread_error #include <boost/process/search_path.hpp>
+//pthread_error #include <boost/process/io.hpp>
+//pthread_error #include <boost/optional/optional_io.hpp>
 
 #include <string>
 #include <functional>

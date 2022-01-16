@@ -214,6 +214,7 @@ set(TEXT_FILES
 
 # --- OPENCV ---
 
+message(STATUS "----- OpenCV -----")
 set("OpenCV_DIR" "/usr/share/OpenCV")
 find_package(OpenCV REQUIRED)
 
@@ -222,14 +223,13 @@ MESSAGE(STATUS "LINK LIBRARIES ${OpenCV_LIBS}")
 
 # --- BOOST ---
 
-set(BOOST_ROOT "/opt/boost")
-
+message(STATUS "----- BOOST -----")
 set(Boost_USE_STATIC_LIBS		OFF)
 set(Boost_USE_MULTITHREADED		OFF)
 set(Boost_USE_STATIC_RUNTIME	OFF)
 
-find_package(Boost 1.71 REQUIRED COMPONENTS
-	asio 
+find_package(Boost REQUIRED COMPONENTS
+	#asio 
 	system 
 	filesystem 
 	#process
@@ -252,7 +252,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 	guten
 	${OpenCV_LIBS}
 	# ${BOOST_LIBRARIES}
-	Boost::asio
+	#Boost::asio
 	Boost::system
 	Boost::filesystem
 )
