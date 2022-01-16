@@ -24,7 +24,7 @@ Designed to be compatible with a variety of displays including:
 #include "BitBoard.h"
 #include "Position.h"
 
-/////////////#include "Test.h"
+#include "Test.h"
 /////////////#include "TestMoveGen.h"
 /////////////#include "TestOptimizer.h"
 /////////////#include "TestUci.h"
@@ -70,7 +70,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	//forge::test::chessMatch();				// **************
+	forge::test::chessMatch();				// **************
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
@@ -93,7 +93,7 @@ int main(int argc, char ** argv)
 
 	//cout << "Done";
 	//this_thread::sleep_for(chrono::seconds(1));
-	cout << "Press any key..." << endl;
-	cin.get();
+	//cout << "Press any key..." << endl;
+	//cin.get();
 	return 0;
 }

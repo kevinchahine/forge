@@ -1,7 +1,7 @@
 #pragma once
 
-#include <boost/process/child.hpp>
-#include <boost/filesystem/path.hpp>
+//pthread_error #include <boost/process/child.hpp>
+//pthread_error #include <boost/filesystem/path.hpp>
 
 #include "UciBase.h"
 #include "UciInfo.h"
@@ -22,160 +22,160 @@ namespace forge
 		// For that, use class UciGui instead.
 		class UciEngine : public UciBase
 		{
-		public:
-			UciEngine() = default;
-			virtual ~UciEngine() noexcept { close(); }
-
-			// Attempts to start a chess engine. Searches for UCI compatible chess engine
-			// Currently only searches for stockfish_13_win_x64_bmi2.exe
-			// default: stockfish_13_win_x64_bmi2.exe
-			// throws an exception upon failure.
-			void launch();
-
-			// See comments of launch()
-			// engineName - name of a chessengine (case insensitive)
-			// Can be:
-			//	- "stockfish"
-			//	- "lc0"
-			//	- "forge"
-			void launch(const std::string& engineName);
-
-			// See comments of launch()
-			// path - path to a chess engine executable
-			void launch(const boost::filesystem::path& path);
-
-			// Calls on engine to evaluate Position `pos`.
-			// The call is blocking and waits for engine to respond with the evaluation results
-			// evaluation is returned in units of centi pawns
-			int eval(const Position& pos);
-
-			// Calls on engine to generate legal moves from Position `pos`
-			// The call is blocking and waits for engine to respond with a list of legal moves
-			MoveList movegen(const Position& pos);
-
-			// Closes the chess engine program
-			// Calling this method is optional because it will be called from
-			// the destructor.
-			void close();
-
-		public:	// ---------------- UCI COMMANDS ------------------------------------
-
-			// ----------------------- SEND COMMANDS -----------------------------------
-
-			void send_uci();						
-			
-			void send_debug(bool isDebug);		
-			
-			void send_isready();					
-			
-			// TODO: there is more to options than just this. See UCI Definition
-			void send_setoption(const std::string & opName, const std::string & opVal);
-			
-			void send_ucinewgame();				
-			
-			void send_position();				
-			
-			void send_position(const std::string& fen);
-
-			void send_position(const Position& pos);
-
-			// C - container storing type forge::Move
-			// example: vector<Move>, list<Move>, ...
-			template <typename C>
-			void send_position(const std::string fen, const C & moves);	
-
-			// C - container storing type forge::Move
-			// example: vector<Move>, list<Move>, ...
-			template <typename C>
-			void send_position(const Position& pos, const C & moves);
-			
-			// Tells engine to search the position until the "stop" command is issued
-			// Same as "go infinite"
-			// Non-blocking call.
-			void send_go();						
-			
-			// Non-blocking call.
-			void send_go(const UciSearchCommands& sCMD);
-			
-			void send_stop();					
-			
-			void send_ponderhit();				
-			
-			void send_quit();					
-
-			// ----------------------- HANDLERS ----------------------------------------
-
-			void handle(std::istream & is);
-
-			void handle_id(std::istream & is);
-
-			void handle_uciok(std::istream & is);
-
-			void handle_readyok(std::istream & is);
-
-			void handle_bestmove(std::istream & is);
-
-			void handle_copyprotection(std::istream & is);
-
-			void handle_registration(std::istream & is);
-
-			void handle_info(std::istream & is);
-
-			void handle_option(std::istream & is);
-
-			// Only called from handle_option()
-			void handle_option_name(std::istream & is);
-
-			// Only called from handle_option()
-			void handle_option_type(std::istream & is);
-
-			// Only called from handle_option()
-			void handle_option_default(std::istream & is);
-
-			// Only called from handle_option()
-			void handle_option_min(std::istream & is);
-
-			// Only called from handle_option()
-			void handle_option_max(std::istream & is);
-
-			// Only called from handle_option()
-			void handle_option_var(std::istream & is);
-
-			// ----------------------- WAIT METHODS ------------------------------------
-			// These are blocking methods to to wait until a specific command is received
-			// or a certain event occures. They can be used to turn an asynchronous 
-			// operation into a synchronous one.
-			// Calling these methods do not stop the object from reading from the 
-			
-
-		private:
-			boost::process::child m_child;
-
-			// --- Data about the engine ---
-			std::string name;
-			std::string author;
-
-			Move bestMove;
-			int bestMoveEval;
-			UciInfo info;
+//pthread_error 		public:
+//pthread_error 			UciEngine() = default;
+//pthread_error 			virtual ~UciEngine() noexcept { close(); }
+//pthread_error 
+//pthread_error 			// Attempts to start a chess engine. Searches for UCI compatible chess engine
+//pthread_error 			// Currently only searches for stockfish_13_win_x64_bmi2.exe
+//pthread_error 			// default: stockfish_13_win_x64_bmi2.exe
+//pthread_error 			// throws an exception upon failure.
+//pthread_error 			void launch();
+//pthread_error 
+//pthread_error 			// See comments of launch()
+//pthread_error 			// engineName - name of a chessengine (case insensitive)
+//pthread_error 			// Can be:
+//pthread_error 			//	- "stockfish"
+//pthread_error 			//	- "lc0"
+//pthread_error 			//	- "forge"
+//pthread_error 			void launch(const std::string& engineName);
+//pthread_error 
+//pthread_error 			// See comments of launch()
+//pthread_error 			// path - path to a chess engine executable
+//pthread_error 			void launch(const boost::filesystem::path& path);
+//pthread_error 
+//pthread_error 			// Calls on engine to evaluate Position `pos`.
+//pthread_error 			// The call is blocking and waits for engine to respond with the evaluation results
+//pthread_error 			// evaluation is returned in units of centi pawns
+//pthread_error 			int eval(const Position& pos);
+//pthread_error 
+//pthread_error 			// Calls on engine to generate legal moves from Position `pos`
+//pthread_error 			// The call is blocking and waits for engine to respond with a list of legal moves
+//pthread_error 			MoveList movegen(const Position& pos);
+//pthread_error 
+//pthread_error 			// Closes the chess engine program
+//pthread_error 			// Calling this method is optional because it will be called from
+//pthread_error 			// the destructor.
+//pthread_error 			void close();
+//pthread_error 
+//pthread_error 		public:	// ---------------- UCI COMMANDS ------------------------------------
+//pthread_error 
+//pthread_error 			// ----------------------- SEND COMMANDS -----------------------------------
+//pthread_error 
+//pthread_error 			void send_uci();						
+//pthread_error 			
+//pthread_error 			void send_debug(bool isDebug);		
+//pthread_error 			
+//pthread_error 			void send_isready();					
+//pthread_error 			
+//pthread_error 			// TODO: there is more to options than just this. See UCI Definition
+//pthread_error 			void send_setoption(const std::string & opName, const std::string & opVal);
+//pthread_error 			
+//pthread_error 			void send_ucinewgame();				
+//pthread_error 			
+//pthread_error 			void send_position();				
+//pthread_error 			
+//pthread_error 			void send_position(const std::string& fen);
+//pthread_error 
+//pthread_error 			void send_position(const Position& pos);
+//pthread_error 
+//pthread_error 			// C - container storing type forge::Move
+//pthread_error 			// example: vector<Move>, list<Move>, ...
+//pthread_error 			template <typename C>
+//pthread_error 			void send_position(const std::string fen, const C & moves);	
+//pthread_error 
+//pthread_error 			// C - container storing type forge::Move
+//pthread_error 			// example: vector<Move>, list<Move>, ...
+//pthread_error 			template <typename C>
+//pthread_error 			void send_position(const Position& pos, const C & moves);
+//pthread_error 			
+//pthread_error 			// Tells engine to search the position until the "stop" command is issued
+//pthread_error 			// Same as "go infinite"
+//pthread_error 			// Non-blocking call.
+//pthread_error 			void send_go();						
+//pthread_error 			
+//pthread_error 			// Non-blocking call.
+//pthread_error 			void send_go(const UciSearchCommands& sCMD);
+//pthread_error 			
+//pthread_error 			void send_stop();					
+//pthread_error 			
+//pthread_error 			void send_ponderhit();				
+//pthread_error 			
+//pthread_error 			void send_quit();					
+//pthread_error 
+//pthread_error 			// ----------------------- HANDLERS ----------------------------------------
+//pthread_error 
+//pthread_error 			void handle(std::istream & is);
+//pthread_error 
+//pthread_error 			void handle_id(std::istream & is);
+//pthread_error 
+//pthread_error 			void handle_uciok(std::istream & is);
+//pthread_error 
+//pthread_error 			void handle_readyok(std::istream & is);
+//pthread_error 
+//pthread_error 			void handle_bestmove(std::istream & is);
+//pthread_error 
+//pthread_error 			void handle_copyprotection(std::istream & is);
+//pthread_error 
+//pthread_error 			void handle_registration(std::istream & is);
+//pthread_error 
+//pthread_error 			void handle_info(std::istream & is);
+//pthread_error 
+//pthread_error 			void handle_option(std::istream & is);
+//pthread_error 
+//pthread_error 			// Only called from handle_option()
+//pthread_error 			void handle_option_name(std::istream & is);
+//pthread_error 
+//pthread_error 			// Only called from handle_option()
+//pthread_error 			void handle_option_type(std::istream & is);
+//pthread_error 
+//pthread_error 			// Only called from handle_option()
+//pthread_error 			void handle_option_default(std::istream & is);
+//pthread_error 
+//pthread_error 			// Only called from handle_option()
+//pthread_error 			void handle_option_min(std::istream & is);
+//pthread_error 
+//pthread_error 			// Only called from handle_option()
+//pthread_error 			void handle_option_max(std::istream & is);
+//pthread_error 
+//pthread_error 			// Only called from handle_option()
+//pthread_error 			void handle_option_var(std::istream & is);
+//pthread_error 
+//pthread_error 			// ----------------------- WAIT METHODS ------------------------------------
+//pthread_error 			// These are blocking methods to to wait until a specific command is received
+//pthread_error 			// or a certain event occures. They can be used to turn an asynchronous 
+//pthread_error 			// operation into a synchronous one.
+//pthread_error 			// Calling these methods do not stop the object from reading from the 
+//pthread_error 			
+//pthread_error 
+//pthread_error 		private:
+//pthread_error 			boost::process::child m_child;
+//pthread_error 
+//pthread_error 			// --- Data about the engine ---
+//pthread_error 			std::string name;
+//pthread_error 			std::string author;
+//pthread_error 
+//pthread_error 			Move bestMove;
+//pthread_error 			int bestMoveEval;
+//pthread_error 			UciInfo info;
 		};
 		
-		template<typename C>
-		void UciEngine::send_position(const std::string fen, const C& moves)
-		{
-			pout << "position " << fen << " moves ";
-
-			for (const Move& m : moves) {
-				pout << m << ' ';
-			}
-
-			pout << endl;
-		}
-		
-		template<typename C>
-		void UciEngine::send_position(const Position& pos, const C& moves)
-		{
-			position(pos.toFEN(), moves);
-		}
+//pthread_error 		template<typename C>
+//pthread_error 		void UciEngine::send_position(const std::string fen, const C& moves)
+//pthread_error 		{
+//pthread_error 			pout << "position " << fen << " moves ";
+//pthread_error 
+//pthread_error 			for (const Move& m : moves) {
+//pthread_error 				pout << m << ' ';
+//pthread_error 			}
+//pthread_error 
+//pthread_error 			pout << endl;
+//pthread_error 		}
+//pthread_error 		
+//pthread_error 		template<typename C>
+//pthread_error 		void UciEngine::send_position(const Position& pos, const C& moves)
+//pthread_error 		{
+//pthread_error 			position(pos.toFEN(), moves);
+//pthread_error 		}
 	} // namespace uci
 } // namespace forge
