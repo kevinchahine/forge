@@ -33,6 +33,8 @@ namespace forge
 			//	2nd column: EVAL as an int
 			static std::deque<PosEvalPair> loadDatasetCSV(const boost::filesystem::path & datasetFile);
 
+			static std::deque<PosEvalPair> loadDatasetCSV(std::istream & in, size_t nlines = numeric_limits<size_t>::max());
+
 			static cv::Ptr<cv::ml::TrainData> preprocess(const std::deque<PosEvalPair> & posEvalPairs);
 
 		public:

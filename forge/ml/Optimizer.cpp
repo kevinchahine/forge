@@ -6,6 +6,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include <fstream>
+#include <sstream>
 #include <assert.h>
 #include <chrono>
 
@@ -56,45 +58,58 @@ namespace forge
 				throw runtime_error(ss.str());
 			}
 
-			// 2.) --- Read File ---
-
-			cout << "Reading...";	cout.flush();
-
-			auto start = chrono::high_resolution_clock::now();
-			rapidcsv::Document doc(datasetFile.string());
-			auto stop = chrono::high_resolution_clock::now();
-
-			cout << "done. " << chrono::duration<double, ratio<1,1>>(stop - start).count() << " sec" << endl;
-
-			cout << "rows: " << doc.GetRowCount() << endl
-			<< "cols: " << doc.GetColumnCount() << endl;
-
-			// 3.) --- Parse data ---
-			deque<PosEvalPair> ds;
 			
-			cout << "Converting FEN To Positions...";
+			// 2.) --- Read File ---
+			ifstream in(datasetFile.string());
 
-			start = chrono::high_resolution_clock::now();
-			size_t nLines = doc.GetRowCount();
-			for (size_t row = 0; row < nLines; row++) {
-				// TODO: Put some error checking here to make sure types match
-				
+			deque<PosEvalPair> ds = loadDatasetCSV(in);
+
+			return ds;
+		}
+
+		deque<PosEvalPair> Optimizer::loadDatasetCSV(istream & in, size_t nlines) 
+		{
+			deque<PosEvalPair> ds;
+
+			// Read `nlines` lines or till the end of the file
+			for (size_t l = 0; l < nlines; l++) {
+				// --- Read entire Line ---
+				string line;
+				getline(in, line);
+
+				// Did we reach the end of the file?
+				if (line.empty()) {
+					break;
+				}
+
+				// Skip the header
+				if (line.size() < 20) {
+					continue;
+				}
+
+				// --- Tokenize ---
+				istringstream ss(move(line));
+				string fen;
+				int eval;
+
+				getline(ss, fen, ',');		// extract FEN
+				ss >> eval;					// extract EVAL
+
+				// --- Push into dataset ---
 				ds.emplace_back(
-					Position(),					// Empty Position
-					doc.GetCell<int>(1, row));	// Eval as an int
+					Position(),		// Empty Position
+					eval);			// Eval as an int
 
-				ds.back().pos.fromFEN(doc.GetCell<string>(0, row));	// Set Position from FEN
+				ds.back().pos.fromFEN(fen);	// Set Position from FEN
 			}
-			stop = chrono::high_resolution_clock::now();
-
-			cout << "done. " << chrono::duration<double, ratio<1,1>>(stop - start).count() << " sec" << endl;
-
-			// 4.) --- Return as a queue of PosEvalPairs ---
+			
 			return ds;
 		}
 
 		cv::Ptr<cv::ml::TrainData> Optimizer::preprocess(const deque<PosEvalPair> & posEvalPairs)
 		{
+			assert(posEvalPairs.size() > 0);
+
 			size_t nSamples = posEvalPairs.size();	// Number of training samples we have
 			size_t nFeatures = 12;					// Number of features to extract from samples 
 													// Each feature will become a One-Hot encoding of 64-elements
@@ -149,8 +164,8 @@ namespace forge
 			auto stop = chrono::high_resolution_clock::now();
 			cout << "done. " << chrono::duration<double, ratio<1,1>>(stop - start).count() << " sec" << endl;
 
-			//cv::imshow("1243", samples);
-			//cv::waitKey(0);
+			cv::imshow("1243", samples);
+			cv::waitKey(0);
 
 			return cv::ml::TrainData::create(
 				samples,
@@ -161,15 +176,24 @@ namespace forge
 
 		void Optimizer::train()
 		{
-			boost::filesystem::path dsPath("/media/kevin/barracuda/Datasets/Chess/chessData-mod-head.csv");
+			boost::filesystem::path dsPath("/media/kevin/barracuda/Datasets/Chess/chessData-mod.csv");
+			ifstream infile(dsPath.string());
 
-			// 1.) Load Dataset
-			deque<PosEvalPair> ds = Optimizer::loadDatasetCSV(dsPath);
+			while (infile.good()) {
+				// 1.) Load Dataset
+				deque<PosEvalPair> ds = Optimizer::loadDatasetCSV(infile, 10'000);
 
-			// 2.) Preprocessing
-			cv::Ptr<cv::ml::TrainData> trainData = Optimizer::preprocess(ds);
+				// 2.) Break when we reach the end of the file
+				if (ds.empty()) {
+					break;
+				}
 
-			
+				// 3.) Preprocessing
+				cv::Ptr<cv::ml::TrainData> trainData = Optimizer::preprocess(ds);
+
+				// 4.) Train Model
+				
+			}
 		}
 
 	} // namespace ml
