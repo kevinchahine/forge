@@ -147,7 +147,7 @@ namespace forge
 			Empty & operator=(const Empty &) = default;
 			Empty & operator=(Empty &&) noexcept = default;
 
-			// Returns BitBoard containing allToFen zeros
+			// Returns BitBoard containing all zeros
 			static BitBoard pushMask(BoardSquare square) { return BitBoard(); }
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -162,7 +162,7 @@ namespace forge
 			King & operator=(const King &) = default;
 			King & operator=(King &&) noexcept = default;
 
-			// Identifies allToFen squares piece can move to as a BitBoard
+			// Identifies all squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -198,7 +198,7 @@ namespace forge
 			Queen & operator=(const Queen &) = default;
 			Queen & operator=(Queen &&) noexcept = default;
 
-			// Identifies allToFen squares piece can move to as a BitBoard
+			// Identifies all squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -214,7 +214,7 @@ namespace forge
 			Bishop & operator=(const Bishop &) = default;
 			Bishop & operator=(Bishop &&) noexcept = default;
 
-			// Identifies allToFen squares piece can move to as a BitBoard
+			// Identifies all squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -230,7 +230,7 @@ namespace forge
 			Knight & operator=(const Knight &) = default;
 			Knight & operator=(Knight &&) noexcept = default;
 
-			// Identifies allToFen squares piece can move to as a BitBoard
+			// Identifies all squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -246,11 +246,31 @@ namespace forge
 			Rook & operator=(const Rook &) = default;
 			Rook & operator=(Rook &&) noexcept = default;
 
-			// Identifies allToFen squares piece can move to as a BitBoard
+			// Identifies all squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
 		};
+
+		// Abstraction class template for Non King Pieces
+		template<Piece::piece_t val>
+		class GenericNonKingPiece : public Piece, public NonKingPiece {
+		public:
+			GenericNonKingPiece() : Piece{ val } {}
+			GenericNonKingPiece(const GenericNonKingPiece &) = default;
+			GenericNonKingPiece(GenericNonKingPiece &&) noexcept = default;
+			virtual ~GenericNonKingPiece() noexcept = default;
+			GenericNonKingPiece & operator=(const GenericNonKingPiece &) = default;
+			GenericNonKingPiece & operator=(GenericNonKingPiece &&) noexcept = default;
+
+			// Identifies all squares piece can move to as a BitBoard
+			static BitBoard pushMask(BoardSquare square);
+
+			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
+		};
+
+		class WhiteRook : public GenericNonKingPiece<Piece::WHITE_ROOK> {};
+		class BlackRook : public GenericNonKingPiece<Piece::BLACK_ROOK> {};
 
 		class Pawn : public Piece, public NonKingPiece {
 		public:
@@ -271,7 +291,7 @@ namespace forge
 			WhitePawn & operator=(const WhitePawn &) = default;
 			WhitePawn & operator=(WhitePawn &&) noexcept = default;
 
-			// Identifies allToFen squares piece can move to as a BitBoard
+			// Identifies all squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square);
@@ -286,7 +306,7 @@ namespace forge
 			BlackPawn & operator=(const BlackPawn &) = default;
 			BlackPawn & operator=(BlackPawn &&) noexcept = default;
 
-			// Identifies allToFen squares piece can move to as a BitBoard
+			// Identifies all squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square);

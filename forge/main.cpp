@@ -29,6 +29,7 @@ Designed to be compatible with a variety of displays including:
 /////////////#include "TestOptimizer.h"
 /////////////#include "TestUci.h"
 /////////////#include "DatasetGenerator.h"
+#include "ml/Optimizer.h"
 
 using namespace std;
 
@@ -70,7 +71,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	forge::test::chessMatch();				// **************
+	//forge::test::chessMatch();				// **************
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
@@ -83,6 +84,8 @@ int main(int argc, char ** argv)
 	//forge::test::ai::playApplePie();
 
 	//forge::test::optimizer();
+	forge::ml::Optimizer op;
+	op.train();
 
 	//forge::uci::test::engineToGui();
 	//forge::uci::test::info();

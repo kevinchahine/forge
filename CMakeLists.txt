@@ -55,7 +55,6 @@ set(HEADER_FILES
 	forge/Movers.h
 	forge/NeuralNetworkHeuristic.h
 	forge/Node.h
-	forge/Optimizer.h
 	forge/OWeightsArchive.h
 	forge/PerformanceLogger.h
 	forge/PerformanceTester.h
@@ -74,7 +73,6 @@ set(HEADER_FILES
 	forge/StopWatch.h
 	forge/Test.h
 	forge/TestMoveGen.h
-	forge/TestOptimizer.h
 	forge/TestUci.h
 	forge/TextView.h
 	forge/ThreatsDefinitions.h
@@ -91,7 +89,9 @@ set(HEADER_FILES
 	forge/ViewBase.h
 	forge/WeightsArchive.h
 	forge/WeightsBase.h
-)
+	forge/ml/Optimizer.h
+	forge/ml/PosEvalPair.h
+	)
 
 # --- Specify the source files ---
 set(SOURCE_FILES
@@ -135,7 +135,6 @@ set(SOURCE_FILES
 	forge/Movers.cpp
 	forge/NeuralNetworkHeuristic.cpp
 	forge/Node.cpp
-	forge/Optimizer.cpp
 	forge/OWeightsArchive.cpp
 	forge/PerformanceLogger.cpp
 	forge/PerformanceTester.cpp
@@ -151,7 +150,6 @@ set(SOURCE_FILES
 	forge/StopWatch.cpp
 	forge/Test.cpp
 	forge/TestMoveGen.cpp
-	forge/TestOptimizer.cpp
 	forge/TestUci.cpp
 	forge/TextView.cpp
 	forge/Threats.cpp
@@ -167,49 +165,50 @@ set(SOURCE_FILES
 	forge/ViewBase.cpp
 	forge/WeightsArchive.cpp
 	forge/WeightsBase.cpp
-)
+	forge/ml/Optimizer.cpp
+	)
 
 # --- Specify the text files ---
 set(TEXT_FILES
-	forge/AI.txt
-	forge/Benchmarks.txt
-	forge/BenchmarkTesting.txt
-	forge/Bugs.txt
-	forge/Classes.txt
-	forge/Database.txt
-	forge/DatasetGenerator.txt
-	forge/Features.txt
-	forge/GameStates.txt
-	forge/Goals.txt
-	forge/HighLevelDesign.txt
-	forge/Ideas.txt
-	forge/MCTS.txt
-	forge/ML.txt
-	forge/MoveGeneratorQuintessential2.txt
-	forge/MoveGeneratorQuintessential.txt
-	forge/MoveGeneratorSpecial.txt
-	forge/Multi_threading.txt
-	forge/NameSpaces.txt
-	forge/NN.txt
-	forge/NodeTree.txt
-	forge/Notation.txt
-	forge/Optimizations.txt
-	forge/ProblemPositions.txt
-	forge/ProgramOptions.txt
-	forge/Progress.txt
-	forge/SearchFramework.txt
-	forge/SearchMonitor.txt
-	forge/Stockfish.txt
-	forge/TimeManagement.txt
-	forge/TODO.txt
-	forge/Training.txt
-	forge/UCI_DefinitionNotes.txt
-	forge/UCI_Definition.txt
-	forge/UCI.txt
-	forge/UCI_UML.txt
-	forge/ValidMoveGenerator.txt
-	forge/Versions.txt
-	forge/View.txt
+	forge/notes/AI.txt
+	forge/notes/Benchmarks.txt
+	forge/notes/BenchmarkTesting.txt
+	forge/notes/Bugs.txt
+	forge/notes/Classes.txt
+	forge/notes/Database.txt
+	forge/notes/DatasetGenerator.txt
+	forge/notes/Features.txt
+	forge/notes/GameStates.txt
+	forge/notes/Goals.txt
+	forge/notes/HighLevelDesign.txt
+	forge/notes/Ideas.txt
+	forge/notes/MCTS.txt
+	forge/notes/ML.txt
+	forge/notes/MoveGeneratorQuintessential2.txt
+	forge/notes/MoveGeneratorQuintessential.txt
+	forge/notes/MoveGeneratorSpecial.txt
+	forge/notes/Multi_threading.txt
+	forge/notes/NameSpaces.txt
+	forge/notes/NN.txt
+	forge/notes/NodeTree.txt
+	forge/notes/Notation.txt
+	forge/notes/Optimizations.txt
+	forge/notes/ProblemPositions.txt
+	forge/notes/ProgramOptions.txt
+	forge/notes/Progress.txt
+	forge/notes/SearchFramework.txt
+	forge/notes/SearchMonitor.txt
+	forge/notes/Stockfish.txt
+	forge/notes/TimeManagement.txt
+	forge/notes/TODO.txt
+	forge/notes/Training.txt
+	forge/notes/UCI_DefinitionNotes.txt
+	forge/notes/UCI_Definition.txt
+	forge/notes/UCI.txt
+	forge/notes/UCI_UML.txt
+	forge/notes/ValidMoveGenerator.txt
+	forge/notes/Versions.txt
+	forge/notes/View.txt
 )
 
 # --- OPENCV ---
