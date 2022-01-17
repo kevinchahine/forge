@@ -7,6 +7,7 @@
 #include <boost/filesystem.hpp>
 
 #include <assert.h>
+#include <chrono>
 
 #include <opencv4/opencv2/opencv.hpp>
 
@@ -58,15 +59,22 @@ namespace forge
 			// 2.) --- Read File ---
 
 			cout << "Reading...";	cout.flush();
-			rapidcsv::Document doc(datasetFile.string());
 
-			cout << "done\n";
+			auto start = chrono::high_resolution_clock::now();
+			rapidcsv::Document doc(datasetFile.string());
+			auto stop = chrono::high_resolution_clock::now();
+
+			cout << "done. " << chrono::duration<double, ratio<1,1>>(stop - start).count() << " sec" << endl;
+
 			cout << "rows: " << doc.GetRowCount() << endl
 			<< "cols: " << doc.GetColumnCount() << endl;
 
 			// 3.) --- Parse data ---
 			deque<PosEvalPair> ds;
 			
+			cout << "Converting FEN To Positions...";
+
+			start = chrono::high_resolution_clock::now();
 			size_t nLines = doc.GetRowCount();
 			for (size_t row = 0; row < nLines; row++) {
 				// TODO: Put some error checking here to make sure types match
@@ -77,6 +85,9 @@ namespace forge
 
 				ds.back().pos.fromFEN(doc.GetCell<string>(0, row));	// Set Position from FEN
 			}
+			stop = chrono::high_resolution_clock::now();
+
+			cout << "done. " << chrono::duration<double, ratio<1,1>>(stop - start).count() << " sec" << endl;
 
 			// 4.) --- Return as a queue of PosEvalPairs ---
 			return ds;
@@ -111,6 +122,7 @@ namespace forge
 			cout << samples.rows << " x " << samples.cols << endl;
 			assert(samples.rows == responses.rows);	 // "Samples and Responses must have the same number of rows"
 
+			auto start = chrono::high_resolution_clock::now();
 			// --- Initialize One-Hot Encodings ---
 			for (size_t row = 0; row < posEvalPairs.size(); row++) {
 				const PosEvalPair & pair = posEvalPairs.at(row);
@@ -134,9 +146,11 @@ namespace forge
 				// --- Responses ---
 				responses.at<float>(row, 0) = pair.eval;
 			}
+			auto stop = chrono::high_resolution_clock::now();
+			cout << "done. " << chrono::duration<double, ratio<1,1>>(stop - start).count() << " sec" << endl;
 
-			cv::imshow("1243", samples);
-			cv::waitKey(0);
+			//cv::imshow("1243", samples);
+			//cv::waitKey(0);
 
 			return cv::ml::TrainData::create(
 				samples,
