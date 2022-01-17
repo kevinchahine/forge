@@ -8,6 +8,8 @@
 
 #include <assert.h>
 
+#include <opencv4/opencv2/opencv.hpp>
+
 using namespace std;
 namespace csv = rapidcsv;
 
@@ -22,7 +24,7 @@ namespace forge
 		{
 			BitBoard bb = board.pieces<PIECE_T>();
 			for (size_t bit = 0; bit < bb.size(); bit++) {
-				samples.at<float>(row, 0 + bit) = bb[bit];
+				samples.at<float>(row, offset + bit) = bb[bit];
 			}
 		}
 
@@ -65,7 +67,8 @@ namespace forge
 			// 3.) --- Parse data ---
 			deque<PosEvalPair> ds;
 			
-			for (size_t row = 0; row < 10; row++) {
+			size_t nLines = doc.GetRowCount();
+			for (size_t row = 0; row < nLines; row++) {
 				// TODO: Put some error checking here to make sure types match
 				
 				ds.emplace_back(
@@ -105,7 +108,7 @@ namespace forge
 			cv::Mat samples = cv::Mat::zeros(nSamples, nColumns, CV_32F);
 			// Column Matrix of responses (targets)
 			cv::Mat responses = cv::Mat::zeros(nSamples, 1, CV_32F);
-
+			cout << samples.rows << " x " << samples.cols << endl;
 			assert(samples.rows == responses.rows);	 // "Samples and Responses must have the same number of rows"
 
 			// --- Initialize One-Hot Encodings ---
@@ -116,21 +119,24 @@ namespace forge
 
 				// --- Samples ---
 				bbToOneHot<pieces::WhiteKing,	0>(samples, row, board);
-				//bbToOneHot<pieces::WhiteQueen,	64>(samples, row, board);
-				//bbToOneHot<pieces::WhiteBishop,	128>(samples, row, board);
-				//bbToOneHot<pieces::WhiteKnight,	192>(samples, row, board);
+				bbToOneHot<pieces::WhiteQueen,	64>(samples, row, board);
+				bbToOneHot<pieces::WhiteBishop,	128>(samples, row, board);
+				bbToOneHot<pieces::WhiteKnight,	192>(samples, row, board);
 				bbToOneHot<pieces::WhiteRook,	256>(samples, row, board);
-				//bbToOneHot<pieces::WhitePawn,	320>(samples, row, board);
+				bbToOneHot<pieces::WhitePawn,	320>(samples, row, board);
 				bbToOneHot<pieces::BlackKing,	384>(samples, row, board);
-				//bbToOneHot<pieces::BlackQueen,	448>(samples, row, board);
-				//bbToOneHot<pieces::BlackBishop,	512>(samples, row, board);
-				//bbToOneHot<pieces::BlackKnight,	576>(samples, row, board);
+				bbToOneHot<pieces::BlackQueen,	448>(samples, row, board);
+				bbToOneHot<pieces::BlackBishop,	512>(samples, row, board);
+				bbToOneHot<pieces::BlackKnight,	576>(samples, row, board);
 				bbToOneHot<pieces::BlackRook,	640>(samples, row, board);
-				//bbToOneHot<pieces::BlackPawn,	704>(samples, row, board);
+				bbToOneHot<pieces::BlackPawn,	704>(samples, row, board);
 
 				// --- Responses ---
 				responses.at<float>(row, 0) = pair.eval;
 			}
+
+			cv::imshow("1243", samples);
+			cv::waitKey(0);
 
 			return cv::ml::TrainData::create(
 				samples,
@@ -141,10 +147,15 @@ namespace forge
 
 		void Optimizer::train()
 		{
-			boost::filesystem::path dsPath("/media/kevin/barracuda/Datasets/Chess/chessData-mod.csv");
+			boost::filesystem::path dsPath("/media/kevin/barracuda/Datasets/Chess/chessData-mod-head.csv");
 
 			// 1.) Load Dataset
-			Optimizer::loadDatasetCSV(dsPath);
+			deque<PosEvalPair> ds = Optimizer::loadDatasetCSV(dsPath);
+
+			// 2.) Preprocessing
+			cv::Ptr<cv::ml::TrainData> trainData = Optimizer::preprocess(ds);
+
+			
 		}
 
 	} // namespace ml

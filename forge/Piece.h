@@ -147,7 +147,7 @@ namespace forge
 			Empty & operator=(const Empty &) = default;
 			Empty & operator=(Empty &&) noexcept = default;
 
-			// Returns BitBoard containing all zeros
+			// Returns BitBoard containing allToFen zeros
 			static BitBoard pushMask(BoardSquare square) { return BitBoard(); }
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -162,7 +162,7 @@ namespace forge
 			King & operator=(const King &) = default;
 			King & operator=(King &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
@@ -192,85 +192,141 @@ namespace forge
 		public:
 			Queen() : Piece{ Piece::QUEEN } {}
 			Queen(bool isWhite) : Piece{ (isWhite ? Piece::WHITE_QUEEN : Piece::BLACK_QUEEN) } {}
+			Queen(Piece::piece_t val) : Piece{ val } {}
 			Queen(const Queen &) = default;
 			Queen(Queen &&) noexcept = default;
 			virtual ~Queen() noexcept = default;
 			Queen & operator=(const Queen &) = default;
 			Queen & operator=(Queen &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
+		};
+
+		class WhiteQueen : public Queen {
+			WhiteQueen() : Queen{ Piece::WHITE_QUEEN } {}
+			WhiteQueen(const WhiteQueen &) = default;
+			WhiteQueen(WhiteQueen &&) noexcept = default;
+			virtual ~WhiteQueen() noexcept = default;
+			WhiteQueen & operator=(const WhiteQueen &) = default;
+			WhiteQueen & operator=(WhiteQueen &&) noexcept = default;
+		};
+
+		class BlackQueen : public Queen {
+			BlackQueen() : Queen{ Piece::BLACK_QUEEN } {}
+			BlackQueen(const BlackQueen &) = default;
+			BlackQueen(BlackQueen &&) noexcept = default;
+			virtual ~BlackQueen() noexcept = default;
+			BlackQueen & operator=(const BlackQueen &) = default;
+			BlackQueen & operator=(BlackQueen &&) noexcept = default;
 		};
 
 		class Bishop : public Piece, public RayPiece, public NonKingPiece, public QBN_Piece {
 		public:
 			Bishop() : Piece{ Piece::BISHOP } {}
 			Bishop(bool isWhite) : Piece{ (isWhite ? Piece::WHITE_BISHOP : Piece::BLACK_BISHOP) } {}
+			Bishop(Piece::piece_t val) : Piece{ val } {}
 			Bishop(const Bishop &) = default;
 			Bishop(Bishop &&) noexcept = default;
 			virtual ~Bishop() noexcept = default;
 			Bishop & operator=(const Bishop &) = default;
 			Bishop & operator=(Bishop &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
+		};
+
+		class WhiteBishop : public Bishop {
+			WhiteBishop() : Bishop{ Piece::WHITE_BISHOP } {}
+			WhiteBishop(const WhiteBishop &) = default;
+			WhiteBishop(WhiteBishop &&) noexcept = default;
+			virtual ~WhiteBishop() noexcept = default;
+			WhiteBishop & operator=(const WhiteBishop &) = default;
+			WhiteBishop & operator=(WhiteBishop &&) noexcept = default;
+		};
+
+		class BlackBishop : public Bishop {
+			BlackBishop() : Bishop{ Piece::BLACK_BISHOP } {}
+			BlackBishop(const BlackBishop &) = default;
+			BlackBishop(BlackBishop &&) noexcept = default;
+			virtual ~BlackBishop() noexcept = default;
+			BlackBishop & operator=(const BlackBishop &) = default;
+			BlackBishop & operator=(BlackBishop &&) noexcept = default;
 		};
 
 		class Knight : public Piece, public NonKingPiece, public QBN_Piece {
 		public:
 			Knight() : Piece{ Piece::KNIGHT } {}
 			Knight(bool isWhite) : Piece{ (isWhite ? Piece::WHITE_KNIGHT : Piece::BLACK_KNIGHT) } {}
+			Knight(Piece::piece_t val) : Piece{ val } {}
 			Knight(const Knight &) = default;
 			Knight(Knight &&) noexcept = default;
 			virtual ~Knight() noexcept = default;
 			Knight & operator=(const Knight &) = default;
 			Knight & operator=(Knight &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
+		};
+
+		class WhiteKnight : public Knight {
+			WhiteKnight() : Knight{ Piece::WHITE_KNIGHT } {}
+			WhiteKnight(const WhiteKnight &) = default;
+			WhiteKnight(WhiteKnight &&) noexcept = default;
+			virtual ~WhiteKnight() noexcept = default;
+			WhiteKnight & operator=(const WhiteKnight &) = default;
+			WhiteKnight & operator=(WhiteKnight &&) noexcept = default;
+		};
+
+		class BlackKnight : public Knight {
+			BlackKnight() : Knight{ Piece::BLACK_KNIGHT } {}
+			BlackKnight(const BlackKnight &) = default;
+			BlackKnight(BlackKnight &&) noexcept = default;
+			virtual ~BlackKnight() noexcept = default;
+			BlackKnight & operator=(const BlackKnight &) = default;
+			BlackKnight & operator=(BlackKnight &&) noexcept = default;
 		};
 
 		class Rook : public Piece, public RayPiece, public NonKingPiece {
 		public:
 			Rook() : Piece{ Piece::ROOK } {}
 			Rook(bool isWhite) : Piece{ (isWhite ? Piece::WHITE_ROOK : Piece::BLACK_ROOK) } {}
+			Rook(Piece::piece_t val) : Piece{ val } {}
 			Rook(const Rook &) = default;
 			Rook(Rook &&) noexcept = default;
 			virtual ~Rook() noexcept = default;
 			Rook & operator=(const Rook &) = default;
 			Rook & operator=(Rook &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
 		};
-
-		// Abstraction class template for Non King Pieces
-		template<Piece::piece_t val>
-		class GenericNonKingPiece : public Piece, public NonKingPiece {
-		public:
-			GenericNonKingPiece() : Piece{ val } {}
-			GenericNonKingPiece(const GenericNonKingPiece &) = default;
-			GenericNonKingPiece(GenericNonKingPiece &&) noexcept = default;
-			virtual ~GenericNonKingPiece() noexcept = default;
-			GenericNonKingPiece & operator=(const GenericNonKingPiece &) = default;
-			GenericNonKingPiece & operator=(GenericNonKingPiece &&) noexcept = default;
-
-			// Identifies all squares piece can move to as a BitBoard
-			static BitBoard pushMask(BoardSquare square);
-
-			static BitBoard captureMask(BoardSquare square) { return pushMask(square); }
+		
+		class WhiteRook : public Rook {
+			WhiteRook() : Rook{ Piece::WHITE_ROOK } {}
+			WhiteRook(const WhiteRook &) = default;
+			WhiteRook(WhiteRook &&) noexcept = default;
+			virtual ~WhiteRook() noexcept = default;
+			WhiteRook & operator=(const WhiteRook &) = default;
+			WhiteRook & operator=(WhiteRook &&) noexcept = default;
 		};
 
-		class WhiteRook : public GenericNonKingPiece<Piece::WHITE_ROOK> {};
-		class BlackRook : public GenericNonKingPiece<Piece::BLACK_ROOK> {};
+		class BlackRook : public Rook {
+			BlackRook() : Rook{ Piece::BLACK_ROOK } {}
+			BlackRook(const BlackRook &) = default;
+			BlackRook(BlackRook &&) noexcept = default;
+			virtual ~BlackRook() noexcept = default;
+			BlackRook & operator=(const BlackRook &) = default;
+			BlackRook & operator=(BlackRook &&) noexcept = default;
+		};
 
 		class Pawn : public Piece, public NonKingPiece {
 		public:
@@ -291,7 +347,7 @@ namespace forge
 			WhitePawn & operator=(const WhitePawn &) = default;
 			WhitePawn & operator=(WhitePawn &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square);
@@ -306,7 +362,7 @@ namespace forge
 			BlackPawn & operator=(const BlackPawn &) = default;
 			BlackPawn & operator=(BlackPawn &&) noexcept = default;
 
-			// Identifies all squares piece can move to as a BitBoard
+			// Identifies allToFen squares piece can move to as a BitBoard
 			static BitBoard pushMask(BoardSquare square);
 
 			static BitBoard captureMask(BoardSquare square);

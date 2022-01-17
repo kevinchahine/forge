@@ -444,11 +444,23 @@ namespace forge
 	}
 
 	template<> BitBoard Board::pieces<pieces::King>() const { return kings(); }
+	template<> BitBoard Board::pieces<pieces::WhiteKing>() const { return kings() & whites(); }
+	template<> BitBoard Board::pieces<pieces::BlackKing>() const { return kings() & blacks(); }
 	template<> BitBoard Board::pieces<pieces::Queen>() const { return queens(); }
+	template<> BitBoard Board::pieces<pieces::WhiteQueen>() const { return queens() & whites(); }
+	template<> BitBoard Board::pieces<pieces::BlackQueen>() const { return queens() & blacks(); }
 	template<> BitBoard Board::pieces<pieces::Bishop>() const { return bishops(); }
+	template<> BitBoard Board::pieces<pieces::WhiteBishop>() const { return bishops() & whites(); }
+	template<> BitBoard Board::pieces<pieces::BlackBishop>() const { return bishops() & blacks(); }
 	template<> BitBoard Board::pieces<pieces::Knight>() const { return knights(); }
+	template<> BitBoard Board::pieces<pieces::WhiteKnight>() const { return knights() & whites(); }
+	template<> BitBoard Board::pieces<pieces::BlackKnight>() const { return knights() & blacks(); }
 	template<> BitBoard Board::pieces<pieces::Rook>() const { return rooks(); }
+	template<> BitBoard Board::pieces<pieces::WhiteRook>() const { return rooks() & whites(); }
+	template<> BitBoard Board::pieces<pieces::BlackRook>() const { return rooks() & blacks(); }
 	template<> BitBoard Board::pieces<pieces::Pawn>() const { return pawns(); }
+	template<> BitBoard Board::pieces<pieces::WhitePawn>() const { return pawns() & whites(); }
+	template<> BitBoard Board::pieces<pieces::BlackPawn>() const { return pawns() & blacks(); }
 
 	template<> bool Board::isPiece<pieces::King>(BoardSquare square) const { return isKing(square); }
 	template<> bool Board::isPiece<pieces::Queen>(BoardSquare square) const { return isQueen(square); }

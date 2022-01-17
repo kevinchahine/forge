@@ -150,14 +150,15 @@ namespace forge
 		// Piece type can come from class forge::pieces::Piece and be of type
 		// forge::pieces::Piece::piece_t.
 		template<typename PIECE_T>
-		BitBoard pieces() const
-		{
-			std::cout << "Don't use this method. Use full specialization overloads instead. PIECE_T = " << typeid(PIECE_T).name() << "\n";
-			assert(false);
-			///static_assert(false, "Don't use this method. Use full specialization overloads instead\n");
-
-			return BitBoard();
-		}
+		BitBoard pieces() const;
+		//{
+		//	std::cout << "Don't use this method. Use full specialization overloads instead. PIECE_T = " << typeid(PIECE_T).name() << "\n";
+		//	assert(false);
+		//	///static_assert(false, "Don't use this method. Use full specialization overloads instead\n");
+		//	static_assert(false);
+		//
+		//	return BitBoard();
+		//}
 		
 		template<typename DIRECTION_T> BitBoard directionals() const;
 		
