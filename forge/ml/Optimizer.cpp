@@ -33,6 +33,29 @@ namespace forge
 
 		// ---------------------------- METHODS -------------------------------
 
+		cv::Ptr<cv::ml::ANN_MLP> Optimizer::createNN()
+		{
+			int nFeatures = 64 * 12;
+
+			cv::Mat_<int> layerSizes(4, 1);	// 4 layers, 1 is like a placeholder
+			layerSizes(0) = nFeatures;		// input
+			layerSizes(1) = 512;			// hidden1
+			layerSizes(2) = 32;				// hidden2
+			layerSizes(3) = 1;				// output
+
+			cv::Ptr<cv::ml::ANN_MLP> ann = cv::ml::ANN_MLP::create();
+			ann->setLayerSizes(layerSizes);
+			ann->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 0, 0);
+			ann->setTermCriteria(cv::TermCriteria(cv::TermCriteria::MAX_ITER, 500, 0.0001));	// train for 10'000 iterations (samples)
+			ann->setTrainMethod(cv::ml::ANN_MLP::BACKPROP, 0.0001);
+			//ann->setPreferableBackend(cv::DNN_BACKEND_CUDA);
+			//ann->setPreferableTarget(cv::DNN_TARGET_CUDA);
+
+			// TODO: See if setting MAX_ITER TO infinity changes anything.
+
+			return ann;
+		}
+		
 		deque<PosEvalPair> Optimizer::loadDatasetCSV(const boost::filesystem::path & datasetFile)
 		{
 			// 1.) --- Precheck ---
@@ -132,10 +155,9 @@ namespace forge
 			//	11th 64: BLACK ROOK   
 			//	12th 64: BLACK PAWN   
 			cv::Mat samples = cv::Mat::zeros(nSamples, nColumns, CV_32F);
-			// Column Matrix of responses (targets)
 			cv::Mat responses = cv::Mat::zeros(nSamples, 1, CV_32F);
-			cout << samples.rows << " x " << samples.cols << endl;
-			assert(samples.rows == responses.rows);	 // "Samples and Responses must have the same number of rows"
+
+			//cout << "Samples shape: " << samples.rows << " x " << samples.cols << endl;
 
 			auto start = chrono::high_resolution_clock::now();
 			// --- Initialize One-Hot Encodings ---
@@ -159,13 +181,14 @@ namespace forge
 				bbToOneHot<pieces::BlackPawn,	704>(samples, row, board);
 
 				// --- Responses ---
-				responses.at<float>(row, 0) = pair.eval;
+				responses.at<float>(row, 0) = pair.eval;		
 			}
+
 			auto stop = chrono::high_resolution_clock::now();
 			cout << "done. " << chrono::duration<double, ratio<1,1>>(stop - start).count() << " sec" << endl;
 
-			cv::imshow("1243", samples);
-			cv::waitKey(0);
+			//cv::imshow("1243", samples);
+			//cv::waitKey(0);
 
 			return cv::ml::TrainData::create(
 				samples,
@@ -174,14 +197,64 @@ namespace forge
 			);
 		}
 
+		float Optimizer::validate(cv::Ptr<cv::ml::ANN_MLP> & ann, const cv::Ptr<cv::ml::TrainData> & trainData)
+		{
+			auto testSamples = trainData->getTestSamples();
+			auto testResponses = trainData->getTestResponses();
+
+			cv::Mat predictions;
+			ann->predict(testSamples, predictions);
+
+			cout << "TestResponses shape: " << testResponses.rows << " x " << testResponses.cols << endl;
+			cout << "Predictions   shape: " << predictions.rows << " x " << predictions.cols << endl;
+			// Calculate MSE of predictions
+			float error_sum = 0.0f;
+			for (int i = 0; i < predictions.rows; i++) {
+				float error = predictions.at<float>(i, 0) - testSamples.at<float>(i, 0);
+
+				error_sum += error * error;
+			}
+
+			cout << "Avg MSE: " << error_sum / predictions.rows << " over " << predictions.rows << " samples" << endl;	
+		}
+
+		void Optimizer::save(cv::Ptr<cv::ml::ANN_MLP> & ann, const boost::filesystem::path & annFile)
+		{
+			// https://answers.opencv.org/question/175766/how-to-save-ann_mlp-by-appending-to-file-containing-other-data/
+			cv::FileStorage fs;
+			fs.open(annFile.string(), cv::FileStorage::WRITE);
+			ann->write(fs);
+			fs.release();
+		}
+
+		cv::Ptr<cv::ml::ANN_MLP> Optimizer::load(const boost::filesystem::path & annFile)
+		{
+			cv::Ptr<cv::ml::ANN_MLP> ann = cv::ml::ANN_MLP::create();
+			
+			cv::FileStorage fs;
+			fs.open(annFile.string(), cv::FileStorage::READ);
+			ann->read(fs.root());
+			fs.release();
+
+			return ann;
+		}
+
 		void Optimizer::train()
 		{
 			boost::filesystem::path dsPath("/media/kevin/barracuda/Datasets/Chess/chessData-mod.csv");
 			ifstream infile(dsPath.string());
 
+			cv::Ptr<cv::ml::ANN_MLP> ann = 
+				//Optimizer::createNN();
+				Optimizer::load("model_4");
+
+			int trainCounter = 0;
 			while (infile.good()) {
+				cout << "--- Training Counter: " << trainCounter << " ---" << endl;
+				
 				// 1.) Load Dataset
-				deque<PosEvalPair> ds = Optimizer::loadDatasetCSV(infile, 10'000);
+				cout << "--- Loading Dataset ---" << endl;
+				deque<PosEvalPair> ds = Optimizer::loadDatasetCSV(infile, 500); //10'000);	// make sure 10'000 matches TermCriteria(). See createNN().
 
 				// 2.) Break when we reach the end of the file
 				if (ds.empty()) {
@@ -189,10 +262,25 @@ namespace forge
 				}
 
 				// 3.) Preprocessing
+				cout << "--- Preprocessing ---" << endl;
 				cv::Ptr<cv::ml::TrainData> trainData = Optimizer::preprocess(ds);
+				trainData->setTrainTestSplitRatio(0.95, true);
 
 				// 4.) Train Model
-				
+				cout << "--- Training ---" << endl;
+				ann->train(trainData);
+
+				// 5.) Validate Model
+				cout << "--- Validating ---" << endl;
+				float mse = Optimizer::validate(ann, trainData);
+				cout << "MSE: " << mse << endl;
+
+				// 6.) Save Model
+				cout << "--- Saving to File ---" << endl;
+				boost::filesystem::path modelFile = "model_" + to_string(trainCounter);
+				Optimizer::save(ann, modelFile);
+
+				trainCounter++;
 			}
 		}
 

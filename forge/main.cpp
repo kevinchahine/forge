@@ -20,6 +20,10 @@ Designed to be compatible with a variety of displays including:
 
 // TODO: REMOVE ALL THESE
 #include <iostream>
+
+#include <opencv4/opencv2/opencv.hpp>
+// #include <opencv4/opencv2/gpu/gpu.hpp>
+
 #include <Guten/guten.hpp>	// REMOVE thid
 #include "BitBoard.h"
 #include "Position.h"
@@ -32,6 +36,7 @@ Designed to be compatible with a variety of displays including:
 #include "ml/Optimizer.h"
 
 using namespace std;
+using namespace cv::cuda;
 
 int main(int argc, char ** argv)
 {
@@ -41,6 +46,15 @@ int main(int argc, char ** argv)
 		<< guten::color::red << "=============\n"
 		<< guten::color::white;
 	
+	auto net = cv::dnn::Net();
+
+	net.setPreferableBackend(cv::dnn::dnn4_v20191202::DNN_BACKEND_CUDA);
+	net.setPreferableTarget(cv::dnn::dnn4_v20191202::DNN_TARGET_CUDA);
+	
+	cout << "Found " 
+		// << getCudaEnabledDevicecount() 
+		<< " GPU devices." << endl;
+
 	//forge::test::initTestBoards();
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
@@ -85,7 +99,7 @@ int main(int argc, char ** argv)
 
 	//forge::test::optimizer();
 	forge::ml::Optimizer op;
-	op.train();
+	//op.train();
 
 	//forge::uci::test::engineToGui();
 	//forge::uci::test::info();

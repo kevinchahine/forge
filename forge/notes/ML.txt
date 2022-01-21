@@ -6,6 +6,8 @@ https://www.chessprogramming.org/Stockfish_NNUE												Great (Details about 
 https://github.com/official-stockfish/Stockfish/blob/master/src/nnue/layers/clipped_relu.h	Code
 https://github.com/official-stockfish/Stockfish/tree/master/src/nnue						Code
 https://www.davidsilver.uk/wp-content/uploads/2020/03/alphazero.pdf							Really good paper
+https://bleedai.com/deep-learning-with-opencv-dnn-module-a-comprehensive-guide/				For OpenCV DNN and Cuda GPU support
+https://bleedai.com/installation-of-opencv-4-3-0-in-windows-10-from-source-with-nvidia-gpu-support-non-free-flags-enabled/	For Cuda GPU support
 
 # --- Explains how he did supervised learning for regression using SF data ---
 https://medium.com/@nihalpuram/training-a-chess-ai-using-tensorflow-e795e1377af2			Not great
