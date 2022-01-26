@@ -64,8 +64,8 @@ namespace forge
 
 	void TextView::highlightCells(
 		BitBoard bb,
-		const guten::color::Color& lightColor,
-		const guten::color::Color& darkColor,
+		const termcolor::Color& lightColor,
+		const termcolor::Color& darkColor,
 		guten::boards::CheckerBoard& board)
 	{
 		for (int row = 0; row < 8; row++) {

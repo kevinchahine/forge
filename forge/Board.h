@@ -39,10 +39,10 @@ namespace forge
 
 		guten::boards::CheckerBoard getCheckerBoard() const;
 		guten::core::Matrix getMiniBoard(
-			const guten::color::Color & lightPiece = guten::color::white,
-			const guten::color::Color & darkPiece = guten::color::black,
-			const guten::color::Color & lightCell = guten::color::brown,
-			const guten::color::Color & darkCell = guten::color::green) const;
+			const termcolor::Color & lightPiece = guten::color::white,
+			const termcolor::Color & darkPiece = guten::color::black,
+			const termcolor::Color & lightCell = guten::color::brown,
+			const termcolor::Color & darkCell = guten::color::green) const;
 
 		pieces::Piece at(int row, int col) const;
 		pieces::Piece at(BoardSquare square) const;

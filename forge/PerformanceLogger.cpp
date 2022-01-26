@@ -1,6 +1,6 @@
 #include "PerformanceLogger.h"
 
-#include <Guten/color/iocolor.h>
+#include <Guten/termcolor/termcolor.hpp>
 
 #include <algorithm>
 #include <filesystem>

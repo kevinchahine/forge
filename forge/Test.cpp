@@ -1011,8 +1011,8 @@ namespace forge
 					guten::core::Matrix mini = elem.position.board().getMiniBoard();
 					BoardSquare from = elem.move.from();
 					BoardSquare to = elem.move.to();
-					mini.at(from.row(), from.col()).color.setbg(guten::color::cyan);
-					mini.at(to.row(), to.col()).color.setbg(guten::color::lightcyan);
+					mini.at(from.row(), from.col()).color.background = guten::color::cyan;
+					mini.at(to.row(), to.col()).color.background = guten::color::lightcyan;
 
 					guten::core::Matrix miniText;
 					guten::Size sz = mini.size();

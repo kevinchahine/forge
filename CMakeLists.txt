@@ -248,7 +248,7 @@ add_executable(${PROJECT_NAME}
 
 # --- Link external libraries ---
 target_link_libraries(${PROJECT_NAME} PUBLIC
-	guten
+	Guten
 	${OpenCV_LIBS}
 	# ${BOOST_LIBRARIES}
 	#Boost::asio

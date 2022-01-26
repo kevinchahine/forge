@@ -7,7 +7,7 @@
 #include <bitset>
 
 #include <Guten/color/Color.h>
-#include <Guten/color/iocolor.h>
+#include <Guten/termcolor/termcolor.hpp>
 
 namespace forge
 {
@@ -60,10 +60,10 @@ namespace forge
 
 			friend std::ostream & operator<<(std::ostream & os, const Piece & p)
 			{
-				os << guten::color::push()
-					<< guten::color::setfg(p.isBlack() ? guten::color::gray : guten::color::lightgreen)
+				os << termcolor::push
+					<< (p.isBlack() ? guten::color::yellow : guten::color::green)
 					<< p.getCh()
-					<< guten::color::pop();
+					<< termcolor::pop;
 
 				return os;
 			}

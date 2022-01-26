@@ -30,8 +30,8 @@ namespace forge
 
 		static void highlightCells(
 			BitBoard bb, 
-			const guten::color::Color & lightColor,
-			const guten::color::Color & darkColor,
+			const termcolor::Color & lightColor,
+			const termcolor::Color & darkColor,
 			guten::boards::CheckerBoard & board);
 
 	protected:

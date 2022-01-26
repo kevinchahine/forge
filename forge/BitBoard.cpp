@@ -1,7 +1,7 @@
 #include "BitBoard.h"
 
 #include <Guten/color/Color.h>
-#include <Guten/color/iocolor.h>
+#include <Guten/termcolor/termcolor.hpp>
 
 namespace forge
 {

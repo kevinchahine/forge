@@ -66,13 +66,13 @@ namespace forge
 					}
 			
 					// --- Set engine to UCI mode ---
-					//cout << guten::color::push() << guten::color::green
-					//	<< "uci" << guten::color::pop() << endl;
+					//cout << termcolor::push << guten::color::green
+					//	<< "uci" << termcolor::pop << endl;
 
 					out << "uci" << endl;
 
 					// Ignore engine output until "uciok"
-					cout << guten::color::push() << guten::color::brown;
+					cout << termcolor::push << guten::color::brown;
 					while (chessEngine.running()) {
 						string line;
 						getline(in, line);
@@ -82,12 +82,12 @@ namespace forge
 							break;
 						}
 					}
-					cout << guten::color::pop();
+					cout << termcolor::pop;
 
-					cout << guten::color::push() << guten::color::green
+					cout << termcolor::push << guten::color::green
 						<< "setoption name MultiPV value 500" << endl
 						<< "ucinewgame" << endl
-						<< guten::color::pop();
+						<< termcolor::pop;
 
 					out << "setoption name MultiPV value 500" << endl
 						<< "ucinewgame" << endl;
@@ -103,22 +103,22 @@ namespace forge
 				std::vector<forge::Move> sfMoves;
 				
 				if (!chessEngine.running()) {
-					cout << guten::color::push() << guten::color::lightgreen
-						<< "Running Engine" << guten::color::pop() << endl;
+					cout << termcolor::push << guten::color::lightgreen
+						<< "Running Engine" << termcolor::pop << endl;
 
 					runChessEngine(chessEngine, out, in);
 				}
 
 				// --- Set Position --- 
-				//cout << guten::color::push() << guten::color::green 
+				//cout << termcolor::push << guten::color::green 
 				//	<< "position fen " << pos.toFEN() << endl
-				//	<< guten::color::pop();
+				//	<< termcolor::pop;
 				out << "position fen " << pos.toFEN() << endl;
 
 				// --- Get Legal Moves ---
-				//cout << guten::color::push() << guten::color::green
+				//cout << termcolor::push << guten::color::green
 				//	<< "go depth 1" << endl
-				//	<< guten::color::pop();
+				//	<< termcolor::pop;
 				out << "go depth 1" << endl;
 
 				string line;
@@ -251,22 +251,22 @@ namespace forge
 				guten::grids::GridView missedGrid = makeGridView(missed);
 				guten::grids::GridView faultsGrid = makeGridView(faults);
 
-				cout << endl << guten::color::push() << guten::color::green
-					<< "=== Matches (Good) " << matches.size() << " ===" << guten::color::pop() << endl;
+				cout << endl << termcolor::push << guten::color::green
+					<< "=== Matches (Good) " << matches.size() << " ===" << termcolor::pop << endl;
 				matchGrid.toMatrix().print();
 				//for (const auto& elem : matches) {
 				//	cout << elem.position.toFEN() << endl;
 				//}
 
-				cout << endl << guten::color::push() << guten::color::yellow
-					<< "=== Missed (Getting There) " << missed.size() << " ===" << guten::color::pop() << endl;
+				cout << endl << termcolor::push << guten::color::yellow
+					<< "=== Missed (Getting There) " << missed.size() << " ===" << termcolor::pop << endl;
 				missedGrid.toMatrix().print();
 				for (const auto& elem : missed) {
 					cout << elem.position.toFEN() << endl;
 				}
 
-				cout << endl << guten::color::push() << guten::color::red
-					<< "=== Faults (Bad We should not have generated these) " << faults.size() << " ===" << guten::color::pop() << endl;
+				cout << endl << termcolor::push << guten::color::red
+					<< "=== Faults (Bad We should not have generated these) " << faults.size() << " ===" << termcolor::pop << endl;
 				faultsGrid.toMatrix().print();
 				for (const auto& elem : faults) {
 					cout << elem.position.toFEN() << endl;
@@ -280,8 +280,8 @@ namespace forge
 				const vector<pair<forge::Position, forge::Move>> & allMisses,
 				const vector<pair<forge::Position, forge::Move>> & allFaults)
 			{
-				cout << endl << guten::color::push() << guten::color::yellow
-					<< "=== All Missed (Getting There) " << allMisses.size() << " ===" << guten::color::pop() << endl;
+				cout << endl << termcolor::push << guten::color::yellow
+					<< "=== All Missed (Getting There) " << allMisses.size() << " ===" << termcolor::pop << endl;
 				
 				for (const auto& elem : allMisses) {
 					guten::boards::CheckerBoard cb = elem.first.board().getCheckerBoard();
@@ -298,8 +298,8 @@ namespace forge
 					cout << elem.first.toFEN() << endl;
 				}
 
-				cout << endl << guten::color::push() << guten::color::red
-					<< "=== Faults (Bad We should not have generated these) " << allFaults.size() << " ===" << guten::color::pop() << endl;
+				cout << endl << termcolor::push << guten::color::red
+					<< "=== Faults (Bad We should not have generated these) " << allFaults.size() << " ===" << termcolor::pop << endl;
 				
 				for (const auto& elem : allFaults) {
 					guten::boards::CheckerBoard cb = elem.first.board().getCheckerBoard();
@@ -506,11 +506,11 @@ namespace forge
 						forge::MovePositionPair pairPH;				// placeholder
 						set<forge::MovePositionPair> allMatches;	// placeholder
 
-						cout << guten::color::push() << guten::color::yellow
+						cout << termcolor::push << guten::color::yellow
 							<< "========================================================" << endl
 							<< "=============== Showing All Results ====================" << endl
 							<< "========================================================" << endl
-							<< guten::color::pop();
+							<< termcolor::pop;
 
 						showResults(allMisses, allFaults);
 

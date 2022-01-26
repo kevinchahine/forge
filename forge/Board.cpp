@@ -1,7 +1,7 @@
 #include "Board.h"
 #include "HashCombine.h"
 
-#include <Guten/color/iocolor.h>
+#include <Guten/termcolor/termcolor.hpp>
 #include <Guten/color/Color.h>
 #include <Guten/boards/CheckerBoard.h>
 
@@ -48,10 +48,10 @@ namespace forge
 	}
 
 	guten::core::Matrix Board::getMiniBoard(
-		const guten::color::Color & lightPiece, 
-		const guten::color::Color & darkPiece, 
-		const guten::color::Color & lightCell, 
-		const guten::color::Color & darkCell) const
+		const termcolor::Color & lightPiece, 
+		const termcolor::Color & darkPiece, 
+		const termcolor::Color & lightCell, 
+		const termcolor::Color & darkCell) const
 	{
 		guten::core::Matrix miniBoard;
 		miniBoard.resize(8, 8);
@@ -60,9 +60,9 @@ namespace forge
 			for (int col = 0; col < this->cols(); col++) {
 				const pieces::Piece & p = (*this).at(row, col);
 
-				guten::color::Color color;
-				color.setbg(row % 2 == col % 2 ? guten::color::yellow : guten::color::green);
-				color.setfg(p.isWhite() ? guten::color::white : guten::color::black);
+				termcolor::ColorFBG color;
+				color.background = (row % 2 == col % 2 ? guten::color::yellow : guten::color::green);
+				color.foreground = (p.isWhite() ? guten::color::white : guten::color::black);
 
 				miniBoard.at(row, col).color = color;
 				miniBoard.at(row, col).character = p.getCh();
