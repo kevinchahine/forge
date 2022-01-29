@@ -5,8 +5,10 @@
 // TODO: CLEAN THIS UP
 #ifdef _WIN32
 #include <opencv2/dnn/dnn.hpp>
+#include <opencv2/opencv.hpp>			// TODO: Shouldn't need this
 #else
 #include <opencv4/opencv2/dnn/dnn.hpp>
+#include <opencv4/opencv2/opencv.hpp>	// TODO: Shouldn't need this
 #endif
 
 namespace forge
@@ -14,7 +16,7 @@ namespace forge
 	class NeuralNetworkHeuristic : public HeuristicBase
 	{
 	public:
-		NeuralNetworkHeuristic() = default;
+		NeuralNetworkHeuristic();
 		// Creates a NN from the tensorflow model directory specified by `model_file_name`
 		// `model_file_name` must be the address of a tensorflow model directory 
 		NeuralNetworkHeuristic(const std::string& model_file_name);
@@ -32,9 +34,9 @@ namespace forge
 
 		virtual void print(const Position& pos, std::ostream& os = std::cout) const override;
 
-		//cv::dnn::Model& model() { return m_model; }
-		//const cv::dnn::Model& model() const { return m_model; }
-
+		cv::Ptr<cv::ml::ANN_MLP>& model() { return m_model; }
+		const cv::Ptr<cv::ml::ANN_MLP>& model() const { return m_model; }
+		
 	protected:
 		cv::Mat preprocess(const Position & pos) const;
 
@@ -66,6 +68,6 @@ namespace forge
 		//		9  - their queens
 		//		10 - our kings
 		//		11 - their kings
-		//cv::dnn::Model m_model;
+		cv::Ptr<cv::ml::ANN_MLP> m_model;
 	};
 } // namespace forge

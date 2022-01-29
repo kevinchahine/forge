@@ -4,9 +4,27 @@ using namespace std;
 
 namespace forge
 {
+	NeuralNetworkHeuristic::NeuralNetworkHeuristic()
+	{
+		int nFeatures = 64 * 12;
+
+		cv::Mat_<int> layerSizes(4, 1);	// 4 layers, 1 is like a placeholder
+		layerSizes(0) = nFeatures;		// input
+		layerSizes(1) = 512;			// hidden1
+		layerSizes(2) = 32;				// hidden2
+		layerSizes(3) = 1;				// output
+		
+		m_model = cv::ml::ANN_MLP::create();
+		m_model->setLayerSizes(layerSizes);
+		m_model->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 0, 0);
+		m_model->setTermCriteria(cv::TermCriteria(cv::TermCriteria::MAX_ITER, 500, 0.0001));	// train for 10'000 iterations (samples)
+		m_model->setTrainMethod(cv::ml::ANN_MLP::BACKPROP, 0.0001);
+	}
+	
 	NeuralNetworkHeuristic::NeuralNetworkHeuristic(const std::string& model_file_name)
 	{
-
+		cout << __FUNCTION__ << " not implemented\n";
+		//m_model = ml::Optimizer::createNN();
 	}
 
 	heuristic_t NeuralNetworkHeuristic::eval(const Position& pos)
@@ -15,15 +33,23 @@ namespace forge
 		cv::Mat input = this->preprocess(pos);
 		//cv::InputArrayOfArrays input;	// Consider using this instead
 
+		//for (size_t r = 0; r < input.rows; r++) {
+		//	for (size_t c = 0; c < input.cols; c++) {
+		//		cout << input.at<float>(r, c) << '\t';
+		//	}
+		//	cout << endl;
+		//}
+		//cout << endl;
+
 		// --- Feed Forward ---
 		vector<int> output{ 1, 1 };
-		//m_model.predict(input, output);
+		// m_model.predict(input, output);
 
 		// --- Return ---
 		heuristic_t evaluation = 0;
 		
 		evaluation = output.front();
-
+		
 		return evaluation;
 	}
 
@@ -64,18 +90,18 @@ namespace forge
 	template<typename PIECE_T>
 	void BitBoardToCvMat(cv::Mat& mat, const Board& board, const BitBoard & ours, const BitBoard & theirs, int rowIndex) 
 	{
-		////////////BitBoard pieces = board.pieces<PIECE_T>();
-		////////////BitBoard ourPieces = pieces & ours;
-		////////////BitBoard theirPieces = pieces & theirs;
-////////////
-		////////////for (size_t index = 0; index < 64; index++) {
-		////////////	if (ourPieces[index] == 1) {
-		////////////		mat.at<int8_t>(cv::Point(index, rowIndex)) = 1;
-		////////////	}
-		////////////	else if (theirPieces[index] == 1) {
-		////////////		mat.at<int8_t>(cv::Point(index, rowIndex + 1)) = 1;
-		////////////	}
-		////////////}
+		BitBoard pieces = board.pieces<PIECE_T>();
+		BitBoard ourPieces = pieces & ours;
+		BitBoard theirPieces = pieces & theirs;
+		
+		for (size_t index = 0; index < 64; index++) {
+			if (ourPieces[index] == 1) {
+				mat.at<int8_t>(cv::Point(index, rowIndex)) = 1;
+			}
+			else if (theirPieces[index] == 1) {
+				mat.at<int8_t>(cv::Point(index, rowIndex + 1)) = 1;
+			}
+		}
 	}
 
 	// Does what BitBoardToCvMat does but flips indices of each piece so that 
@@ -83,20 +109,20 @@ namespace forge
 	template<typename PIECE_T>
 	void BitBoardToCvMatFlipped(cv::Mat& mat, const Board& board, const BitBoard& ours, const BitBoard& theirs, int rowIndex)
 	{
-		/////////BitBoard pieces = board.pieces<PIECE_T>();
-		/////////BitBoard ourPieces = pieces & ours;
-		/////////BitBoard theirPieces = pieces & theirs;
-/////////
-		/////////for (size_t index = 0; index < 64; index++) {
-		/////////	auto flippedIndex = 64 - index;
-/////////
-		/////////	if (ourPieces[index] == 1) {
-		/////////		mat.at<int8_t>(cv::Point(flippedIndex, rowIndex)) = 1;
-		/////////	}
-		/////////	else if (theirPieces[index] == 1) {
-		/////////		mat.at<int8_t>(cv::Point(flippedIndex, rowIndex + 1)) = 1;
-		/////////	}
-		/////////}
+		BitBoard pieces = board.pieces<PIECE_T>();
+		BitBoard ourPieces = pieces & ours;
+		BitBoard theirPieces = pieces & theirs;
+		
+		for (size_t index = 0; index < 64; index++) {
+			auto flippedIndex = 64 - index;
+		
+			if (ourPieces[index] == 1) {
+				mat.at<int8_t>(cv::Point(flippedIndex, rowIndex)) = 1;
+			}
+			else if (theirPieces[index] == 1) {
+				mat.at<int8_t>(cv::Point(flippedIndex, rowIndex + 1)) = 1;
+			}
+		}
 	}
 	
 	cv::Mat NeuralNetworkHeuristic::preprocess(const Position& pos) const

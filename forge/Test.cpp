@@ -1135,13 +1135,13 @@ namespace forge
 
 			whiteController->makeHeuristic<
 				//RandomHeuristic>();
-				//ApplePieHeuristic>();
-				NeuralNetworkHeuristic>(R"dil(D:\code\source\repos\AI\forge\data\NNModels\model2057)dil");
+				ApplePieHeuristic>();
+				//NeuralNetworkHeuristic>();
 
 			blackController->makeHeuristic<
 				//RandomHeuristic>();
-				//ApplePieHeuristic>();
-				NeuralNetworkHeuristic>(R"dil(D:\code\source\repos\AI\forge\data\NNModels\model2057)dil");
+				ApplePieHeuristic>();
+				//NeuralNetworkHeuristic>();
 
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);
