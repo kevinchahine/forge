@@ -1,8 +1,12 @@
+# --- Forge ---
+
 cmake_minimum_required(VERSION 3.20)
 
 # --- Establish a Project called forge ---
 set(PROJECT_NAME "forge")
 project(${PROJECT_NAME})
+
+set(VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 # --- Add subdirectories that contain code ---
 add_subdirectory(guten)
@@ -213,7 +217,7 @@ set(TEXT_FILES
 
 # --- OPENCV ---
 
-message(STATUS "----- OpenCV -----")
+message(STATUS "\n----- OpenCV -----")
 set("OpenCV_DIR" "/usr/share/OpenCV")
 find_package(OpenCV REQUIRED)
 
@@ -222,7 +226,7 @@ MESSAGE(STATUS "LINK LIBRARIES ${OpenCV_LIBS}")
 
 # --- BOOST ---
 
-message(STATUS "----- BOOST -----")
+message(STATUS "\n----- BOOST -----")
 set(Boost_USE_STATIC_LIBS		OFF)
 set(Boost_USE_MULTITHREADED		OFF)
 set(Boost_USE_STATIC_RUNTIME	OFF)
@@ -239,6 +243,29 @@ include_directories(${Boost_INCLUDE_DIRS})
 message(STATUS "Include dirs ${Boost_INCLUDE_DIRS}")
 message(STATUS "Boost libraries ${Boost_LIBRARIES}")
 
+# --- OpenNN ---
+
+message(STATUS "\n----- OpenNN -----")
+
+find_package(OpenMP REQUIRED)
+set(CMAKE_C_FLAGS "${OpenMP_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS}")
+
+add_subdirectory(opennn)
+include_directories(opennn)
+
+if(UNIX)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+	set(PROJECT_LINK_LIBS ${CMAKE_SOURCE_DIR}/Release/opennn/libopennn.a)
+endif()
+
+if(WIN32)
+	set(PROJECT_LINK_LIBS ../../opennn/Release/opennn)
+endif()
+
+message(STATUS "\n----- Forge -----")
+
 # --- Establish the executable and specify which files will be used to create it ---
 add_executable(${PROJECT_NAME}
 	${HEADER_FILES}
@@ -254,6 +281,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 	#Boost::asio
 	Boost::system
 	Boost::filesystem
+	opennn
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

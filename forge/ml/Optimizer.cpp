@@ -215,7 +215,11 @@ namespace forge
 				error_sum += error * error;
 			}
 
-			cout << "Avg MSE: " << error_sum / predictions.rows << " over " << predictions.rows << " samples" << endl;	
+			float accuracy = error_sum / predictions.rows;
+
+			cout << "Avg MSE: " << accuracy << " over " << predictions.rows << " samples" << endl;	
+
+			return accuracy;
 		}
 
 		void Optimizer::save(cv::Ptr<cv::ml::ANN_MLP> & ann, const boost::filesystem::path & annFile)
