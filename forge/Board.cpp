@@ -107,6 +107,23 @@ namespace forge
 		return piece;
 	}
 
+	Board Board::rotated() const
+	{
+		Board b;
+
+		b.m_whites = this->m_blacks;
+		b.m_blacks = this->m_whites;
+		b.m_whites = m_whites.rotate();
+		b.m_blacks = m_blacks.rotate();
+		b.m_bishops = m_bishops.rotate();
+		b.m_rooks = m_rooks.rotate();
+		b.m_pawns = m_pawns.rotate();
+		b.m_whiteKing = m_whiteKing.rotate();
+		b.m_blackKing = m_blackKing.rotate();
+		
+		return b;
+	}
+
 	// TODO: This method is placed above Board::move<>() methods because some of them call it.
 	// Try to move this method near the other place<>() methods.
 	template<> void Board::place<pieces::Empty>(BoardSquare square, bool isWhite)
@@ -199,7 +216,7 @@ namespace forge
 	{
 		this->move<pieces::QBN_Piece>(move);
 
-		// TODO: Dont forget castling rights
+		// TODO: Castling: Dont forget castling rights
 	}
 
 	template<> void Board::move<pieces::WhitePawn>(Move move)

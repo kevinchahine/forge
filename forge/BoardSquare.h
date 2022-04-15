@@ -199,6 +199,10 @@ namespace forge
 		//	return BoardSquare();
 		//}
 
+		// Rotates the BoardSquare 180 degrees. 
+		// Same as rotating pieces without rotating the chess board.
+		BoardSquare rotated() const { return BoardSquare(7 - row(), 7 - col()); }
+
 		friend std::ostream& operator<<(std::ostream& os, const BoardSquare& pos)
 		{
 			os << pos.toString();

@@ -5,6 +5,23 @@
 
 namespace forge
 {
+	BitBoard BitBoard::rotated() const {
+		// TODO: There should be a way to optimize this
+		// Consider that this whole Bitboard can fit in a single register and these instructions
+		// will run in CPU time. Any optimizations will probably give a 2% speed up and might not be
+		// worth it. Just don't waste your time.
+		BitBoard bb;
+
+		const size_t size = (*this).size();
+		const size_t size_1 = size - 1;
+
+		for (size_t bit = 0; bit < size; bit++) {
+			bb[bit] = (*this)[size_1 - bit];
+		}
+
+		return bb;
+	}
+
 	// -------------------------------- EXPLICIT SPECIALIZATIONS --------------
 
 	// Shift allToFen bits up a number of rows

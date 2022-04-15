@@ -47,6 +47,7 @@ int main(int argc, char ** argv)
 	//forge::test::stopWatch();
 	//forge::test::boardDefualt();
 	//forge::test::board();
+	forge::test::boardRotate();
 	//forge::test::placeMethods();
 	//forge::test::piece_moves::king();
 	//forge::test::piece_moves::queen();
@@ -69,7 +70,7 @@ int main(int argc, char ** argv)
 	//forge::test::chessMatch();				// **************
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
-	forge::test::heuristic();
+	//forge::test::heuristic();
 	//forge::test::solver();
 	//forge::test::insufficientMaterial();
 	//forge::test::gameState();

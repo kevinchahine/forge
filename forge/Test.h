@@ -95,6 +95,8 @@ namespace forge
 		void boardDefualt();
 
 		void board();
+		
+		void boardRotate();
 
 		void placeMethods();
 

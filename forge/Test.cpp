@@ -650,6 +650,56 @@ namespace forge
 			b.print();
 		}
 
+		void boardRotate() {
+			forge::Board b;
+
+			b.placePiece(0, 0, pieces::blackRook);
+			b.placePiece(0, 1, pieces::blackKnight);
+			b.placePiece(0, 2, pieces::blackBishop);
+			b.placePiece(0, 3, pieces::blackQueen);
+			b.placePiece(0, 4, pieces::blackKing);
+			b.placePiece(0, 5, pieces::blackBishop);
+			b.placePiece(0, 6, pieces::blackKnight);
+			b.placePiece(0, 7, pieces::blackRook);
+
+			b.placePiece(1, 0, pieces::blackPawn);
+			b.placePiece(1, 1, pieces::blackPawn);
+			b.placePiece(1, 2, pieces::blackPawn);
+			b.placePiece(1, 3, pieces::blackPawn);
+			b.placePiece(1, 4, pieces::blackPawn);
+			b.placePiece(1, 5, pieces::blackPawn);
+			b.placePiece(1, 6, pieces::blackPawn);
+			b.placePiece(1, 7, pieces::blackPawn);
+
+			b.placePiece(6, 0, pieces::whitePawn);
+			b.placePiece(6, 1, pieces::whitePawn);
+			b.placePiece(6, 2, pieces::whitePawn);
+			b.placePiece(6, 3, pieces::whitePawn);
+			b.placePiece(6, 4, pieces::whitePawn);
+			b.placePiece(6, 5, pieces::whitePawn);
+			b.placePiece(6, 6, pieces::whitePawn);
+			b.placePiece(6, 7, pieces::whitePawn);
+
+			b.placePiece(7, 0, pieces::whiteRook);
+			b.placePiece(7, 1, pieces::whiteKnight);
+			b.placePiece(7, 2, pieces::whiteBishop);
+			b.placePiece(7, 3, pieces::whiteQueen);
+			b.placePiece(7, 4, pieces::whiteKing);
+			b.placePiece(7, 5, pieces::whiteBishop);
+			b.placePiece(7, 6, pieces::whiteKnight);
+			b.placePiece(7, 7, pieces::whiteRook);
+
+			cout << "--- Before Rotate ---" << endl;
+
+			b.print();
+
+			cout << "--- After Rotate ---" << endl;
+
+			forge::Board rotated = b.rotate();
+
+			rotated.print();
+		}
+
 		void placeMethods()
 		{
 			forge::Board b;

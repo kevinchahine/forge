@@ -56,6 +56,11 @@ namespace forge
 			return (*this)[square.val()];
 		}
 
+		// Rotates the BitBoard 180 degrees. 
+		// Same as rotating pieces without rotating the chess board.
+		// Does not flip bits (0 to 1, 1 to 0)
+		BitBoard rotated() const;
+
 		template<typename DIRECTION_T>
 		void shift(uint8_t numberOfCells) {
 			static_assert(true,
@@ -84,6 +89,8 @@ namespace forge
 
 	private:
 	}; // class BitBoard
+
+	// -------------------------------- METHOD DEFINITIONS --------------------
 
 	template<typename RAY_DIRECTION_T>
 	BitBoard BitBoard::mask(BoardSquare begin, BoardSquare end)
@@ -140,5 +147,3 @@ namespace std
 		}
 	};
 }
-
-#include "BitBoardDefinitions.h"

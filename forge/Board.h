@@ -94,6 +94,13 @@ namespace forge
 		//////////////template<> void move<pieces::Pawn>(Move move);
 		//////////////template<> void move<pieces::Piece>(Move move);
 
+		// Rotates the Board 180 degrees. 
+		// Same as rotating pieces without rotating the chess board.
+		// Does flip piece colors (white->black, black->white)
+		Board rotated() const;
+
+		// ---------------------------- Boolean Methods -----------------------
+
 		bool isOccupied(BoardSquare square) const { return occupied()[square]; }
 		bool isEmpty(BoardSquare square) const { return empty()[square]; }
 		bool isKing(BoardSquare square) const { return kings()[square]; }
@@ -107,6 +114,8 @@ namespace forge
 
 		template <typename PIECE_T> bool isPiece(BoardSquare square) const;
 		
+		// ---------------------------- BitBoard Piece Accessors --------------
+
 		template<typename COLOR_T> BitBoard colors() const;
 		
 		BitBoard occupied() const { return m_whites | m_blacks; }
@@ -195,8 +204,6 @@ namespace forge
 	// -------------------------------- EXPLICIT SPECIALIZATIONS --------------
 
 } // namespace forge
-
-#include "BoardDefinitions.h"
 
 // --- Inject hash into std namespace
 namespace std

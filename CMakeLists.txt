@@ -18,9 +18,7 @@ set(HEADER_FILES
 	forge/AttackChecker.h
 	forge/AttackersDefinitions.h
 	forge/Attackers.h
-	forge/BitBoardDefinitions.h
 	forge/BitBoard.h
-	forge/BoardDefinitions.h		# TODO: Do we need this anymore
 	forge/Board.h
 	forge/BoardSquare.h
 	forge/ChessMatch.h
