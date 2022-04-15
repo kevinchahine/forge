@@ -1196,13 +1196,13 @@ namespace forge
 			position.reset();
 
 			unique_ptr<HeuristicBase> ptr =
-				//make_unique<ApplePieHeuristic>();
-				make_unique<RandomHeuristic>();
+			//	//make_unique<ApplePieHeuristic>();
+			//	//make_unique<RandomHeuristic>();
+				make_unique<NeuralNetworkHeuristic>(); 
 
-			while (true) {
-				cout << ptr->eval(position) << ' ';
-				cin.get();
-			}
+			cout << ptr->eval(position) << ' ';
+
+			//cout << "eval = " << val << endl;
 		}
 
 		void solver()

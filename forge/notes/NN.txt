@@ -1,8 +1,224 @@
 === FORGE ===
 === Neural Networks ===
 
-Explains why opencv has a fast neural network
-	https://learnopencv.com/deep-learning-with-opencvs-dnn-module-a-definitive-guide/
+# See Stockfish Evaluation Guide: https://hxim.github.io/Stockfish-Evaluation-Guide/
+# Hint: Be careful to distinguish the features which are used for traditional evaluation functions
+#	like single layer perceptrons and which features are used for neural network evaluation functions.
 
 For future optimizations, we can try to use an nnue model to get even faster feed forwards.
+
+Possible Features:
+	Material:	(Squares where each of our/their types of pieces are standing)
+		our_kings		- one-hot
+		our_queens		- one-hot
+		our_bishops		- one-hot
+		our_knights		- one-hot
+		our_rooks		- one-hot
+		our_pawns		- one-hot
+		their_kings		- one-hot
+		their_queens	- one-hot
+		their_bishops	- one-hot
+		their_knights	- one-hot
+		their_rooks		- one-hot
+		their_pawns		- one-hot
+		emptys			- one-hot
+
+	Mobility:	(Squares where each of our/their types of pieces can move)
+		our_kings		- array
+		our_queens		- array
+		our_bishops		- array
+		our_knights		- array
+		our_rooks		- array
+		our_pawns		- array
+		their_kings		- array
+		their_queens	- array
+		their_bishops	- array
+		their_knights	- array
+		their_rooks		- array
+		their_pawns		- array
+
+	Pins:		(Squares where each of our/their pinned pieces are standing)
+		our_kings		- one-hot	Kings cannot be pinned
+		our_queens		- one-hot	
+		our_bishops		- one-hot	
+		our_knights		- one-hot	
+		our_rooks		- one-hot	
+		our_pawns		- one-hot	
+		their_kings		- one-hot	Kings cannot be pinned
+		their_queens	- one-hot	
+		their_bishops	- one-hot	
+		their_knights	- one-hot	
+		their_rooks		- one-hot	
+		their_pawns		- one-hot	
+		* We can also do (doing this will combine pins and skweres):
+			our_queens_pinned_to_our_kings
+			our_queens_pinned_to_our_queens
+			our_queens_pinned_to_our_bishops
+			our_queens_pinned_to_our_knights
+			our_queens_pinned_to_our_pawns
+			our_bishops_pinned_to_our_kings
+			our_bishops_pinned_to_our_queens
+			our_bishops_pinned_to_our_bishops
+			our_bishops_pinned_to_our_knights
+			our_bishops_pinned_to_our_pawns
+			our_knights_pinned_to_our_kings
+			our_knights_pinned_to_our_queens
+			our_knights_pinned_to_our_bishops
+			our_knights_pinned_to_our_knights
+			our_knights_pinned_to_our_pawns
+			our_rooks_pinned_to_our_kings
+			our_rooks_pinned_to_our_queens
+			our_rooks_pinned_to_our_bishops
+			our_rooks_pinned_to_our_knights
+			our_rooks_pinned_to_our_pawns
+			our_pawns_pinned_to_our_kings
+			our_pawns_pinned_to_our_queens
+			our_pawns_pinned_to_our_bishops
+			our_pawns_pinned_to_our_knights
+			our_pawns_pinned_to_our_pawns
+			<Same for their pins>
+		* We can even do each of these from all ray directions
+			our_queens_pinned_to_our_kings_from_up
+			our_queens_pinned_to_our_kings_from_down
+			our_queens_pinned_to_our_kings_from_left
+			our_queens_pinned_to_our_kings_from_right
+			our_queens_pinned_to_our_kings_from_ul
+			our_queens_pinned_to_our_kings_from_dl
+			our_queens_pinned_to_our_kings_from_dr
+			our_queens_pinned_to_our_kings_from_ur
+			...
+		* We can even consider the type of the attacking piece
+			our_queens_pinned_to_our_kings_by_their_queens	(kings cannot deal pins)
+			our_queens_pinned_to_our_kings_by_their_bishops
+			our_queens_pinned_to_our_kings_by_their_knights	(knights cannot deal pins)
+			our_queens_pinned_to_our_kings_by_their_rooks
+			our_queens_pinned_to_our_kings_by_their_pawns	(pawns cannot deal pins)
+	
+	Skweres:	(Squares where each of our/their skwered pieces are standing)
+		our_kings		- one-hot	
+		our_queens		- one-hot	
+		our_bishops		- one-hot	
+		our_knights		- one-hot	
+		our_rooks		- one-hot	
+		our_pawns		- one-hot	Pawns cannot be skewered
+		their_kings		- one-hot	
+		their_queens	- one-hot	
+		their_bishops	- one-hot	
+		their_knights	- one-hot	
+		their_rooks		- one-hot	
+		their_pawns		- one-hot	Pawns cannot be skewered
+		* We can even do each of these from all ray directions
+			our_queens_skwered_to_our_kings_from_up
+			our_queens_skwered_to_our_kings_from_down
+			our_queens_skwered_to_our_kings_from_left
+			our_queens_skwered_to_our_kings_from_right
+			our_queens_skwered_to_our_kings_from_ul
+			our_queens_skwered_to_our_kings_from_dl
+			our_queens_skwered_to_our_kings_from_dr
+			our_queens_skwered_to_our_kings_from_ur
+			...
+		* We can even consider the type of the attacking piece
+
+	Defended:	(Which of our/their types of peices are defended)
+		(counts how many defenders each piece has)
+		(Overlaps our mobility with our pieces)
+		(Overlaps their mobility with their pieces)
+		our_defended_kings		- array		Kings cannot be defended
+		our_defended_queens		- array		
+		our_defended_bishops	- array		
+		our_defended_knights	- array		
+		our_defended_rooks		- array		
+		our_defended_pawns		- array		
+		their_defended_kings	- array		Kings cannot be defended
+		their_defended_queens	- array		
+		their_defended_bishops	- array		
+		their_defended_knights	- array		
+		their_defended_rooks	- array		
+		their_defended_pawns	- array		
+		
+		our_defended_kings	Kings cannot be defended
+		our_queens_defended_by_kings
+		our_queens_defended_by_queens
+		our_queens_defended_by_bishops
+		our_queens_defended_by_knights
+		our_queens_defended_by_rooks
+		our_queens_defended_by_pawns
+		...
+		* We can even do each of these from all directions
+		our_queens_defended_by_kings_from_down	(king is below queen)
+		our_queens_defended_by_kings_from_up	(king is above queen)
+		...
+
+	Attackers:	(Which of our/their types of pieces are being attacked)
+		(Opposite of being defended)
+		(Counts how many times each piece is attacked)
+		(*Consider imbalance against defended pieces*)
+		(Overlaps our mobility with their pieces)
+		(Overlaps their mobility with our pieces)
+		our_attacked_kings		- array
+		our_attacked_queens		- array
+		our_attacked_bishops	- array
+		our_attacked_knights	- array
+		our_attacked_rooks		- array
+		our_attacked_pawns		- array
+		their_attacked_kings	- array
+		their_attacked_queens	- array
+		their_attacked_bishops	- array
+		their_attacked_knights	- array
+		their_attacked_rooks	- array
+		their_attacked_pawns	- array
+		* We can even do each of these from all directions and by each type of Attackers
+		our_kings_attacked_by_kings_from_up	(kings cannot attack kings)
+		our_kings_attacked_by_queens_from_up
+		our_kings_attacked_by_queens_from_down
+		...
+		our_kings_attacked_by_bishops_from_ul
+		our_kings_attacked_by_bishops_from_dr
+		...
+		our_kings_attacked_by_knights_from_l0
+		our_kings_attacked_by_knights_from_l1
+		our_kings_attacked_by_knights_from_l2
+		...
+		our_kings_attacked_by_rooks_from_up
+		our_kings_attacked_by_rooks_from_down
+		our_kings_attacked_by_rooks_from_left
+		our_kings_attacked_by_rooks_from_right
+		our_kings_attacked_by_pawns_from_ul
+		our_kings_attacked_by_pawns_from_ur
+		our_queens...
+		our_bishops...
+		...
+		(Same for their pieces)
+
+	Blockers:	(Which of our/their types of pieces are blocked)
+		(blocked means that a piece is standing 1 square behind another. **Well kind of. See stockfish evaluation guide**)
+		our_king_blocked_from_up
+		our_king_blocked_from_down
+		...
+		our_queen_blocked_from_up
+		our_queen_blocked_from_down
+		...
+		* We can also do blocked by each piece type
+			our_king_blocked_by_queens_from_up
+			our_king_blocked_by_queens_from_down
+			our_king_blocked_by_queens_from_left
+			...
+			our_queens_blocked_by_kings_from_up
+
+	PSQT:		(Position Square Table Bonus)
+		queen_psqt		- one-hot
+		bishop_psqt		- one-hot
+		knight_psqt		- one-hot
+		rook_psqt		- one-hot
+		pawn_psqt		- one-hot
+
+	Pawns:
+		Isolated:
+		Double Isolated:
+		Backward:
+		Double:
+		Connected:
+		Connected Bonus:
+		Weak Unopposed:
+		Blocked:	(Already listed under Blockers)
 

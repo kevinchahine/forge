@@ -4,53 +4,34 @@ using namespace std;
 
 namespace forge
 {
-	NeuralNetworkHeuristic::NeuralNetworkHeuristic()
-	{
-		int nFeatures = 64 * 12;
-
-		cv::Mat_<int> layerSizes(4, 1);	// 4 layers, 1 is like a placeholder
-		layerSizes(0) = nFeatures;		// input
-		layerSizes(1) = 512;			// hidden1
-		layerSizes(2) = 32;				// hidden2
-		layerSizes(3) = 1;				// output
-		
-		m_model = cv::ml::ANN_MLP::create();
-		m_model->setLayerSizes(layerSizes);
-		m_model->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 0, 0);
-		m_model->setTermCriteria(cv::TermCriteria(cv::TermCriteria::MAX_ITER, 500, 0.0001));	// train for 10'000 iterations (samples)
-		m_model->setTrainMethod(cv::ml::ANN_MLP::BACKPROP, 0.0001);
-	}
+	NeuralNetworkHeuristic::NeuralNetworkHeuristic() :
+		m_model(OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::ProjectType::Approximation, {10, 3, 2, 1}))
+	{}
 	
-	NeuralNetworkHeuristic::NeuralNetworkHeuristic(const std::string& model_file_name)
-	{
-		cout << __FUNCTION__ << " not implemented\n";
-		//m_model = ml::Optimizer::createNN();
-	}
+	//NeuralNetworkHeuristic::NeuralNetworkHeuristic(const std::string& model_file_name)
+	//{
+	//	cout << __FUNCTION__ << " not implemented\n";
+	//	//m_model = ml::Optimizer::createNN();
+	//}
 
 	heuristic_t NeuralNetworkHeuristic::eval(const Position& pos)
 	{
-		// --- Preprocess ---
-		cv::Mat input = this->preprocess(pos);
-		//cv::InputArrayOfArrays input;	// Consider using this instead
+		Eigen::Tensor<float, 2> inputs(1, 10);
+		Eigen::Tensor<float, 2> outputs(1, 1);
+		outputs(0, 0) = 5;
 
-		//for (size_t r = 0; r < input.rows; r++) {
-		//	for (size_t c = 0; c < input.cols; c++) {
-		//		cout << input.at<float>(r, c) << '\t';
-		//	}
-		//	cout << endl;
-		//}
-		//cout << endl;
+		for (int i = 0; i < 10; i++) {
+			inputs(0, i) = i;
+		}
+		
+		// --- Preprocess ---
 
 		// --- Feed Forward ---
-		vector<int> output{ 1, 1 };
-		// m_model.predict(input, output);
+
+		outputs = m_model.calculate_outputs(inputs);
 
 		// --- Return ---
-		heuristic_t evaluation = 0;
-		
-		evaluation = output.front();
-		
-		return evaluation;
+		return outputs(0, 0);
 	}
 
 	unique_ptr<HeuristicBase> NeuralNetworkHeuristic::clone() const
@@ -87,94 +68,42 @@ namespace forge
 	//			For convenience and because each piece can be ours or theirs, this function will 
 	//			store the one-hot encoding of our peices at `rowIndex` and their pieces at `rowIndex + 1`
 	//		Also, when ours is black pieces, the board will be flipped to be in perspective of black.
-	template<typename PIECE_T>
-	void BitBoardToCvMat(cv::Mat& mat, const Board& board, const BitBoard & ours, const BitBoard & theirs, int rowIndex) 
-	{
-		BitBoard pieces = board.pieces<PIECE_T>();
-		BitBoard ourPieces = pieces & ours;
-		BitBoard theirPieces = pieces & theirs;
-		
-		for (size_t index = 0; index < 64; index++) {
-			if (ourPieces[index] == 1) {
-				mat.at<int8_t>(cv::Point(index, rowIndex)) = 1;
-			}
-			else if (theirPieces[index] == 1) {
-				mat.at<int8_t>(cv::Point(index, rowIndex + 1)) = 1;
-			}
-		}
-	}
 
 	// Does what BitBoardToCvMat does but flips indices of each piece so that 
 	// coordinates are in the perspective of the black player.
-	template<typename PIECE_T>
-	void BitBoardToCvMatFlipped(cv::Mat& mat, const Board& board, const BitBoard& ours, const BitBoard& theirs, int rowIndex)
-	{
-		BitBoard pieces = board.pieces<PIECE_T>();
-		BitBoard ourPieces = pieces & ours;
-		BitBoard theirPieces = pieces & theirs;
-		
-		for (size_t index = 0; index < 64; index++) {
-			auto flippedIndex = 64 - index;
-		
-			if (ourPieces[index] == 1) {
-				mat.at<int8_t>(cv::Point(flippedIndex, rowIndex)) = 1;
-			}
-			else if (theirPieces[index] == 1) {
-				mat.at<int8_t>(cv::Point(flippedIndex, rowIndex + 1)) = 1;
-			}
-		}
-	}
 	
-	cv::Mat NeuralNetworkHeuristic::preprocess(const Position& pos) const
-	{
-		cv::Mat mat = cv::Mat::zeros(12, 64, CV_8S);
-		
-		const Board& b = pos.board();
-
-		// ----- Who's Turn? -----
-
-		BitBoard ours, theirs;
-		BoardSquare ourKing, theirKing;
-		size_t ourKingIndex, theirKingIndex;
-
-		// --- Determine Who's Turn It Is ---
-		if (pos.moveCounter().isWhitesTurn()) {
-			// It is WHITES turn
-			ours = b.whites();
-			theirs = b.blacks();
-			ourKing = b.whiteKing();
-			theirKing = b.blackKing();
-			ourKingIndex = ourKing.index();
-			theirKingIndex = theirKing.index();
-
-			// ----- Create Hot-Encodings of each feature -----
-			BitBoardToCvMat<pieces::Pawn>(mat, b, ours, theirs, 0);
-			BitBoardToCvMat<pieces::Knight>(mat, b, ours, theirs, 2);
-			BitBoardToCvMat<pieces::Bishop>(mat, b, ours, theirs, 4);
-			BitBoardToCvMat<pieces::Rook>(mat, b, ours, theirs, 6);
-			BitBoardToCvMat<pieces::Queen>(mat, b, ours, theirs, 8);
-			mat.at<int8_t>(ourKingIndex, 10) = 1;
-			mat.at<int8_t>(theirKingIndex, 11) = 1;
-		}
-		else {
-			// It is BLACKS turn
-			ours = b.blacks();
-			theirs = b.whites();
-			ourKing = b.blackKing();
-			theirKing = b.whiteKing();
-			ourKingIndex = 63 - ourKing.index();
-			theirKingIndex = 63 - theirKing.index();
-		
-			// ----- Create Hot-Encodings of each feature -----
-			BitBoardToCvMatFlipped<pieces::Pawn>(mat, b, ours, theirs, 0);
-			BitBoardToCvMatFlipped<pieces::Knight>(mat, b, ours, theirs, 2);
-			BitBoardToCvMatFlipped<pieces::Bishop>(mat, b, ours, theirs, 4);
-			BitBoardToCvMatFlipped<pieces::Rook>(mat, b, ours, theirs, 6);
-			BitBoardToCvMatFlipped<pieces::Queen>(mat, b, ours, theirs, 8);
-			mat.at<int8_t>(ourKingIndex, 10) = 1;
-			mat.at<int8_t>(theirKingIndex, 11) = 1;
-		}
-
-		return mat;
-	}
+//	cv::Mat NeuralNetworkHeuristic::preprocess(const Position& pos) const
+//	{
+//		const Board& b = pos.board();
+//
+//		// ----- Who's Turn? -----
+//
+//		BitBoard ours, theirs;
+//		BoardSquare ourKing, theirKing;
+//		size_t ourKingIndex, theirKingIndex;
+//
+//		// --- Determine Who's Turn It Is ---
+//		if (pos.moveCounter().isWhitesTurn()) {
+//			// It is WHITES turn
+//			ours = b.whites();
+//			theirs = b.blacks();
+//			ourKing = b.whiteKing();
+//			theirKing = b.blackKing();
+//			ourKingIndex = ourKing.index();
+//			theirKingIndex = theirKing.index();
+//
+//			// ----- Create Hot-Encodings of each feature -----
+//		}
+//		else {
+//			// It is BLACKS turn
+//			ours = b.blacks();
+//			theirs = b.whites();
+//			ourKing = b.blackKing();
+//			theirKing = b.whiteKing();
+//			ourKingIndex = 63 - ourKing.index();
+//			theirKingIndex = 63 - theirKing.index();
+//		
+//			// ----- Create Hot-Encodings of each feature -----
+//		}
+//	}
 } // namespace forge

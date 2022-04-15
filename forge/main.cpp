@@ -15,18 +15,8 @@ Designed to use a variety of evaluation functions including:
 
 Designed to be compatible with a variety of displays including:
 	- Universal Chess Interface (UCI) GUIs
-	- Custom command line GUI for systems that don't support graphical output.
+	- Terminal interface.
 */
-
-// TODO: REMOVE ALL THESE
-#include <iostream>
-
-#include <opencv4/opencv2/opencv.hpp>
-// #include <opencv4/opencv2/gpu/gpu.hpp>
-
-#include <Guten/guten.hpp>	// REMOVE thid
-#include "BitBoard.h"
-#include "Position.h"
 
 #include "Test.h"
 /////////////#include "TestMoveGen.h"
@@ -46,15 +36,6 @@ int main(int argc, char ** argv)
 		<< guten::color::red << "=============\n"
 		<< guten::color::white;
 	
-	auto net = cv::dnn::Net();
-
-	net.setPreferableBackend(cv::dnn::dnn4_v20191202::DNN_BACKEND_CUDA);
-	net.setPreferableTarget(cv::dnn::dnn4_v20191202::DNN_TARGET_CUDA);
-	
-	cout << "Found " 
-		// << getCudaEnabledDevicecount() 
-		<< " GPU devices." << endl;
-
 	//forge::test::initTestBoards();
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
@@ -85,10 +66,10 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	forge::test::chessMatch();				// **************
+	//forge::test::chessMatch();				// **************
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
-	//forge::test::heuristic();
+	forge::test::heuristic();
 	//forge::test::solver();
 	//forge::test::insufficientMaterial();
 	//forge::test::gameState();
@@ -96,9 +77,8 @@ int main(int argc, char ** argv)
 	//forge::test::logger();
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
-
 	//forge::test::optimizer();
-	forge::ml::Optimizer op;
+	//forge::ml::Optimizer op;
 	//op.train();
 
 	//forge::uci::test::engineToGui();
@@ -108,6 +88,12 @@ int main(int argc, char ** argv)
 	//forge::DatasetGenerator dsGen;
 	//dsGen.run();
 
+	{
+		//forge::NeuralNetworkHeuristic nnh;
+		//OpenNN::NeuralNetwork nn = OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::ProjectType::Classification, {2, 10, 1});
+	}
+
+	//forge::NeuralNetworkHeuristic h;
 	//cout << "Done";
 	//this_thread::sleep_for(chrono::seconds(1));
 	//cout << "Press any key..." << endl;

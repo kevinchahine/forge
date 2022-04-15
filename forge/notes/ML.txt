@@ -14,13 +14,14 @@ https://medium.com/@nihalpuram/training-a-chess-ai-using-tensorflow-e795e1377af2
 
 # Downloadable NNs
 https://tests.stockfishchess.org/nns									Not great (because we don't know what the inputs should be yet)
+https://hxim.github.io/Stockfish-Evaluation-Guide/						!!! Stockfish Evaluation Guide !!!
 
 Stockfish NN (from https://www.chessprogramming.org/Stockfish_NNUE)
 	Input: 64 + 64 + 41024 nodes
 		64 nodes for Our King (One hot encoding)
 		64 nodes for Their King (One hot encoding)
 		64x641 = 41024 nodes for other features:
-			For each feature: (I think) (Each are One hot encoding)
+			For each feature: (I think) (Each are multi-hot encoding)
 				64 nodes for Our Queen (One hot encoding)
 				64 nodes for Their Queen
 				...
