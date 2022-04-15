@@ -695,7 +695,7 @@ namespace forge
 
 			cout << "--- After Rotate ---" << endl;
 
-			forge::Board rotated = b.rotate();
+			forge::Board rotated = b.rotated();
 
 			rotated.print();
 		}

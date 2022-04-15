@@ -5,7 +5,7 @@ using namespace std;
 namespace forge
 {
 	NeuralNetworkHeuristic::NeuralNetworkHeuristic() :
-		m_model(OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::ProjectType::Approximation, {10, 3, 2, 1}))
+		m_model(OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::ProjectType::Approximation, {832, 1000, 500, 1}))
 	{}
 	
 	//NeuralNetworkHeuristic::NeuralNetworkHeuristic(const std::string& model_file_name)
@@ -16,18 +16,17 @@ namespace forge
 
 	heuristic_t NeuralNetworkHeuristic::eval(const Position& pos)
 	{
-		Eigen::Tensor<float, 2> inputs(1, 10);
-		Eigen::Tensor<float, 2> outputs(1, 1);
-		outputs(0, 0) = 5;
+		size_t inputSize = m_model.get_layer_pointer(0)->get_inputs_number();
 
-		for (int i = 0; i < 10; i++) {
-			inputs(0, i) = i;
-		}
-		
+		Eigen::Tensor<float, 2> inputs(1, inputSize);	// TODO: do this in 2D. Let 1st dim be the feature and the 2nd be the square
+		Eigen::Tensor<float, 2> outputs(1, 1);
+
 		// --- Preprocess ---
 
-		// --- Feed Forward ---
+		// --- Feature Extraction ---
+		inputs = this->featureExtraction(pos);
 
+		// --- Feed Forward ---
 		outputs = m_model.calculate_outputs(inputs);
 
 		// --- Return ---
@@ -44,66 +43,90 @@ namespace forge
 		cout << __FUNCTION__ << " not fully implemented" << endl;
 	}
 
-	// Assigns the hot-encoding of a BitBoard to a specified row in a cv::Mat
-	// 
-	// Parameters:
-	//		PIECE_T:
-	//			BitBoard comes from `board` and is specified by `PIECE_T`
-	//			`PIECE_T` should be one of the piece types found under namespace pieces
-	//				ex: peices::Pawn, pieces::Knight, (not pieces::WhitePawn)
-	//				Do Not use types that specify color or direction. Only use
-	//				King, Queen, Bishop, Knight, Rook, Pawn
-	//		mat:
-	//			a cv::Mat of size 12 rows, 64 columns
-	//			Each row stores the one hot encoding of a piece
-	//		board:
-	//			board of the current Position
-	//		ours:
-	//			BitBoard of all 'our' pieces. Use board.whites() or board.blacks()
-	//		theirs:
-	//			BitBoard of all 'their' pieces. Use board.whites() or board.blacks()
-	//		rowIndex:
-	//			Each row in `mat` stores the one-hot encoding for a specific piece.
-	//			`rowIndex` specifies the index that the one-hot encoding is to be stored into.
-	//			For convenience and because each piece can be ours or theirs, this function will 
-	//			store the one-hot encoding of our peices at `rowIndex` and their pieces at `rowIndex + 1`
-	//		Also, when ours is black pieces, the board will be flipped to be in perspective of black.
+	void NeuralNetworkHeuristic::train()
+	{	
+		// --- Load Training Data ---
 
-	// Does what BitBoardToCvMat does but flips indices of each piece so that 
-	// coordinates are in the perspective of the black player.
-	
-//	cv::Mat NeuralNetworkHeuristic::preprocess(const Position& pos) const
-//	{
-//		const Board& b = pos.board();
-//
-//		// ----- Who's Turn? -----
-//
-//		BitBoard ours, theirs;
-//		BoardSquare ourKing, theirKing;
-//		size_t ourKingIndex, theirKingIndex;
-//
-//		// --- Determine Who's Turn It Is ---
-//		if (pos.moveCounter().isWhitesTurn()) {
-//			// It is WHITES turn
-//			ours = b.whites();
-//			theirs = b.blacks();
-//			ourKing = b.whiteKing();
-//			theirKing = b.blackKing();
-//			ourKingIndex = ourKing.index();
-//			theirKingIndex = theirKing.index();
-//
-//			// ----- Create Hot-Encodings of each feature -----
-//		}
-//		else {
-//			// It is BLACKS turn
-//			ours = b.blacks();
-//			theirs = b.whites();
-//			ourKing = b.blackKing();
-//			theirKing = b.whiteKing();
-//			ourKingIndex = 63 - ourKing.index();
-//			theirKingIndex = 63 - theirKing.index();
-//		
-//			// ----- Create Hot-Encodings of each feature -----
-//		}
-//	}
+		// --- Preprocess Data ---
+
+		int nSamples = 10;
+		int nFeatures = 832;
+		//Eigen::Tensor<float, 2> data(nFeatures, nSamples);
+		// OpenNN::DataSet dataSet(data);
+		
+		OpenNN::DataSet dataSet(nSamples, nFeatures, 1);
+		cout << "samples number = " << dataSet.get_samples_number() << endl
+			<< "columns number: " << dataSet.get_columns_number() << endl
+			<< "columns input number: " << dataSet.get_input_columns_number() << endl
+			<< "columns target number: " << dataSet.get_target_columns_number() << endl
+			<< endl;
+
+		Eigen::Tensor<float, 2> data = dataSet.get_data();	// !!! Does not return a non-const reference
+
+		cout << "type = " << typeid(data).name() << endl
+			<< "rank = " << data.rank() << endl
+			<< "size = " << data.size() << endl
+			<< "dimention[0] = " << data.dimension(0) << endl
+			<< "dimention[1] = " << data.dimension(1) << endl
+			<< endl;
+
+		for (size_t s = 0; s < nSamples; s++) {
+			Position pos;
+			Eigen::Tensor<float, 2> sample = this->featureExtraction(pos);
+
+			for (size_t col = 0; col < data.dimension(1); col++) {
+				data(s, col) = sample(0, col);
+			}
+		}
+
+		OpenNN::TrainingStrategy trainingStrategy(&m_model, &dataSet);
+		trainingStrategy.set_loss_method(OpenNN::TrainingStrategy::LossMethod::MEAN_SQUARED_ERROR);
+		trainingStrategy.set_optimization_method(OpenNN::TrainingStrategy::OptimizationMethod::GRADIENT_DESCENT);
+		
+		trainingStrategy.perform_training();
+	}
+
+	Eigen::Tensor<float, 2> NeuralNetworkHeuristic::featureExtraction(const Position & pos) 
+	{
+		// --- Alias ---
+		Board b = (pos.moveCounter().isWhitesTurn() ? pos.board() : pos.board().rotated());
+
+		BitBoard ours = b.whites();
+		BitBoard theirs = b.blacks();
+
+		BitBoard ourKings = ours & b.kings();
+		BitBoard ourQueens = ours & b.queens();
+		BitBoard ourBishops = ours & b.bishops();
+		BitBoard ourKnights = ours & b.knights();
+		BitBoard ourRooks = ours & b.rooks();
+		BitBoard ourPawns = ours & b.pawns();
+
+		BitBoard theirKings = theirs & b.kings();
+		BitBoard theirQueens = theirs & b.queens();
+		BitBoard theirBishops = theirs & b.bishops();
+		BitBoard theirKnights = theirs & b.knights();
+		BitBoard theirRooks = theirs & b.rooks();
+		BitBoard theirPawns = theirs & b.pawns();
+
+		Eigen::Tensor<float, 2> inputs(1, this->nInputNodes());
+		
+		for (size_t bit = 0; bit < 64; bit++) {
+			// TODO: Optimize: Can this be optimized with ifs. Hint: Sparse data.
+			inputs(1, 64 * 0 + bit) = ourKings[bit];
+			inputs(1, 64 * 1 + bit) = ourQueens[bit];
+			inputs(1, 64 * 2 + bit) = ourBishops[bit];
+			inputs(1, 64 * 3 + bit) = ourKnights[bit];
+			inputs(1, 64 * 4 + bit) = ourRooks[bit];
+			inputs(1, 64 * 5 + bit) = ourPawns[bit];
+			inputs(1, 64 * 6 + bit) = theirKings[bit];
+			inputs(1, 64 * 7 + bit) = theirQueens[bit];
+			inputs(1, 64 * 8 + bit) = theirBishops[bit];
+			inputs(1, 64 * 9 + bit) = theirKnights[bit];
+			inputs(1, 64 * 10 + bit) = theirRooks[bit];
+			inputs(1, 64 * 11 + bit) = theirPawns[bit];
+		}
+
+		return inputs;
+	}
+
 } // namespace forge

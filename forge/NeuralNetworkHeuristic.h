@@ -2,7 +2,7 @@
 
 #include "HeuristicBase.h"
 
-#include "../opennn/opennn/opennn.h"	// TODO: include only what we need
+#include "../opennn/opennn/opennn.h"	// TODO: include only what we need to speed up builds
 #include "../opennn/opennn/layer.h"
 
 namespace forge
@@ -26,9 +26,18 @@ namespace forge
 
 		virtual void print(const Position& pos, std::ostream& os = std::cout) const override;
 
+		size_t nInputNodes() const { return m_model.get_layer_pointer(0)->get_inputs_number(); }
+
+		// size_t nOutputNodes() const { return m_model.get_layer_pointer(last_layer)->get_inputs_number(); ??? }
+
+		void train();
+
 		//OpenNN::NeuralNetwork & model() { return m_model; }
 		//const OpenNN::NeuralNetwork & model() const { return m_model; }
 		
+	protected:
+		Eigen::Tensor<float, 2> featureExtraction(const Position & pos);
+
 	protected:
 		// A neural network model used to approximate the fitness or favorability of a chess Position.
 		// Input is a 2-D Matrix (12 rows, 64 columns)
@@ -41,22 +50,39 @@ namespace forge
 		//	For example, if the NN is trained with its 1st layer being `our pawns`, then we should pass in the
 		//	one-hot encoding of our pawns to it and not something else.
 		// 
-		// Output is a single value that is the evaluation of the position in units of centi-pawns.
+		// Output Layer:
+		//		A single value that is the evaluation of the position in units of centi-pawns.
+		// 		From perspective of moving player.
 		// 
 		// Input Layer:
-		//	Row:
-		//		0  - our pawns
-		//		1  - their pawns
-		//		2  - our knights
-		//		3  - their knights
-		//		4  - our bishops
-		//		5  - their bishops
-		//		6  - our rooks
-		//		7  - their rooks
-		//		8  - our queens
-		//		9  - their queens
-		//		10 - our kings
-		//		11 - their kings
+		//			# of nodes	- feature		- feature type
+		//		Material:
+		//			64			- our king		- one-hot
+		//			64			- our queens	- one-hot
+		//			64			- our bishops	- one-hot
+		//			64			- our knights	- one-hot
+		//			64			- our rooks		- one-hot
+		//			64			- our pawns		- one-hot
+		//			64			- their king	- one-hot
+		//			64			- their queens	- one-hot
+		//			64			- their bishops	- one-hot
+		//			64			- their knights	- one-hot
+		//			64			- their rooks	- one-hot
+		//			64			- their pawns	- one-hot
+		//			64			- empty			- one-hot
+		//		Mobility: (How many of each piece can move to a each given square)
+		//			64			- our king		- array
+		//			64			- our queens	- array
+		//			64			- our bishops	- array
+		//			64			- our knights	- array
+		//			64			- our rooks		- array
+		//			64			- our pawns		- array
+		//			64			- their king	- array
+		//			64			- their queens	- array
+		//			64			- their bishops	- array
+		//			64			- their knights	- array
+		//			64			- their rooks	- array
+		//			64			- their pawns	- array
 		OpenNN::NeuralNetwork m_model;
 	};
 } // namespace forge

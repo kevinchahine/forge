@@ -113,13 +113,13 @@ namespace forge
 
 		b.m_whites = this->m_blacks;
 		b.m_blacks = this->m_whites;
-		b.m_whites = m_whites.rotate();
-		b.m_blacks = m_blacks.rotate();
-		b.m_bishops = m_bishops.rotate();
-		b.m_rooks = m_rooks.rotate();
-		b.m_pawns = m_pawns.rotate();
-		b.m_whiteKing = m_whiteKing.rotate();
-		b.m_blackKing = m_blackKing.rotate();
+		b.m_whites = m_whites.rotated();
+		b.m_blacks = m_blacks.rotated();
+		b.m_bishops = m_bishops.rotated();
+		b.m_rooks = m_rooks.rotated();
+		b.m_pawns = m_pawns.rotated();
+		b.m_whiteKing = m_whiteKing.rotated();
+		b.m_blackKing = m_blackKing.rotated();
 		
 		return b;
 	}

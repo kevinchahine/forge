@@ -19,14 +19,9 @@ Designed to be compatible with a variety of displays including:
 */
 
 #include "Test.h"
-/////////////#include "TestMoveGen.h"
-/////////////#include "TestOptimizer.h"
-/////////////#include "TestUci.h"
-/////////////#include "DatasetGenerator.h"
 #include "ml/Optimizer.h"
 
 using namespace std;
-using namespace cv::cuda;
 
 int main(int argc, char ** argv)
 {
@@ -47,7 +42,7 @@ int main(int argc, char ** argv)
 	//forge::test::stopWatch();
 	//forge::test::boardDefualt();
 	//forge::test::board();
-	forge::test::boardRotate();
+	//forge::test::boardRotate();
 	//forge::test::placeMethods();
 	//forge::test::piece_moves::king();
 	//forge::test::piece_moves::queen();
@@ -90,8 +85,16 @@ int main(int argc, char ** argv)
 	//dsGen.run();
 
 	{
-		//forge::NeuralNetworkHeuristic nnh;
-		//OpenNN::NeuralNetwork nn = OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::ProjectType::Classification, {2, 10, 1});
+		forge::Position pos;
+		pos.reset();
+
+		forge::NeuralNetworkHeuristic nnh;
+
+		auto eval = nnh.eval(pos);
+
+		nnh.train();
+
+
 	}
 
 	//forge::NeuralNetworkHeuristic h;
