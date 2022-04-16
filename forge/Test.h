@@ -192,6 +192,8 @@ namespace forge
 
 		void csvParser();
 
+		void dataSetPipeline();
+
 		namespace weights
 		{
 			void applePie();
