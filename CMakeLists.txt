@@ -25,12 +25,15 @@ set(HEADER_FILES
 	forge/Clock.h
 	forge/Color.h
 	forge/ControllerBase.h
+	forge/CSVParser.h
 	forge/DataMonitor.h
 	forge/DatasetGenerator.h
+	forge/DataSet.h
 	forge/Direction.h
 	forge/EvaluationBase.h
 	forge/ExitCondition.h
 	forge/FiftyMoveRule.h
+	forge/FeatureExtractor.h
 	forge/GameHistory.h
 	forge/GameState.h
 	forge/globals.h
@@ -65,10 +68,12 @@ set(HEADER_FILES
 	forge/Pin.h
 	forge/PositionDefinitions.h
 	forge/Position.h
+	forge/PositionEvalPair.h
 	forge/PositionTable.h
 	forge/PseudoMoveGenerator.h
 	forge/RandomHeuristic.h
 	forge/RandomSolver.h
+	forge/rapidcsv.h
 	forge/ReplayController.h
 	forge/SearchMonitor.h
 	forge/SolverBase.h
@@ -109,12 +114,15 @@ set(SOURCE_FILES
 	forge/Clock.cpp
 	forge/Color.cpp
 	forge/ControllerBase.cpp
+	forge/CSVParser.cpp
 	forge/DataMonitor.cpp
 	forge/DatasetGenerator.cpp
+	forge/DataSet.cpp
 	forge/Direction.cpp
 	forge/EvaluationBase.cpp
 	forge/ExitCondition.cpp
 	forge/FiftyMoveRule.cpp
+	forge/FeatureExtractor.cpp
 	forge/GameHistory.cpp
 	forge/GameState.cpp
 	forge/globals.cpp

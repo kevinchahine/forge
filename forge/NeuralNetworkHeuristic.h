@@ -17,7 +17,7 @@ namespace forge
 		virtual ~NeuralNetworkHeuristic() noexcept = default;
 		NeuralNetworkHeuristic& operator=(const NeuralNetworkHeuristic&) = default;
 		NeuralNetworkHeuristic& operator=(NeuralNetworkHeuristic&&) noexcept = default;
-
+		
 		virtual heuristic_t eval(const Position& pos) override;
 
 		virtual std::unique_ptr<HeuristicBase> clone() const override;
@@ -32,8 +32,8 @@ namespace forge
 
 		void train();
 
-		//OpenNN::NeuralNetwork & model() { return m_model; }
-		//const OpenNN::NeuralNetwork & model() const { return m_model; }
+		OpenNN::NeuralNetwork & model() { return m_model; }
+		const OpenNN::NeuralNetwork & model() const { return m_model; }
 		
 	protected:
 		Eigen::Tensor<float, 2> featureExtraction(const Position & pos);

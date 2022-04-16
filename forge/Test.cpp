@@ -1375,6 +1375,35 @@ namespace forge
 			logger.log(523, 0.55, 25, 0.36, chrono::milliseconds(2234));
 		}
 
+		void csvParser()
+		{
+			string filename = "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv"; 
+			forge::CSVParser csv;
+
+			cout << "--- CSVParser ---" << endl;
+			cout << "Opening file: " << filename << endl;
+			
+			csv.open(filename);
+			cout << "Is open? " << csv.isOpen() << endl;
+
+			while (csv.isOpen()) {
+				csv.batchSize(10);
+				
+				vector<PositionEvalPair> pairs = csv.getNextBatch();
+
+				if (pairs.empty()) {
+					break;	// Last row of file reached
+				}
+
+				cout << "Press <enter> to load next batch or x+<enter> to exit." << endl;
+				char input = cin.get();
+
+				if (input == 'x') {
+					break;
+				}
+			}
+		}
+
 		namespace weights
 		{
 			void applePie()

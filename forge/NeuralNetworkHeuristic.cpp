@@ -79,6 +79,8 @@ namespace forge
 			}
 		}
 
+		dataSet.set(data);
+
 		OpenNN::TrainingStrategy trainingStrategy(&m_model, &dataSet);
 		trainingStrategy.set_loss_method(OpenNN::TrainingStrategy::LossMethod::MEAN_SQUARED_ERROR);
 		trainingStrategy.set_optimization_method(OpenNN::TrainingStrategy::OptimizationMethod::GRADIENT_DESCENT);

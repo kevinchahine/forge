@@ -7,6 +7,7 @@
 #include "AttackChecker.h"
 #include "Board.h"
 #include "Clock.h"
+#include "CSVParser.h"
 #include "StopWatch.h"
 #include "Move.h"
 #include "ChessMatch.h"
@@ -188,6 +189,8 @@ namespace forge
 		void drawByRepetition();
 
 		void logger();
+
+		void csvParser();
 
 		namespace weights
 		{

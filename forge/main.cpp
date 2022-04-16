@@ -71,6 +71,8 @@ int main(int argc, char ** argv)
 	//forge::test::gameState();
 	//forge::test::drawByRepetition();
 	//forge::test::logger();
+	forge::test::csvParser();
+
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
 	//forge::test::optimizer();
@@ -84,18 +86,16 @@ int main(int argc, char ** argv)
 	//forge::DatasetGenerator dsGen;
 	//dsGen.run();
 
-	{
-		forge::Position pos;
-		pos.reset();
-
-		forge::NeuralNetworkHeuristic nnh;
-
-		auto eval = nnh.eval(pos);
-
-		nnh.train();
-
-
-	}
+	//{
+	//	forge::Position pos;
+	//	pos.reset();
+	//
+	//	forge::NeuralNetworkHeuristic nnh;
+	//
+	//	auto eval = nnh.eval(pos);
+	//
+	//	nnh.train();
+	//}
 
 	//forge::NeuralNetworkHeuristic h;
 	//cout << "Done";
