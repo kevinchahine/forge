@@ -2,6 +2,8 @@
 
 #include "HeuristicBase.h"
 
+#include "DataSet.h"
+
 #include "../opennn/opennn/opennn.h"	// TODO: include only what we need to speed up builds
 #include "../opennn/opennn/layer.h"
 
@@ -30,7 +32,7 @@ namespace forge
 
 		// size_t nOutputNodes() const { return m_model.get_layer_pointer(last_layer)->get_inputs_number(); ??? }
 
-		void train();
+		void train(DataSet & trainingDS);
 
 		OpenNN::NeuralNetwork & model() { return m_model; }
 		const OpenNN::NeuralNetwork & model() const { return m_model; }

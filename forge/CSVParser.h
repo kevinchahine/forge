@@ -20,7 +20,7 @@ namespace forge
 		size_t batchSize() const { return m_batchSize; }
 
 		vector<PositionEvalPair> getNextBatch();
-
+	
 	protected:
 		std::ifstream m_inFile;
 

@@ -8,6 +8,8 @@
 #include "Board.h"
 #include "Clock.h"
 #include "CSVParser.h"
+#include "DataSet.h"
+#include "FeatureExtractor.h"
 #include "StopWatch.h"
 #include "Move.h"
 #include "ChessMatch.h"
@@ -194,6 +196,8 @@ namespace forge
 
 		void dataSetPipeline();
 
+		void trainNN();
+		
 		namespace weights
 		{
 			void applePie();

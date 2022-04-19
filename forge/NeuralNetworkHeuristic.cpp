@@ -5,7 +5,7 @@ using namespace std;
 namespace forge
 {
 	NeuralNetworkHeuristic::NeuralNetworkHeuristic() :
-		m_model(OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::ProjectType::Approximation, {832, 1000, 500, 1}))
+		m_model(OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::ProjectType::Approximation, {forge::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1000, 500, 1}))
 	{}
 	
 	//NeuralNetworkHeuristic::NeuralNetworkHeuristic(const std::string& model_file_name)
@@ -43,49 +43,54 @@ namespace forge
 		cout << __FUNCTION__ << " not fully implemented" << endl;
 	}
 
-	void NeuralNetworkHeuristic::train()
+	void NeuralNetworkHeuristic::train(DataSet & trainingDS)
 	{	
-		// --- Load Training Data ---
+		int counter = 0;
 
-		// --- Preprocess Data ---
+		// Repeat until we run out of data
+		while (true) {
+			trainingDS.generateNextBatch();
 
-		int nSamples = 10;
-		int nFeatures = 832;
-		//Eigen::Tensor<float, 2> data(nFeatures, nSamples);
-		// OpenNN::DataSet dataSet(data);
-		
-		OpenNN::DataSet dataSet(nSamples, nFeatures, 1);
-		cout << "samples number = " << dataSet.get_samples_number() << endl
-			<< "columns number: " << dataSet.get_columns_number() << endl
-			<< "columns input number: " << dataSet.get_input_columns_number() << endl
-			<< "columns target number: " << dataSet.get_target_columns_number() << endl
-			<< endl;
-
-		Eigen::Tensor<float, 2> data = dataSet.get_data();	// !!! Does not return a non-const reference
-
-		cout << "type = " << typeid(data).name() << endl
-			<< "rank = " << data.rank() << endl
-			<< "size = " << data.size() << endl
-			<< "dimention[0] = " << data.dimension(0) << endl
-			<< "dimention[1] = " << data.dimension(1) << endl
-			<< endl;
-
-		for (size_t s = 0; s < nSamples; s++) {
-			Position pos;
-			Eigen::Tensor<float, 2> sample = this->featureExtraction(pos);
-
-			for (size_t col = 0; col < data.dimension(1); col++) {
-				data(s, col) = sample(0, col);
+			// Break when we train on our last batch of samples
+			if (trainingDS.get_samples_number() == 0) {
+				cout << "Last batch of data was reached" << endl;
+				break;
 			}
+
+			OpenNN::TrainingStrategy trainingStrategy(&m_model, &trainingDS);
+
+			//trainingStrategy.set_display_period(50);	// show progress every 50 epochs
+			trainingStrategy.set_maximum_epochs_number(50); //200);
+			trainingStrategy.set_loss_method(OpenNN::TrainingStrategy::LossMethod::MEAN_SQUARED_ERROR);
+			trainingStrategy.set_optimization_method(OpenNN::TrainingStrategy::OptimizationMethod::GRADIENT_DESCENT);
+
+			// Save training progress
+			// TODO: There is a more standardized way to do this
+			stringstream ss;
+			ss << "trained_models/trained_nn_" << counter++ << ".xml";
+			m_model.save(ss.str());
+
+			trainingStrategy.perform_training();
+			
+			const Eigen::Tensor<float, 2> & ds = trainingDS.get_data();
+
+			for (int i = 0; i < 5; i++) {
+				Eigen::Tensor<float, 2> inputs(1, ds.dimension(1));
+
+				for (int col = 0; col < inputs.dimension(1); col++) {
+					inputs(0, col) = inputs(0, col);
+				}
+
+				Eigen::Tensor<float, 2> guess = m_model.calculate_outputs(inputs);
+
+				cout << "Guess " << i << ": " << guess(0, 0) << endl;
+			}
+			// Break when we meet the stopping criteria
+			// TODO: something goes here
 		}
 
-		dataSet.set(data);
-
-		OpenNN::TrainingStrategy trainingStrategy(&m_model, &dataSet);
-		trainingStrategy.set_loss_method(OpenNN::TrainingStrategy::LossMethod::MEAN_SQUARED_ERROR);
-		trainingStrategy.set_optimization_method(OpenNN::TrainingStrategy::OptimizationMethod::GRADIENT_DESCENT);
-		
-		trainingStrategy.perform_training();
+		// Save model
+		m_model.save("trained_models/trained_nn.xml");
 	}
 
 	Eigen::Tensor<float, 2> NeuralNetworkHeuristic::featureExtraction(const Position & pos) 

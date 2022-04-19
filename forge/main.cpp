@@ -71,7 +71,9 @@ int main(int argc, char ** argv)
 	//forge::test::gameState();
 	//forge::test::drawByRepetition();
 	//forge::test::logger();
-	forge::test::csvParser();
+	//forge::test::csvParser();
+	//forge::test::dataSetPipeline();
+	forge::test::trainNN();
 
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
