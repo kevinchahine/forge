@@ -221,33 +221,33 @@ set(TEXT_FILES
 	forge/notes/View.txt
 )
 
-# --- OPENCV ---
+# --- 3rd Party Libraries (VCPKG only) ---
+if (MSVC)
 
-message(STATUS "\n----- OpenCV -----")
-set("OpenCV_DIR" "/usr/share/OpenCV")
-find_package(OpenCV REQUIRED)
+	message(STATUS "\nVCPKG packages will be automatically linked to visual studio\n")
+else ()
+	# --- For VCPKG packages ---
+	message(STATUS "call cmake with: cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/code/libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
-MESSAGE(STATUS "Include ders ${OpenCV_INCLUDE_DIRS}")
-MESSAGE(STATUS "LINK LIBRARIES ${OpenCV_LIBS}")
+	# ----- BOOST -----
 
-# --- BOOST ---
+	message(STATUS "\n----- BOOST -----")
+	set(Boost_USE_STATIC_LIBS		OFF)
+	set(Boost_USE_MULTITHREADED		OFF)
+	set(Boost_USE_STATIC_RUNTIME	OFF)
 
-message(STATUS "\n----- BOOST -----")
-set(Boost_USE_STATIC_LIBS		OFF)
-set(Boost_USE_MULTITHREADED		OFF)
-set(Boost_USE_STATIC_RUNTIME	OFF)
+	find_package(Boost REQUIRED COMPONENTS
+		##asio 
+		#system 
+		#filesystem 
+		##process
+		REQUIRED)
 
-find_package(Boost REQUIRED COMPONENTS
-	#asio 
-	system 
-	filesystem 
-	#process
-	REQUIRED)
+	include_directories(${BOOST_INCLUDE_DIRS})
 
-include_directories(${Boost_INCLUDE_DIRS})
-
-message(STATUS "Include dirs ${Boost_INCLUDE_DIRS}")
-message(STATUS "Boost libraries ${Boost_LIBRARIES}")
+	message(STATUS "Include dirs ${Boost_INCLUDE_DIRS}")
+	message(STATUS "Boost libraries ${Boost_LIBRARIES}")
+endif (MSVC)
 
 # --- OpenNN ---
 
