@@ -222,6 +222,7 @@ set(TEXT_FILES
 )
 
 # --- 3rd Party Libraries (VCPKG only) ---
+
 if (MSVC)
 
 	message(STATUS "\nVCPKG packages will be automatically linked to visual studio\n")
@@ -247,6 +248,20 @@ else ()
 
 	message(STATUS "Include dirs ${Boost_INCLUDE_DIRS}")
 	message(STATUS "Boost libraries ${Boost_LIBRARIES}")
+	
+	target_link_libraries(${PROJECT_NAME} PUBLIC
+		Guten
+		#${BOOST_LIBRARIES}
+		#Boost::asio
+		Boost::system
+		Boost::filesystem
+		opennn
+	)
+
+	target_include_directories(${PROJECT_NAME} PUBLIC
+		guten
+		${BOOST_INCLUDE_DIRS}
+	)
 endif (MSVC)
 
 # --- OpenNN ---
@@ -285,12 +300,12 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 	${OpenCV_LIBS}
 	# ${BOOST_LIBRARIES}
 	#Boost::asio
-	Boost::system
-	Boost::filesystem
+	#Boost::system
+	#Boost::filesystem
 	opennn
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 	guten
-	${BOOST_INCLUDE_DIRS}
+	#${BOOST_INCLUDE_DIRS}
 )
