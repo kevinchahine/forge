@@ -2,6 +2,7 @@
 
 #include "GameState.h"
 
+#define NOMINMAX
 #include <limits>
 
 using namespace std;
@@ -78,8 +79,8 @@ namespace forge
 		// *** The only times we won't find a best move is when there are no children ***
 		//		moves to choose from. Meaning no legal moves. 
 
-		cout << guten::color::lightblue << "Best Move Ptr = " << m_nodeTree.bestMovePtr() << '\n';
-		cout << guten::color::green << "Nodes searched: " << m_searchMonitor.nodeCount << '\t'
+		cout << termcolor::bright_blue << "Best Move Ptr = " << m_nodeTree.bestMovePtr() << '\n';
+		cout << termcolor::green << "Nodes searched: " << m_searchMonitor.nodeCount << '\t'
 			<< "search time: " << chrono::duration_cast<chrono::milliseconds>(m_searchMonitor.searchTime.elapsed()).count()/1000.0 << " sec\t"
 			<< m_searchMonitor.nodesPerSecond() << " nodes/sec\n";
 		
@@ -99,11 +100,11 @@ namespace forge
 		else {
 			// TODO: Complain gracefully. Something went wrong. We couldn't find a solution
 #ifdef _DEBUG
-			cout << guten::color::push()
-				<< guten::color::red.inverted()
+			cout << termcolor::push
+				<< termcolor::on_red
 				<< "Error: " << __FUNCTION__ << " line " << __LINE__
 				<< " No solution was found.\n"
-				<< guten::color::pop();
+				<< termcolor::pop;
 #endif // _DEBUG
 
 			solution = MovePositionPair{

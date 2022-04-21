@@ -11,8 +11,6 @@
 #include <assert.h>
 #include <chrono>
 
-#include <opencv4/opencv2/opencv.hpp>
-
 using namespace std;
 namespace csv = rapidcsv;
 

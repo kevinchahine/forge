@@ -25,11 +25,11 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-	cout << guten::color::red << "=============\n"
-		<< guten::color::yellow << "=== " << guten::color::lightred << "FORGE "
-		<< guten::color::yellow << "===\n"
-		<< guten::color::red << "=============\n"
-		<< guten::color::white;
+	cout << termcolor::red << "=============\n"
+		<< termcolor::yellow << "=== " << termcolor::bright_red << "FORGE "
+		<< termcolor::yellow << "===\n"
+		<< termcolor::red << "=============\n"
+		<< termcolor::white;
 	
 	//forge::test::initTestBoards();
 	//forge::test::boardSquare();

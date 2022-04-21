@@ -17,7 +17,7 @@ namespace forge
 	void DataSet::generateNextBatch()
 	{
 		if (m_parser.isOpen() == false) {
-			throw std::runtime_error("dataset file could is not open");
+			throw std::runtime_error("dataset file is not open");
 		}
 
 		// Load and Parse samples
@@ -36,7 +36,8 @@ namespace forge
 			extractor.init(pos);
 
 			// --- Inputs ---
-			Eigen::Tensor<float, 2> f = extractor.extractMaterial();
+			auto f = extractor.extractMaterial();
+			//Eigen::Tensor<float, 2> f = extractor.extractMaterial();
 
 			// copy into big tensor
 			for (size_t col = 0; col < f.dimension(1); col++) {
@@ -44,7 +45,7 @@ namespace forge
 			}
 
 			// --- Output ---
-			features(i, forge::FeatureExtractor::MATERIAL_FEATURES_SIZE) = eval;
+			features(i, forge::FeatureExtractor::MATERIAL_FEATURES_SIZE) = eval;	// Last column
 		}
 
 		// Add to Dataset

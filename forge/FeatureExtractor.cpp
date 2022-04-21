@@ -32,11 +32,11 @@ namespace forge
 
 	Eigen::Tensor<float, 2> FeatureExtractor::extractMaterial()
 	{
-		Eigen::Tensor<float, 2> features(1, MATERIAL_FEATURES_SIZE);
+		Eigen::Tensor<float, 2> features(1, MATERIAL_FEATURES_SIZE + 1);
 		
 		for (size_t bit = 0; bit < 64; bit++) {
 			// TODO: Optimize: Can this be optimized with ifs. Hint: Sparse data.
-			features(1, 64 * 0 + bit) = empty[bit];
+			features(1, 64 * 0  + bit) = empty[bit];
 			features(1, 64 * 1  + bit) = ourKings[bit];
 			features(1, 64 * 2  + bit) = ourQueens[bit];
 			features(1, 64 * 3  + bit) = ourBishops[bit];
@@ -46,7 +46,7 @@ namespace forge
 			features(1, 64 * 7  + bit) = theirKings[bit];
 			features(1, 64 * 8  + bit) = theirQueens[bit];
 			features(1, 64 * 9  + bit) = theirBishops[bit];
-			features(1, 64 * 10  + bit) = theirKnights[bit];
+			features(1, 64 * 10 + bit) = theirKnights[bit];
 			features(1, 64 * 11 + bit) = theirRooks[bit];
 			features(1, 64 * 12 + bit) = theirPawns[bit];
 		}

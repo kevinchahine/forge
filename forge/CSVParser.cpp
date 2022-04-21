@@ -68,7 +68,7 @@ namespace forge
 		// --- 3.) Convert to Positions and Evals ---
 		vector<PositionEvalPair> pairs;
 		pairs.reserve(m_batchSize);
-		
+
 		for (size_t rowIndex = 0; rowIndex < m_csvDoc.GetRowCount(); rowIndex++) {
 			vector<string> row = m_csvDoc.GetRow<string>(rowIndex);
 
@@ -99,7 +99,7 @@ namespace forge
 					<< "evalStr: \'" << row[1] << '\'' << endl;
 			};
 		}
-		
+
 		return pairs;
 	}
 } // namespace forge

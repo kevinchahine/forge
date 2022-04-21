@@ -6,7 +6,7 @@ namespace forge
 {
 	NeuralNetworkHeuristic::NeuralNetworkHeuristic() :
 		m_model(OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::ProjectType::Approximation, {forge::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1000, 500, 1}))
-	{}
+	{	}
 	
 	//NeuralNetworkHeuristic::NeuralNetworkHeuristic(const std::string& model_file_name)
 	//{
@@ -62,35 +62,40 @@ namespace forge
 			//trainingStrategy.set_display_period(50);	// show progress every 50 epochs
 			trainingStrategy.set_maximum_epochs_number(50); //200);
 			trainingStrategy.set_loss_method(OpenNN::TrainingStrategy::LossMethod::MEAN_SQUARED_ERROR);
-			trainingStrategy.set_optimization_method(OpenNN::TrainingStrategy::OptimizationMethod::GRADIENT_DESCENT);
-
-			// Save training progress
-			// TODO: There is a more standardized way to do this
-			stringstream ss;
-			ss << "trained_models/trained_nn_" << counter++ << ".xml";
-			m_model.save(ss.str());
+			trainingStrategy.set_optimization_method(
+				//OpenNN::TrainingStrategy::OptimizationMethod::GRADIENT_DESCENT);
+				OpenNN::TrainingStrategy::OptimizationMethod::ADAPTIVE_MOMENT_ESTIMATION);
 
 			trainingStrategy.perform_training();
 			
+			// Save training progress
+			// TODO: There is a more standardized way to do this
+			// TODO: Make sure directory exists before saving
+			//stringstream ss;
+			//ss << "trained_models/trained_nn_" << counter++ << ".xml";
+			//m_model.save(ss.str());
+
 			const Eigen::Tensor<float, 2> & ds = trainingDS.get_data();
 
-			for (int i = 0; i < 5; i++) {
-				Eigen::Tensor<float, 2> inputs(1, ds.dimension(1));
-
-				for (int col = 0; col < inputs.dimension(1); col++) {
-					inputs(0, col) = inputs(0, col);
-				}
-
-				Eigen::Tensor<float, 2> guess = m_model.calculate_outputs(inputs);
-
-				cout << "Guess " << i << ": " << guess(0, 0) << endl;
-			}
+			cout << "--- Evaluate ---" << endl;
+			//for (int i = 0; i < 5; i++) {
+			//	Eigen::Tensor<float, 2> inputs(1, ds.dimension(1));
+			//
+			//	for (int col = 0; col < inputs.dimension(1); col++) {
+			//		inputs(0, col) = inputs(0, col);
+			//	}
+			//
+			//	Eigen::Tensor<float, 2> guess = m_model.calculate_outputs(inputs);
+			//
+			//	cout << "Guess " << i << ": " << guess(0, 0) << endl;
+			//}
 			// Break when we meet the stopping criteria
 			// TODO: something goes here
 		}
 
 		// Save model
-		m_model.save("trained_models/trained_nn.xml");
+		// TODO: Make this work. * See above 
+		//m_model.save("trained_models/trained_nn.xml");
 	}
 
 	Eigen::Tensor<float, 2> NeuralNetworkHeuristic::featureExtraction(const Position & pos) 

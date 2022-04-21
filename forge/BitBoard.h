@@ -62,12 +62,12 @@ namespace forge
 		BitBoard rotated() const;
 
 		template<typename DIRECTION_T>
-		void shift(uint8_t numberOfCells) {
+		void shift(uint8_t numberOfCells);/* {
 			static_assert(true,
 				"This method is the unspeciallized template. "
 				"Don't call this method. "
 				"Instead call a fully specialized overload instead.");
-		}
+		}*/
 
 		// Draws a line of 1s between begin and end.
 		// Inclusive on begin
@@ -124,15 +124,15 @@ namespace forge
 	}
 
 	// Unspecialized definition
-	template<typename DIRECTION_T>
-	BitBoard BitBoard::mask(BoardSquare center)
-	{
-		static_assert(true, "Call the explicit specializations instead of the primary specialization of the method");
-
-		BitBoard bb;
-
-		return bb;
-	}
+	//template<typename DIRECTION_T>
+	//BitBoard BitBoard::mask(BoardSquare center);/*
+	//{
+	//	static_assert(true, "Call the explicit specializations instead of the primary specialization of the method");
+	//
+	//	BitBoard bb;
+	//
+	//	return bb;
+	//}*/
 } // namespace forge
 
 // --- Inject hash into std namespace ---

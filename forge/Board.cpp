@@ -16,12 +16,12 @@ namespace forge
 
 	void Board::print(std::ostream & os) const
 	{
-		//os << guten::color::push();
+		//os << termcolor::push;
 
 		guten::boards::CheckerBoard cb = std::move(getCheckerBoard());
 		cb.print();
 
-		//os << guten::color::pop();
+		//os << termcolor::pop;
 	}
 
 	void Board::printMini(std::ostream & os) const

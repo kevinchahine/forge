@@ -5,13 +5,15 @@
 
 #include <vector>
 
+#include "Guten/termcolor/termcolor.hpp"
+
 namespace forge
 {
 #ifdef _DEBUG
 	inline void printError(forge::MovePositionPair p, const string & funcName) {
-		std::cout << guten::color::push() << guten::color::red
-			<< "Illegal move found :p, " << p.position.toFEN() << ' ' << p.move << " in " << funcName << "\n"
-			<< guten::color::pop();
+		//std::cout << termcolor::push << termcolor::red
+		//	<< "Illegal move found :p, " << p.position.toFEN() << ' ' << p.move << " in " << funcName << "\n"
+		//	<< termcolor::pop;
 	}
 #else
 #define printError(MOVE, FUNCNAME)	// empty placeholder

@@ -34,15 +34,15 @@ namespace forge
 //				pos = Position{};
 //			}
 //
-//			cout << guten::color::push() << guten::color::red 
+//			cout << termcolor::push << termcolor::red 
 //				<< "Evaluating: " << pair 
-//				<< guten::color::pop() << endl;
+//				<< termcolor::pop << endl;
 //
 //			eval = stockfish.eval(pos);
 //
-//			cout << guten::color::push() << guten::color::red << setw(30) 
+//			cout << termcolor::push << termcolor::red << setw(30) 
 //				<< pos << " Eval is " << eval << " centipawns" 
-//				<< guten::color::pop() << endl << endl;
+//				<< termcolor::pop << endl << endl;
 //
 //			evals.emplace(pos, eval);
 //		}

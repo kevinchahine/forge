@@ -74,11 +74,11 @@ namespace forge
 		}
 		else {
 #ifdef _DEBUG
-			cout << guten::color::push()
-				<< guten::color::lightred.inverted()
+			cout << termcolor::push
+				<< termcolor::on_bright_red
 				<< "Error: " << __FUNCTION__ << " line " << __LINE__
 				<< ": No best child was found. Do any children exist. " << '\n'
-				<< guten::color::pop();
+				<< termcolor::pop;
 #endif // _DEBUG
 		}
 
@@ -107,7 +107,7 @@ namespace forge
 			switch (p_node->m_state)
 			{
 			case STATE::FRESH:
-				//cout << guten::color::blue << "FRESH" << endl;
+				//cout << termcolor::blue << "FRESH" << endl;
 				p_node->expand();
 
 				// Were any children created?

@@ -1,6 +1,8 @@
 #pragma once
 #include "Node.h"
 
+#define NOMINMAX
+
 #include <limits>
 #include <cmath>
 

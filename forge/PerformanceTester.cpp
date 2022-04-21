@@ -78,7 +78,7 @@ namespace forge
 
 			// --- Prompt current player for a move ---
 			MovePositionPair pair = currPlayer->getMove(this->position());
-			cout << guten::color::green << "Player choose: " << pair.move << '\n';
+			cout << termcolor::green << "Player choose: " << pair.move << '\n';
 
 			SearchMonitor & sm = currPlayer->searchMonitor();
 

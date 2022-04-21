@@ -6,7 +6,14 @@ cmake_minimum_required(VERSION 3.20)
 set(PROJECT_NAME "forge")
 project(${PROJECT_NAME})
 
+if(MSVC)
 set(VS_STARTUP_PROJECT ${PROJECT_NAME})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")	# TODO: Do we need both?
+set(CMAKE_CXX_STANDARD 17)								# TODO: Do we need both?
+endif(MSVC)
+
+# --- Set Preprocessor Macros ---
+add_compile_definitions(NOMINMAX)	# same as '#define NOMINMAX'
 
 # --- Add subdirectories that contain code ---
 add_subdirectory(guten)

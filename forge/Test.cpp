@@ -557,9 +557,10 @@ namespace forge
 					clock.click();
 				}
 			#endif
-				cout << clock << '\n';
+				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl;
+				//cout << clock << '\n';	// TODO: Make this work
 
-				this_thread::sleep_for(chrono::seconds(1));
+				//this_thread::sleep_for(chrono::seconds(1));
 			}
 
 		}
@@ -1422,7 +1423,7 @@ namespace forge
 			while (csv.isOpen()) {
 				// Parse Next Batch 
 				vector<PositionEvalPair> pairs = csv.getNextBatch();
-				cout << pairs.size() << endl;
+				cout << "Batch: size = " << pairs.size() << endl;
 				if (pairs.empty()) {
 					break;	// Last row of file reached
 				}
@@ -1464,14 +1465,15 @@ namespace forge
 
 		void trainNN()
 		{
-			const std::string filename = 
+			const std::string filename =
 				// "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv";
-				"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
-
+				//"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
+				R"dil(D:\DataSets\Chess\stockfish_evals\chessData.csv)dil";
+					
 			forge::DataSet ds;
 
 			ds.openFile(filename);
-			ds.batchSize(1000);
+			ds.batchSize(100);
 
 			//ds.generateNextBatch();
 			//ds.toCSV("dataset.csv");

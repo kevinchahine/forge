@@ -8,8 +8,6 @@
 
 #include <boost/filesystem/path.hpp>
 
-#include <opencv4/opencv2/ml.hpp>
-
 #include "../../opennn/opennn/opennn.h"
 
 namespace forge

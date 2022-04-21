@@ -117,7 +117,7 @@ namespace forge
 				cb.lightPiece = guten::color::blue;
 				cb.placePiece(piece.getCh(), guten::Point(square.row(), square.col()), true);
 
-				///TextView::highlightCells(bb, guten::color::lightred, guten::color::red, cb);
+				///TextView::highlightCells(bb, termcolor::bright_red, termcolor::red, cb);
 
 				cb.print();
 			}

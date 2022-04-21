@@ -1,5 +1,7 @@
 #include "MCTS_Node.h"
 
+#include "Guten/termcolor/termcolor.hpp"
+
 namespace forge
 {
 	float MCTS_Node::calcUCB(float average, float temperature, int parentVisits, int currVisits)
@@ -12,9 +14,9 @@ namespace forge
 	{
 #ifdef _DEBUG
 		if (this->isRoot()) {
-			cout << guten::color::push() << guten::color::red
+			cout << termcolor::push << termcolor::red
 				<< "MCTS_Node::update() was called on root node."
-				<< endl << guten::color::pop();
+				<< endl << termcolor::pop;
 		}
 #endif 
 		t += rolloutResult;
@@ -68,16 +70,16 @@ namespace forge
 	void MCTS_Node::iterator::goToSelectedChild()
 	{
 #ifdef _DEBUG
-		cout << guten::color::push();
+		cout << termcolor::push;
 
 		if (p_node == nullptr) {
-			cout << guten::color::red << "ERROR: p_node is null" << endl;
+			cout << termcolor::red << "ERROR: p_node is null" << endl;
 		}
 		else if (p_node->children().empty()) {
-			cout << guten::color::red << "ERROR: node does not have children" << endl;
+			cout << termcolor::red << "ERROR: node does not have children" << endl;
 		}
 
-		cout << guten::color::pop();
+		cout << termcolor::pop;
 #endif // _DEBUG
 
 		auto& c = p_node->children();
@@ -103,16 +105,16 @@ namespace forge
 	void MCTS_Node::iterator::goToFirstChild()
 	{
 #ifdef _DEBUG
-		cout << guten::color::push();
+		cout << termcolor::push;
 
 		if (p_node == nullptr) {
-			cout << guten::color::red << "ERROR: p_node is null" << endl;
+			cout << termcolor::red << "ERROR: p_node is null" << endl;
 		}
 		else if (p_node->children().empty()) {
-			cout << guten::color::red << "ERROR: node does not have children" << endl;
+			cout << termcolor::red << "ERROR: node does not have children" << endl;
 		}
 
-		cout << guten::color::pop();
+		cout << termcolor::pop;
 #endif // _DEBUG
 
 		auto& c = p_node->children();

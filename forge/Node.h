@@ -10,6 +10,8 @@
 #include <limits>
 #include <iterator>
 
+#include "opennn/opennn.h"
+
 namespace forge
 {
 	// Part of a NodeTree.

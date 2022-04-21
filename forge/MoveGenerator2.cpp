@@ -161,10 +161,10 @@ namespace forge
 	{
 #ifdef _DEBUG
 		if (DIRECTION_T::wouldBeInBounds(ourKing) == false) {
-			cout << guten::color::push() << guten::color::red
+			cout << termcolor::push << termcolor::red
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " move is out of bounds.\n"
-				<< guten::color::pop();
+				<< termcolor::pop;
 			return;
 		}
 #endif // _DEBUG
@@ -623,7 +623,7 @@ namespace forge
 
 #ifdef _DEBUG
 		if (board.isPawn(pawn) == false) {
-			cout << guten::color::push() << guten::color::lightred
+			cout << termcolor::push << termcolor::bright_red
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << pawn << " is a " << board.at(pawn) << " and not a pawn" << endl;
 	}
@@ -758,7 +758,7 @@ namespace forge
 
 #ifdef _DEBUG
 		if (b.isRook(rook) == false) {
-			cout << guten::color::push() << guten::color::lightred
+			cout << termcolor::push << termcolor::bright_red
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << rook << " is a " << b.at(rook) << " and not a rook" << endl;
 	}
@@ -789,7 +789,7 @@ namespace forge
 
 #ifdef _DEBUG
 		if (b.isKnight(knight) == false) {
-			cout << guten::color::push() << guten::color::lightred
+			cout << termcolor::push << termcolor::bright_red
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << knight << " is a " << b.at(knight) << " and not a knight" << endl;
 	}
@@ -815,7 +815,7 @@ namespace forge
 
 #ifdef _DEBUG
 		if (b.isBishop(bishop) == false) {
-			cout << guten::color::push() << guten::color::lightred
+			cout << termcolor::push << termcolor::bright_red
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << bishop << " is a " << b.at(bishop) << " and not a bishop" << endl;
 	}
@@ -834,7 +834,7 @@ namespace forge
 
 #ifdef _DEBUG
 		if (b.isQueen(queen) == false) {
-			cout << guten::color::push() << guten::color::lightred
+			cout << termcolor::push << termcolor::bright_red
 				<< "Error: " << __FILE__ << " line " << __LINE__
 				<< " " << queen << " is a " << b.at(queen) << " and not a pawn" << endl;
 	}

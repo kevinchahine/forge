@@ -137,7 +137,7 @@ namespace forge
 	{
 //#ifdef _DEBUG
 //		if (node.isExpanded() == false) {
-//			std::cout << guten::color::red
+//			std::cout << termcolor::red
 //				<< "Error: node should be expanded before calling this method."
 //				<< std::endl;
 //		}

@@ -56,49 +56,50 @@ namespace forge
 		const string & moveGeneratorVersion)
 	{
 		#ifdef _WIN32
-		filesystem::path currDir = filesystem::current_path();
-
-		filesystem::directory_iterator it(filesystem::current_path());
-		filesystem::directory_iterator end;
-
-		filesystem::path filePath = currDir / fileName;
-
-		filesystem::directory_iterator fileIt = find(it, end, filePath);
-
-		xlnt::workbook book;
-		
-		if (fileIt == end) {
-			// File doesn't exist. Do nothing. Well create it later.
-		}
-		else {
-			book.load(filePath);
-		}
-
-		xlnt::worksheet sheet = book.create_sheet();
-
-		sheet.cell(1, 1).value("Solver Name");
-		sheet.cell(1, 2).value(solverName);
-
-		sheet.cell(2, 1).value("Solver Variant");
-		sheet.cell(2, 2).value(solverVariant);
-
-		sheet.cell(3, 1).value("Evaluation Function");
-		sheet.cell(3, 2).value(evaluationFunction);
-
-		sheet.cell(4, 1).value("Move Gen Version");
-		sheet.cell(4, 2).value(moveGeneratorVersion);
-
-		sheet.cell(5, 1).value("Date");
-		sheet.cell(5, 2).value("???");	// How about some dates
-		// --- Leave row 3 empty ---
-
-		sheet.cell(1, 4).value("Node Count");
-		sheet.cell(2, 4).value("Nodes Per Second");
-		sheet.cell(3, 4).value("Ply Count");
-		sheet.cell(4, 4).value("Plys Per Second");
-		sheet.cell(5, 4).value("Search Duration");
-
-		book.save(filePath);
+		cout << "Not implemented: " << __FILE__ << " line " << __LINE__ << endl;
+		//filesystem::path currDir = filesystem::current_path();
+		//
+		//filesystem::directory_iterator it(filesystem::current_path());
+		//filesystem::directory_iterator end;
+		//
+		//filesystem::path filePath = currDir / fileName;
+		//
+		//filesystem::directory_iterator fileIt = find(it, end, filePath);
+		//
+		//xlnt::workbook book;
+		//
+		//if (fileIt == end) {
+		//	// File doesn't exist. Do nothing. Well create it later.
+		//}
+		//else {
+		//	book.load(filePath);
+		//}
+		//
+		//xlnt::worksheet sheet = book.create_sheet();
+		//
+		//sheet.cell(1, 1).value("Solver Name");
+		//sheet.cell(1, 2).value(solverName);
+		//
+		//sheet.cell(2, 1).value("Solver Variant");
+		//sheet.cell(2, 2).value(solverVariant);
+		//
+		//sheet.cell(3, 1).value("Evaluation Function");
+		//sheet.cell(3, 2).value(evaluationFunction);
+		//
+		//sheet.cell(4, 1).value("Move Gen Version");
+		//sheet.cell(4, 2).value(moveGeneratorVersion);
+		//
+		//sheet.cell(5, 1).value("Date");
+		//sheet.cell(5, 2).value("???");	// How about some dates
+		//// --- Leave row 3 empty ---
+		//
+		//sheet.cell(1, 4).value("Node Count");
+		//sheet.cell(2, 4).value("Nodes Per Second");
+		//sheet.cell(3, 4).value("Ply Count");
+		//sheet.cell(4, 4).value("Plys Per Second");
+		//sheet.cell(5, 4).value("Search Duration");
+		//
+		//book.save(filePath);
 		#endif
 	}
 
@@ -110,44 +111,45 @@ namespace forge
 		chrono::nanoseconds searchDuration)
 	{
 		#ifdef _WIN32 // TODO: Linux make this work on linux or find a replacement
-		filesystem::path currDir = filesystem::current_path();
-
-		filesystem::directory_iterator it(currDir);
-		filesystem::directory_iterator end;
-
-		filesystem::path filePath = currDir / fileName;
-
-		filesystem::directory_iterator fileIt = find(it, end, filePath);
-
-		xlnt::workbook book;
-
-		if (fileIt == end) {
-			// File does not exist
-		}
-		else {
-			book.load(filePath);
-		}
-
-		xlnt::worksheet sheet = book.sheet_by_index(book.sheet_count() - 1);
-		
-		xlnt::row_t row = 4;
-		while (true) {
-			xlnt::cell cell = sheet.cell(1, row);
-
-			if (cell.to_string().empty()) {
-				break;
-			}
-
-			row++;
-		}
-
-		sheet.cell(1, row).value(nodeCount);
-		sheet.cell(2, row).value(nodesPerSecond);
-		sheet.cell(3, row).value(plyCount);
-		sheet.cell(4, row).value(pliesPerSecond);
-		sheet.cell(5, row).value(chrono::duration<float, ratio<1, 1>>(searchDuration).count());
-
-		book.save(filePath);
+		cout << "Not implemented: " << __FILE__ << " line " << __LINE__ << endl;
+		//filesystem::path currDir = filesystem::current_path();
+		//
+		//filesystem::directory_iterator it(currDir);
+		//filesystem::directory_iterator end;
+		//
+		//filesystem::path filePath = currDir / fileName;
+		//
+		//filesystem::directory_iterator fileIt = find(it, end, filePath);
+		//
+		//xlnt::workbook book;
+		//
+		//if (fileIt == end) {
+		//	// File does not exist
+		//}
+		//else {
+		//	book.load(filePath);
+		//}
+		//
+		//xlnt::worksheet sheet = book.sheet_by_index(book.sheet_count() - 1);
+		//
+		//xlnt::row_t row = 4;
+		//while (true) {
+		//	xlnt::cell cell = sheet.cell(1, row);
+		//
+		//	if (cell.to_string().empty()) {
+		//		break;
+		//	}
+		//
+		//	row++;
+		//}
+		//
+		//sheet.cell(1, row).value(nodeCount);
+		//sheet.cell(2, row).value(nodesPerSecond);
+		//sheet.cell(3, row).value(plyCount);
+		//sheet.cell(4, row).value(pliesPerSecond);
+		//sheet.cell(5, row).value(chrono::duration<float, ratio<1, 1>>(searchDuration).count());
+		//
+		//book.save(filePath);
 		#endif
 	}
 } // namespace forge
