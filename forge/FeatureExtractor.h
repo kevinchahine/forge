@@ -4,8 +4,6 @@
 
 #include <iostream>
 
-#include "opennn/opennn.h"		// TODO: all we need is Eigen::Tensor
-
 namespace forge
 {
 	class FeatureExtractor
@@ -13,8 +11,8 @@ namespace forge
 	public:
 		void init(const Position & pos);
 
-		Eigen::Tensor<float, 2> extractMaterial();
-		Eigen::Tensor<float, 2> extractMobility();
+		////Eigen::Tensor<float, 2> extractMaterial();
+		////Eigen::Tensor<float, 2> extractMobility();
 		// ... Insert more featues here ...
 
 	public:

@@ -6,12 +6,11 @@
 #include <iostream>
 #include <string>
 
-#include <opennn/opennn.h>	// TODO: Reduce this to only what we need
 
 namespace forge
 {
 	// TODO: Maybe derive this class into CSVDataSet
-	class DataSet : public OpenNN::DataSet
+	class DataSet ///: public OpenNN::DataSet
 	{
 	public:
 		// Opens a csv file

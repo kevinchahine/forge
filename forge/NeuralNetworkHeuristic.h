@@ -4,9 +4,6 @@
 
 #include "DataSet.h"
 
-#include "../opennn/opennn/opennn.h"	// TODO: include only what we need to speed up builds
-#include "../opennn/opennn/layer.h"
-
 namespace forge
 {
 	class NeuralNetworkHeuristic : public HeuristicBase
@@ -28,17 +25,17 @@ namespace forge
 
 		virtual void print(const Position& pos, std::ostream& os = std::cout) const override;
 
-		size_t nInputNodes() const { return m_model.get_layer_pointer(0)->get_inputs_number(); }
+		size_t nInputNodes() const { return 0; }// m_model.get_layer_pointer(0)->get_inputs_number();
 
 		// size_t nOutputNodes() const { return m_model.get_layer_pointer(last_layer)->get_inputs_number(); ??? }
 
 		void train(DataSet & trainingDS);
 
-		OpenNN::NeuralNetwork & model() { return m_model; }
-		const OpenNN::NeuralNetwork & model() const { return m_model; }
+		////OpenNN::NeuralNetwork & model() { return m_model; }
+		////const OpenNN::NeuralNetwork & model() const { return m_model; }
 		
 	protected:
-		Eigen::Tensor<float, 2> featureExtraction(const Position & pos);
+		////Eigen::Tensor<float, 2> featureExtraction(const Position & pos);
 
 	protected:
 		// A neural network model used to approximate the fitness or favorability of a chess Position.
@@ -85,6 +82,6 @@ namespace forge
 		//			64			- their knights	- array
 		//			64			- their rooks	- array
 		//			64			- their pawns	- array
-		OpenNN::NeuralNetwork m_model;
+		////OpenNN::NeuralNetwork m_model;
 	};
 } // namespace forge

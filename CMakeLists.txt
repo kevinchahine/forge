@@ -1,22 +1,12 @@
+cmake_minimum_required(VERSION 3.20)
+
 # --- Forge ---
 
-cmake_minimum_required(VERSION 3.20)
+message(STATUS "\n----- Forge -----")
 
 # --- Establish a Project called forge ---
 set(PROJECT_NAME "forge")
 project(${PROJECT_NAME})
-
-if(MSVC)
-set(VS_STARTUP_PROJECT ${PROJECT_NAME})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")	# TODO: Do we need both?
-set(CMAKE_CXX_STANDARD 17)								# TODO: Do we need both?
-endif(MSVC)
-
-# --- Set Preprocessor Macros ---
-add_compile_definitions(NOMINMAX)	# same as '#define NOMINMAX'
-
-# --- Add subdirectories that contain code ---
-add_subdirectory(guten)
 
 # --- Specify the header files ---
 set(HEADER_FILES
@@ -228,10 +218,49 @@ set(TEXT_FILES
 	forge/notes/View.txt
 )
 
-# --- 3rd Party Libraries (VCPKG only) ---
+add_executable(${PROJECT_NAME}
+	${HEADER_FILES}
+	${SOURCE_FILES}
+	${TEXT_FILES}
+)
 
+# --- Compiler Flags ---
+set(CMAKE_CXX_STANDARD 17)												# TODO: Do we need both?
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+set(VS_STARTUP_PROJECT ${PROJECT_NAME})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+
+# --- Set Preprocessor Macros ---
+add_compile_definitions(NOMINMAX)	# same as '#define NOMINMAX'
+
+# --- Libraries (no VCPKG) ---
+
+# --- Guten ---
+message(STATUS "\n----- Guten -----\n")
+
+add_subdirectory(guten)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC
+	Guten
+)
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+	guten
+)
+
+# --- Torch ---
+message(STATUS "\n----- Torch -----")
+
+set(CMAKE_CUDA_ARCHITECTURES 75)# all)
+find_package(Torch REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+
+target_link_libraries(${PROJECT_NAME} PUBLIC
+	"${TORCH_LIBRARIES}"
+)
+
+# --- Libraries (VCPKG) ---
 if (MSVC)
-
 	message(STATUS "\nVCPKG packages will be automatically linked to visual studio\n")
 else ()
 	# --- For VCPKG packages ---
@@ -251,68 +280,35 @@ else ()
 		##process
 		REQUIRED)
 
-	include_directories(${BOOST_INCLUDE_DIRS})
-
-	message(STATUS "Include dirs ${Boost_INCLUDE_DIRS}")
-	message(STATUS "Boost libraries ${Boost_LIBRARIES}")
-	
 	target_link_libraries(${PROJECT_NAME} PUBLIC
-		Guten
 		#${BOOST_LIBRARIES}
 		#Boost::asio
 		Boost::system
 		Boost::filesystem
-		opennn
 	)
 
+	message(STATUS "Include dirs ${Boost_INCLUDE_DIRS}")
+	message(STATUS "Boost libraries ${Boost_LIBRARIES}")
+
+	include_directories(${BOOST_INCLUDE_DIRS})
+
 	target_include_directories(${PROJECT_NAME} PUBLIC
-		guten
 		${BOOST_INCLUDE_DIRS}
 	)
 endif (MSVC)
 
-# --- OpenNN ---
+# The following code block is suggested to be used on Windows.
+# According to https://github.com/pytorch/pytorch/issues/25457,
+# the DLLs need to be copied to avoid memory errors.
+if (MSVC)
+	message(STATUS "--- :P d: :D :)BX8==; MSVC :) ---")
 
-message(STATUS "\n----- OpenNN -----")
-
-find_package(OpenMP REQUIRED)
-set(CMAKE_C_FLAGS "${OpenMP_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS}")
-
-add_subdirectory(opennn)
-include_directories(opennn)
-
-if(UNIX)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-	set(PROJECT_LINK_LIBS ${CMAKE_SOURCE_DIR}/Release/opennn/libopennn.a)
-endif()
-
-if(WIN32)
-	set(PROJECT_LINK_LIBS ../../opennn/Release/opennn)
-endif()
-
-message(STATUS "\n----- Forge -----")
-
-# --- Establish the executable and specify which files will be used to create it ---
-add_executable(${PROJECT_NAME}
-	${HEADER_FILES}
-	${SOURCE_FILES}
-	${TEXT_FILES}
-)
-
-# --- Link external libraries ---
-target_link_libraries(${PROJECT_NAME} PUBLIC
-	Guten
-	${OpenCV_LIBS}
-	# ${BOOST_LIBRARIES}
-	#Boost::asio
-	#Boost::system
-	#Boost::filesystem
-	opennn
-)
-
-target_include_directories(${PROJECT_NAME} PUBLIC
-	guten
-	#${BOOST_INCLUDE_DIRS}
-)
+	file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll")
+	add_custom_command(
+		TARGET ${PROJECT_NAME} 
+		POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different
+		${TORCH_DLLS}
+		$<TARGET_FILE_DIR:${PROJECT_NAME}>
+	)
+endif (MSVC)

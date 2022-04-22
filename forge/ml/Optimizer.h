@@ -8,8 +8,6 @@
 
 #include <boost/filesystem/path.hpp>
 
-#include "../../opennn/opennn/opennn.h"
-
 namespace forge
 {
 	namespace ml 

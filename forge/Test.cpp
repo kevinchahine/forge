@@ -1407,60 +1407,60 @@ namespace forge
 
 		void dataSetPipeline()
 		{
-			string filename = "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv"; 
-
-			// --- Read CSV File ---
-			forge::CSVParser csv;
-
-			cout << "--- CSVParser ---" << endl;
-			cout << "Opening file: " << filename << endl;
-			
-			csv.open(filename);
-			csv.batchSize(10);
-			cout << "Is open? " << csv.isOpen() << endl;
-
-			// --- Parse In Batches ---
-			while (csv.isOpen()) {
-				// Parse Next Batch 
-				vector<PositionEvalPair> pairs = csv.getNextBatch();
-				cout << "Batch: size = " << pairs.size() << endl;
-				if (pairs.empty()) {
-					break;	// Last row of file reached
-				}
-
-				// Extract Features
-				Eigen::Tensor<float, 2> features(pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE);
-
-				for (size_t i = 0; i < pairs.size(); i++) {
-					const PositionEvalPair & pair = pairs[i];
-
-					const Position & pos = pair.position;
-					heuristic_t eval = pair.eval;
-
-					forge::FeatureExtractor extractor;
-					extractor.init(pos);
-
-					Eigen::Tensor<float, 2> f = extractor.extractMaterial();
-
-					// copy into big tensor
-					for (size_t col = 0; col < f.dimension(1); col++) {
-						features(i, col) = f(0, col);
-					}
-				}
-
-				// Add to Dataset
-				forge::DataSet ds;
-				ds.set(features);
-
-				cout << ds.get_samples_number() << ", " << ds.get_columns_number() << endl;
-
-				cout << "Press <enter> to load next batch or x+<enter> to exit." << endl;
-				char input = cin.get();
-
-				if (input == 'x') {
-					break;
-				}
-			}
+			////string filename = "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv"; 
+			////
+			////// --- Read CSV File ---
+			////forge::CSVParser csv;
+			////
+			////cout << "--- CSVParser ---" << endl;
+			////cout << "Opening file: " << filename << endl;
+			////
+			////csv.open(filename);
+			////csv.batchSize(10);
+			////cout << "Is open? " << csv.isOpen() << endl;
+			////
+			////// --- Parse In Batches ---
+			////while (csv.isOpen()) {
+			////	// Parse Next Batch 
+			////	vector<PositionEvalPair> pairs = csv.getNextBatch();
+			////	cout << "Batch: size = " << pairs.size() << endl;
+			////	if (pairs.empty()) {
+			////		break;	// Last row of file reached
+			////	}
+			////
+			////	// Extract Features
+			////	Eigen::Tensor<float, 2> features(pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE);
+			////
+			////	for (size_t i = 0; i < pairs.size(); i++) {
+			////		const PositionEvalPair & pair = pairs[i];
+			////
+			////		const Position & pos = pair.position;
+			////		heuristic_t eval = pair.eval;
+			////
+			////		forge::FeatureExtractor extractor;
+			////		extractor.init(pos);
+			////
+			////		Eigen::Tensor<float, 2> f = extractor.extractMaterial();
+			////
+			////		// copy into big tensor
+			////		for (size_t col = 0; col < f.dimension(1); col++) {
+			////			features(i, col) = f(0, col);
+			////		}
+			////	}
+			////
+			////	// Add to Dataset
+			////	forge::DataSet ds;
+			////	ds.set(features);
+			////
+			////	cout << ds.get_samples_number() << ", " << ds.get_columns_number() << endl;
+			////
+			////	cout << "Press <enter> to load next batch or x+<enter> to exit." << endl;
+			////	char input = cin.get();
+			////
+			////	if (input == 'x') {
+			////		break;
+			////	}
+			////}
 		}
 
 		void trainNN()
