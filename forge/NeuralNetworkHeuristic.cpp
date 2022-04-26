@@ -49,7 +49,7 @@ namespace forge
 
 		// Repeat until we run out of data
 		while (true) {
-			trainingDS.generateNextBatch();
+			torch::Tensor batch = trainingDS.getNextBatch();
 			break;	// TODO: remove this
 			////// Break when we train on our last batch of samples
 			////if (trainingDS.get_samples_number() == 0) {

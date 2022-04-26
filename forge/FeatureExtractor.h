@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include <torch/torch.h>		// TODO: reduce this
+
 namespace forge
 {
 	class FeatureExtractor
@@ -11,8 +13,8 @@ namespace forge
 	public:
 		void init(const Position & pos);
 
-		////Eigen::Tensor<float, 2> extractMaterial();
-		////Eigen::Tensor<float, 2> extractMobility();
+		torch::Tensor extractMaterial();
+		torch::Tensor extractMobility();
 		// ... Insert more featues here ...
 
 	public:

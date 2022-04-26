@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 
+#include <torch/torch.h>		// TODO: reduce this
 
 namespace forge
 {
@@ -26,9 +27,7 @@ namespace forge
 		// ex:
 		//	DataSet ds;
 		//	ds.data();		// Returns Eigen::Tensor<float, 2>
-		void generateNextBatch();
-
-		void print(std::ostream & os = std::cout) const;
+		torch::Tensor getNextBatch();
 
 		void toCSV(std::ostream & os) const;
 
