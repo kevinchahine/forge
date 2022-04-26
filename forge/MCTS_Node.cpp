@@ -19,6 +19,8 @@ namespace forge
 				<< endl << termcolor::pop;
 		}
 #endif 
+		// TODO: Optimize: Try replacing t, n and m_ucb with integer alteratives which can 
+		// give the same accuracy and precision but are faster to compute than float.
 		t += rolloutResult;
 		n += 1.0f;
 		int parentVisits = parentPtr()->nGamesVisited();
@@ -37,6 +39,12 @@ namespace forge
 	{
 		t += rolloutResult;
 		n += 1.0f;
+	}
+
+	void MCTS_Node::merge(const MCTS_Node& node)
+	{
+		this->t += node.t;
+		this->n += node.n;
 	}
 
 	MCTS_Node::iterator& MCTS_Node::iterator::operator++()

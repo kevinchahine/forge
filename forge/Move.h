@@ -94,7 +94,7 @@ namespace forge
 		//	- Pawn
 		void promotion(pieces::Piece piece)
 		{
-			std::bitset<16> promotionBits = piece.val().to_ulong() << 12;
+			std::bitset<16> promotionBits = piece.val().to_ullong() << 12;
 
 			m_val = (m_val & ~promotion_mask) | promotionBits;
 		}

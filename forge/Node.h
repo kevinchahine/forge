@@ -21,18 +21,22 @@ namespace forge
 	//	stacks to store their frontiers. A Node Tree can be used instead to allow for more efficient 
 	//	multi-threading. This is because threads can be assigned to search different 
 	//	branches and will need little inter-thread interactions. Each thread can search a Node
-	//	and allToFen its children without having to communicate with other threads.
+	//	and all its children without having to communicate with other threads.
 	//	Search algorithms that use a queue or stack
 	//	will need a mutex that is constantly locked and unlocked as threads access it greately
 	//	increasing overhead as more and more threads are used.
+	// NODE_T - data type of derived class. When a class inherites from NodeTemplate<>, it should pass its 
+	// data type as NODE_T.
 	template<class NODE_T>
 	class NodeTemplate
 	{
 	public:
 		void reset();
 
+		// Generates children nodes using the move generator.
 		void expand();
 		
+		// Deletes children nodes to save memory.
 		void prune();
 
 		Move & move() { return m_move; }
@@ -77,6 +81,7 @@ namespace forge
 	protected:
 
 		// Stores the move that got us to this position from parent
+		// If this node is the root, then m_move is meaningless.
 		Move m_move;
 
 		// Stores a position of the game

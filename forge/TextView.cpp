@@ -32,8 +32,8 @@ namespace forge
 		m_img.highlight(guten::Point{ move.from().row(), move.from().col() });
 		m_img.highlight(guten::Point{ move.to().row(), move.to().col() });
 
-		guten::core::Matrix theirInfo = placeInfo(pos, false);
-		guten::core::Matrix ourInfo = placeInfo(pos, true);
+		guten::core::Matrix theirInfo = placeInfo(pos, forge::BLACK);
+		guten::core::Matrix ourInfo = placeInfo(pos, forge::WHITE);
 
 		combineMats(theirInfo, ourInfo).print();
 	}

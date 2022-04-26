@@ -43,7 +43,8 @@ set(HEADER_FILES
 	forge/KingAttackers.h
 	forge/Line.h				# TODO: do we need this
 	forge/MCTS_Node.h
-	forge/MCTS_Solver.h
+	forge/MCTS_Solver.h	
+	forge/MCTS_Solver_MT.h
 	forge/MiniMaxNode.h
 	forge/MinimaxSolver.h
 	forge/MoveCounter.h
@@ -131,6 +132,7 @@ set(SOURCE_FILES
 	forge/Line.cpp
 	forge/MCTS_Node.cpp
 	forge/MCTS_Solver.cpp
+	forge/MCTS_Solver_MT.cpp
 	forge/MiniMaxNode.cpp
 	forge/MinimaxSolver.cpp
 	forge/MoveCounter.cpp

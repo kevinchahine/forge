@@ -1,8 +1,6 @@
 #pragma once
 #include "Node.h"
 
-#define NOMINMAX
-
 #include <limits>
 #include <cmath>
 
@@ -13,11 +11,13 @@ namespace forge {
 
     public:		// ---------- METHODS -----------------------------------------
 		// UCB = x_i + C * sqrt(ln(N) / n_i)
-		// 	x_i - average value of game state(t / n)
+		// 	x_i - average value of game state (t / n)
 		// 	C - constant "Temperature" (ex : 1.5)
 		// 	N - Parent node visits
 		// 	n_i - Current node visits(if n_i is 0 then use 1 / inf to avoid division by zero)
 		static float calcUCB(float average, float temperature, int parentVisits, int currVisits);
+
+		int totalScore() const { return static_cast<int>(t); }
 
 		int nGamesVisited() const { return static_cast<int>(n); }
 
@@ -25,14 +25,20 @@ namespace forge {
 
 		float ucb() const { return m_ucb; }
 		
-		// Warning: Update should never be called on the root node.
+		// Warning: Update should never be called on the root node. 
+		// Call updateRoot() instead
 		void update(int rolloutResult);
 
 		void updateRoot(int rolloutResult);
 
+		// Accumulates t and n from 'node'
+		// ucb and temperature are left unchanged
+		// ucb will need to be recalculated after calling this method if node.t or node.n are non-zero
+		void merge(const MCTS_Node& node);
+
     private:	// ---------- FIELDS ------------------------------------------
 		// Total score of all children
-		// % of games won by white
+		// # of games won by white
 		float t = 0.0f;
 
 		// Total number of games visited
@@ -40,6 +46,7 @@ namespace forge {
 
 		// Save ucb here so that it doesn't need to be recalculated each time its used
 		// Precalculate to max value to save time on construction
+		// Its value is calculated from t n and temperature
 		float m_ucb = std::numeric_limits<float>::max(); // 0.0f;
 
 		float temperature = 1.5;
@@ -49,8 +56,7 @@ namespace forge {
         public:
 			iterator() = default;
 			iterator(MCTS_Node* nodePtr) : p_node(nodePtr) {}
-			iterator(MCTS_Node* nodePtr, int depth, int depthLimit) :
-				p_node(nodePtr) {}
+			iterator(MCTS_Node* nodePtr, int depth, int depthLimit) : p_node(nodePtr) {}
 			iterator& operator++();
 			iterator operator++(int) { iterator temp = *this; ++(*this); return temp; }
 			bool operator==(const iterator& it) const { return this->p_node == it.p_node; }

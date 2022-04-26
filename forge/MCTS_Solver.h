@@ -15,6 +15,8 @@ namespace forge
 
 		virtual std::string getNameVariant() const override { return "Basic"; }
 
+		const MCTS_Node& nodeTree() const { return m_nodeTree; }
+
 	protected:
 		void traverse();
 
@@ -27,6 +29,7 @@ namespace forge
 		// TODO: Could make this constant
 		MovePositionPair selectBestMove();
 
+	public:
 		MovePositionPair solve(const Position& position);
 
     protected:
