@@ -19,8 +19,8 @@ namespace forge
 	class PerformanceLogger
 	{
 	public:
-		///void setOutputDir(const std::string & dirName);
-		///void setOutputDir(const std::filesystem::path & dirName);
+		void setOutputDir(const std::string & dirName);
+		void setOutputDir(const std::filesystem::path & dirName);
 
 		// Call this method once at the begining of a game.
 		// This method, creates a new file called performance_log.xlsx if it
@@ -43,14 +43,14 @@ namespace forge
 			std::chrono::nanoseconds searchDuration);
 
 	public:
-		///std::string solverName = "";
-		///std::string solverVariant = "";
-		///std::string evaluationFunction = "";
-		///std::string moveGeneratorVersion = "";
+		std::string solverName = "";
+		std::string solverVariant = "";
+		std::string evaluationFunction = "";
+		std::string moveGeneratorVersion = "";
 
 	protected:
-		///xlnt::workbook m_workbook;
-		///std::filesystem::path m_output;
+		xlnt::workbook m_workbook;
+		std::filesystem::path m_output;
 		const static std::string fileName;
 	};
 } // namespace forge

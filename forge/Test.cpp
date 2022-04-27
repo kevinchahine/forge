@@ -1209,11 +1209,15 @@ namespace forge
 
 			auto whiteSolver =
 				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				//make_unique<MinimaxSolver>();
+				//make_unique<MCTS_Solver>();
+				make_unique<MCTS_Solver_MT>();
 
 			auto blackSolver =
 				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				//make_unique<MinimaxSolver>();
+				//make_unique<MCTS_Solver>();
+				make_unique<MCTS_Solver_MT>();
 
 			whiteSolver->makeHeuristic<forge::ApplePieHeuristic>();
 			blackSolver->makeHeuristic<forge::ApplePieHeuristic>();

@@ -63,15 +63,15 @@ namespace forge
 		{
 			// --- CONTROLLER ---
 			// Who's turn is it anyways?
-			SolverBase * currPlayer = nullptr;
+			SolverBase* currPlayer = nullptr;
 
 			if (this->position().moveCounter().isWhitesTurn()) {
-				// White's turn
+				// Its White's turn
 				cout << "Whites turn...\n";
 				currPlayer = m_whitesSolver.get();
 			}
 			else {
-				// Black's turn
+				// Its Black's turn
 				cout << "Blacks turn...\n";
 				currPlayer = m_blacksSolver.get();
 			}
@@ -80,7 +80,7 @@ namespace forge
 			MovePositionPair pair = currPlayer->getMove(this->position());
 			cout << termcolor::green << "Player choose: " << pair.move << '\n';
 
-			SearchMonitor & sm = currPlayer->searchMonitor();
+			SearchMonitor& sm = currPlayer->searchMonitor();
 
 			sm.print();
 
@@ -91,25 +91,25 @@ namespace forge
 				sm.plysPerSecond(),
 				sm.searchTime.elapsed());
 
-		// Apply the move. 
-		// TODO: Make sure move is legal before adding it.
-		m_history.emplace_back(pair.position); // Its just that simple.
+			// Apply the move. 
+			// TODO: Make sure move is legal before adding it.
+			m_history.emplace_back(pair.position); // Its just that simple.
 
-		// --- Check the game state ---
-		gstate(m_history);
-		if (gstate.state != GameState::STATE::CONTINUE) {
-			cout << "Game over: " << gstate << '\n';
-			break;
-		}
+			// --- Check the game state ---
+			gstate(m_history);
+			if (gstate.state != GameState::STATE::CONTINUE) {
+				cout << "Game over: " << gstate << '\n';
+				break;
+			}
 
-		// --- VIEW ---
-		if (m_viewPtr != nullptr) {
-			m_viewPtr->show(m_history.current(), pair.move);
-			///cout << "Press any key...";
-			///cin.get();	// remove this
-		}
-	} // end while(true)
+			// --- VIEW ---
+			if (m_viewPtr != nullptr) {
+				m_viewPtr->show(m_history.current(), pair.move);
+				///cout << "Press any key...";
+				///cin.get();	// remove this
+			}
+		} // end while(true)
 
-	return gstate;
-} // end runGame()
+		return gstate;
+	} // end runGame()
 } // namespace forge
