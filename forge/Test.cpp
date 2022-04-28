@@ -1481,13 +1481,8 @@ namespace forge
 			ds.openFile(filename);
 			ds.batchSize(100);
 
-			//ds.generateNextBatch();
-			//ds.toCSV("dataset.csv");
-			//cout << "csv file written...";
-			//return;
-
-			forge::NeuralNetworkHeuristic nn;
-			nn.train(ds);
+			forge::ml::Net net;
+			net.train(ds, 10000);
 		}
 
 		namespace weights

@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include <torch/torch.h>		// TODO: reduce this
+#include <torch/csrc/api/include/torch/data/transforms/tensor.h>
 
 namespace forge
 {

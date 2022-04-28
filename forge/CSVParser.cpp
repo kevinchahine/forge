@@ -14,6 +14,8 @@ namespace forge
 
 			if (m_inFile) {
 				cout << csvFilename << " openned :)" << endl;
+
+				this->csvFilename = csvFilename;
 			}
 			else {
 				cout << csvFilename << " somethings wrong :(" << endl;
@@ -32,6 +34,13 @@ namespace forge
 	bool CSVParser::isOpen() const
 	{
 		return m_inFile.is_open();
+	}
+
+	void CSVParser::reset()
+	{
+		close();
+
+		open(csvFilename);
 	}
 
 	vector<PositionEvalPair> CSVParser::getNextBatch()
@@ -55,9 +64,9 @@ namespace forge
 		}
 
 		// Read the rest of the lines 		
-		for (size_t nLines = 1; nLines < m_batchSize; nLines++) {
+		for (size_t nLines = 0; nLines < m_batchSize; nLines++) {
 			getline(m_inFile, line);
-			
+
 			if (line.empty())	break;
 			else				ss << line << endl;
 		}

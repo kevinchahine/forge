@@ -14,10 +14,18 @@ namespace forge
 		m_parser.open(filename);
 	}
 
-	torch::Tensor DataSet::getNextBatch()
+	void DataSet::closeFile()
 	{
-		torch::Tensor data;
+		m_parser.close();
+	}
 
+	void DataSet::reset()
+	{
+		m_parser.reset();
+	}
+
+	TensorPair DataSet::getNextBatch()
+	{
 		if (m_parser.isOpen() == false) {
 			throw std::runtime_error("dataset file is not open");
 		}
@@ -25,31 +33,22 @@ namespace forge
 		// Load and Parse samples
 		vector<PositionEvalPair> pairs = m_parser.getNextBatch();
 		
-		// Extract Features
-		torch::Tensor input = torch::ones({ (std::streamsize) pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE });
-		
-		for (size_t i = 0; i < pairs.size(); i++) {
-			const PositionEvalPair & pair = pairs[i];
-		
-			const Position & pos = pair.position;
-			heuristic_t eval = pair.eval;
-		
+		TensorPair data{ (int64_t)pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1 };
+
+		// Extract Features of each sample
+		for (size_t sampleIndex = 0; sampleIndex < pairs.size(); sampleIndex++) {
+			const PositionEvalPair & pair = pairs[sampleIndex];
+			
 			forge::FeatureExtractor extractor;
-			extractor.init(pos);
+			extractor.init(pair.position);
 		
-		//	// --- Inputs ---
-		//	auto f = extractor.extractMaterial();
-		//	//Eigen::Tensor<float, 2> f = extractor.extractMaterial();
-		//
-		//	// copy into big tensor
-		//	for (size_t col = 0; col < f.dimension(1); col++) {
-		//		features(i, col) = f(0, col);
-		//	}
-		//
-		//	// --- Output ---
-		//	features(i, forge::FeatureExtractor::MATERIAL_FEATURES_SIZE) = eval;	// Last column
+			// --- Inputs ---
+			data.inputs[sampleIndex] = extractor.extractMaterial();
+			
+			// --- Output ---
+			data.outputs[sampleIndex] = pair.eval;
 		}
-		
+
 		return data;
 	}
 

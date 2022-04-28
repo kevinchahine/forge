@@ -94,8 +94,10 @@ set(HEADER_FILES
 	forge/ViewBase.h
 	forge/WeightsArchive.h
 	forge/WeightsBase.h
+	forge/ml/Net.h
 	forge/ml/Optimizer.h
 	forge/ml/PosEvalPair.h
+	forge/ml/TensorPair.h
 	)
 
 # --- Specify the source files ---
@@ -174,7 +176,9 @@ set(SOURCE_FILES
 	forge/ViewBase.cpp
 	forge/WeightsArchive.cpp
 	forge/WeightsBase.cpp
+	forge/ml/Net.cpp
 	forge/ml/Optimizer.cpp
+	forge/ml/TensorPair.cpp
 	)
 
 # --- Specify the text files ---

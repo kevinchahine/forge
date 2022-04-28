@@ -20,6 +20,8 @@
 #include "GameState.h"
 #include "Node.h"
 
+#include "ml/Net.h"
+
 #include "Controllers.hpp"
 #include "Heuristics.hpp"
 #include "Weights.hpp"

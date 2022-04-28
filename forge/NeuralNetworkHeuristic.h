@@ -1,15 +1,14 @@
 #pragma once
 
 #include "HeuristicBase.h"
-
-#include "DataSet.h"
+//#include "ml/Net.h"
 
 namespace forge
 {
 	class NeuralNetworkHeuristic : public HeuristicBase
 	{
 	public:
-		NeuralNetworkHeuristic();
+		NeuralNetworkHeuristic() {};
 		//NeuralNetworkHeuristic(const std::string& model_file_name);
 		NeuralNetworkHeuristic(const NeuralNetworkHeuristic&) = default;
 		NeuralNetworkHeuristic(NeuralNetworkHeuristic&&) = default;
@@ -29,10 +28,8 @@ namespace forge
 
 		// size_t nOutputNodes() const { return m_model.get_layer_pointer(last_layer)->get_inputs_number(); ??? }
 
-		void train(DataSet & trainingDS);
-
-		////OpenNN::NeuralNetwork & model() { return m_model; }
-		////const OpenNN::NeuralNetwork & model() const { return m_model; }
+		//Net & model() { return m_net; }
+		//const Net & model() const { return m_net; }
 		
 	protected:
 		////Eigen::Tensor<float, 2> featureExtraction(const Position & pos);
@@ -82,6 +79,6 @@ namespace forge
 		//			64			- their knights	- array
 		//			64			- their rooks	- array
 		//			64			- their pawns	- array
-		////OpenNN::NeuralNetwork m_model;
+		//Net m_net;
 	};
 } // namespace forge
