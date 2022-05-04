@@ -6,6 +6,8 @@
 
 #include <torch/csrc/api/include/torch/data/transforms/tensor.h>
 
+// https://pytorch.org/cppdocs/notes/tensor_basics.html		for efficient tensor access
+
 namespace forge
 {
 	class FeatureExtractor
@@ -13,8 +15,8 @@ namespace forge
 	public:
 		void init(const Position & pos);
 
-		torch::Tensor extractMaterial();
-		torch::Tensor extractMobility();
+		void extractMaterial(torch::Tensor & slice);
+		void extractMobility(torch::Tensor slice);
 		// ... Insert more featues here ...
 
 	public:

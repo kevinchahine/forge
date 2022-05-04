@@ -1479,10 +1479,10 @@ namespace forge
 			forge::DataSet ds;
 
 			ds.openFile(filename);
-			ds.batchSize(100);
+			ds.batchSize(10'000);
 
-			forge::ml::Net net;
-			net.train(ds, 10000);
+			forge::ml::Net net{g_computingDevice};
+			net.train(ds, 10'000);
 		}
 
 		namespace weights

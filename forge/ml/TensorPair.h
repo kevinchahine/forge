@@ -17,8 +17,11 @@ namespace forge
 		TensorPair& operator=(TensorPair&&) noexcept = default;
 
 		TensorPair(int64_t nSamples, int64_t nInputFeatures, int64_t nOutputFeatures);
+		TensorPair(int64_t nSamples, int64_t nInputFeatures, int64_t nOutputFeatures, const torch::Device & computingDevice);
 
 		int nSamples() const { return inputs.size(0); }
+
+		void moveTo(const torch::Device& device);
 
 		friend std::ostream& operator<<(std::ostream& os, const TensorPair& pair);
 

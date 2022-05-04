@@ -15,10 +15,16 @@ namespace forge
 		class Net : public torch::nn::Module
 		{
 		public:
-			Net() {
+			Net(const torch::Device & computingDevice) {
 				fc1 = register_module("fc1", torch::nn::Linear(832, 64));
 				fc2 = register_module("fc2", torch::nn::Linear(64, 32));
 				fc3 = register_module("fc3", torch::nn::Linear(32, 1));
+				
+				// These lines are very important to make sure layers are in the correct device
+				// operations will hang if these arn't called 
+				fc1->to(computingDevice);
+				fc2->to(computingDevice);
+				fc3->to(computingDevice);
 			}
 			Net(const Net&) = default;
 			Net(Net&&) noexcept = default;
@@ -27,11 +33,19 @@ namespace forge
 			Net& operator=(Net&&) noexcept = default;
 
 			torch::Tensor forward(torch::Tensor x) {
-				x = torch::relu(fc1->forward(x.reshape( { x.size(0), 832 } )));
-				x = torch::dropout(x, 0.5, is_training());
-				x = torch::relu(fc2->forward(x));
-				x = torch::log_softmax(fc3->forward(x), 1);
-				return x;
+				// --- Layer 1 ---
+				torch::Tensor t = fc1->forward(x);
+				t = torch::relu(t);
+				t = torch::dropout(t, 0.5, is_training());
+
+				// --- Layer 2 ---
+				t = fc2->forward(t);
+				t = torch::relu(t);
+				
+				// --- Layer 3 ---
+				t = fc3->forward(t);
+
+				return t;
 			}
 
 			void train(DataSet& trainingDS, size_t nEpochs);

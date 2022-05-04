@@ -30,36 +30,45 @@ namespace forge
 		theirPawns = theirs & b.pawns();
 	}
 
-	torch::Tensor FeatureExtractor::extractMaterial()
+	void FeatureExtractor::extractMaterial(torch::Tensor & slice)
 	{
-		torch::Tensor features = torch::zeros({ MATERIAL_FEATURES_SIZE });
+		if (slice.dim() != 2) {
+			cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
+				<< "\tslice must be a 2D tensor with 1 row and " << MATERIAL_FEATURES_SIZE << " columns" << endl;
+		}
+		else if (slice.size(0) != 1) {
+			cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
+				<< "\tslice must be a 2D tensor with 1 row" << endl;
+		} 
+		else if (slice.size(1) != MATERIAL_FEATURES_SIZE) {
+			cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
+				<< "\tslice must be a 2D tensor with " << MATERIAL_FEATURES_SIZE << " columns" << endl;
+		}
+		
+		auto accessor = slice.accessor<float, 2>();	// Good for CPU access
 		
 		for (size_t bit = 0; bit < 64; bit++) {
 			// TODO: Optimize: Can this be optimized with ifs. Hint: Sparse data.
-			features[64 * 0  + bit] = static_cast<float>(empty[bit]);
-			features[64 * 1  + bit] = static_cast<float>(ourKings[bit]);
-			features[64 * 2  + bit] = static_cast<float>(ourQueens[bit]);
-			features[64 * 3  + bit] = static_cast<float>(ourBishops[bit]);
-			features[64 * 4  + bit] = static_cast<float>(ourKnights[bit]);
-			features[64 * 5  + bit] = static_cast<float>(ourRooks[bit]);
-			features[64 * 6  + bit] = static_cast<float>(ourPawns[bit]);
-			features[64 * 7  + bit] = static_cast<float>(theirKings[bit]);
-			features[64 * 8  + bit] = static_cast<float>(theirQueens[bit]);
-			features[64 * 9  + bit] = static_cast<float>(theirBishops[bit]);
-			features[64 * 10 + bit] = static_cast<float>(theirKnights[bit]);
-			features[64 * 11 + bit] = static_cast<float>(theirRooks[bit]);
-			features[64 * 12 + bit] = static_cast<float>(theirPawns[bit]);
+			accessor[0][64 * 0  + bit] = static_cast<float>(empty[bit]);
+			accessor[0][64 * 1  + bit] = static_cast<float>(ourKings[bit]);
+			accessor[0][64 * 2  + bit] = static_cast<float>(ourQueens[bit]);
+			accessor[0][64 * 3  + bit] = static_cast<float>(ourBishops[bit]);
+			accessor[0][64 * 4  + bit] = static_cast<float>(ourKnights[bit]);
+			accessor[0][64 * 5  + bit] = static_cast<float>(ourRooks[bit]);
+			accessor[0][64 * 6  + bit] = static_cast<float>(ourPawns[bit]);
+			accessor[0][64 * 7  + bit] = static_cast<float>(theirKings[bit]);
+			accessor[0][64 * 8  + bit] = static_cast<float>(theirQueens[bit]);
+			accessor[0][64 * 9  + bit] = static_cast<float>(theirBishops[bit]);
+			accessor[0][64 * 10 + bit] = static_cast<float>(theirKnights[bit]);
+			accessor[0][64 * 11 + bit] = static_cast<float>(theirRooks[bit]);
+			accessor[0][64 * 12 + bit] = static_cast<float>(theirPawns[bit]);
 		}
-	
-		return features;
 	}
 
-	torch::Tensor FeatureExtractor::extractMobility()
+	void FeatureExtractor::extractMobility(torch::Tensor slice)
 	{
 		torch::Tensor features = torch::zeros({ 1, MOBILITY_FEATURES_SIZE });
 	
 		// TODO: something goes here
-	
-		return features;
 	}
 } // namespace forge

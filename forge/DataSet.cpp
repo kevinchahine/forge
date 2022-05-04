@@ -32,8 +32,9 @@ namespace forge
 		
 		// Load and Parse samples
 		vector<PositionEvalPair> pairs = m_parser.getNextBatch();
-		
-		TensorPair data{ (int64_t)pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1 };
+
+		// Create Tensors on CPU so speed up preprocessing
+		TensorPair data{ (int64_t)pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1, torch::kCPU };
 
 		// Extract Features of each sample
 		for (size_t sampleIndex = 0; sampleIndex < pairs.size(); sampleIndex++) {
@@ -41,14 +42,15 @@ namespace forge
 			
 			forge::FeatureExtractor extractor;
 			extractor.init(pair.position);
-		
+
 			// --- Inputs ---
-			data.inputs[sampleIndex] = extractor.extractMaterial();
-			
+			torch::Tensor sampleSlice = data.inputs.slice(0, sampleIndex, sampleIndex + 1);
+			extractor.extractMaterial(sampleSlice);
+
 			// --- Output ---
 			data.outputs[sampleIndex] = pair.eval;
 		}
-
+		
 		return data;
 	}
 

@@ -31,9 +31,6 @@ namespace forge
 		// Parses and Extracts features into Tensors
 		// And stores them in this object.
 		// Training Tensors can be accessed by calling the method OpenNN::DataSet::data()
-		// ex:
-		//	DataSet ds;
-		//	ds.data();		// Returns Eigen::Tensor<float, 2>
 		TensorPair getNextBatch();
 
 		void toCSV(std::ostream & os) const;

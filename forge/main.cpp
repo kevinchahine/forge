@@ -20,6 +20,7 @@ Designed to be compatible with a variety of displays including:
 
 #include "Test.h"
 #include "ml/Optimizer.h"
+#include "globals.h"
 
 using namespace std;
 
@@ -30,7 +31,9 @@ int main(int argc, char ** argv)
 		<< termcolor::yellow << "===\n"
 		<< termcolor::red << "=============\n"
 		<< termcolor::white;
-	
+
+	forge::initGlobals();
+
 	//forge::test::initTestBoards();
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();

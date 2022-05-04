@@ -1,5 +1,8 @@
 #include "Net.h"
 
+#include "../globals.h"
+#include "../Timer.h"
+
 #include <torch/csrc/api/include/torch/optim/adam.h>
 #include <torch/csrc/api/include/torch/serialize.h>
 #include <torch/csrc/api/include/torch/cuda.h>
@@ -14,59 +17,74 @@ namespace forge
 	{
 		void Net::train(DataSet& trainingDS, size_t nEpochs)
 		{
-			// Save device which will perform training
-			torch::Device device = torch::kCPU;
-			if (torch::cuda::is_available()) {
-				std::cout << "CUDA is available! Training on GPU." << std::endl;
-				device = torch::kCUDA;
-			}
-
-			cout << "device = " << device << endl;
-
+			cout << "--- Net::train() ---" << endl;
+			
 			// Move network to the training device (will be a no-op if already there)
-			//this->to(device);
 			
 			int counter = 0;
+			chrono::duration printPeriod = chrono::seconds(1);
+			Timer timer;
+			timer.expires_from_now(printPeriod);
+			timer.resume();
 
+			// TODO: This might need to be put on the GPU. Maybe
 			torch::optim::Adam optimizer(this->parameters(), 0.01);
-
+			
 			// Repeat until we run out of data
-			for (size_t epoch = 0; epoch < nEpochs; epoch++) {
+			size_t epoch = 0;
+			while (epoch < nEpochs) {
+				//cout << "Reading next batch...";
+				chrono::time_point start = chrono::high_resolution_clock::now();
 				TensorPair batch = trainingDS.getNextBatch();
-				
-				// Move training data to training device
-				batch.inputs.to(device);
-				batch.outputs.to(device);
+				batch.moveTo(g_computingDevice);
+				//cout << "Moving TensorPair to GPU...";
+				//cout << "done " << batch.inputs.device() << '\t' << batch.outputs.device() << endl;
 
-				cout << "inputs exists on: " << batch.inputs.device()
-					<< " index: " << batch.inputs.get_device() << endl;
+				chrono::time_point stop = chrono::high_resolution_clock::now();
+				//cout << "done. took " << chrono::duration_cast<chrono::milliseconds>(stop - start).count()
+				//	<< "ms" << endl;
+
 
 				// When we reach the end of the dataset, start over until we reach the last epoch
 				if (batch.nSamples() == 0) {
 					trainingDS.reset();
 				}
 
-				// Reset gradients
-				optimizer.zero_grad();
+				for (size_t reuse = 0; reuse < 100; reuse++) {
+					start = chrono::high_resolution_clock::now();
 
-				cout << "forward" << endl;
-				// Execute the model on the input data
-				torch::Tensor prediction = this->forward(batch.inputs);
-				// Compute a loss value to judge the prediction of our model.
-				cout << "mse_loss" << endl;
-				torch::Tensor loss = torch::mse_loss(prediction, batch.outputs);
-				cout << "backward" << endl;
-				// Compute gradients of the loss w.r.t. the parameters of our model
-				loss.backward();
+					// Reset gradients
+					optimizer.zero_grad();
 
-				cout << "step" << endl;
-				// Update the parameters based on the calculated gradients
-				optimizer.step();
-				
-				// Output the loss and checkpoint every 100 batches
-				cout << "Epoch: " << epoch << " | Loss: " << loss.item<float>() << endl;
-				
-				//torch::save(*this, "net.pt");
+					// Execute the model on the input data
+					torch::Tensor prediction = this->forward(batch.inputs);
+
+					// Compute a loss value to judge the prediction of our model.
+					torch::Tensor loss = torch::mse_loss(prediction, batch.outputs);
+
+					// Compute gradients of the loss w.r.t. the parameters of our model
+					loss.backward();
+
+					// Update the parameters based on the calculated gradients
+					optimizer.step();
+
+					stop = chrono::high_resolution_clock::now();
+
+					//cout << "Epoch duration = " << chrono::duration_cast<chrono::milliseconds>(stop - start).count()
+					//	<< "ms " << endl;
+
+					// Output the loss and checkpoint every 100 batches
+					if (timer.is_expired()) {
+						cout << "Epoch: " << epoch << " | Loss: " << loss.item<float>() << endl;
+
+						timer.expires_from_now(printPeriod);
+						timer.resume();
+					}
+
+					//torch::save(*this, "net.pt");
+
+					epoch++;
+				}
 			}
 
 			// Save model
