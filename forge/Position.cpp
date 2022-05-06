@@ -6,6 +6,11 @@ using namespace std;
 
 namespace forge
 {
+	Position::Position(const std::string& fen)
+	{
+		this->fromFEN(fen);
+	}
+
 	void Position::reset()
 	{
 		m_board.placeAllPieces();
@@ -26,8 +31,9 @@ namespace forge
 
 	void Position::fromFEN(const std::string& fen)
 	{
-		// TODO: fINISH this method
-		///throw std::exception("Position::fromFEN() does not work");
+		// https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation?msclkid=f2073544cd8311eca1516d444ecd6e97
+		
+		// TODO: finish this method
 
 		istringstream ss{ fen };
 
@@ -74,14 +80,17 @@ namespace forge
 		char activePiece;
 		ss >> activePiece;
 		activePiece = tolower(activePiece);
-
 		bool isWhite = (activePiece == 'w');
 
 		// 3.) --- Castling Rights ---
 		// TODO: Castling: Do this
+		string castling;
+		ss >> castling;
 
 		// 4.) --- Enpassent ---
 		// TODO: Enpassent: Do this
+		string enpassent;
+		ss >> enpassent;
 
 		// 5.) --- 50 Move Rule ---
 		int fiftyMoveCount;
@@ -91,7 +100,7 @@ namespace forge
 		// 6.) --- Full move count ---
 		int fullMoveCount;
 		ss >> fullMoveCount;
-		this->m_moveCounter.count = fullMoveCount + (isWhite ? 0 : 1);
+		this->m_moveCounter.count = fullMoveCount - 1 + (isWhite ? 0 : 1);
 	}
 
 	string Position::toFEN() const

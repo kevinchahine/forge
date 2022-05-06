@@ -2,6 +2,8 @@
 
 #include "Direction.h"
 
+#include "Guten/core/Matrix.h"
+
 #include <iostream>
 #include <bitset>
 
@@ -84,6 +86,8 @@ namespace forge
 		static BitBoard mask(BoardSquare center);
 
 		friend std::ostream& operator<<(std::ostream& os, const BitBoard& bb);
+
+		guten::core::Matrix toMat() const;
 
 		void print(std::ostream& os = std::cout) const;
 

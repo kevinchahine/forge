@@ -327,14 +327,22 @@ namespace forge
 		return os;
 	}
 		
-	void BitBoard::print(std::ostream & os) const
+	guten::core::Matrix BitBoard::toMat() const
 	{
+		guten::core::Matrix mat{ 8, 8 };
+
 		for (uint16_t row = 0; row < 8; row++) {
 			for (uint16_t col = 0; col < 8; col++) {
-				os << ((*this)[BoardSquare{ row, col }] ? '1' : '0');
+				BoardSquare bs{ row, col };
+				mat.at(row, col) = ((*this)[bs] ? '1' : '0');
 			}
-			os << '\n';
 		}
-		os << '\n';
+
+		return mat;
+	}
+
+	void BitBoard::print(std::ostream & os) const
+	{
+		toMat().print(0, os);
 	}
 } // namespace forge

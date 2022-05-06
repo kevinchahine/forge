@@ -73,12 +73,12 @@ namespace forge
 		// Direction: /
 		class OffDiagonal : public virtual Diagonal, public virtual Line {};
 
-		// Direction: \ (Leave this to prevent '\' from causing problems)
+		// Direction: \ (Leave this comment to prevent '\' from causing problems)
 		class MainDiagonal : public virtual Diagonal, public virtual Line {};
 
 		// --- Lateral Rays: Up, Down, Left, Right ---
 
-		class Up : public virtual Lateral, virtual public Ray {
+		class Up : public virtual Vertical, public virtual Lateral, public virtual Ray {
 		public:
 			Up() : Direction{ -1, 0 } {}
 			Up(const Up &) = default;
@@ -104,7 +104,7 @@ namespace forge
 			static std::string str() { return "Up"; }
 		};
 
-		class Down : public Lateral, public Ray {
+		class Down : public virtual Vertical, public virtual Lateral, public virtual Ray {
 		public:
 			Down() : Direction{ 1, 0 } {}
 			Down(const Down &) = default;
@@ -130,7 +130,7 @@ namespace forge
 			static std::string str() { return "Down"; }
 		};
 
-		class Left : public Lateral, public Ray {
+		class Left : public virtual Horizontal, public virtual Lateral, public virtual Ray {
 		public:
 			Left() : Direction{ 0, -1 } {}
 			Left(const Left &) = default;
@@ -156,7 +156,7 @@ namespace forge
 			static std::string str() { return "Left"; }
 		};
 
-		class Right : public Lateral, public Ray {
+		class Right : public virtual Horizontal, public virtual Lateral, public virtual Ray {
 		public:
 			Right() : Direction{ 0, 1 } {}
 			Right(const Right &) = default;
@@ -184,7 +184,7 @@ namespace forge
 
 		// --- Diagonal Rays: UL, UR, DL, DR ---
 
-		class UL : public Diagonal, public Ray {
+		class UL : public virtual MainDiagonal, public virtual Diagonal, public virtual Ray {
 		public:
 			UL() : Direction{ -1, -1 } {}
 			UL(const UL &) = default;
@@ -210,7 +210,7 @@ namespace forge
 			static std::string str() { return "UL"; }
 		};
 
-		class UR : public Diagonal, public Ray {
+		class UR : public virtual OffDiagonal, public virtual Diagonal, public virtual Ray {
 		public:
 			UR() : Direction{ -1, 1 } {}
 			UR(const UR &) = default;
@@ -236,7 +236,7 @@ namespace forge
 			static std::string str() { return "UR"; }
 		};
 
-		class DL : public Diagonal, public Ray {
+		class DL : public virtual OffDiagonal, public virtual Diagonal, public virtual Ray {
 		public:
 			DL() : Direction{ 1, -1 } {}
 			DL(const DL &) = default;
@@ -262,7 +262,7 @@ namespace forge
 			static std::string str() { return "DL"; }
 		};
 
-		class DR : public Diagonal, public Ray {
+		class DR : public virtual MainDiagonal, public virtual Diagonal, public virtual Ray {
 		public:
 			DR() : Direction{ 1, 1 } {}
 			DR(const DR &) = default;
@@ -537,7 +537,5 @@ namespace forge
 		template<> inline DR reverse<UL>() { return DR{}; }
 		template<> inline UR reverse<DL>() { return UR{}; }
 		template<> inline DL reverse<UR>() { return DL{}; }
-
-
 	} // namespace directions
 } // namespace forge

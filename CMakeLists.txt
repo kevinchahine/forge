@@ -77,6 +77,7 @@ set(HEADER_FILES
 	forge/SolverBase.h
 	forge/StopWatch.h
 	forge/Test.h
+	forge/TestFeatureExtractor.h
 	forge/TestMoveGen.h
 	forge/TestUci.h
 	forge/TextView.h
@@ -160,6 +161,7 @@ set(SOURCE_FILES
 	forge/SolverBase.cpp
 	forge/StopWatch.cpp
 	forge/Test.cpp
+	forge/TestFeatureExtractor.cpp
 	forge/TestMoveGen.cpp
 	forge/TestUci.cpp
 	forge/TextView.cpp

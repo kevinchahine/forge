@@ -9,7 +9,6 @@
 #include "Clock.h"
 #include "CSVParser.h"
 #include "DataSet.h"
-#include "FeatureExtractor.h"
 #include "StopWatch.h"
 #include "Move.h"
 #include "ChessMatch.h"
@@ -209,5 +208,6 @@ namespace forge
 		{
 			void playApplePie();
 		} // namespace ai
+
 	} // namespace test
 } // namespace forge

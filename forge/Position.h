@@ -26,10 +26,23 @@ namespace forge
 		friend MoveGenerator;
 		friend struct std::hash<Position>;
 
+		// --- Constructors ---
+
+		Position() = default;
+		Position(const Position&) = default;
+		Position(Position&&) noexcept = default;
+		Position(const std::string& fen);
+		~Position() noexcept = default;
+		Position& operator=(const Position&) = default;
+		Position& operator=(Position&&) noexcept = default;
+
 		void reset();
 
 		// Removes allToFen pieces
 		void clear();
+
+		bool isWhitesTurn() const { return m_moveCounter.isWhitesTurn(); }
+		bool isBlacksTurn() const { return m_moveCounter.isBlacksTurn(); }
 
 		// ----- Moves (both push moves and captures) -----
 		// primary specialization works for all Pieces but Kings, Rooks and Pawns

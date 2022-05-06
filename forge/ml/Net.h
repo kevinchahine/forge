@@ -16,9 +16,9 @@ namespace forge
 		{
 		public:
 			Net(const torch::Device & computingDevice) {
-				fc1 = register_module("fc1", torch::nn::Linear(832, 64));
-				fc2 = register_module("fc2", torch::nn::Linear(64, 32));
-				fc3 = register_module("fc3", torch::nn::Linear(32, 1));
+				fc1 = register_module("fc1", torch::nn::Linear(832, 1600));
+				fc2 = register_module("fc2", torch::nn::Linear(1600, 1600));
+				fc3 = register_module("fc3", torch::nn::Linear(1600, 1));
 				
 				// These lines are very important to make sure layers are in the correct device
 				// operations will hang if these arn't called 

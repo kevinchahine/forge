@@ -134,8 +134,8 @@ namespace forge
 		guten::core::Matrix cb = m_img.draw();
 
 		guten::core::Matrix mat{
-			size_t(cb.nRows() + 2),
-			size_t(theirInfo.nCols() + cb.nCols() + 1)
+			cb.nRows() + 2,
+			theirInfo.nCols() + cb.nCols() + 1
 		};
 		guten::draw::rectangle(mat, guten::Point{ 0, 0 }, mat.size(), guten::color::white, true);
 

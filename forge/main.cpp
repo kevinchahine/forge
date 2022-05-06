@@ -19,6 +19,7 @@ Designed to be compatible with a variety of displays including:
 */
 
 #include "Test.h"
+#include "TestFeatureExtractor.h"
 #include "ml/Optimizer.h"
 #include "globals.h"
 
@@ -76,7 +77,7 @@ int main(int argc, char ** argv)
 	//forge::test::logger();
 	//forge::test::csvParser();
 	//forge::test::dataSetPipeline();
-	forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
+	//forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
 
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
@@ -87,23 +88,11 @@ int main(int argc, char ** argv)
 	//forge::uci::test::engineToGui();
 	//forge::uci::test::info();
 
+	//forge::test::feature_extractor::init();
+	forge::test::feature_extractor::findAllAttacked();
+
 	//forge::test::movegen::stockfishAndForge();
-	//forge::DatasetGenerator dsGen;
-	//dsGen.run();
 
-	//{
-	//	forge::Position pos;
-	//	pos.reset();
-	//
-	//	forge::NeuralNetworkHeuristic nnh;
-	//
-	//	auto eval = nnh.eval(pos);
-	//
-	//	nnh.train();
-	//}
-
-	//forge::NeuralNetworkHeuristic h;
-	//cout << "Done";
 	//this_thread::sleep_for(chrono::seconds(1));
 	//cout << "Press any key..." << endl;
 	//cin.get();

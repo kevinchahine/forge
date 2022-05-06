@@ -5,6 +5,8 @@
 
 namespace forge
 {
+	// TODO: Optimize: Does compressing coordinates in BoardSquare actually lead to any kind of optimizations. 
+	// Wouldn't it be better to simply store each coordinate in its own 8-bit int.
 	class BoardSquare
 	{
 		friend class BitBoard;	// Gives BitBoard access to m_val

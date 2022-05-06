@@ -8,8 +8,13 @@ namespace forge
 	{
 		string s = "";
 
-		s.push_back(col() + 'a');
-		s.push_back(8 - row() + '0');
+		if (this->isValid()) {
+			s.push_back(col() + 'a');
+			s.push_back(8 - row() + '0');
+		}
+		else {
+			s = "--";
+		}
 
 		return s;
 	}

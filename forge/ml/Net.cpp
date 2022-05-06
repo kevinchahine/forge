@@ -27,12 +27,18 @@ namespace forge
 			timer.expires_from_now(printPeriod);
 			timer.resume();
 
+			chrono::duration savePeriod = chrono::minutes(1);
+			Timer saveTimer;
+			saveTimer.expires_from_now(savePeriod);
+			saveTimer.resume();
+
 			// TODO: This might need to be put on the GPU. Maybe
 			torch::optim::Adam optimizer(this->parameters(), 0.01);
 			
 			// Repeat until we run out of data
 			size_t epoch = 0;
-			while (epoch < nEpochs) {
+			torch::Tensor loss;
+			do {//while (epoch < nEpochs) {
 				//cout << "Reading next batch...";
 				chrono::time_point start = chrono::high_resolution_clock::now();
 				TensorPair batch = trainingDS.getNextBatch();
@@ -60,7 +66,7 @@ namespace forge
 					torch::Tensor prediction = this->forward(batch.inputs);
 
 					// Compute a loss value to judge the prediction of our model.
-					torch::Tensor loss = torch::mse_loss(prediction, batch.outputs);
+					loss = torch::mse_loss(prediction, batch.outputs);
 
 					// Compute gradients of the loss w.r.t. the parameters of our model
 					loss.backward();
@@ -81,15 +87,19 @@ namespace forge
 						timer.resume();
 					}
 
-					//torch::save(*this, "net.pt");
+					if (saveTimer.is_expired()) {
+						//torch::save(*this, "net.pt");
+						saveTimer.expires_from_now(savePeriod);
+						saveTimer.resume();
+					}
 
 					epoch++;
 				}
-			}
+			} while (loss.item<float>() > 1000);
 
 			// Save model
 			// TODO: Make this work. * See above 
-			//m_model.save("trained_models/trained_nn.xml");
+			//this->save("trained_models/trained_nn.xml");
 		}
 	} // namespace ml
 } // namespace forge

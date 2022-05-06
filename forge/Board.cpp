@@ -491,7 +491,11 @@ namespace forge
 
 	template<> BitBoard Board::directionals<directions::Linear>() const { return laterals() & diagonals(); }
 	template<> BitBoard Board::directionals<directions::Lateral>() const { return laterals(); }
+	template<> BitBoard Board::directionals<directions::Horizontal>() const { return laterals(); }
+	template<> BitBoard Board::directionals<directions::Vertical>() const { return laterals(); }
 	template<> BitBoard Board::directionals<directions::Diagonal>() const { return diagonals(); }
+	template<> BitBoard Board::directionals<directions::MainDiagonal>() const { return diagonals(); }
+	template<> BitBoard Board::directionals<directions::OffDiagonal>() const { return diagonals(); }
 	template<> BitBoard Board::directionals<directions::LShape>() const { return knights(); }
 	template<> BitBoard Board::directionals<directions::Knight0>() const { return knights(); }
 	template<> BitBoard Board::directionals<directions::Knight1>() const { return knights(); }
