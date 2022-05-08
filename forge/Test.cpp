@@ -1153,14 +1153,18 @@ namespace forge
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
+				//forge::ApplePieHeuristic
 				//RandomHeuristic>();
-				ApplePieHeuristic>();
+				forge::heuristics::Rollout
 				//NeuralNetworkHeuristic>();
+			>();
 
 			blackController->makeHeuristic<
+				//forge::ApplePieHeuristic
 				//RandomHeuristic>();
-				ApplePieHeuristic>();
+				forge::heuristics::Rollout
 				//NeuralNetworkHeuristic>();
+			>();
 
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);
@@ -1185,8 +1189,15 @@ namespace forge
 				//make_unique<MCTS_Solver>();
 				make_unique<MCTS_Solver_MT>();
 
-			whiteSolver->makeHeuristic<forge::ApplePieHeuristic>();
-			blackSolver->makeHeuristic<forge::ApplePieHeuristic>();
+			whiteSolver->makeHeuristic<
+				//forge::ApplePieHeuristic
+				forge::heuristics::Rollout
+			>();
+
+			blackSolver->makeHeuristic<
+				//forge::ApplePieHeuristic
+				forge::heuristics::Rollout
+			>();
 
 			tester.whiteSolver() = std::move(whiteSolver);
 			tester.blackSolver() = std::move(blackSolver);

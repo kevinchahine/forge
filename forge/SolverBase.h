@@ -13,6 +13,12 @@ namespace forge
 	class SolverBase : public ControllerBase
 	{
 	public:
+		SolverBase() = default;
+		SolverBase(const SolverBase& solver);
+		SolverBase(SolverBase&&) noexcept = default;
+		virtual ~SolverBase() noexcept = default;
+		SolverBase& operator=(const SolverBase& solver);
+		SolverBase& operator=(SolverBase&&) noexcept = default;
 
 		const std::unique_ptr<HeuristicBase> & heuristicPtr() const { return m_heuristicPtr; }
 		std::unique_ptr<HeuristicBase> & heuristicPtr() { return m_heuristicPtr; }

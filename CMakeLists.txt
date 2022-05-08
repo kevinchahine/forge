@@ -9,7 +9,7 @@ set(PROJECT_NAME "forge")
 project(${PROJECT_NAME})
 
 # --- Specify the header files ---
-set(HEADER_FILES
+set(CODE_FILES#HEADER_FILES
 	forge/ApplePieHeuristic.h
 	forge/ApplePieWeights.h
 	forge/AttackChecker.h
@@ -36,6 +36,7 @@ set(HEADER_FILES
 	forge/globals.h
 	forge/HashCombine.h
 	forge/HeuristicBase.h
+	forge/Heuristics.hpp
 	forge/IntBoard.h
 	forge/IWeightsArchive.h
 	forge/KeyboardController.h
@@ -96,14 +97,16 @@ set(HEADER_FILES
 	forge/ViewBase.h
 	forge/WeightsArchive.h
 	forge/WeightsBase.h
+	forge/heuristics/Rollout.h
+	forge/heuristics/Rollout.cpp
 	forge/ml/Net.h
 	forge/ml/Optimizer.h
 	forge/ml/PosEvalPair.h
 	forge/ml/TensorPair.h
-	)
+	#)
 
 # --- Specify the source files ---
-set(SOURCE_FILES
+#set(SOURCE_FILES
 	forge/main.cpp
 	forge/ApplePieHeuristic.cpp
 	forge/ApplePieWeights.cpp
@@ -229,8 +232,9 @@ set(TEXT_FILES
 )
 
 add_executable(${PROJECT_NAME}
-	${HEADER_FILES}
-	${SOURCE_FILES}
+	${CODE_FILES}
+	#${HEADER_FILES}
+	#${SOURCE_FILES}
 	${TEXT_FILES}
 )
 

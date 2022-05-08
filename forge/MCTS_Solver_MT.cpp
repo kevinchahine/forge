@@ -15,7 +15,7 @@ namespace forge
 	{
 		// --- 1.) Create Threads ---
 		vector<MCTS_Solver> solvers;
-		solvers.resize(m_nThreads);
+		solvers.resize(m_nThreads, (*this));
 
 		vector<thread> threads;
 		threads.reserve(m_nThreads);
