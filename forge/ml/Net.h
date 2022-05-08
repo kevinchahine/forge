@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../forge/DataSet.h"
+#include "../FeatureExtractor.h"
 
 #include <iostream>
 #include <string>
@@ -16,7 +17,11 @@ namespace forge
 		{
 		public:
 			Net(const torch::Device & computingDevice) {
-				fc1 = register_module("fc1", torch::nn::Linear(832, 1600));
+				size_t inputLayerSize = 
+					FeatureExtractor::MATERIAL_FEATURES_SIZE +
+					FeatureExtractor::ATTACKED_FEATURES_SIZE;
+
+				fc1 = register_module("fc1", torch::nn::Linear(inputLayerSize, 1600));
 				fc2 = register_module("fc2", torch::nn::Linear(1600, 1600));
 				fc3 = register_module("fc3", torch::nn::Linear(1600, 1));
 				

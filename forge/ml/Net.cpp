@@ -7,6 +7,8 @@
 #include <torch/csrc/api/include/torch/serialize.h>
 #include <torch/csrc/api/include/torch/cuda.h>
 
+#include <fstream>	// remove this its only temporary
+
 // https://pytorch.org/tutorials/advanced/cpp_frontend.html#writing-the-training-loop	// training in PyTorch (GPU also)
 
 using namespace std;
@@ -19,6 +21,10 @@ namespace forge
 		{
 			cout << "--- Net::train() ---" << endl;
 			
+			ofstream outFile;
+			outFile.open("training_history.txt");
+			outFile << "epoch, (mse) loss" << endl;
+
 			// Move network to the training device (will be a no-op if already there)
 			
 			int counter = 0;
@@ -38,6 +44,8 @@ namespace forge
 			// Repeat until we run out of data
 			size_t epoch = 0;
 			torch::Tensor loss;
+			float lossVal = 0.0f;
+
 			do {//while (epoch < nEpochs) {
 				//cout << "Reading next batch...";
 				chrono::time_point start = chrono::high_resolution_clock::now();
@@ -57,8 +65,6 @@ namespace forge
 				}
 
 				for (size_t reuse = 0; reuse < 100; reuse++) {
-					start = chrono::high_resolution_clock::now();
-
 					// Reset gradients
 					optimizer.zero_grad();
 
@@ -74,14 +80,14 @@ namespace forge
 					// Update the parameters based on the calculated gradients
 					optimizer.step();
 
-					stop = chrono::high_resolution_clock::now();
-
 					//cout << "Epoch duration = " << chrono::duration_cast<chrono::milliseconds>(stop - start).count()
 					//	<< "ms " << endl;
 
+					lossVal = loss.item<float>();
+					outFile << epoch << ", " << lossVal << endl;
 					// Output the loss and checkpoint every 100 batches
 					if (timer.is_expired()) {
-						cout << "Epoch: " << epoch << " | Loss: " << loss.item<float>() << endl;
+						cout << "Epoch: " << epoch << " | Loss: " << lossVal << endl;
 
 						timer.expires_from_now(printPeriod);
 						timer.resume();
@@ -95,8 +101,9 @@ namespace forge
 
 					epoch++;
 				}
-			} while (loss.item<float>() > 1000);
+			} while (lossVal > 1000);
 
+			outFile.close();
 			// Save model
 			// TODO: Make this work. * See above 
 			//this->save("trained_models/trained_nn.xml");

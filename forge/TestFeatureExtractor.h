@@ -15,6 +15,9 @@ namespace forge
 			void init();
 
 			void findAllAttacked();
+
+			void countAllAttacked();
+
 		} // namespace feature_extractor
 	} // namespace test
 } // namespace forge

@@ -36,6 +36,7 @@ set(HEADER_FILES
 	forge/globals.h
 	forge/HashCombine.h
 	forge/HeuristicBase.h
+	forge/IntBoard.h
 	forge/IWeightsArchive.h
 	forge/KeyboardController.h
 	forge/KingAttacker.h
@@ -128,6 +129,7 @@ set(SOURCE_FILES
 	forge/GameState.cpp
 	forge/globals.cpp
 	forge/HeuristicBase.cpp
+	forge/IntBoard.cpp
 	forge/IWeightsArchive.cpp
 	forge/KeyboardController.cpp
 	forge/KingAttacker.cpp

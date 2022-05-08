@@ -217,7 +217,7 @@ namespace forge
 		// bits 3, 4, 5 - row coordinate
 		// bit  6		- isInValid (0: valid, 1: invalid)
 		// bit  7		- reserved
-		// 00cccrrr
+		// 0icccrrr
 		uint8_t m_val = 0;
 
 		static const uint8_t col_mask = 0b00'000'111;	// Has 1's for each col bit

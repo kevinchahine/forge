@@ -121,96 +121,67 @@ namespace forge
 			return;
 
 		// --- Attacked Pieces ---
-		BitBoard attackedPieces = findAllAttacked();
+		IntBoard attackedPieces = countAllAttacked();
 
-		BitBoard ourAttackedQueens;
-		BitBoard ourAttackedBishops;
-		BitBoard ourAttackedKnights;
-		BitBoard ourAttackedRooks;
-		BitBoard ourAttackedPawns;
+		IntBoard ourAttackedKings	= attackedPieces & ourKings;
+		IntBoard ourAttackedQueens	= attackedPieces & ourQueens;
+		IntBoard ourAttackedBishops	= attackedPieces & ourBishops;
+		IntBoard ourAttackedKnights = attackedPieces & ourKnights;
+		IntBoard ourAttackedRooks	= attackedPieces & ourRooks;
+		IntBoard ourAttackedPawns	= attackedPieces & ourPawns;
 
-		BitBoard theirAttackedQueens;
-		BitBoard theirAttackedBishops;
-		BitBoard theirAttackedKnights;
-		BitBoard theirAttackedRooks;
-		BitBoard theirAttackedPawns;
+		IntBoard theirAttackedKings = attackedPieces & theirKings;
+		IntBoard theirAttackedQueens = attackedPieces & theirQueens;
+		IntBoard theirAttackedBishops = attackedPieces & theirBishops;
+		IntBoard theirAttackedKnights = attackedPieces & theirKnights;
+		IntBoard theirAttackedRooks = attackedPieces & theirRooks;
+		IntBoard theirAttackedPawns = attackedPieces & theirPawns;
 
 		auto accessor = slice.accessor<float, 2>();	// Good for CPU access
 
-		// TODO: something goes here
+		for (size_t row = 0; row < 8; row++) {
+			for (size_t col = 0; col < 8; col++) {
+				// TODO: Optimize: Can this be optimized with ifs. Hint: Sparse data.
+				accessor[0][64 * 0  + (row * 8 + col)] = static_cast<float>(ourAttackedKings[row][col]);
+				accessor[0][64 * 1  + (row * 8 + col)] = static_cast<float>(ourAttackedQueens[row][col]);
+				accessor[0][64 * 2  + (row * 8 + col)] = static_cast<float>(ourAttackedBishops[row][col]);
+				accessor[0][64 * 3  + (row * 8 + col)] = static_cast<float>(ourAttackedKnights[row][col]);
+				accessor[0][64 * 4  + (row * 8 + col)] = static_cast<float>(ourAttackedRooks[row][col]);
+				accessor[0][64 * 5  + (row * 8 + col)] = static_cast<float>(ourAttackedPawns[row][col]);
+				accessor[0][64 * 6  + (row * 8 + col)] = static_cast<float>(theirAttackedKings[row][col]);
+				accessor[0][64 * 7  + (row * 8 + col)] = static_cast<float>(theirAttackedQueens[row][col]);
+				accessor[0][64 * 8  + (row * 8 + col)] = static_cast<float>(theirAttackedBishops[row][col]);
+				accessor[0][64 * 9  + (row * 8 + col)] = static_cast<float>(theirAttackedKnights[row][col]);
+				accessor[0][64 * 10 + (row * 8 + col)] = static_cast<float>(theirAttackedRooks[row][col]);
+				accessor[0][64 * 11 + (row * 8 + col)] = static_cast<float>(theirAttackedPawns[row][col]);
+			}
+		}
 	}
 
 	BitBoard FeatureExtractor::findAllAttacked() const
 	{
 		BitBoard victims;
-
+		
 		// --- Up ---
+		victims |= findAttacked<directions::Up, directions::Right>(BoardSquare{ 7, 0 });
+		
 		// --- Down ---
-		// --- Right ---
-		{
-			// Ray pieces which can attack Left (or Horizontally)
-			BitBoard aggressors = board.directionals<directions::Horizontal>();
-			BitBoard ourAggressors = ours & aggressors;
-			BitBoard theirAggressors = theirs & aggressors;
-
-			// Go down each row and look for attacks.
-			for (int row = 0; row < 8; row++) {
-				// TODO: Optimize: Add in this optimization
-				// First lets see if its possible for an attack to occur on this row from the right
-				//if (isAttackPossible<directions::Horizontal>(BoardSquare{ row, 0 })) {
-				//
-				//}
-
-				// Go accross this row and look for attacks comming from the right.
-				BoardSquare origin{ row, 0 };
-
-				while (origin.isValid()) {
-					// Where is the next occupied square?
-					BoardSquare occupied = findOccupied<directions::Right>(origin);
-
-					cout << "row:\t" << row << "\torigin:\t" << origin << "\toccupied:\t" << occupied << endl;
-
-					// Was an occupied square found?
-					if (occupied.isInValid()) {
-						// No. There are no more pieces in this direction.
-						break;
-					}
-
-					// Does origin hold one of our or their pieces?
-					// TODO: Optimize: This can be rewritten as a single expression
-					// victims[origin] = (ours[origin] && thierAggressors[occupied]) || (theirs[origin] && ourAggressors[occupied]);
-					if (ours[origin]) {
-						// origin holds one of our pieces.
-						// Is the next occupied square an attacker?
-						if (theirAggressors[occupied]) {
-							// Yes. This means origin is being attacked.
-							victims[origin] = 1;
-						}
-					}
-					else if (theirs[origin]) {
-						// origin holds one of their pieces.
-						// Is the next occupied square an attacker?
-						if (ourAggressors[occupied]) {
-							// Yes. This means origin is being attacked.
-							victims[origin] = 1;
-						}
-					}
-					else {
-						// origin is an empty square.
-					}
-
-					// Move origin to the next occupied square.
-					// Skip the empty squares.
-					origin = occupied;
-				}
-			}
-		}
-
+		victims |= findAttacked<directions::Down, directions::Right>(BoardSquare{ 0, 0 });
+		 
 		// --- Left ---
+		victims |= findAttacked<directions::Left, directions::Down>(BoardSquare{ 0, 7 });
+
+		// --- Right ---
+		victims |= findAttacked<directions::Right, directions::Down>(BoardSquare{ 0, 0 });
+		 
 		// --- UR ---
+
 		// --- UL ---
+
 		// --- DL ---
+
 		// --- DR ---
+		
 		// --- Knights ---
 		// --- Pawns ---
 		// --- Kings ---
@@ -218,19 +189,34 @@ namespace forge
 		return victims;
 	}
 
-	// ------------------------- HELPER METHODS ----------------------------------
+	IntBoard FeatureExtractor::countAllAttacked() const
+	{
+		IntBoard counts;
 
-	//BitBoard FeatureExtractor::findAllAttacks() const
-	//{
-	//	// BitBoard of all pinned pieces no matter the direction
-	//	BitBoard pins;
-	//
-	//	for (int8_t row = 0; row < 8; row++) {
-	//		for (int8_t col = 0; col < 8; col++) {
-	//
-	//		}
-	//	}
-	//
-	//	return pins;
-	//}
+		// --- Up ---
+		countAttacked<directions::Up, directions::Right>(BoardSquare{ 7, 0 }, counts);
+
+		// --- Down ---
+		countAttacked<directions::Down, directions::Right>(BoardSquare{ 0, 0 }, counts);
+
+		// --- Left ---
+		countAttacked<directions::Left, directions::Down>(BoardSquare{ 0, 7 }, counts);
+
+		// --- Right ---
+		countAttacked<directions::Right, directions::Down>(BoardSquare{ 0, 0 }, counts);
+
+		// --- UR ---
+
+		// --- UL ---
+
+		// --- DL ---
+
+		// --- DR ---
+
+		// --- Knights ---
+		// --- Pawns ---
+		// --- Kings ---
+
+		return counts;
+	}
 } // namespace forge

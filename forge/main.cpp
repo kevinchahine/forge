@@ -77,7 +77,7 @@ int main(int argc, char ** argv)
 	//forge::test::logger();
 	//forge::test::csvParser();
 	//forge::test::dataSetPipeline();
-	//forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
+	forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
 
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();
@@ -89,7 +89,8 @@ int main(int argc, char ** argv)
 	//forge::uci::test::info();
 
 	//forge::test::feature_extractor::init();
-	forge::test::feature_extractor::findAllAttacked();
+	//forge::test::feature_extractor::findAllAttacked();
+	//forge::test::feature_extractor::countAllAttacked();
 
 	//forge::test::movegen::stockfishAndForge();
 
