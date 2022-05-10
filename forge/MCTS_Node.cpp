@@ -1,9 +1,38 @@
 #include "MCTS_Node.h"
+#include "globals.h"
 
 #include "Guten/termcolor/termcolor.hpp"
 
+#include <random>
+
+using namespace std;
+
 namespace forge
 {
+	// Selects a random child using Stochastic Universal Sampling (SUS)
+	// favorHigh - controls whether higher number or lower number are given greater weights.
+	//		should be true  if white player is selecting
+	//		should be false if black player is selecting
+	vector<shared_ptr<MCTS_Node>>::iterator sampleRandomChild(vector<shared_ptr<MCTS_Node>>& children, bool favorHigh)
+	{
+		// Stores all the ucb scores of each child in the same order
+		vector<float> ucbScores(children.size());
+
+		// Copy the ucb scores of each child into ucbScores
+		transform(
+			children.begin(),
+			children.end(),
+			ucbScores.begin(),
+			[&](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucb(); return (favorHigh ? ucb : -ucb); }
+		);
+
+		// Create Stochastic Universal Sampling distribution based on our scores
+		discrete_distribution<size_t> dist(ucbScores.begin(), ucbScores.end());	// O(n)
+
+		// Randomly select a child giving higher weight to samples with higher ucb scores
+		return children.begin() + dist(g_rand);
+	}
+
 	float MCTS_Node::calcUCB(float average, float temperature, int parentVisits, int currVisits)
 	{
 		// UCB = x_i + C * sqrt(ln(N) / n_i)
@@ -90,9 +119,26 @@ namespace forge
 		cout << termcolor::pop;
 #endif // _DEBUG
 
+
 		auto& c = p_node->children();
 
-		vector<shared_ptr<MCTS_Node>>::iterator it = max_element(c.begin(), c.end(), compUCB);
+		vector<shared_ptr<MCTS_Node>>::iterator it;
+		
+		const Position& pos = p_node->position();
+		if (pos.isWhitesTurn()) {
+			//it = max_element(c.begin(), c.end(), compUCB);	// Maximize UCB
+			it = sampleRandomChild(c, true);					// Stochastic Random Sampling (favor higher scores)
+		}
+		else {
+			//it = min_element(c.begin(), c.end(), compUCB);		// Minimize UCB
+			it = sampleRandomChild(c, false);					// STochastic Random Sampling (favor lower scores)
+		}
+		
+#ifdef _DEBUG
+		if (it == c.end()) {
+			cout << "Error: Best child was not found among the " << c.size() << endl;
+		}
+#endif // _DEBUG
 
 		p_node = it->get();
 	}

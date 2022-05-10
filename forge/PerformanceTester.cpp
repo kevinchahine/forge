@@ -2,6 +2,8 @@
 
 #include "MoveGenerator.h"
 
+#include "MCTS_Solver_MT.h"
+
 using namespace std;
 
 namespace forge
@@ -89,6 +91,7 @@ namespace forge
 				sm.nodesPerSecond(),
 				sm.plyCount,
 				sm.plysPerSecond(),
+				dynamic_cast<const MCTS_Solver_MT*>(currPlayer)->positionHashes().size(),
 				sm.searchTime.elapsed());
 
 			// Apply the move. 

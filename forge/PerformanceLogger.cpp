@@ -13,10 +13,10 @@ namespace forge
 {
 	const string PerformanceLogger::fileName = "performance_log.xlsx";
 
-	void PerformanceLogger::setOutputDir(const string & dirName)
-	{
-		setOutputDir(filesystem::path(dirName));
-	}
+	//void PerformanceLogger::setOutputDir(const string & dirName)
+	//{
+	//	setOutputDir(filesystem::path(dirName));
+	//}
 	
 	void PerformanceLogger::setOutputDir(const filesystem::path & dirName)
 	{
@@ -97,7 +97,8 @@ namespace forge
 		sheet.cell(3, 4).value("Ply Count");
 		sheet.cell(4, 4).value("Plys Per Second");
 		sheet.cell(5, 4).value("Search Duration");
-		
+		sheet.cell(6, 4).value("Unique Nodes Searched");
+
 		book.save(filePath);
 		#endif
 	}
@@ -109,8 +110,6 @@ namespace forge
 		float pliesPerSecond, 
 		chrono::nanoseconds searchDuration)
 	{
-		#ifdef _WIN32 // TODO: Linux make this work on linux or find a replacement
-		cout << "Not implemented: " << __FILE__ << " line " << __LINE__ << endl;
 		filesystem::path currDir = filesystem::current_path();
 		
 		filesystem::directory_iterator it(currDir);
@@ -129,8 +128,10 @@ namespace forge
 			book.load(filePath);
 		}
 		
+		// Create a new sheet after the existing ones
 		xlnt::worksheet sheet = book.sheet_by_index(book.sheet_count() - 1);
 		
+		// Insert performance metrics
 		xlnt::row_t row = 4;
 		while (true) {
 			xlnt::cell cell = sheet.cell(1, row);
@@ -149,6 +150,51 @@ namespace forge
 		sheet.cell(5, row).value(chrono::duration<float, ratio<1, 1>>(searchDuration).count());
 		
 		book.save(filePath);
-		#endif
+	}
+
+	void PerformanceLogger::log(int nodeCount, float nodesPerSecond, int plyCount, float pliesPerSecond, int uniqueNodesCount, std::chrono::nanoseconds searchDuration)
+	{
+		filesystem::path currDir = filesystem::current_path();
+
+		filesystem::directory_iterator it(currDir);
+		filesystem::directory_iterator end;
+
+		filesystem::path filePath = currDir / fileName;
+
+		filesystem::directory_iterator fileIt = find(it, end, filePath);
+
+		xlnt::workbook book;
+
+		if (fileIt == end) {
+			// File does not exist
+		}
+		else {
+			book.load(filePath);
+		}
+
+		// Create a new sheet after the existing ones
+		xlnt::worksheet sheet = book.sheet_by_index(book.sheet_count() - 1);
+
+		// Look for the 1st empty row
+		xlnt::row_t row = 4;
+		while (true) {
+			xlnt::cell cell = sheet.cell(1, row);
+
+			if (cell.to_string().empty()) {
+				break;
+			}
+
+			row++;
+		}
+
+		// Insert performance metrics
+		sheet.cell(1, row).value(nodeCount);
+		sheet.cell(2, row).value(nodesPerSecond);
+		sheet.cell(3, row).value(plyCount);
+		sheet.cell(4, row).value(pliesPerSecond);
+		sheet.cell(5, row).value(chrono::duration<float, ratio<1, 1>>(searchDuration).count());
+		sheet.cell(6, row).value(uniqueNodesCount);
+
+		book.save(filePath);
 	}
 } // namespace forge

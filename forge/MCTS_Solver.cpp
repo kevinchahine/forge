@@ -40,7 +40,9 @@ namespace forge
 
 	int MCTS_Solver::rollout()
 	{
-		return m_heuristicPtr->eval((*it).position());
+		heuristic_t eval = m_heuristicPtr->eval((*it).position());
+
+		return eval;
 	}
 
 	void MCTS_Solver::backpropagate(int rolloutResult)
@@ -64,7 +66,8 @@ namespace forge
 	{
 		MCTS_Node::iterator bestIt = m_nodeTree.begin();
 
-		bestIt.goToBestChild();
+		bestIt.goToSelectedChild();
+		//bestIt.goToBestChild();
 
 		MovePositionPair solution{
 			(*bestIt).move(),
@@ -92,6 +95,10 @@ namespace forge
 			// --- 1.) Get current position to evaluate --- 
 			Position& pos = (*it).position();
 
+			// *** 
+			m_positionHashes.insert(pos.hash());
+			// ***
+			
 			// --- 2.) Tree Traversal ---
 			// Has this node been expanded?
 			if ((*it).isLeaf()) {

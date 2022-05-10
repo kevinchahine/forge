@@ -19,7 +19,7 @@ namespace forge
 	class PerformanceLogger
 	{
 	public:
-		void setOutputDir(const std::string & dirName);
+		//void setOutputDir(const std::string & dirName);
 		void setOutputDir(const std::filesystem::path & dirName);
 
 		// Call this method once at the begining of a game.
@@ -40,6 +40,14 @@ namespace forge
 			float nodesPerSecond, 
 			int plyCount, 
 			float pliesPerSecond, 
+			std::chrono::nanoseconds searchDuration);
+	
+		void log(
+			int nodeCount,
+			float nodesPerSecond,
+			int plyCount,
+			float pliesPerSecond,
+			int uniqueNodesCount,
 			std::chrono::nanoseconds searchDuration);
 
 	public:

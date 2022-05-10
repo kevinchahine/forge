@@ -6,7 +6,11 @@ namespace forge
 {
 	heuristic_t ApplePieHeuristic::eval(const Position & pos)
 	{
-		return
+		// Calculate evaluation in terms of white player. 
+		// Higher and positive numbers mean whites winning.
+		// *** See return statement below
+
+		heuristic_t val = 
 			// --- Material ---
 			imbalance<pieces::Queen>(pos) * m_weights.queenMaterial +
 			imbalance<pieces::Bishop>(pos) * m_weights.bishopMaterial +
@@ -44,6 +48,11 @@ namespace forge
 			///heuristic_t kingsDefended = 0;
 
 			0;	// Placeholder for nicer syntax
+
+		//!!!wrong: Recalculate evaluation so that score is in terms of moving player.
+		//!!!wrong: The higher and more positive the number, the better it is for the moving player
+		//!!!wrong: regardless of whether the moving player is white or black
+		return (pos.isWhitesTurn() ? val : -val);
 	}
 
 	unique_ptr<HeuristicBase> ApplePieHeuristic::clone() const

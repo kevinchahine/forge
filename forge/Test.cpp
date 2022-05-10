@@ -1141,28 +1141,28 @@ namespace forge
 			auto whiteController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Solver>();
+				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 			 
 			auto blackController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Solver>();
+				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
-				//forge::ApplePieHeuristic
+				forge::ApplePieHeuristic
 				//RandomHeuristic>();
-				forge::heuristics::Rollout
+				//forge::heuristics::Rollout
 				//NeuralNetworkHeuristic>();
 			>();
 
 			blackController->makeHeuristic<
-				//forge::ApplePieHeuristic
+				forge::ApplePieHeuristic
 				//RandomHeuristic>();
-				forge::heuristics::Rollout
+				//forge::heuristics::Rollout
 				//NeuralNetworkHeuristic>();
 			>();
 
@@ -1175,36 +1175,41 @@ namespace forge
 
 		void performanceTester()
 		{
-			forge::PerformanceTester tester;
+			for (size_t t = 5; t <= 8; t++) {
+				forge::PerformanceTester tester;
 
-			auto whiteSolver =
-				//make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
+				auto whiteSolver =
+					//make_unique<RandomSolver>();
+					//make_unique<MinimaxSolver>();
+					//make_unique<MCTS_Solver>();
+					make_unique<MCTS_Solver_MT>();
 
-			auto blackSolver =
-				//make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
+				auto blackSolver =
+					//make_unique<RandomSolver>();
+					//make_unique<MinimaxSolver>();
+					//make_unique<MCTS_Solver>();
+					make_unique<MCTS_Solver_MT>();
 
-			whiteSolver->makeHeuristic<
-				//forge::ApplePieHeuristic
-				forge::heuristics::Rollout
-			>();
+				whiteSolver->m_nThreads = t;
+				blackSolver->m_nThreads = t;
+				
+				whiteSolver->makeHeuristic<
+					forge::ApplePieHeuristic
+					//forge::heuristics::Rollout
+				>();
 
-			blackSolver->makeHeuristic<
-				//forge::ApplePieHeuristic
-				forge::heuristics::Rollout
-			>();
+				blackSolver->makeHeuristic<
+					forge::ApplePieHeuristic
+					//forge::heuristics::Rollout
+				>();
 
-			tester.whiteSolver() = std::move(whiteSolver);
-			tester.blackSolver() = std::move(blackSolver);
+				tester.whiteSolver() = std::move(whiteSolver);
+				tester.blackSolver() = std::move(blackSolver);
 
-			tester.view() = make_unique<TextView>();
+				tester.view() = make_unique<TextView>();
 
-			tester.runGame();
+				tester.runGame();
+			}
 		}
 
 		void nodeIterator()

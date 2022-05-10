@@ -13,6 +13,11 @@ namespace forge
 	
 	MovePositionPair MCTS_Solver_MT::solve(const Position& position)
 	{
+		m_searchMonitor.start();
+
+		m_searchMonitor.nodeCount = 0;
+		m_searchMonitor.plyCount = 0;
+
 		// --- 1.) Create Threads ---
 		vector<MCTS_Solver> solvers;
 		solvers.resize(m_nThreads, (*this));
@@ -51,10 +56,15 @@ namespace forge
 
 				myChild.merge(solverChild);	// accumulate t and n components of node
 			}
+
+			m_searchMonitor.nodeCount += solver.m_searchMonitor.nodeCount;
+			m_searchMonitor.plyCount += solver.m_searchMonitor.plyCount;
+			m_positionHashes.insert(solver.positionHashes().begin(), solver.positionHashes().end());
 		}
 
-		// --- 4.) Pick and return best move ---
+		m_searchMonitor.stop();
 
+		// --- 4.) Pick and return best move ---
 		return selectBestMove();
 	}
 } // namespace forge
