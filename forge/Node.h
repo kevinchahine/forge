@@ -114,12 +114,6 @@ namespace forge
 		// Should do the trick
 
 		(*this) = NodeTemplate<NODE_T>{};	// default constructor
-
-		// Old code
-		//m_position.clear();
-		//m_parentPtr = nullptr;
-		//m_childrenPtrs.clear();
-		//m_state = STATE::FRESH;
 	}
 
 	template<class NODE_T>

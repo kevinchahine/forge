@@ -52,7 +52,7 @@ namespace forge
 		//!!!wrong: Recalculate evaluation so that score is in terms of moving player.
 		//!!!wrong: The higher and more positive the number, the better it is for the moving player
 		//!!!wrong: regardless of whether the moving player is white or black
-		return (pos.isWhitesTurn() ? val : -val);
+		return val;
 	}
 
 	unique_ptr<HeuristicBase> ApplePieHeuristic::clone() const

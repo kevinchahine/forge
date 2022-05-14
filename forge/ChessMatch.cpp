@@ -16,7 +16,7 @@ namespace forge
 	{
 		m_history.clear();
 		m_history.emplace_back();
-		m_history.back().reset();
+		m_history.back().position.reset();
 
 		if (m_whitesController != nullptr) m_whitesController->reset();
 		if (m_blacksController != nullptr) m_blacksController->reset();
@@ -96,13 +96,13 @@ namespace forge
 			
 			// Apply the move. 
 			// TODO: Make sure move is legal before adding it.
-			m_history.emplace_back(pair.position); // Its just that simple.
+			m_history.emplace_back(pair); // Its just that simple.
 			
 			// Check the game state
 			gstate(m_history);
 			if (gstate.state != GameState::STATE::CONTINUE) {
 				cout << "Game over: " << gstate << '\n';
-				m_viewPtr->show(m_history.current());
+				m_viewPtr->show(m_history.current().position);
 				break;
 			}
 
@@ -113,7 +113,7 @@ namespace forge
 
 				// Show Board
 				if (m_viewPtr != nullptr) {
-					m_viewPtr->show(m_history.current(), pair.move);
+					m_viewPtr->show(m_history.current().position, pair.move);
 				}
 
 				m_clock.resume();

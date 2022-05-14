@@ -104,7 +104,7 @@ namespace forge
 		return left->average() < right->average();
 	}
 
-	void MCTS_Node::iterator::goToSelectedChild()
+	void MCTS_Node::iterator::goToSelectedChild(bool maximize)
 	{
 #ifdef _DEBUG
 		cout << termcolor::push;
@@ -119,19 +119,17 @@ namespace forge
 		cout << termcolor::pop;
 #endif // _DEBUG
 
-
 		auto& c = p_node->children();
 
 		vector<shared_ptr<MCTS_Node>>::iterator it;
 		
-		const Position& pos = p_node->position();
-		if (pos.isWhitesTurn()) {
+		if (maximize) {
 			//it = max_element(c.begin(), c.end(), compUCB);	// Maximize UCB
-			it = sampleRandomChild(c, true);					// Stochastic Random Sampling (favor higher scores)
+			it = sampleRandomChild(c, maximize);				// Stochastic Random Sampling (favor higher scores)
 		}
 		else {
-			//it = min_element(c.begin(), c.end(), compUCB);		// Minimize UCB
-			it = sampleRandomChild(c, false);					// STochastic Random Sampling (favor lower scores)
+			//it = min_element(c.begin(), c.end(), compUCB);	// Minimize UCB
+			it = sampleRandomChild(c, maximize);				// Stochastic Random Sampling (favor lower scores)
 		}
 		
 #ifdef _DEBUG

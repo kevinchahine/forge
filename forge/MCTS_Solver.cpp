@@ -20,7 +20,13 @@ namespace forge
 
 	void MCTS_Solver::traverse()
 	{
-		it.goToSelectedChild();
+		// Determine whether we should minimize or maximize the selection.
+		// If thinking player is the same at this ply then we should maximize.
+		bool thinkingPlayer = m_nodeTree.position().isWhitesTurn();	// Which player is running the search?
+		bool plyPlayer = (*it).position().isWhitesTurn();			// Which player is at this ply?
+		bool maximize = (thinkingPlayer == plyPlayer);				// Is it the same player at both? 
+		
+		it.goToSelectedChild(maximize);
 	}
 
 	void MCTS_Solver::expand()
@@ -34,13 +40,22 @@ namespace forge
 		}
 		else {
 			// No children were generated. We are at a terminal node.
-			// Stay here and let rollout discover the result.
+			// Stay here and let rollout evaluate current node.
 		}
 	}
 
 	int MCTS_Solver::rollout()
 	{
-		heuristic_t eval = m_heuristicPtr->eval((*it).position());
+		Position pos = (*it).position();
+
+		// Do we need to rotate the board so that our player always has the white pieces? 
+		// All evaluation functions work which our player being white.
+		// If current player is black, we need to rotate and flip the board.
+		if (m_nodeTree.position().isBlacksTurn()) {
+			pos.board() = pos.board().rotated();
+		}
+
+		heuristic_t eval = m_heuristicPtr->eval(pos);
 
 		return eval;
 	}
@@ -66,10 +81,10 @@ namespace forge
 	{
 		MCTS_Node::iterator bestIt = m_nodeTree.begin();
 
-		bestIt.goToSelectedChild();
+		bestIt.goToSelectedChild(true);	// always maximize
 		//bestIt.goToBestChild();
 
-		MovePositionPair solution{
+		MovePositionPair solution {
 			(*bestIt).move(),
 			(*bestIt).position()
 		};
@@ -86,19 +101,15 @@ namespace forge
 		//m_searchMonitor.nodeLimit = 10000;
 		m_searchMonitor.start();
 
-		m_nodeTree = MCTS_Node{};
+		m_nodeTree = MCTS_Node{};			// Clear the tree
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
-		it = m_nodeTree.begin();
+		it = m_nodeTree.begin();			// Start at root
 
 		while (m_searchMonitor.exitConditionReached() == false) {
 			// --- 1.) Get current position to evaluate --- 
 			Position& pos = (*it).position();
 
-			// *** 
-			m_positionHashes.insert(pos.hash());
-			// ***
-			
 			// --- 2.) Tree Traversal ---
 			// Has this node been expanded?
 			if ((*it).isLeaf()) {
@@ -140,9 +151,10 @@ namespace forge
 				}
 				else {
 					// No. Expanding this node resulted in no children.
-					// TODO: MCTS: IF we don't have children where do we go?
+					// TODO: MCTS: If we don't have children where do we go?
 					// Parent? Root? 
 					it.goToParent();	// TODO: THIS MIGHT BE WRONG
+					//it.goToRoot();		// TODO: THIS MIGHT BE WRONG
 				}
 			}
 		}

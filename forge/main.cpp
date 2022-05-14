@@ -22,6 +22,7 @@ Designed to be compatible with a variety of displays including:
 #include "TestFeatureExtractor.h"
 #include "ml/Optimizer.h"
 #include "globals.h"
+#include "test/positions.h"
 
 using namespace std;
 
@@ -34,8 +35,9 @@ int main(int argc, char ** argv)
 		<< termcolor::white;
 
 	forge::initGlobals();
-
+	//forge::test::init();
 	//forge::test::initTestBoards();
+	
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
@@ -66,8 +68,8 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	//forge::test::chessMatch();				// **************
-	forge::test::performanceTester();
+	forge::test::chessMatch();				// **************
+	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
 	//forge::test::solver();

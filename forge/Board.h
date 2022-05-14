@@ -41,7 +41,7 @@ namespace forge
 		guten::core::Matrix getMiniBoard(
 			const termcolor::Color & lightPiece = guten::color::white,
 			const termcolor::Color & darkPiece = guten::color::black,
-			const termcolor::Color & lightCell = guten::color::brown,
+			const termcolor::Color & lightCell = guten::color::darkyellow,
 			const termcolor::Color & darkCell = guten::color::green) const;
 
 		pieces::Piece at(int row, int col) const;
@@ -95,7 +95,7 @@ namespace forge
 		//////////////template<> void move<pieces::Piece>(Move move);
 
 		// Rotates the Board 180 degrees. 
-		// Same as rotating pieces without rotating the chess board.
+		// Same as rotating pieces but without rotating the chess board.
 		// Does flip piece colors (white->black, black->white)
 		Board rotated() const;
 

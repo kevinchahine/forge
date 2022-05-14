@@ -18,7 +18,7 @@ namespace forge
 	{
 		m_history.clear();
 		m_history.emplace_back();
-		m_history.back().reset();
+		m_history.back().position.reset();
 
 		if (m_whitesSolver != nullptr) m_whitesSolver->reset();
 		if (m_blacksSolver != nullptr) m_blacksSolver->reset();
@@ -91,12 +91,12 @@ namespace forge
 				sm.nodesPerSecond(),
 				sm.plyCount,
 				sm.plysPerSecond(),
-				dynamic_cast<const MCTS_Solver_MT*>(currPlayer)->positionHashes().size(),
+				//dynamic_cast<const MCTS_Solver_MT*>(currPlayer)->positionHashes().size(),
 				sm.searchTime.elapsed());
 
 			// Apply the move. 
 			// TODO: Make sure move is legal before adding it.
-			m_history.emplace_back(pair.position); // Its just that simple.
+			m_history.emplace_back(pair); // Its just that simple.
 
 			// --- Check the game state ---
 			gstate(m_history);
@@ -107,7 +107,7 @@ namespace forge
 
 			// --- VIEW ---
 			if (m_viewPtr != nullptr) {
-				m_viewPtr->show(m_history.current(), pair.move);
+				m_viewPtr->show(m_history.current().position, pair.move);
 				///cout << "Press any key...";
 				///cin.get();	// remove this
 			}

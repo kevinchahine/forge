@@ -20,8 +20,6 @@ namespace forge
 
 		const MCTS_Node& nodeTree() const { return m_nodeTree; }
 
-		const std::set<size_t> & positionHashes() const { return m_positionHashes; }
-
 	protected:
 		void traverse();
 
@@ -41,7 +39,5 @@ namespace forge
         MCTS_Node m_nodeTree;
 
 		MCTS_Node::iterator it;
-
-		std::set<size_t> m_positionHashes;
     };
 } // namespace forge

@@ -10,7 +10,7 @@ namespace forge
 	{
 		// Calculate number of legal moves
 		MoveGenerator2 movegen;
-		MoveList legals = movegen.generate(history.current());
+		MoveList legals = movegen.generate(history.current().position);
 		//MoveList legals = MoveGenerator::generateLegalMoves(history.current());
 
 		function<bool()> drawByRepetition = [&]() {
@@ -19,7 +19,7 @@ namespace forge
 		
 		calcGameState(
 			legals.size(),					// Number of legal moves
-			history.current(),				// current position
+			history.current().position,		// current position
 			std::move(drawByRepetition));	// calculates draw by repetition using a GameHistory
 	}
 
@@ -110,7 +110,7 @@ namespace forge
 
 	bool GameState::isDrawByRepetition(const GameHistory & history)
 	{
-		const Position & currPos = history.current();
+		const MovePositionPair & curr = history.current();
 
 		GameHistory::const_iterator it = history.begin();
 		GameHistory::const_iterator end = history.end();
@@ -120,7 +120,7 @@ namespace forge
 		}
 
 		// Try to find 3 positions that match currPos
-		auto nMatches = count(it, end, currPos);
+		auto nMatches = count(it, end, curr);
 
 		// 3 (or more) matches means draw by repetition.
 		// We should only ever find 3 or less.

@@ -1,5 +1,6 @@
 #include "Test.h"
 #include "TextView.h"
+#include "test/positions.h"
 
 #include <Guten/view/GridView.h>
 
@@ -1141,14 +1142,14 @@ namespace forge
 			auto whiteController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				make_unique<MCTS_Solver>();
-				//make_unique<MCTS_Solver_MT>();
+				//make_unique<MCTS_Solver>();
+				make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 			 
 			auto blackController =
 				//make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
-				make_unique<MCTS_Solver>();
+				make_unique<MinimaxSolver>();
+				//make_unique<MCTS_Solver>();
 				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 
@@ -1231,17 +1232,19 @@ namespace forge
 
 		void heuristic()
 		{
-			Position position;
-			position.reset();
-
 			unique_ptr<HeuristicBase> ptr =
-			//	//make_unique<ApplePieHeuristic>();
-			//	//make_unique<RandomHeuristic>();
-				make_unique<NeuralNetworkHeuristic>(); 
+				make_unique<ApplePieHeuristic>();
+				//make_unique<RandomHeuristic>();
+				//make_unique<NeuralNetworkHeuristic>(); 
 
-			cout << ptr->eval(position) << ' ';
+			cout << "--- Heuristics (" << ptr->name() << ") ---" << endl;
 
-			//cout << "eval = " << val << endl;
+			for (const Position& pos : test::g_positions) {
+				cout << "Its " << (pos.isWhitesTurn() ? "whites" : "blacks") << " turn" << endl;
+				pos.board().printMini();
+				cout << "eval = " << ptr->eval(pos) << ' ' << endl << endl;
+			}
+			cout << endl;
 		}
 
 		void solver()
@@ -1318,22 +1321,22 @@ namespace forge
 			ReplayController & white = *whitePtr;
 			ReplayController & black = *blackPtr;
 
-			white.push(Move{ BoardSquare{'d', '2'}, BoardSquare{'d', '4'} });	// queen's pawn
-			black.push(Move{ BoardSquare{'d', '7'}, BoardSquare{'d', '5'} });	// queen's pawn
-			white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-			black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-			white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-			black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
-
-			white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-			black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-			white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-			black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
-
-			white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-			black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-			white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-			black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+			///white.push(Move{ BoardSquare{'d', '2'}, BoardSquare{'d', '4'} });	// queen's pawn
+			///black.push(Move{ BoardSquare{'d', '7'}, BoardSquare{'d', '5'} });	// queen's pawn
+			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+			///
+			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+			///
+			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
 
 			cout << "White: " << white.size() << '\n'
 				<< "Black: " << black.size() << '\n';
@@ -1474,13 +1477,13 @@ namespace forge
 				ApplePieWeights w;
 
 				// --- Material ---
-				w.queenMaterial = 1;
-				w.rookMaterial = 2;
-				w.bishopMaterial = 3;
-				w.knightMaterial = 4;
-				w.pawnMaterial = 5;
-				w.bishopPair = 6;
-				w.oppositeBishop = 7;
+				w.queenMaterial = 900;
+				w.rookMaterial = 500;
+				w.bishopMaterial = 300;
+				w.knightMaterial = 250;
+				w.pawnMaterial = 100;
+				w.bishopPair = 50;
+				w.oppositeBishop = 50;
 
 				// --- Mobility ---
 				w.queenMobility = 8;

@@ -17,7 +17,7 @@ namespace forge
 			GameState gstate;		// determines state of game: win, loss, draw, continue
 
 			// Start with current position
-			history.emplace_back(pos);
+			history.emplace_back(Move{}, pos);
 
 			// Determine current state. 
 			// We might already be at a terminal node.
@@ -26,11 +26,11 @@ namespace forge
 			// Repeat until reaching a terminal node
 			while (gstate.isGameOn()) {
 				// Alias current position
-				const Position& curr = history.current();
+				const Position& curr = history.current().position;
 
 				// Pick random move
 				MovePositionPair next = rsolver.getMove(curr);
-				history.emplace_back(next.position);
+				history.emplace_back(next);
 
 				// Determine state
 				gstate(history);

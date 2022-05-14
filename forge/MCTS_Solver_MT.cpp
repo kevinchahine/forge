@@ -59,7 +59,7 @@ namespace forge
 
 			m_searchMonitor.nodeCount += solver.m_searchMonitor.nodeCount;
 			m_searchMonitor.plyCount += solver.m_searchMonitor.plyCount;
-			m_positionHashes.insert(solver.positionHashes().begin(), solver.positionHashes().end());
+			//m_positionHashes.insert(solver.positionHashes().begin(), solver.positionHashes().end());
 		}
 
 		m_searchMonitor.stop();

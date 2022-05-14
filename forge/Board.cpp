@@ -61,8 +61,8 @@ namespace forge
 				const pieces::Piece & p = (*this).at(row, col);
 
 				termcolor::ColorFBG color;
-				color.background = (row % 2 == col % 2 ? guten::color::yellow : guten::color::green);
-				color.foreground = (p.isWhite() ? guten::color::white : guten::color::black);
+				color.background = (row % 2 == col % 2 ? lightCell : darkCell);
+				color.foreground = (p.isWhite() ? lightPiece : darkPiece);
 
 				miniBoard.at(row, col).color = color;
 				miniBoard.at(row, col).character = p.getCh();

@@ -20,6 +20,6 @@ namespace forge
 		MovePositionPair solve(const Position& position);
 
 	public:
-		size_t m_nThreads = 8; // std::thread::hardware_concurrency();
+		size_t m_nThreads = std::thread::hardware_concurrency();
 	};
 } // namespace forge

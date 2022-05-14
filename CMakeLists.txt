@@ -86,6 +86,8 @@ set(CODE_FILES#HEADER_FILES
 	forge/ThreatsDefinitions.h
 	forge/Threats.h
 	forge/Timer.h
+	forge/test/positions.h
+	forge/test/positions.cpp
 	forge/UciBase.h
 	forge/UciCurrLine.h
 	forge/UciEngine.h

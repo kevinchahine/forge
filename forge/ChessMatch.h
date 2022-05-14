@@ -33,8 +33,8 @@ namespace forge
 		// Blocking call.
 		GameState runGame();
 
-		Position & position() { return m_history.current(); }
-		const Position & position() const { return m_history.current(); }
+		Position & position() { return m_history.current().position; }
+		const Position & position() const { return m_history.current().position; }
 
 		template<typename CONTROLLER_T>
 		void makeWhiteController() {

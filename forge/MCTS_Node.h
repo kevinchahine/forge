@@ -78,7 +78,9 @@ namespace forge {
 			// has been expanded and also has children.
 			// An error will occur, if this method is called on a node without
 			// any children.
-			void goToSelectedChild();
+			// maximize - determines whether the selection should favor children which higher
+			//				or lower UCB scores. if maximize == true, then method favors higher UCB scores
+			void goToSelectedChild(bool maximize);
 
 			// Selects child with the best average value.
 			// Then moves to that child
