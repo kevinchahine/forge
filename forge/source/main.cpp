@@ -18,11 +18,10 @@ Designed to be compatible with a variety of displays including:
 	- Terminal interface.
 */
 
-// #include "Test.h"
+#include "forge/source/globals.h"
+#include "forge/test/Test.h"
 // #include "TestFeatureExtractor.h"
 // #include "ml/Optimizer.h"
-// #include "globals.h"
-// #include "test/positions.h"
 
 #include "Guten/color/Color.h"
 
@@ -38,9 +37,8 @@ int main(int argc, char ** argv)
 		<< termcolor::red << "=============\n"
 		<< termcolor::white;
 
-	//forge::initGlobals();
-	//forge::test::init();
-	//forge::test::initTestBoards();
+	forge::initGlobals();
+	forge::test::initTestBoards();
 	
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();

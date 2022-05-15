@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BoardSquare.h"
-#include "BitBoard.h"
+#include "forge/core/BoardSquare.h"
+#include "forge/core/BitBoard.h"
 
 #include "Guten/core/Matrix.h"
 

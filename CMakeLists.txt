@@ -23,18 +23,15 @@ set(CORE
 	forge/core/Color.h
 	forge/core/Direction.cpp
 	forge/core/Direction.h
-	forge/core/MoveCounter.cpp
 	forge/core/MoveCounter.h
 	forge/core/Move.cpp
 	forge/core/Move.h
 	forge/core/MovePositionPair.cpp
 	forge/core/MovePositionPair.h
-	forge/core/Movers.cpp
 	forge/core/Movers.h
 	forge/core/Piece.cpp
 	forge/core/Piece.h
 	forge/core/Position.cpp
-	forge/core/PositionDefinitions.h
 	forge/core/Position.h
 )
 
@@ -96,6 +93,9 @@ set(NOTES
 )
 
 set(SOURCE
+	forge/source/globals.cpp
+	forge/source/globals.h
+	forge/source/HashCombine.h
 	forge/source/main.cpp
 )
 
@@ -103,13 +103,13 @@ set(TEST
 	forge/test/positions.cpp
 	forge/test/positions.h
 	forge/test/Test.cpp
-	forge/test/TestFeatureExtractor.cpp
-	forge/test/TestFeatureExtractor.h
 	forge/test/Test.h
-	forge/test/TestMoveGen.cpp
-	forge/test/TestMoveGen.h
-	forge/test/TestUci.cpp
-	forge/test/TestUci.h
+	#forge/test/TestFeatureExtractor.cpp
+	#forge/test/TestFeatureExtractor.h
+	#forge/test/TestMoveGen.cpp
+	#forge/test/TestMoveGen.h
+	#forge/test/TestUci.cpp
+	#forge/test/TestUci.h
 )
 
 set(THIRD_PARTY

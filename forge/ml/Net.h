@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../forge/DataSet.h"
-#include "../FeatureExtractor.h"
+#include "forge/ml/DataSet.h"
+#include "forge/feature_extractor/FeatureExtractor.h"
 
 #include <iostream>
 #include <string>

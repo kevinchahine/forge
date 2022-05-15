@@ -1,6 +1,6 @@
 #include "Node.h"
 
-#include "MoveGenerator2.h"
+#include "forge/movegen/MoveGenerator2.h"
 
 #include <algorithm>
 

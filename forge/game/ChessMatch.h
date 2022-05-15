@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Board.h"
-#include "Clock.h"
-#include "ControllerBase.h"
-#include "GameHistory.h"
-#include "GameState.h"
-#include "Position.h"
-#include "ViewBase.h"
+#include "forge/core/Board.h"
+#include "forge/core/Position.h"
+#include "forge/controllers/ControllerBase.h"
+#include "forge/game/GameHistory.h"
+#include "forge/game/GameState.h"
+#include "forge/views/ViewBase.h"
+#include "forge/time/Clock.h"
 
 #include <memory>
 

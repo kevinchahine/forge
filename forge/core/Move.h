@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BoardSquare.h"
-#include "Piece.h"
+#include "forge/core/BoardSquare.h"
+#include "forge/core/Piece.h"
 
 #include <bitset>
 

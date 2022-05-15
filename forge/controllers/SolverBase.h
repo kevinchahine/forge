@@ -1,8 +1,10 @@
 #pragma once
 
-#include "ControllerBase.h"
-#include "HeuristicBase.h"
-#include "SearchMonitor.h"
+#include "forge/controllers/ControllerBase.h"
+
+#include "forge/heuristics/HeuristicBase.h"
+
+#include "forge/search/SearchMonitor.h"
 
 #include <vector>
 #include <type_traits>	// for is_base_of()

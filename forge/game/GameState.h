@@ -4,10 +4,10 @@
 #include <bitset>
 #include <functional>
 
-#include "GameHistory.h"
-#include "Position.h"
-#include "MCTS_Node.h"
-#include "MiniMaxNode.h"
+#include "forge/core/Position.h"
+#include "forge/game/GameHistory.h"
+#include "forge/search/MCTS_Node.h"
+#include "forge/search/MiniMaxNode.h"
 
 namespace forge
 {

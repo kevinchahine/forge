@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Attackers.h"
-#include "Board.h"
+#include "forge/core/Board.h"
+#include "forge/feature_extractor/Attackers.h"
 
 namespace forge
 {

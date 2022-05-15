@@ -1,6 +1,6 @@
-#include "Test.h"
-#include "TextView.h"
-#include "test/positions.h"
+#include "forge/test/positions.h"
+#include "forge/test/Test.h"
+//#include "forge/views/TextView.h"
 
 #include <Guten/view/GridView.h>
 
@@ -518,78 +518,78 @@ namespace forge
 			}
 		}
 
-		void keyboardController()
-		{
-			ChessMatch match;
+//		void keyboardController()
+//		{
+//			ChessMatch match;
+//
+//			match.makeWhiteController<KeyboardController>();
+//			match.makeBlackController<KeyboardController>();
+//
+//			match.makeView<TextView>();
+//
+//			match.position().clear();
+//			match.position().board().place<pieces::BlackPawn>(BoardSquare{ 'b', '3' });
+//
+//			//cout << "You entered " << m << ' ' 
+//			//	<< (m.isPartial() ? "partial" : "full") << ' '
+//			//	<< (m.isPromotion() ? "promotion" : "") << " move" << '\n';
+//			match.runGame();
+//		}
 
-			match.makeWhiteController<KeyboardController>();
-			match.makeBlackController<KeyboardController>();
+//		void clock()
+//		{
+//			forge::Clock clock;
+//
+//			clock.synchronize(
+//				chrono::minutes(10),
+//				chrono::seconds(5),
+//				chrono::minutes(10),
+//				chrono::seconds(5)
+//			);
+//
+//			clock.click();
+//
+//			while (true)
+//			{
+//			#ifdef _WIN32
+//				if (_kbhit()) {
+//					char ch = _getch();
+//
+//					clock.click();
+//				}
+//			#endif
+//				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl;
+//				//cout << clock << '\n';	// TODO: Make this work
+//
+//				//this_thread::sleep_for(chrono::seconds(1));
+//			}
+//
+//		}
 
-			match.makeView<TextView>();
-
-			match.position().clear();
-			match.position().board().place<pieces::BlackPawn>(BoardSquare{ 'b', '3' });
-
-			//cout << "You entered " << m << ' ' 
-			//	<< (m.isPartial() ? "partial" : "full") << ' '
-			//	<< (m.isPromotion() ? "promotion" : "") << " move" << '\n';
-			match.runGame();
-		}
-
-		void clock()
-		{
-			forge::Clock clock;
-
-			clock.synchronize(
-				chrono::minutes(10),
-				chrono::seconds(5),
-				chrono::minutes(10),
-				chrono::seconds(5)
-			);
-
-			clock.click();
-
-			while (true)
-			{
-			#ifdef _WIN32
-				if (_kbhit()) {
-					char ch = _getch();
-
-					clock.click();
-				}
-			#endif
-				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl;
-				//cout << clock << '\n';	// TODO: Make this work
-
-				//this_thread::sleep_for(chrono::seconds(1));
-			}
-
-		}
-
-		void stopWatch()
-		{
-			StopWatch sw;
-
-			sw.reset(chrono::seconds(8));
-
-			cout << sw << '\n';
-
-			sw.resume();
-
-			this_thread::sleep_for(chrono::seconds(2));
-
-			sw.pause();
-
-			this_thread::sleep_for(chrono::seconds(2));
-
-			sw.resume();
-
-			while (sw.elapsed() < chrono::seconds(20)) {
-				cout << sw << '\n';
-
-				this_thread::sleep_for(chrono::seconds(1));
-			}
-		}
+//		void stopWatch()
+//		{
+//			StopWatch sw;
+//
+//			sw.reset(chrono::seconds(8));
+//
+//			cout << sw << '\n';
+//
+//			sw.resume();
+//
+//			this_thread::sleep_for(chrono::seconds(2));
+//
+//			sw.pause();
+//
+//			this_thread::sleep_for(chrono::seconds(2));
+//
+//			sw.resume();
+//
+//			while (sw.elapsed() < chrono::seconds(20)) {
+//				cout << sw << '\n';
+//
+//				this_thread::sleep_for(chrono::seconds(1));
+//			}
+//		}
 
 		void boardDefualt()
 		{
@@ -781,802 +781,802 @@ namespace forge
 			}
 		} // namespace fen
 
-		namespace pins
-		{
-			template<typename DIRECTION_T>
-			void printIsPinPossible(const Board & b, bool isKingWhite) {
-				MoveGenerator2 moveGen;
-
-				BitBoard theirRays = b.directionals<DIRECTION_T>();
-
-				if (is_base_of<directions::Lateral, DIRECTION_T>()) {
-					theirRays |= b.laterals();
-				}
-
-				// TODO: tHIS IS weird. Look into this
-				bool isPinPossible = moveGen.isPinPossible<directions::Up>();
-				//bool isPinPossible =
-				//	moveGen.isPinPossible<directions::Up>(b.laterals() & b.blacks(), b.blockers());
-			}
-
-			void isPinPossible()
-			{
-				Position p;
-
-				Board & b = p.board();
-
-				b.place<pieces::BlackKing>(BoardSquare{ 'a', '8' });
-				b.place<pieces::WhiteKing>(BoardSquare{ 'e', '4' });
-				b.place<pieces::Rook>(BoardSquare{ 'e', '8' }, BLACK);
-				b.place<pieces::WhitePawn>(BoardSquare{ 'e', '6' });
-				b.place<pieces::Bishop>(BoardSquare{ 'g', '6' }, BLACK);
-				b.place<pieces::WhitePawn>(BoardSquare{ 'f', '5' });
-
-				b.print();
-
-				MoveGenerator2 moveGen;
-				moveGen.generate(p);
-			}
-
-			void absolutePins()
-			{
-				Position p;
-
-				Board & b = p.board();
-				//b.place<BlackKing>(BoardSquare{ 'e', '8' });
-				//b.place<WhiteKing>(BoardSquare{ 'c', '1' });
-				//b.place<Rook>(BoardSquare{ 'e', '6' }, BLACK);
-				//b.place<Queen>(BoardSquare{ 'e', '4' }, WHITE);
-
-				//b.place<BlackKing>(BoardSquare{ 'c', '8' });
-				//b.place<WhiteKing>(BoardSquare{ 'g', '1' });
-				//b.place<Queen>(BoardSquare{ 'e', '6' }, BLACK);
-				//b.place<Bishop>(BoardSquare{ 'h', '3' }, WHITE);
-
-				//b.place<Rook>(BoardSquare{ 'd', '6' }, BLACK);
-				//b.place<Bishop>(BoardSquare{ 'd', '8' }, WHITE);
-				//b.place<BlackKing>(BoardSquare{ 'd', '2' });
-
-				//b.place<BlackKing>(BoardSquare{ 'b', '7' });
-				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
-				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
-				//b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
-
-				//b.place<BlackKing>(BoardSquare{ 'b', '5' });
-				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
-				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
-				//b.place<Queen>(BoardSquare{ 'h', '5' }, WHITE);
-
-				//b.place<BlackKing>(BoardSquare{ 'b', '7' });
-				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
-				//b.place<BlackPawn>(BoardSquare{ 'e', '4' });
-				//b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
-
-				//b.place<BlackKing>(BoardSquare{ 'd', '8' });
-				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
-				//b.place<BlackPawn>(BoardSquare{ 'd', '4' });
-				//b.place<Queen>(BoardSquare{ 'd', '1' }, WHITE);
-
-				b.place<Queen>(BoardSquare{ 'd', '8' }, BLACK);
-				b.place<Rook>(BoardSquare{ 'd', '4' }, WHITE);
-				b.place<WhiteKing>(BoardSquare{ 'd', '1' });
-				b.place<BlackKing>(BoardSquare{ 'a', '8' });
-
-				b.print();
-
-				//p.move<WhiteKing>(Move{ b.whiteKing(), b.whiteKing().rightOne() });	// Make a move as white
-				// *** Now its blacks turn.
-
-				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << " turn" << endl;
-
-				MoveGenerator2 gen;
-				MoveList legals = gen.generate(p);
-
-				for (const auto & pair : legals) {
-					pair.position.board().printMini();
-					cout << endl;
-				}
-
-				cout << "Generated " << legals.size() << " legal moves" << endl;
-				legals.print();
-			}
-		} // namespace pins
-
-		namespace movegen
-		{
-			void genThreatBoard()
-			{
-				MoveGenerator2 movegen;
-
-				for (const Position & pos : positions) {
-					movegen.generate(pos);
-
-					guten::boards::CheckerBoard cb = pos.board().getCheckerBoard();
-
-					// Highlight threats
-					BitBoard threats = movegen.getThreats();
-					cb.highlight(threats);
-
-					cb.print();
-					cout << "Threats: " << threats << endl;
-				}
-			}
-
-			void genAttackRay()
-			{
-				Board b;
-				b.place<pieces::Rook>(BoardSquare{ 'e', '2' }, BLACK);
-				b.place<pieces::BlackPawn>(BoardSquare{ 'c', '2' });
-				b.place<pieces::WhitePawn>(BoardSquare{ 'c', '5' });
-				b.place<pieces::Bishop>(BoardSquare{ 'e', '7' }, WHITE);
-				b.place<pieces::Queen>(BoardSquare{ 'e', '4' }, WHITE);
-				b.place<pieces::Knight>(BoardSquare{ 'f', '8' }, WHITE);
-
-				BitBoard threats = forge::Threats::genThreats(b, b.whites());
-
-				b.printMini();
-
-				guten::boards::CheckerBoard cb;
-
-				for (int row = 0; row < 8; row++) {
-					for (int col = 0; col < 8; col++) {
-						if (threats[BoardSquare{ row, col }])
-							cb.highlight(guten::Point{ row, col });
-					}
-				}
-				cb.print();
-			}
-
-			void findKingAttackers()
-			{
-				for (const Position & p : positions) {
-					KingAttackers pair;
-
-					const Board & b = p.board();
-					pair = KingAttackers::findKingAttackers(b, b.whiteKing(), b.blacks(), b.whites());
-
-					guten::boards::CheckerBoard cb = b.getCheckerBoard();
-
-					if (pair.size() >= 1)
-						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
-					if (pair.size() >= 2)
-						cb.highlight(pair.attacker1().square.row(), pair.attacker1().square.col());
-
-					cb.print();
-					cout << "White King: ";
-					pair.print(b);
-					cout << endl << endl;
-
-					pair = KingAttackers::findKingAttackers(b, b.blackKing(), b.whites(), b.blacks());
-					cb = b.getCheckerBoard();
-					if (pair.size() >= 1)
-						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
-					if (pair.size() >= 2)
-						cb.highlight(pair.attacker1().square.row(), pair.attacker1().square.col());
-
-					cb.print();
-					cout << "Black King: ";
-					pair.print(b);
-					cout << endl << endl;
-				}
-			}
-
-			void genKingMoves()
-			{
-				MoveGenerator2 gen;
-
-				for (const auto & pos : positions) {
-					cout << endl << "=== It is "
-						<< (pos.moveCounter().isWhitesTurn() ? "whites" : "blacks") << " turn ===\n";
-
-					MoveList legals = gen.generate(pos);
-
-					auto cb = pos.board().getCheckerBoard();
-					cb.highlight(gen.getThreats());
-					cb.print();
-
-					cout << "There are " << legals.size() << " legal moves:\n";
-					for (const auto & legal : legals) {
-						cout << legal.move << endl;
-						legal.position.board().printMini();
-					}
-				}
-			}
-		} // namespace movegen
-
-		void moveKings()
-		{
-			ChessMatch m;
-			m.position().clear();
-
-			m.makeWhiteController<KeyboardController>();
-			m.makeBlackController<KeyboardController>();
-			m.makeView<TextView>();
-
-			m.runGame();
-		}
-
-		void legalMoveGenerator()
-		{
-			///const forge::Position& p = positions.back();
-			///for (const auto & p : positions) 
-			for (int i = positions.size() - 13; i >= 0 && i < positions.size(); i++) 
-			{
-				const forge::Position& p = positions.at(i);
-				const forge::Board & b = p.board();
-				
-				forge::MoveGenerator2 mg2;
-				forge::MoveList moves =
-					//forge::MoveGenerator::generateLegalMoves(p);
-					mg2.generate(p);
-
-				guten::boards::CheckerBoard cb = b.getCheckerBoard();
-				for (const auto & legal : moves) {
-					BoardSquare dst = legal.move.to();
-					cb.highlight(dst.row(), dst.col());
-				}
-				cb.print();
-
-				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << "	turn" << endl;
-				cout << moves.size() << " legal moves generated" << endl;
-
-				guten::grids::GridView gridView;
-				gridView.setGridCols(8);
-
-				for (int i = 0; i < moves.size(); i++) {
-					const auto & elem = moves.at(i);
-
-					guten::core::Matrix mini = elem.position.board().getMiniBoard();
-					BoardSquare from = elem.move.from();
-					BoardSquare to = elem.move.to();
-					mini.at(from.row(), from.col()).color.background = guten::color::cyan;
-					mini.at(to.row(), to.col()).color.background = guten::color::lightcyan;
-
-					guten::core::Matrix miniText;
-					guten::Size sz = mini.size();
-					sz.height += 2;
-					miniText.resize(sz);
-					mini.copyTo(miniText, guten::Point{ 2, 0 });
-					
-					{
-						stringstream ss;
-						ss << elem.move.toLAN();
-						guten::draw::putText(miniText, ss.str(), guten::Point{ 0, 0 });
-					}
-
-					{
-						stringstream ss;
-						ss << (AttackChecker::isAttacked(elem.position.board(), elem.position.moveCounter().isBlacksTurn()) ?
-							"Illegal" : "Legal");
-						guten::draw::putText(miniText, ss.str(), guten::Point{ 1, 0 });
-					}
-
-					gridView.push(miniText);
-				}
-				cout << '\n';
-
-				gridView.toMatrix().print();
-				auto flags = cout.flags();
-				cout << setfill('=') << setw(40) << '\0' << endl;
-				cout.flags(flags);
-			}
-		}
-
-		void isAttacked()
-		{
-			forge::Position pos;
-			forge::Board & b = pos.board();
-
-			pos.clear();
-
-			forge::BoardSquare k{ 'c', '4' };
-			b.place<pieces::BlackKing>(k);
-			//b.placeWhiteRook(k.down(2));
-			//b.placeWhiteBishop(k.downLeft(2));
-			//b.placeWhiteQueen(k.down(2));
-			//b.placeWhiteKnight(k.knight7());
-			//b.placeWhitePawn(k.downLeft());
-
-			b.printMini();
-
-			cout << "--- Black King ---\n"
-				<< "\tIs Attacked by:\n"
-				//<< "Rook/Queen: " << AttackChecker::isAttackedByRook(b, b.blackKing()) << '\n'
-				//<< "Bishop/Queen: " << AttackChecker::isAttackedByBishop(b, b.blackKing()) << '\n'
-				//<< "Knights: " << AttackChecker::isAttackedByKnight(b, b.blackKing()) << '\n'
-				//<< "Pawns: " << AttackChecker::isAttackedByPawn(b, b.blackKing()) << '\n'
-				<< "Is King Attacked: " << AttackChecker::isAttacked(b, b.blackKing()) << '\n'
-				<< '\n';
-		}
-
-		void move()
-		{
-			forge::Move m;
-
-			cout << "Empty constructor: " << m << endl;
-
-			cout << forge::BoardSquare(1, 2) << endl;
-			cout << forge::BoardSquare(2, 2) << endl;
-			cout << forge::Move{ forge::BoardSquare(1, 2), forge::BoardSquare(2, 2) } << endl;
-
-			cout << forge::BoardSquare(4, 5) << ' '
-				<< forge::BoardSquare(6, 7) << ' '
-				<< forge::pieces::whiteQueen << ' '
-				<< forge::Move{
-					forge::BoardSquare(4, 5),
-					forge::BoardSquare(6, 7),
-					forge::pieces::whiteQueen }
-			<< endl;
-
-			cout << forge::BoardSquare('e', '2') << ' '
-				<< forge::BoardSquare('e', '4') << ' '
-				<< forge::Move(forge::BoardSquare('e', '2'), forge::BoardSquare('e', '4'))
-				<< endl;
-
-			Move m1;
-			m1.from(BoardSquare{ 'f', '5' });
-			m1.to(BoardSquare{ 'e', '4' });
-			m1.promotion(pieces::whiteQueen);
-			cout << "m1 = " << m1 << '\n';
-		}
-
-		void randomSolver()
-		{
-			forge::RandomSolver solver;
-		}
-
-		void chessMatch()
-		{
-			forge::ChessMatch match;
-
-			match.reset();
-			//match.position().fromFEN("1RK5/k6p/4Q3/p4n1P/8/p5p1/8/2B1NBNR b - - 3 112");
-
-			match.clock().synchronize(
-				chrono::minutes(5),
-				chrono::minutes(5),
-				chrono::seconds(2),
-				chrono::seconds(2)
-			); // Clock is still paused
-
-			auto whiteController =
-				//make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
-				//make_unique<KeyboardController>();
-			 
-			auto blackController =
-				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
-				//make_unique<MCTS_Solver_MT>();
-				//make_unique<KeyboardController>();
-
-			whiteController->makeHeuristic<
-				forge::ApplePieHeuristic
-				//RandomHeuristic>();
-				//forge::heuristics::Rollout
-				//NeuralNetworkHeuristic>();
-			>();
-
-			blackController->makeHeuristic<
-				forge::ApplePieHeuristic
-				//RandomHeuristic>();
-				//forge::heuristics::Rollout
-				//NeuralNetworkHeuristic>();
-			>();
-
-			match.whiteController() = std::move(whiteController);
-			match.blackController() = std::move(blackController);
-
-			match.makeView<TextView>();
-			match.runGame();
-		}
-
-		void performanceTester()
-		{
-			for (size_t t = 5; t <= 8; t++) {
-				forge::PerformanceTester tester;
-
-				auto whiteSolver =
-					//make_unique<RandomSolver>();
-					//make_unique<MinimaxSolver>();
-					//make_unique<MCTS_Solver>();
-					make_unique<MCTS_Solver_MT>();
-
-				auto blackSolver =
-					//make_unique<RandomSolver>();
-					//make_unique<MinimaxSolver>();
-					//make_unique<MCTS_Solver>();
-					make_unique<MCTS_Solver_MT>();
-
-				whiteSolver->m_nThreads = t;
-				blackSolver->m_nThreads = t;
-				
-				whiteSolver->makeHeuristic<
-					forge::ApplePieHeuristic
-					//forge::heuristics::Rollout
-				>();
-
-				blackSolver->makeHeuristic<
-					forge::ApplePieHeuristic
-					//forge::heuristics::Rollout
-				>();
-
-				tester.whiteSolver() = std::move(whiteSolver);
-				tester.blackSolver() = std::move(blackSolver);
-
-				tester.view() = make_unique<TextView>();
-
-				tester.runGame();
-			}
-		}
-
-		void nodeIterator()
-		{
-			MiniMaxNode root;
-			root.position().reset();
-
-			MiniMaxNode::iterator it = root.begin();
-			it.setDepthLimit(3);
-
-			while (it != root.end()) {
-				(*it).position().board().print();
-
-				++it;
-
-				cin.get();
-			}
-		}
-
-		void heuristic()
-		{
-			unique_ptr<HeuristicBase> ptr =
-				make_unique<ApplePieHeuristic>();
-				//make_unique<RandomHeuristic>();
-				//make_unique<NeuralNetworkHeuristic>(); 
-
-			cout << "--- Heuristics (" << ptr->name() << ") ---" << endl;
-
-			for (const Position& pos : test::g_positions) {
-				cout << "Its " << (pos.isWhitesTurn() ? "whites" : "blacks") << " turn" << endl;
-				pos.board().printMini();
-				cout << "eval = " << ptr->eval(pos) << ' ' << endl << endl;
-			}
-			cout << endl;
-		}
-
-		void solver()
-		{
-			Position position;
-			position.reset();
-
-			position.board().print();
-
-			unique_ptr<SolverBase> solverPtr =
-				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
-
-			solverPtr->makeHeuristic<RandomHeuristic>();
-
-			solverPtr->reset();
-
-			while (true) {
-				MovePositionPair pair = solverPtr->getMove(position);
-
-				position = pair.position;
-
-				position.board().print();
-				//cout << "Press any key...";
-				//cin.get();
-			}
-		}
-
-		void insufficientMaterial()
-		{
-			MiniMaxNode n;
-			Position & pos = n.position();
-			pos.clear();
-
-			//pos.applyMoveFast(Move{ pos.board().whiteKing(), pos.board().whiteKing().upOne() });
-			//pos.board().placeBlackPawn(BoardSquare('a', '2'));
-			//pos.board().placeWhiteBishop(BoardSquare('e', '5'));
-			//pos.board().placeWhiteKnight(BoardSquare('e', '4'));
-			//pos.board().placeWhiteKnight(BoardSquare('d', '4'));
-			//pos.board().placeRook(BoardSquare('e', '4'), true);
-			pos.board().print();
-
-			GameState gs;
-			gs(n);
-
-			cout << "Game state: " << gs << '\n';
-		}
-
-		void gameState()
-		{
-			forge::Position pos;
-			pos.clear();
-
-			pos.board().place<pieces::Rook>(forge::BoardSquare{ 'e', '4' }, BLACK);
-
-			pos.board().print();
-
-			GameState state;
-
-			//state(pos);
-
-			cout << state << '\n';
-		}
-
-		void drawByRepetition()
-		{
-			ChessMatch match;
-			///match.makeWhiteController<ReplayController>();
-			///match.makeBlackController<ReplayController>();
-
-			unique_ptr<ReplayController> whitePtr = make_unique<ReplayController>();
-			unique_ptr<ReplayController> blackPtr = make_unique<ReplayController>();
-
-			ReplayController & white = *whitePtr;
-			ReplayController & black = *blackPtr;
-
-			///white.push(Move{ BoardSquare{'d', '2'}, BoardSquare{'d', '4'} });	// queen's pawn
-			///black.push(Move{ BoardSquare{'d', '7'}, BoardSquare{'d', '5'} });	// queen's pawn
-			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
-			///
-			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
-			///
-			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
-
-			cout << "White: " << white.size() << '\n'
-				<< "Black: " << black.size() << '\n';
-
-			match.setWhiteController(std::move(whitePtr));
-			match.setBlackController(std::move(blackPtr));
-
-			white.pauseBeforeReturn();
-			black.pauseBeforeReturn();
-
-			match.makeView<TextView>();
-
-			match.runGame();
-		}
-
-		void logger()
-		{
-			PerformanceLogger logger;
-
-			boost::filesystem::path currDir = boost::filesystem::current_path();
-			logger.start(
-				"Some Solver",
-				"Some Variant",
-				"Some Evaluation Function",
-				"v0.0");
-
-			logger.log(50, 0.5, 2, 0.6, chrono::milliseconds(234));
-			logger.log(523, 0.55, 25, 0.36, chrono::milliseconds(2234));
-		}
-
-		void csvParser()
-		{
-			string filename = "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv"; 
-			forge::CSVParser csv;
-
-			cout << "--- CSVParser ---" << endl;
-			cout << "Opening file: " << filename << endl;
-			
-			csv.open(filename);
-			cout << "Is open? " << csv.isOpen() << endl;
-
-			while (csv.isOpen()) {
-				csv.batchSize(10);
-				
-				vector<PositionEvalPair> pairs = csv.getNextBatch();
-
-				if (pairs.empty()) {
-					break;	// Last row of file reached
-				}
-
-				cout << "Press <enter> to load next batch or x+<enter> to exit." << endl;
-				char input = cin.get();
-
-				if (input == 'x') {
-					break;
-				}
-			}
-		}
-
-		void dataSetPipeline()
-		{
-			////string filename = "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv"; 
-			////
-			////// --- Read CSV File ---
-			////forge::CSVParser csv;
-			////
-			////cout << "--- CSVParser ---" << endl;
-			////cout << "Opening file: " << filename << endl;
-			////
-			////csv.open(filename);
-			////csv.batchSize(10);
-			////cout << "Is open? " << csv.isOpen() << endl;
-			////
-			////// --- Parse In Batches ---
-			////while (csv.isOpen()) {
-			////	// Parse Next Batch 
-			////	vector<PositionEvalPair> pairs = csv.getNextBatch();
-			////	cout << "Batch: size = " << pairs.size() << endl;
-			////	if (pairs.empty()) {
-			////		break;	// Last row of file reached
-			////	}
-			////
-			////	// Extract Features
-			////	Eigen::Tensor<float, 2> features(pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE);
-			////
-			////	for (size_t i = 0; i < pairs.size(); i++) {
-			////		const PositionEvalPair & pair = pairs[i];
-			////
-			////		const Position & pos = pair.position;
-			////		heuristic_t eval = pair.eval;
-			////
-			////		forge::FeatureExtractor extractor;
-			////		extractor.init(pos);
-			////
-			////		Eigen::Tensor<float, 2> f = extractor.extractMaterial();
-			////
-			////		// copy into big tensor
-			////		for (size_t col = 0; col < f.dimension(1); col++) {
-			////			features(i, col) = f(0, col);
-			////		}
-			////	}
-			////
-			////	// Add to Dataset
-			////	forge::DataSet ds;
-			////	ds.set(features);
-			////
-			////	cout << ds.get_samples_number() << ", " << ds.get_columns_number() << endl;
-			////
-			////	cout << "Press <enter> to load next batch or x+<enter> to exit." << endl;
-			////	char input = cin.get();
-			////
-			////	if (input == 'x') {
-			////		break;
-			////	}
-			////}
-		}
-
-		void trainNN()
-		{
-			const std::string filename =
-				// "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv";
-				//"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
-				R"dil(D:\DataSets\Chess\stockfish_evals\chessData.csv)dil";
-					
-			forge::DataSet ds;
-
-			ds.openFile(filename);
-			ds.batchSize(10'000);
-
-			forge::ml::Net net{g_computingDevice};
-			net.train(ds, 10'000);
-		}
-
-		namespace weights
-		{
-			void applePie()
-			{
-				ApplePieWeights w;
-
-				// --- Material ---
-				w.queenMaterial = 900;
-				w.rookMaterial = 500;
-				w.bishopMaterial = 300;
-				w.knightMaterial = 250;
-				w.pawnMaterial = 100;
-				w.bishopPair = 50;
-				w.oppositeBishop = 50;
-
-				// --- Mobility ---
-				w.queenMobility = 8;
-				w.rookMobility = 9;
-				w.bishopMobility = 10;
-				w.knightMobility = 11;
-				w.pawnMobility = 12;
-				w.kingMobility = 13;
-
-				// --- Piece Square Table Bonus ---
-				w.queenPSTB;// = { 
-					//{ 1, 1, 1, 1, 1, 1, 1, 1 },
-					//{ 2, 2, 2, 2, 2, 2, 2, 2 },
-					//{ 3, 3, 3, 3, 3, 3, 3, 3 },
-					//{ 4, 4, 4, 4, 4, 4, 4, 4 },
-					//{ 5, 5, 5, 5, 5, 5, 5, 5 },
-					//{ 6, 6, 6, 6, 6, 6, 6, 6 },
-					//{ 7, 7, 7, 7, 7, 7, 7, 7 },
-					//{ 8, 8, 8, 8, 8, 8, 8, 8 } };
-				w.rookPSTB = w.queenPSTB;
-				w.bishopPSTB = w.queenPSTB;
-				w.knightPSTB = w.queenPSTB;
-				w.pawnPSTB = w.queenPSTB;
-				w.kingPSTB = w.queenPSTB;
-
-				// --- Defended Pieces ---
-				w.queensDefended = 20;
-				w.rooksDefended = 21;
-				w.bishopsDefended = 22;
-				w.knightsDefended = 23;
-				w.pawnsDefended = 24;
-				w.kingsDefended = 25;
-
-				WeightsArchive ar;
-				w.serialize(ar);
-
-				auto v = ar.to<vector<heuristic_t>>();
-
-				cout << "Weights: ";
-				for (const auto & elem : v) {
-					cout << elem << '\t';
-				}
-
-				ApplePieWeights w2;
-
-				w2.parse(ar);
-
-				cout << "\nAre w and w2 equal? " << (w == w2) << '\n';
-			}
-		} // namespace weights
-
-		namespace ai
-		{
-			void playApplePie()
-			{
-				forge::ChessMatch match;
-
-				// Set Controllers/Solvers
-				{
-					// --- Make Heuristics and set their weights ---
-					unique_ptr<forge::ApplePieHeuristic> wHeur = make_unique<forge::ApplePieHeuristic>();
-					unique_ptr<forge::ApplePieHeuristic> bHeur = make_unique<forge::ApplePieHeuristic>();
-
-					// Set weights manually
-					auto & w = wHeur->weights();
-					w.queenMaterial = 900;
-					w.rookMaterial = 500;
-					w.bishopMaterial = 300;
-					w.knightMaterial = 300;
-					w.pawnMaterial = 100;
-
-					// Copy same weights to blacks heuristic
-					bHeur->weights() = w;
-
-					// *** Now both black and white have weights that have been set.
-
-					// --- Create solvers ---
-					unique_ptr<forge::MinimaxSolver> wController = make_unique<forge::MinimaxSolver>();
-					unique_ptr<forge::MinimaxSolver> bController = make_unique<forge::MinimaxSolver>();
-
-					// --- Move heuristics into solvers ---
-					wController->heuristicPtr() = std::move(wHeur);
-					bController->heuristicPtr() = std::move(bHeur);
-
-					// --- Move Solvers into ChessMatch ---
-					match.whiteController() = std::move(wController);
-					match.blackController() = std::move(bController);
-
-					match.makeView<TextView>();
-
-					match.runGame();
-				}
-			}
-		} // namespace ai
+//		namespace pins
+//		{
+//			template<typename DIRECTION_T>
+//			void printIsPinPossible(const Board & b, bool isKingWhite) {
+//				MoveGenerator2 moveGen;
+//
+//				BitBoard theirRays = b.directionals<DIRECTION_T>();
+//
+//				if (is_base_of<directions::Lateral, DIRECTION_T>()) {
+//					theirRays |= b.laterals();
+//				}
+//
+//				// TODO: tHIS IS weird. Look into this
+//				bool isPinPossible = moveGen.isPinPossible<directions::Up>();
+//				//bool isPinPossible =
+//				//	moveGen.isPinPossible<directions::Up>(b.laterals() & b.blacks(), b.blockers());
+//			}
+//
+//			void isPinPossible()
+//			{
+//				Position p;
+//
+//				Board & b = p.board();
+//
+//				b.place<pieces::BlackKing>(BoardSquare{ 'a', '8' });
+//				b.place<pieces::WhiteKing>(BoardSquare{ 'e', '4' });
+//				b.place<pieces::Rook>(BoardSquare{ 'e', '8' }, BLACK);
+//				b.place<pieces::WhitePawn>(BoardSquare{ 'e', '6' });
+//				b.place<pieces::Bishop>(BoardSquare{ 'g', '6' }, BLACK);
+//				b.place<pieces::WhitePawn>(BoardSquare{ 'f', '5' });
+//
+//				b.print();
+//
+//				MoveGenerator2 moveGen;
+//				moveGen.generate(p);
+//			}
+//
+//			void absolutePins()
+//			{
+//				Position p;
+//
+//				Board & b = p.board();
+//				//b.place<BlackKing>(BoardSquare{ 'e', '8' });
+//				//b.place<WhiteKing>(BoardSquare{ 'c', '1' });
+//				//b.place<Rook>(BoardSquare{ 'e', '6' }, BLACK);
+//				//b.place<Queen>(BoardSquare{ 'e', '4' }, WHITE);
+//
+//				//b.place<BlackKing>(BoardSquare{ 'c', '8' });
+//				//b.place<WhiteKing>(BoardSquare{ 'g', '1' });
+//				//b.place<Queen>(BoardSquare{ 'e', '6' }, BLACK);
+//				//b.place<Bishop>(BoardSquare{ 'h', '3' }, WHITE);
+//
+//				//b.place<Rook>(BoardSquare{ 'd', '6' }, BLACK);
+//				//b.place<Bishop>(BoardSquare{ 'd', '8' }, WHITE);
+//				//b.place<BlackKing>(BoardSquare{ 'd', '2' });
+//
+//				//b.place<BlackKing>(BoardSquare{ 'b', '7' });
+//				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+//				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
+//				//b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
+//
+//				//b.place<BlackKing>(BoardSquare{ 'b', '5' });
+//				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+//				//b.place<BlackPawn>(BoardSquare{ 'd', '5' });
+//				//b.place<Queen>(BoardSquare{ 'h', '5' }, WHITE);
+//
+//				//b.place<BlackKing>(BoardSquare{ 'b', '7' });
+//				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+//				//b.place<BlackPawn>(BoardSquare{ 'e', '4' });
+//				//b.place<Queen>(BoardSquare{ 'f', '3' }, WHITE);
+//
+//				//b.place<BlackKing>(BoardSquare{ 'd', '8' });
+//				//b.place<WhiteKing>(BoardSquare{ 'f', '1' });
+//				//b.place<BlackPawn>(BoardSquare{ 'd', '4' });
+//				//b.place<Queen>(BoardSquare{ 'd', '1' }, WHITE);
+//
+//				b.place<Queen>(BoardSquare{ 'd', '8' }, BLACK);
+//				b.place<Rook>(BoardSquare{ 'd', '4' }, WHITE);
+//				b.place<WhiteKing>(BoardSquare{ 'd', '1' });
+//				b.place<BlackKing>(BoardSquare{ 'a', '8' });
+//
+//				b.print();
+//
+//				//p.move<WhiteKing>(Move{ b.whiteKing(), b.whiteKing().rightOne() });	// Make a move as white
+//				// *** Now its blacks turn.
+//
+//				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << " turn" << endl;
+//
+//				MoveGenerator2 gen;
+//				MoveList legals = gen.generate(p);
+//
+//				for (const auto & pair : legals) {
+//					pair.position.board().printMini();
+//					cout << endl;
+//				}
+//
+//				cout << "Generated " << legals.size() << " legal moves" << endl;
+//				legals.print();
+//			}
+//		} // namespace pins
+//
+//		namespace movegen
+//		{
+//			void genThreatBoard()
+//			{
+//				MoveGenerator2 movegen;
+//
+//				for (const Position & pos : positions) {
+//					movegen.generate(pos);
+//
+//					guten::boards::CheckerBoard cb = pos.board().getCheckerBoard();
+//
+//					// Highlight threats
+//					BitBoard threats = movegen.getThreats();
+//					cb.highlight(threats);
+//
+//					cb.print();
+//					cout << "Threats: " << threats << endl;
+//				}
+//			}
+//
+//			void genAttackRay()
+//			{
+//				Board b;
+//				b.place<pieces::Rook>(BoardSquare{ 'e', '2' }, BLACK);
+//				b.place<pieces::BlackPawn>(BoardSquare{ 'c', '2' });
+//				b.place<pieces::WhitePawn>(BoardSquare{ 'c', '5' });
+//				b.place<pieces::Bishop>(BoardSquare{ 'e', '7' }, WHITE);
+//				b.place<pieces::Queen>(BoardSquare{ 'e', '4' }, WHITE);
+//				b.place<pieces::Knight>(BoardSquare{ 'f', '8' }, WHITE);
+//
+//				BitBoard threats = forge::Threats::genThreats(b, b.whites());
+//
+//				b.printMini();
+//
+//				guten::boards::CheckerBoard cb;
+//
+//				for (int row = 0; row < 8; row++) {
+//					for (int col = 0; col < 8; col++) {
+//						if (threats[BoardSquare{ row, col }])
+//							cb.highlight(guten::Point{ row, col });
+//					}
+//				}
+//				cb.print();
+//			}
+//
+//			void findKingAttackers()
+//			{
+//				for (const Position & p : positions) {
+//					KingAttackers pair;
+//
+//					const Board & b = p.board();
+//					pair = KingAttackers::findKingAttackers(b, b.whiteKing(), b.blacks(), b.whites());
+//
+//					guten::boards::CheckerBoard cb = b.getCheckerBoard();
+//
+//					if (pair.size() >= 1)
+//						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
+//					if (pair.size() >= 2)
+//						cb.highlight(pair.attacker1().square.row(), pair.attacker1().square.col());
+//
+//					cb.print();
+//					cout << "White King: ";
+//					pair.print(b);
+//					cout << endl << endl;
+//
+//					pair = KingAttackers::findKingAttackers(b, b.blackKing(), b.whites(), b.blacks());
+//					cb = b.getCheckerBoard();
+//					if (pair.size() >= 1)
+//						cb.highlight(pair.attacker0().square.row(), pair.attacker0().square.col());
+//					if (pair.size() >= 2)
+//						cb.highlight(pair.attacker1().square.row(), pair.attacker1().square.col());
+//
+//					cb.print();
+//					cout << "Black King: ";
+//					pair.print(b);
+//					cout << endl << endl;
+//				}
+//			}
+//
+//			void genKingMoves()
+//			{
+//				MoveGenerator2 gen;
+//
+//				for (const auto & pos : positions) {
+//					cout << endl << "=== It is "
+//						<< (pos.moveCounter().isWhitesTurn() ? "whites" : "blacks") << " turn ===\n";
+//
+//					MoveList legals = gen.generate(pos);
+//
+//					auto cb = pos.board().getCheckerBoard();
+//					cb.highlight(gen.getThreats());
+//					cb.print();
+//
+//					cout << "There are " << legals.size() << " legal moves:\n";
+//					for (const auto & legal : legals) {
+//						cout << legal.move << endl;
+//						legal.position.board().printMini();
+//					}
+//				}
+//			}
+//		} // namespace movegen
+//
+//		void moveKings()
+//		{
+//			ChessMatch m;
+//			m.position().clear();
+//
+//			m.makeWhiteController<KeyboardController>();
+//			m.makeBlackController<KeyboardController>();
+//			m.makeView<TextView>();
+//
+//			m.runGame();
+//		}
+//
+//		void legalMoveGenerator()
+//		{
+//			///const forge::Position& p = positions.back();
+//			///for (const auto & p : positions) 
+//			for (int i = positions.size() - 13; i >= 0 && i < positions.size(); i++) 
+//			{
+//				const forge::Position& p = positions.at(i);
+//				const forge::Board & b = p.board();
+//				
+//				forge::MoveGenerator2 mg2;
+//				forge::MoveList moves =
+//					//forge::MoveGenerator::generateLegalMoves(p);
+//					mg2.generate(p);
+//
+//				guten::boards::CheckerBoard cb = b.getCheckerBoard();
+//				for (const auto & legal : moves) {
+//					BoardSquare dst = legal.move.to();
+//					cb.highlight(dst.row(), dst.col());
+//				}
+//				cb.print();
+//
+//				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << "	turn" << endl;
+//				cout << moves.size() << " legal moves generated" << endl;
+//
+//				guten::grids::GridView gridView;
+//				gridView.setGridCols(8);
+//
+//				for (int i = 0; i < moves.size(); i++) {
+//					const auto & elem = moves.at(i);
+//
+//					guten::core::Matrix mini = elem.position.board().getMiniBoard();
+//					BoardSquare from = elem.move.from();
+//					BoardSquare to = elem.move.to();
+//					mini.at(from.row(), from.col()).color.background = guten::color::cyan;
+//					mini.at(to.row(), to.col()).color.background = guten::color::lightcyan;
+//
+//					guten::core::Matrix miniText;
+//					guten::Size sz = mini.size();
+//					sz.height += 2;
+//					miniText.resize(sz);
+//					mini.copyTo(miniText, guten::Point{ 2, 0 });
+//					
+//					{
+//						stringstream ss;
+//						ss << elem.move.toLAN();
+//						guten::draw::putText(miniText, ss.str(), guten::Point{ 0, 0 });
+//					}
+//
+//					{
+//						stringstream ss;
+//						ss << (AttackChecker::isAttacked(elem.position.board(), elem.position.moveCounter().isBlacksTurn()) ?
+//							"Illegal" : "Legal");
+//						guten::draw::putText(miniText, ss.str(), guten::Point{ 1, 0 });
+//					}
+//
+//					gridView.push(miniText);
+//				}
+//				cout << '\n';
+//
+//				gridView.toMatrix().print();
+//				auto flags = cout.flags();
+//				cout << setfill('=') << setw(40) << '\0' << endl;
+//				cout.flags(flags);
+//			}
+//		}
+//
+//		void isAttacked()
+//		{
+//			forge::Position pos;
+//			forge::Board & b = pos.board();
+//
+//			pos.clear();
+//
+//			forge::BoardSquare k{ 'c', '4' };
+//			b.place<pieces::BlackKing>(k);
+//			//b.placeWhiteRook(k.down(2));
+//			//b.placeWhiteBishop(k.downLeft(2));
+//			//b.placeWhiteQueen(k.down(2));
+//			//b.placeWhiteKnight(k.knight7());
+//			//b.placeWhitePawn(k.downLeft());
+//
+//			b.printMini();
+//
+//			cout << "--- Black King ---\n"
+//				<< "\tIs Attacked by:\n"
+//				//<< "Rook/Queen: " << AttackChecker::isAttackedByRook(b, b.blackKing()) << '\n'
+//				//<< "Bishop/Queen: " << AttackChecker::isAttackedByBishop(b, b.blackKing()) << '\n'
+//				//<< "Knights: " << AttackChecker::isAttackedByKnight(b, b.blackKing()) << '\n'
+//				//<< "Pawns: " << AttackChecker::isAttackedByPawn(b, b.blackKing()) << '\n'
+//				<< "Is King Attacked: " << AttackChecker::isAttacked(b, b.blackKing()) << '\n'
+//				<< '\n';
+//		}
+//
+//		void move()
+//		{
+//			forge::Move m;
+//
+//			cout << "Empty constructor: " << m << endl;
+//
+//			cout << forge::BoardSquare(1, 2) << endl;
+//			cout << forge::BoardSquare(2, 2) << endl;
+//			cout << forge::Move{ forge::BoardSquare(1, 2), forge::BoardSquare(2, 2) } << endl;
+//
+//			cout << forge::BoardSquare(4, 5) << ' '
+//				<< forge::BoardSquare(6, 7) << ' '
+//				<< forge::pieces::whiteQueen << ' '
+//				<< forge::Move{
+//					forge::BoardSquare(4, 5),
+//					forge::BoardSquare(6, 7),
+//					forge::pieces::whiteQueen }
+//			<< endl;
+//
+//			cout << forge::BoardSquare('e', '2') << ' '
+//				<< forge::BoardSquare('e', '4') << ' '
+//				<< forge::Move(forge::BoardSquare('e', '2'), forge::BoardSquare('e', '4'))
+//				<< endl;
+//
+//			Move m1;
+//			m1.from(BoardSquare{ 'f', '5' });
+//			m1.to(BoardSquare{ 'e', '4' });
+//			m1.promotion(pieces::whiteQueen);
+//			cout << "m1 = " << m1 << '\n';
+//		}
+//
+//		void randomSolver()
+//		{
+//			forge::RandomSolver solver;
+//		}
+//
+//		void chessMatch()
+//		{
+//			forge::ChessMatch match;
+//
+//			match.reset();
+//			//match.position().fromFEN("1RK5/k6p/4Q3/p4n1P/8/p5p1/8/2B1NBNR b - - 3 112");
+//
+//			match.clock().synchronize(
+//				chrono::minutes(5),
+//				chrono::minutes(5),
+//				chrono::seconds(2),
+//				chrono::seconds(2)
+//			); // Clock is still paused
+//
+//			auto whiteController =
+//				//make_unique<RandomSolver>();
+//				//make_unique<MinimaxSolver>();
+//				//make_unique<MCTS_Solver>();
+//				make_unique<MCTS_Solver_MT>();
+//				//make_unique<KeyboardController>();
+//			 
+//			auto blackController =
+//				//make_unique<RandomSolver>();
+//				make_unique<MinimaxSolver>();
+//				//make_unique<MCTS_Solver>();
+//				//make_unique<MCTS_Solver_MT>();
+//				//make_unique<KeyboardController>();
+//
+//			whiteController->makeHeuristic<
+//				forge::ApplePieHeuristic
+//				//RandomHeuristic>();
+//				//forge::heuristics::Rollout
+//				//NeuralNetworkHeuristic>();
+//			>();
+//
+//			blackController->makeHeuristic<
+//				forge::ApplePieHeuristic
+//				//RandomHeuristic>();
+//				//forge::heuristics::Rollout
+//				//NeuralNetworkHeuristic>();
+//			>();
+//
+//			match.whiteController() = std::move(whiteController);
+//			match.blackController() = std::move(blackController);
+//
+//			match.makeView<TextView>();
+//			match.runGame();
+//		}
+//
+//		void performanceTester()
+//		{
+//			for (size_t t = 5; t <= 8; t++) {
+//				forge::PerformanceTester tester;
+//
+//				auto whiteSolver =
+//					//make_unique<RandomSolver>();
+//					//make_unique<MinimaxSolver>();
+//					//make_unique<MCTS_Solver>();
+//					make_unique<MCTS_Solver_MT>();
+//
+//				auto blackSolver =
+//					//make_unique<RandomSolver>();
+//					//make_unique<MinimaxSolver>();
+//					//make_unique<MCTS_Solver>();
+//					make_unique<MCTS_Solver_MT>();
+//
+//				whiteSolver->m_nThreads = t;
+//				blackSolver->m_nThreads = t;
+//				
+//				whiteSolver->makeHeuristic<
+//					forge::ApplePieHeuristic
+//					//forge::heuristics::Rollout
+//				>();
+//
+//				blackSolver->makeHeuristic<
+//					forge::ApplePieHeuristic
+//					//forge::heuristics::Rollout
+//				>();
+//
+//				tester.whiteSolver() = std::move(whiteSolver);
+//				tester.blackSolver() = std::move(blackSolver);
+//
+//				tester.view() = make_unique<TextView>();
+//
+//				tester.runGame();
+//			}
+//		}
+//
+//		void nodeIterator()
+//		{
+//			MiniMaxNode root;
+//			root.position().reset();
+//
+//			MiniMaxNode::iterator it = root.begin();
+//			it.setDepthLimit(3);
+//
+//			while (it != root.end()) {
+//				(*it).position().board().print();
+//
+//				++it;
+//
+//				cin.get();
+//			}
+//		}
+//
+//		void heuristic()
+//		{
+//			unique_ptr<HeuristicBase> ptr =
+//				make_unique<ApplePieHeuristic>();
+//				//make_unique<RandomHeuristic>();
+//				//make_unique<NeuralNetworkHeuristic>(); 
+//
+//			cout << "--- Heuristics (" << ptr->name() << ") ---" << endl;
+//
+//			for (const Position& pos : test::g_positions) {
+//				cout << "Its " << (pos.isWhitesTurn() ? "whites" : "blacks") << " turn" << endl;
+//				pos.board().printMini();
+//				cout << "eval = " << ptr->eval(pos) << ' ' << endl << endl;
+//			}
+//			cout << endl;
+//		}
+//
+//		void solver()
+//		{
+//			Position position;
+//			position.reset();
+//
+//			position.board().print();
+//
+//			unique_ptr<SolverBase> solverPtr =
+//				//make_unique<RandomSolver>();
+//				make_unique<MinimaxSolver>();
+//
+//			solverPtr->makeHeuristic<RandomHeuristic>();
+//
+//			solverPtr->reset();
+//
+//			while (true) {
+//				MovePositionPair pair = solverPtr->getMove(position);
+//
+//				position = pair.position;
+//
+//				position.board().print();
+//				//cout << "Press any key...";
+//				//cin.get();
+//			}
+//		}
+//
+//		void insufficientMaterial()
+//		{
+//			MiniMaxNode n;
+//			Position & pos = n.position();
+//			pos.clear();
+//
+//			//pos.applyMoveFast(Move{ pos.board().whiteKing(), pos.board().whiteKing().upOne() });
+//			//pos.board().placeBlackPawn(BoardSquare('a', '2'));
+//			//pos.board().placeWhiteBishop(BoardSquare('e', '5'));
+//			//pos.board().placeWhiteKnight(BoardSquare('e', '4'));
+//			//pos.board().placeWhiteKnight(BoardSquare('d', '4'));
+//			//pos.board().placeRook(BoardSquare('e', '4'), true);
+//			pos.board().print();
+//
+//			GameState gs;
+//			gs(n);
+//
+//			cout << "Game state: " << gs << '\n';
+//		}
+//
+//		void gameState()
+//		{
+//			forge::Position pos;
+//			pos.clear();
+//
+//			pos.board().place<pieces::Rook>(forge::BoardSquare{ 'e', '4' }, BLACK);
+//
+//			pos.board().print();
+//
+//			GameState state;
+//
+//			//state(pos);
+//
+//			cout << state << '\n';
+//		}
+//
+//		void drawByRepetition()
+//		{
+//			ChessMatch match;
+//			///match.makeWhiteController<ReplayController>();
+//			///match.makeBlackController<ReplayController>();
+//
+//			unique_ptr<ReplayController> whitePtr = make_unique<ReplayController>();
+//			unique_ptr<ReplayController> blackPtr = make_unique<ReplayController>();
+//
+//			ReplayController & white = *whitePtr;
+//			ReplayController & black = *blackPtr;
+//
+//			///white.push(Move{ BoardSquare{'d', '2'}, BoardSquare{'d', '4'} });	// queen's pawn
+//			///black.push(Move{ BoardSquare{'d', '7'}, BoardSquare{'d', '5'} });	// queen's pawn
+//			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+//			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+//			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+//			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+//			///
+//			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+//			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+//			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+//			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+//			///
+//			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+//			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+//			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+//			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+//
+//			cout << "White: " << white.size() << '\n'
+//				<< "Black: " << black.size() << '\n';
+//
+//			match.setWhiteController(std::move(whitePtr));
+//			match.setBlackController(std::move(blackPtr));
+//
+//			white.pauseBeforeReturn();
+//			black.pauseBeforeReturn();
+//
+//			match.makeView<TextView>();
+//
+//			match.runGame();
+//		}
+//
+//		void logger()
+//		{
+//			PerformanceLogger logger;
+//
+//			boost::filesystem::path currDir = boost::filesystem::current_path();
+//			logger.start(
+//				"Some Solver",
+//				"Some Variant",
+//				"Some Evaluation Function",
+//				"v0.0");
+//
+//			logger.log(50, 0.5, 2, 0.6, chrono::milliseconds(234));
+//			logger.log(523, 0.55, 25, 0.36, chrono::milliseconds(2234));
+//		}
+//
+//		void csvParser()
+//		{
+//			string filename = "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv"; 
+//			forge::CSVParser csv;
+//
+//			cout << "--- CSVParser ---" << endl;
+//			cout << "Opening file: " << filename << endl;
+//			
+//			csv.open(filename);
+//			cout << "Is open? " << csv.isOpen() << endl;
+//
+//			while (csv.isOpen()) {
+//				csv.batchSize(10);
+//				
+//				vector<PositionEvalPair> pairs = csv.getNextBatch();
+//
+//				if (pairs.empty()) {
+//					break;	// Last row of file reached
+//				}
+//
+//				cout << "Press <enter> to load next batch or x+<enter> to exit." << endl;
+//				char input = cin.get();
+//
+//				if (input == 'x') {
+//					break;
+//				}
+//			}
+//		}
+//
+//		void dataSetPipeline()
+//		{
+//			////string filename = "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv"; 
+//			////
+//			////// --- Read CSV File ---
+//			////forge::CSVParser csv;
+//			////
+//			////cout << "--- CSVParser ---" << endl;
+//			////cout << "Opening file: " << filename << endl;
+//			////
+//			////csv.open(filename);
+//			////csv.batchSize(10);
+//			////cout << "Is open? " << csv.isOpen() << endl;
+//			////
+//			////// --- Parse In Batches ---
+//			////while (csv.isOpen()) {
+//			////	// Parse Next Batch 
+//			////	vector<PositionEvalPair> pairs = csv.getNextBatch();
+//			////	cout << "Batch: size = " << pairs.size() << endl;
+//			////	if (pairs.empty()) {
+//			////		break;	// Last row of file reached
+//			////	}
+//			////
+//			////	// Extract Features
+//			////	Eigen::Tensor<float, 2> features(pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE);
+//			////
+//			////	for (size_t i = 0; i < pairs.size(); i++) {
+//			////		const PositionEvalPair & pair = pairs[i];
+//			////
+//			////		const Position & pos = pair.position;
+//			////		heuristic_t eval = pair.eval;
+//			////
+//			////		forge::FeatureExtractor extractor;
+//			////		extractor.init(pos);
+//			////
+//			////		Eigen::Tensor<float, 2> f = extractor.extractMaterial();
+//			////
+//			////		// copy into big tensor
+//			////		for (size_t col = 0; col < f.dimension(1); col++) {
+//			////			features(i, col) = f(0, col);
+//			////		}
+//			////	}
+//			////
+//			////	// Add to Dataset
+//			////	forge::DataSet ds;
+//			////	ds.set(features);
+//			////
+//			////	cout << ds.get_samples_number() << ", " << ds.get_columns_number() << endl;
+//			////
+//			////	cout << "Press <enter> to load next batch or x+<enter> to exit." << endl;
+//			////	char input = cin.get();
+//			////
+//			////	if (input == 'x') {
+//			////		break;
+//			////	}
+//			////}
+//		}
+//
+//		void trainNN()
+//		{
+//			const std::string filename =
+//				// "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv";
+//				//"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
+//				R"dil(D:\DataSets\Chess\stockfish_evals\chessData.csv)dil";
+//					
+//			forge::DataSet ds;
+//
+//			ds.openFile(filename);
+//			ds.batchSize(10'000);
+//
+//			forge::ml::Net net{g_computingDevice};
+//			net.train(ds, 10'000);
+//		}
+//
+//		namespace weights
+//		{
+//			void applePie()
+//			{
+//				ApplePieWeights w;
+//
+//				// --- Material ---
+//				w.queenMaterial = 900;
+//				w.rookMaterial = 500;
+//				w.bishopMaterial = 300;
+//				w.knightMaterial = 250;
+//				w.pawnMaterial = 100;
+//				w.bishopPair = 50;
+//				w.oppositeBishop = 50;
+//
+//				// --- Mobility ---
+//				w.queenMobility = 8;
+//				w.rookMobility = 9;
+//				w.bishopMobility = 10;
+//				w.knightMobility = 11;
+//				w.pawnMobility = 12;
+//				w.kingMobility = 13;
+//
+//				// --- Piece Square Table Bonus ---
+//				w.queenPSTB;// = { 
+//					//{ 1, 1, 1, 1, 1, 1, 1, 1 },
+//					//{ 2, 2, 2, 2, 2, 2, 2, 2 },
+//					//{ 3, 3, 3, 3, 3, 3, 3, 3 },
+//					//{ 4, 4, 4, 4, 4, 4, 4, 4 },
+//					//{ 5, 5, 5, 5, 5, 5, 5, 5 },
+//					//{ 6, 6, 6, 6, 6, 6, 6, 6 },
+//					//{ 7, 7, 7, 7, 7, 7, 7, 7 },
+//					//{ 8, 8, 8, 8, 8, 8, 8, 8 } };
+//				w.rookPSTB = w.queenPSTB;
+//				w.bishopPSTB = w.queenPSTB;
+//				w.knightPSTB = w.queenPSTB;
+//				w.pawnPSTB = w.queenPSTB;
+//				w.kingPSTB = w.queenPSTB;
+//
+//				// --- Defended Pieces ---
+//				w.queensDefended = 20;
+//				w.rooksDefended = 21;
+//				w.bishopsDefended = 22;
+//				w.knightsDefended = 23;
+//				w.pawnsDefended = 24;
+//				w.kingsDefended = 25;
+//
+//				WeightsArchive ar;
+//				w.serialize(ar);
+//
+//				auto v = ar.to<vector<heuristic_t>>();
+//
+//				cout << "Weights: ";
+//				for (const auto & elem : v) {
+//					cout << elem << '\t';
+//				}
+//
+//				ApplePieWeights w2;
+//
+//				w2.parse(ar);
+//
+//				cout << "\nAre w and w2 equal? " << (w == w2) << '\n';
+//			}
+//		} // namespace weights
+//
+//		namespace ai
+//		{
+//			void playApplePie()
+//			{
+//				forge::ChessMatch match;
+//
+//				// Set Controllers/Solvers
+//				{
+//					// --- Make Heuristics and set their weights ---
+//					unique_ptr<forge::ApplePieHeuristic> wHeur = make_unique<forge::ApplePieHeuristic>();
+//					unique_ptr<forge::ApplePieHeuristic> bHeur = make_unique<forge::ApplePieHeuristic>();
+//
+//					// Set weights manually
+//					auto & w = wHeur->weights();
+//					w.queenMaterial = 900;
+//					w.rookMaterial = 500;
+//					w.bishopMaterial = 300;
+//					w.knightMaterial = 300;
+//					w.pawnMaterial = 100;
+//
+//					// Copy same weights to blacks heuristic
+//					bHeur->weights() = w;
+//
+//					// *** Now both black and white have weights that have been set.
+//
+//					// --- Create solvers ---
+//					unique_ptr<forge::MinimaxSolver> wController = make_unique<forge::MinimaxSolver>();
+//					unique_ptr<forge::MinimaxSolver> bController = make_unique<forge::MinimaxSolver>();
+//
+//					// --- Move heuristics into solvers ---
+//					wController->heuristicPtr() = std::move(wHeur);
+//					bController->heuristicPtr() = std::move(bHeur);
+//
+//					// --- Move Solvers into ChessMatch ---
+//					match.whiteController() = std::move(wController);
+//					match.blackController() = std::move(bController);
+//
+//					match.makeView<TextView>();
+//
+//					match.runGame();
+//				}
+//			}
+//		} // namespace ai
 	} // namespace test
 } // namespace forge

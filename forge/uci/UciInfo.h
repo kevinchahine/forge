@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Move.h"
+#include "forge/core/Move.h"
 #include "UciScore.h"
 #include "UciCurrLine.h"
 

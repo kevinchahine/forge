@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BoardSquare.h"
+#include "forge/core/BoardSquare.h"
 
 namespace forge
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Position.h"
-#include "MoveList.h"
+#include "forge/core/Position.h"
+#include "forge/movegen/MoveList.h"
 
 namespace forge
 {

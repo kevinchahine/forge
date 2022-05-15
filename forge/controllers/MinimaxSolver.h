@@ -1,8 +1,7 @@
 #pragma once
 
-#include "SolverBase.h"
-#include "MiniMaxNode.h"
-#include "Line.h"
+#include "forge/controllers/SolverBase.h"
+#include "forge/search/MiniMaxNode.h"
 
 namespace forge
 {

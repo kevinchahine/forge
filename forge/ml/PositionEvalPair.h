@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Position.h"
-#include "HeuristicBase.h"		// for heuristic_t
+#include "forge/core/Position.h"
+#include "forge/heuristics/HeuristicBase.h"		// for heuristic_t
 
 #include <iostream>
 

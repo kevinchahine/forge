@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ControllerBase.h"
-#include "GameHistory.h"
+#include "forge/controllers/ControllerBase.h"
+#include "forge/game/GameHistory.h"
 
 namespace forge
 {

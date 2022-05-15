@@ -1,11 +1,11 @@
 #pragma once
 
-#include "PositionEvalPair.h"
+#include "forge/ml/PositionEvalPair.h"
 
 #include <iostream>
 #include <fstream>
 
-#include "rapidcsv.h"
+#include "forge/third_party/rapidcsv.h"
 
 namespace forge
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Timer.h"
-#include "StopWatch.h"
+#include "forge/time/Timer.h"
+#include "forge/time/StopWatch.h"
 
 #include <stdint.h>
 #include <chrono>

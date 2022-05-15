@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BitBoard.h"
-#include "Color.h"
+#include "forge/core/BitBoard.h"
+#include "forge/core/Color.h"
 
 #include <iostream>
 #include <bitset>

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "MovePositionPair.h"
-#include "AttackChecker.h"
-
-#include <vector>
+#include "forge/core/MovePositionPair.h"
+#include "forge/feature_extractor/AttackChecker.h"
 
 #include "Guten/termcolor/termcolor.hpp"
+
+#include <vector>
 
 namespace forge
 {

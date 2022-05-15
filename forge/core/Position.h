@@ -1,11 +1,11 @@
 #pragma once
 
-#include <type_traits>
-
-#include "forge/source/HashCombine.h"
 #include "forge/core/Board.h"
 #include "forge/core/MoveCounter.h"
 #include "forge/game/FiftyMoveRule.h"
+#include "forge/source/HashCombine.h"
+
+#include <type_traits>
 
 namespace forge
 {
@@ -121,8 +121,6 @@ namespace forge
 		MoveCounter m_moveCounter;
 	};
 } // namespace forge
-
-#include "PositionDefinitions.h"
 
 // --- Inject hash into std namespace
 namespace std

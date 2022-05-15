@@ -1,4 +1,4 @@
-#include "Direction.h"
+#include "forge/core/Direction.h"
 
 namespace forge
 {

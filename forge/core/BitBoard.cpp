@@ -1,4 +1,4 @@
-#include "BitBoard.h"
+#include "forge/core/BitBoard.h"
 
 #include <Guten/color/Color.h>
 #include <Guten/termcolor/termcolor.hpp>

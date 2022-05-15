@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../HeuristicBase.h"
+#include "forge/heuristics/HeuristicBase.h"
 
 #include <iostream>
 

@@ -1,12 +1,11 @@
 #pragma once
 
-#include "CSVParser.h"
-#include "FeatureExtractor.h"
+#include "forge/feature_extractor/FeatureExtractor.h"
+#include "forge/ml/CSVParser.h"
+#include "forge/ml/TensorPair.h"
 
 #include <iostream>
 #include <string>
-
-#include "ml/TensorPair.h"
 
 namespace forge
 {

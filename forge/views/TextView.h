@@ -1,10 +1,9 @@
 #pragma once
 
-#include "ViewBase.h"
+#include "forge/views/ViewBase.h"
+#include "forge/movegen/MoveList.h"
 
-#include "MoveGenerator.h"
 #include "Guten/boards/CheckerBoard.h"
-#include "MoveList.h"
 
 namespace forge
 {

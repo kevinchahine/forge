@@ -1,6 +1,6 @@
-#include "TestFeatureExtractor.h"
+#include "forge/test/TestFeatureExtractor.h"
 
-#include "FeatureExtractor.h"
+#include "forge/feature_extractor/FeatureExtractor.h"
 
 #include <iostream>
 

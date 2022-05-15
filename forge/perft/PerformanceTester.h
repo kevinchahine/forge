@@ -1,11 +1,11 @@
 #pragma once
 
-#include "SolverBase.h"
-#include "GameHistory.h"
-#include "GameState.h"
-#include "Position.h"
-#include "ViewBase.h"
-#include "PerformanceLogger.h"
+#include "forge/controllers/SolverBase.h"
+#include "forge/core/Position.h"
+#include "forge/game/GameHistory.h"
+#include "forge/game/GameState.h"
+#include "forge/perft/PerformanceLogger.h"
+#include "forge/views/ViewBase.h"
 
 #include <memory>
 

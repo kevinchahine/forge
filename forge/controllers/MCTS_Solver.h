@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SolverBase.h"
-#include "MCTS_Node.h"
+#include "forge/controllers/SolverBase.h"
+#include "forge/search/MCTS_Node.h"
 
 #include <set>
 

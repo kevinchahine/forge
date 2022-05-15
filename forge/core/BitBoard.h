@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Direction.h"
+#include "forge/core/Direction.h"
 
 #include "Guten/core/Matrix.h"
 

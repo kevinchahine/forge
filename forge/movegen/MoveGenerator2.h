@@ -1,11 +1,13 @@
 #pragma once
 
-#include "KingAttackers.h"
-#include "Position.h"
-#include "MoveList.h"
-#include "Attackers.h"
-#include "Threats.h"
-#include "Pin.h"
+#include "forge/feature_extractor/Attackers.h"
+#include "forge/feature_extractor/KingAttackers.h"
+#include "forge/feature_extractor/Pin.h"
+#include "forge/feature_extractor/Threats.h"
+
+#include "forge/core/Position.h"
+
+#include "forge/movegen/MoveList.h"
 
 #include <iostream>
 
