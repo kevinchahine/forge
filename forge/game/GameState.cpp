@@ -290,6 +290,8 @@ namespace forge
 			// A forced checkmate is still possible
 			return SUFFICIENT;
 		}
+
+		return bool();	// placeholder
 	}
 
 } // namespace forge

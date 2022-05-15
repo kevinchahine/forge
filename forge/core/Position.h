@@ -2,10 +2,10 @@
 
 #include <type_traits>
 
-#include "HashCombine.h"
-#include "Board.h"
-#include "MoveCounter.h"
-#include "FiftyMoveRule.h"
+#include "forge/source/HashCombine.h"
+#include "forge/core/Board.h"
+#include "forge/core/MoveCounter.h"
+#include "forge/game/FiftyMoveRule.h"
 
 namespace forge
 {

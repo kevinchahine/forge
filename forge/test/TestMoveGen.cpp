@@ -1,9 +1,9 @@
-#include "TestMoveGen.h"
-#include "Position.h"
-#include "MoveGenerator2.h"
-#include "MoveList.h"
-#include "StopWatch.h"
-#include "globals.h"
+#include "forge/core/Position.h"
+#include "forge/movegen/MoveGenerator2.h"
+#include "forge/movegen/MoveList.h"
+#include "forge/source/globals.h"
+#include "forge/test/TestMoveGen.h"
+#include "forge/time/StopWatch.h"
 
 #include <Guten/color/Color.h>
 #include <Guten/view/GridView.h>

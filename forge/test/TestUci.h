@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UciInfo.h"
+#include "forge/uci/UciInfo.h"
 
 #include <sstream>
 

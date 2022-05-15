@@ -6,8 +6,9 @@
 #include <iostream>
 #include <string>
 
-#include "torch\csrc\api\include\torch\nn\module.h"
-#include "torch\csrc\api\include\torch\nn\modules\linear.h"
+#include <torch/torch.h>
+// #include "torch\csrc\api\include\torch\nn\module.h"
+// #include "torch\csrc\api\include\torch\nn\modules\linear.h"
 
 namespace forge
 {

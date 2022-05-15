@@ -8,7 +8,6 @@ namespace forge
 		{
 		public:
 
-
 		public:
 			bool val = false;
 		};

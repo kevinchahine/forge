@@ -18,11 +18,15 @@ Designed to be compatible with a variety of displays including:
 	- Terminal interface.
 */
 
-#include "Test.h"
-#include "TestFeatureExtractor.h"
-#include "ml/Optimizer.h"
-#include "globals.h"
-#include "test/positions.h"
+// #include "Test.h"
+// #include "TestFeatureExtractor.h"
+// #include "ml/Optimizer.h"
+// #include "globals.h"
+// #include "test/positions.h"
+
+#include "Guten/color/Color.h"
+
+#include <iostream>
 
 using namespace std;
 
@@ -34,7 +38,7 @@ int main(int argc, char ** argv)
 		<< termcolor::red << "=============\n"
 		<< termcolor::white;
 
-	forge::initGlobals();
+	//forge::initGlobals();
 	//forge::test::init();
 	//forge::test::initTestBoards();
 	
@@ -68,7 +72,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	forge::test::chessMatch();				// **************
+	//forge::test::chessMatch();				// **************
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();

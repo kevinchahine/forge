@@ -8,190 +8,52 @@ message(STATUS "\n----- Forge -----")
 set(PROJECT_NAME "forge")
 project(${PROJECT_NAME})
 
-# --- Specify the header files ---
-set(CODE_FILES#HEADER_FILES
-	forge/ApplePieHeuristic.h
-	forge/ApplePieWeights.h
-	forge/AttackChecker.h
-	forge/AttackersDefinitions.h
-	forge/Attackers.h
-	forge/BitBoard.h
-	forge/Board.h
-	forge/BoardSquare.h
-	forge/ChessMatch.h
-	forge/Clock.h
-	forge/Color.h
-	forge/ControllerBase.h
-	forge/CSVParser.h
-	forge/DataMonitor.h
-	forge/DatasetGenerator.h
-	forge/DataSet.h
-	forge/Direction.h
-	forge/EvaluationBase.h
-	forge/ExitCondition.h
-	forge/FiftyMoveRule.h
-	forge/FeatureExtractor.h
-	forge/GameHistory.h
-	forge/GameState.h
-	forge/globals.h
-	forge/HashCombine.h
-	forge/HeuristicBase.h
-	forge/Heuristics.hpp
-	forge/IntBoard.h
-	forge/IWeightsArchive.h
-	forge/KeyboardController.h
-	forge/KingAttacker.h
-	forge/KingAttackersDefinitions.h
-	forge/KingAttackers.h
-	forge/Line.h				# TODO: do we need this
-	forge/MCTS_Node.h
-	forge/MCTS_Solver.h	
-	forge/MCTS_Solver_MT.h
-	forge/MiniMaxNode.h
-	forge/MinimaxSolver.h
-	forge/MoveCounter.h
-	forge/MoveGenerator2_Definitions.h
-	forge/MoveGenerator2.h
-	forge/MoveGenerator.h
-	forge/MoveGeneratorInline.h
-	forge/Move.h
-	forge/MoveList.h
-	forge/MovePositionPair.h
-	forge/Movers.h
-	forge/NeuralNetworkHeuristic.h
-	forge/Node.h
-	forge/OWeightsArchive.h
-	forge/PerformanceLogger.h
-	forge/PerformanceTester.h
-	forge/Piece.h
-	forge/PinDefinitions.h
-	forge/Pin.h
-	forge/PositionDefinitions.h
-	forge/Position.h
-	forge/PositionEvalPair.h
-	forge/PositionTable.h
-	forge/PseudoMoveGenerator.h
-	forge/RandomHeuristic.h
-	forge/RandomSolver.h
-	forge/rapidcsv.h
-	forge/ReplayController.h
-	forge/SearchMonitor.h
-	forge/SolverBase.h
-	forge/StopWatch.h
-	forge/Test.h
-	forge/TestFeatureExtractor.h
-	forge/TestMoveGen.h
-	forge/TestUci.h
-	forge/TextView.h
-	forge/ThreatsDefinitions.h
-	forge/Threats.h
-	forge/Timer.h
-	forge/test/positions.h
-	forge/test/positions.cpp
-	forge/UciBase.h
-	forge/UciCurrLine.h
-	forge/UciEngine.h
-	forge/UciGui.h
-	forge/UciInfo.h
-	forge/UciOptions.h
-	forge/UciScore.h
-	forge/UciSearchCommands.h
-	forge/ViewBase.h
-	forge/WeightsArchive.h
-	forge/WeightsBase.h
-	forge/heuristics/Rollout.h
-	forge/heuristics/Rollout.cpp
-	forge/ml/Net.h
-	forge/ml/Optimizer.h
-	forge/ml/PosEvalPair.h
-	forge/ml/TensorPair.h
-	#)
+# --- Group source files ---
+set(CONTROLLERS
+)
 
-# --- Specify the source files ---
-#set(SOURCE_FILES
-	forge/main.cpp
-	forge/ApplePieHeuristic.cpp
-	forge/ApplePieWeights.cpp
-	forge/AttackChecker.cpp
-	forge/Attackers.cpp
-	forge/BitBoard.cpp
-	forge/Board.cpp
-	forge/BoardSquare.cpp
-	forge/ChessMatch.cpp
-	forge/Clock.cpp
-	forge/Color.cpp
-	forge/ControllerBase.cpp
-	forge/CSVParser.cpp
-	forge/DataMonitor.cpp
-	forge/DatasetGenerator.cpp
-	forge/DataSet.cpp
-	forge/Direction.cpp
-	forge/EvaluationBase.cpp
-	forge/ExitCondition.cpp
-	forge/FiftyMoveRule.cpp
-	forge/FeatureExtractor.cpp
-	forge/GameHistory.cpp
-	forge/GameState.cpp
-	forge/globals.cpp
-	forge/HeuristicBase.cpp
-	forge/IntBoard.cpp
-	forge/IWeightsArchive.cpp
-	forge/KeyboardController.cpp
-	forge/KingAttacker.cpp
-	forge/KingAttackers.cpp
-	forge/Line.cpp
-	forge/MCTS_Node.cpp
-	forge/MCTS_Solver.cpp
-	forge/MCTS_Solver_MT.cpp
-	forge/MiniMaxNode.cpp
-	forge/MinimaxSolver.cpp
-	forge/MoveCounter.cpp
-	forge/Move.cpp
-	forge/MoveGenerator2.cpp
-	forge/MoveGenerator.cpp
-	forge/MoveList.cpp
-	forge/MovePositionPair.cpp
-	forge/Movers.cpp
-	forge/NeuralNetworkHeuristic.cpp
-	forge/Node.cpp
-	forge/OWeightsArchive.cpp
-	forge/PerformanceLogger.cpp
-	forge/PerformanceTester.cpp
-	forge/Piece.cpp
-	forge/Position.cpp
-	forge/PositionTable.cpp
-	forge/PseudoMoveGenerator.cpp
-	forge/RandomHeuristic.cpp
-	forge/RandomSolver.cpp
-	forge/ReplayController.cpp
-	forge/SearchMonitor.cpp
-	forge/SolverBase.cpp
-	forge/StopWatch.cpp
-	forge/Test.cpp
-	forge/TestFeatureExtractor.cpp
-	forge/TestMoveGen.cpp
-	forge/TestUci.cpp
-	forge/TextView.cpp
-	forge/Threats.cpp
-	forge/Timer.cpp
-	forge/UciBase.cpp
-	forge/UciCurrLine.cpp
-	forge/UciEngine.cpp
-	forge/UciGui.cpp
-	forge/UciInfo.cpp
-	forge/UciOptions.cpp
-	forge/UciScore.cpp
-	forge/UciSearchCommands.cpp
-	forge/ViewBase.cpp
-	forge/WeightsArchive.cpp
-	forge/WeightsBase.cpp
-	forge/ml/Net.cpp
-	forge/ml/Optimizer.cpp
-	forge/ml/TensorPair.cpp
-	)
+set(CORE
+	forge/core/BitBoard.cpp
+	forge/core/BitBoard.h
+	forge/core/Board.cpp
+	forge/core/Board.h
+	forge/core/BoardSquare.cpp
+	forge/core/BoardSquare.h
+	forge/core/Color.cpp
+	forge/core/Color.h
+	forge/core/Direction.cpp
+	forge/core/Direction.h
+	forge/core/MoveCounter.cpp
+	forge/core/MoveCounter.h
+	forge/core/Move.cpp
+	forge/core/Move.h
+	forge/core/MovePositionPair.cpp
+	forge/core/MovePositionPair.h
+	forge/core/Movers.cpp
+	forge/core/Movers.h
+	forge/core/Piece.cpp
+	forge/core/Piece.h
+	forge/core/Position.cpp
+	forge/core/PositionDefinitions.h
+	forge/core/Position.h
+)
 
-# --- Specify the text files ---
-set(TEXT_FILES
+set(FEATURE_EXTRACTOR
+)
+
+set(GAME
+)
+
+set(HEURISTICS
+)
+
+set(ML
+)
+
+set(MOVEGEN
+)
+
+set(NOTES
 	forge/notes/AI.txt
 	forge/notes/Benchmarks.txt
 	forge/notes/BenchmarkTesting.txt
@@ -233,18 +95,79 @@ set(TEXT_FILES
 	forge/notes/View.txt
 )
 
-add_executable(${PROJECT_NAME}
-	${CODE_FILES}
-	#${HEADER_FILES}
-	#${SOURCE_FILES}
-	${TEXT_FILES}
+set(SOURCE
+	forge/source/main.cpp
 )
+
+set(TEST
+	forge/test/positions.cpp
+	forge/test/positions.h
+	forge/test/Test.cpp
+	forge/test/TestFeatureExtractor.cpp
+	forge/test/TestFeatureExtractor.h
+	forge/test/Test.h
+	forge/test/TestMoveGen.cpp
+	forge/test/TestMoveGen.h
+	forge/test/TestUci.cpp
+	forge/test/TestUci.h
+)
+
+set(THIRD_PARTY
+)
+
+set(TIME
+)
+
+set(UCI
+)
+
+set(VIEWS
+)
+
+source_group(${PROJECT_NAME} ${ML_FILES})
+source_group(${PROJECT_NAME} ${CONTROLLERS})
+source_group(${PROJECT_NAME} ${CORE})
+source_group(${PROJECT_NAME} ${FEATURE_EXTRACTOR})
+source_group(${PROJECT_NAME} ${GAME})
+source_group(${PROJECT_NAME} ${HEURISTICS})
+source_group(${PROJECT_NAME} ${ML})
+source_group(${PROJECT_NAME} ${MOVEGEN})
+source_group(${PROJECT_NAME} ${NOTES})
+source_group(${PROJECT_NAME} ${SOURCE})
+source_group(${PROJECT_NAME} ${TEST})
+source_group(${PROJECT_NAME} ${THIRD_PARTY})
+source_group(${PROJECT_NAME} ${TIME})
+source_group(${PROJECT_NAME} ${UCI})
+source_group(${PROJECT_NAME} ${VIEWS})
+
+add_executable(${PROJECT_NAME}
+	${ML_FILES}
+	${CONTROLLERS}
+	${CORE}
+	${FEATURE_EXTRACTOR}
+	${GAME}
+	${HEURISTICS}
+	${ML}
+	${MOVEGEN}
+	${NOTES}
+	${SOURCE}
+	${TEST}
+	${THIRD_PARTY}
+	${TIME}
+	${UCI}
+	${VIEWS}
+)
+
+include_directories(.)
 
 # --- Compiler Flags ---
 set(CMAKE_CXX_STANDARD 17)												# TODO: Do we need both?
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 set(VS_STARTUP_PROJECT ${PROJECT_NAME})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+message(STATUS "Compiler Version: ${CMAKE_CXX_COMPILER_VERSION} standard ${CMAKE_CXX_STANDARD}")
 
 # --- Set Preprocessor Macros ---
 add_compile_definitions(NOMINMAX)	# same as '#define NOMINMAX'
@@ -291,8 +214,8 @@ else ()
 
 	find_package(Boost REQUIRED COMPONENTS
 		##asio 
-		#system 
-		#filesystem 
+		system 
+		filesystem 
 		##process
 		REQUIRED)
 
@@ -311,6 +234,14 @@ else ()
 	target_include_directories(${PROJECT_NAME} PUBLIC
 		${BOOST_INCLUDE_DIRS}
 	)
+
+	# --- XLNT ---
+	#message(STATUS "\n----- XLNT -----")
+	#
+	#find_package(Xlnt CONFIG REQUIRED)
+	#
+	#target_link_libraries(${PROJECT_NAME} PRIVATE xlnt:xlnt)
+
 endif (MSVC)
 
 # The following code block is suggested to be used on Windows.
@@ -328,3 +259,4 @@ if (MSVC)
 		$<TARGET_FILE_DIR:${PROJECT_NAME}>
 	)
 endif (MSVC)
+

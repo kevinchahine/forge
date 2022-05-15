@@ -7,9 +7,7 @@
 #include <chrono>
 #include <filesystem>
 
-#ifdef _WIN32
 #include <xlnt/xlnt.hpp>	// TODO: Linux make this work on linux or find a replacement
-#endif
 
 namespace forge
 {

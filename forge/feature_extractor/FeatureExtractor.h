@@ -5,7 +5,8 @@
 
 #include <iostream>
 
-#include <torch/csrc/api/include/torch/data/transforms/tensor.h>
+// #include <torch/csrc/api/include/torch/data/transforms/tensor.h>
+#include <torch/torch.h>
 
 // https://pytorch.org/cppdocs/notes/tensor_basics.html		for efficient tensor access
 
@@ -163,7 +164,8 @@ namespace forge
 		//	- atleast one of our blockers needs to be somewhere on extents also.
 	
 		// Does extents contain any of their rays? 
-		BitBoard overlap = extents & theirs & this->board().directionals<LINEAR_DIRECTION_T>();
+		//TODO: Put this back in !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BitBoard directionals = this->board().directionals<LINEAR_DIRECTION_T>();
+		BitBoard overlap = extents & theirs;// & this->board().directionals<LINEAR_DIRECTION_T>();
 	
 		// Does extents contain any of our blockers?
 		BitBoard possiblePins = extents & ours;
