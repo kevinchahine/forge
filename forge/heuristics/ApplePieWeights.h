@@ -1,6 +1,7 @@
 #pragma once
 
 #include "forge/heuristics/WeightsBase.h"
+#include "forge/heuristics/PositionTable.h"
 
 namespace forge
 {
@@ -42,12 +43,12 @@ namespace forge
 		heuristic_t kingMobility = 0;
 		
 		// --- Piece Square Table Bonus ---
-		//PositionTable queenPSTB;
-		//PositionTable rookPSTB;
-		//PositionTable bishopPSTB;
-		//PositionTable knightPSTB;
-		//PositionTable pawnPSTB;
-		//PositionTable kingPSTB;
+		PositionTable queenPSTB;
+		PositionTable rookPSTB;
+		PositionTable bishopPSTB;
+		PositionTable knightPSTB;
+		PositionTable pawnPSTB;
+		PositionTable kingPSTB;
 		
 		// --- Defended Pieces ---
 		heuristic_t queensDefended = 0;

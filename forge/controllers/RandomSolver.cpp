@@ -1,5 +1,4 @@
-#include "RandomSolver.h"
-#include "MoveGenerator2.h"
+#include "forge/controllers/RandomSolver.h"
 
 #include <random>
 #include <chrono>

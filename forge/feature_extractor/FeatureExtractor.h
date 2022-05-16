@@ -1,7 +1,7 @@
 #pragma once
 
 #include "forge/core/Position.h"
-#include "forge/ml/IntBoard.h"
+#include "forge/core/IntBoard.h"
 
 #include <iostream>
 

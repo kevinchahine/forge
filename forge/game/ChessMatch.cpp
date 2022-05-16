@@ -1,7 +1,6 @@
-#include "ChessMatch.h"
+#include "forge/game/ChessMatch.h"
 
-#include "MoveGenerator.h"
-#include "MoveGenerator2.h"
+#include "forge/movegen/MoveGenerator2.h"
 
 using namespace std;
 

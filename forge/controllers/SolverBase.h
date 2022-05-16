@@ -6,6 +6,8 @@
 
 #include "forge/search/SearchMonitor.h"
 
+#include "forge/movegen/MoveGenerator2.h"
+
 #include <vector>
 #include <type_traits>	// for is_base_of()
 #include <typeinfo>

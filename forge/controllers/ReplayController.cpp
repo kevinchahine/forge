@@ -1,6 +1,4 @@
-#include "ReplayController.h"
-
-#include "MoveGenerator2.h"
+#include "forge/controllers/ReplayController.h"
 
 #include <algorithm>
 

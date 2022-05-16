@@ -1,10 +1,9 @@
-#include "KeyboardController.h"
-
-#include "MoveGenerator2.h"
-//#include "MoveGenerator.h"
+#include "forge/controllers/KeyboardController.h"
 
 #include <algorithm>
 #include <functional>
+
+using namespace std;
 
 namespace forge
 {

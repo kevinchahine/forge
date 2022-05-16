@@ -145,7 +145,7 @@ namespace forge
 		MoveGenerator2 gen;
 		MoveList moves = gen.generate(node.position());
 		
-		function<bool()> drawByRepetition = [&]() {
+		std::function<bool()> drawByRepetition = [&]() {
 			return GameState::isDrawByRepetition(node);
 		};
 

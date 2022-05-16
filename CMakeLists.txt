@@ -10,6 +10,24 @@ project(${PROJECT_NAME})
 
 # --- Group source files ---
 set(CONTROLLERS
+	forge/controllers/ControllerBase.cpp
+	forge/controllers/ControllerBase.h
+	forge/controllers/Controllers.hpp
+	forge/controllers/KeyboardController.cpp
+	forge/controllers/KeyboardController.h
+	forge/controllers/MCTS_Solver.cpp
+	forge/controllers/MCTS_Solver.h
+	forge/controllers/MCTS_Solver_MT.cpp
+	forge/controllers/MCTS_Solver_MT.h
+	forge/controllers/MinimaxSolver.cpp
+	forge/controllers/MinimaxSolver.h
+	forge/controllers/RandomSolver.cpp
+	forge/controllers/RandomSolver.h
+	forge/controllers/ReplayController.cpp
+	forge/controllers/ReplayController.h
+	forge/controllers/SolverBase.cpp
+	forge/controllers/SolverBase.h
+	forge/controllers/Solvers.hpp
 )
 
 set(CORE
@@ -23,6 +41,8 @@ set(CORE
 	forge/core/Color.h
 	forge/core/Direction.cpp
 	forge/core/Direction.h
+	forge/core/IntBoard.cpp
+	forge/core/IntBoard.h	
 	forge/core/MoveCounter.h
 	forge/core/Move.cpp
 	forge/core/Move.h
@@ -36,18 +56,88 @@ set(CORE
 )
 
 set(FEATURE_EXTRACTOR
+	forge/feature_extractor/AttackChecker.cpp
+	forge/feature_extractor/AttackChecker.h
+	forge/feature_extractor/Attackers.cpp
+	forge/feature_extractor/AttackersDefinitions.h
+	forge/feature_extractor/Attackers.h
+	forge/feature_extractor/FeatureExtractor.cpp
+	forge/feature_extractor/FeatureExtractor.h
+	forge/feature_extractor/KingAttacker.cpp
+	forge/feature_extractor/KingAttacker.h
+	forge/feature_extractor/KingAttackers.cpp
+	forge/feature_extractor/KingAttackersDefinitions.h
+	forge/feature_extractor/KingAttackers.h
+	forge/feature_extractor/PinDefinitions.h
+	forge/feature_extractor/Pin.h
+	forge/feature_extractor/Threats.cpp
+	forge/feature_extractor/ThreatsDefinitions.h
+	forge/feature_extractor/Threats.h
 )
 
 set(GAME
+	forge/game/ChessMatch.cpp
+	forge/game/ChessMatch.h
+	forge/game/FiftyMoveRule.cpp
+	forge/game/FiftyMoveRule.h
+	forge/game/GameHistory.cpp
+	forge/game/GameHistory.h
+	forge/game/GameState.cpp
+	forge/game/GameState.h
 )
 
 set(HEURISTICS
+	forge/heuristics/ApplePieHeuristic.cpp
+	forge/heuristics/ApplePieHeuristic.h
+	forge/heuristics/ApplePieWeights.cpp
+	forge/heuristics/ApplePieWeights.h
+	forge/heuristics/HeuristicBase.cpp
+	forge/heuristics/HeuristicBase.h
+	forge/heuristics/Heuristics.hpp
+	#forge/heuristics/IWeightsArchive.cpp
+	#forge/heuristics/IWeightsArchive.h
+	#forge/heuristics/NeuralNetworkHeuristic.cpp
+	#forge/heuristics/NeuralNetworkHeuristic.h
+	#forge/heuristics/OWeightsArchive.cpp
+	#forge/heuristics/OWeightsArchive.h
+	forge/heuristics/PositionTable.cpp	
+	forge/heuristics/PositionTable.h
+	forge/heuristics/RandomHeuristic.cpp
+	forge/heuristics/RandomHeuristic.h
+	forge/heuristics/Rollout.cpp
+	forge/heuristics/Rollout.h
+	#forge/heuristics/WeightsArchive.cpp
+	#forge/heuristics/WeightsArchive.h
+	forge/heuristics/WeightsBase.cpp
+	forge/heuristics/WeightsBase.h
+	forge/heuristics/Weights.hpp
 )
 
 set(ML
+	forge/ml/CSVParser.cpp
+	forge/ml/CSVParser.h
+	forge/ml/DataSet.cpp
+	forge/ml/DataSet.h
+	forge/ml/DatasetGenerator.cpp
+	forge/ml/DatasetGenerator.h
+	forge/ml/Net.cpp
+	forge/ml/Net.h
+	forge/ml/Optimizer.cpp
+	forge/ml/Optimizer.h
+	forge/ml/PosEvalPair.h
+	forge/ml/PositionEvalPair.h
+	forge/ml/TensorPair.cpp
+	forge/ml/TensorPair.h
 )
 
 set(MOVEGEN
+	forge/movegen/MoveGenerator2.cpp
+	forge/movegen/MoveGenerator2_Definitions.h
+	forge/movegen/MoveGenerator2.h
+	forge/movegen/MoveList.cpp
+	forge/movegen/MoveList.h
+	forge/movegen/PseudoMoveGenerator.cpp
+	forge/movegen/PseudoMoveGenerator.h
 )
 
 set(NOTES
@@ -92,6 +182,22 @@ set(NOTES
 	forge/notes/View.txt
 )
 
+set(PERFT 
+)
+
+set(SEARCH
+	forge/search/ExitCondition.cpp
+	forge/search/ExitCondition.h
+	forge/search/MCTS_Node.cpp
+	forge/search/MCTS_Node.h
+	forge/search/MiniMaxNode.cpp
+	forge/search/MiniMaxNode.h
+	forge/search/Node.cpp
+	forge/search/Node.h
+	forge/search/SearchMonitor.cpp
+	forge/search/SearchMonitor.h
+)
+
 set(SOURCE
 	forge/source/globals.cpp
 	forge/source/globals.h
@@ -113,15 +219,26 @@ set(TEST
 )
 
 set(THIRD_PARTY
+	forge/third_party/rapidcsv.h
 )
 
 set(TIME
+	forge/time/Clock.cpp
+	forge/time/Clock.h
+	forge/time/StopWatch.cpp
+	forge/time/StopWatch.h
+	forge/time/Timer.cpp
+	forge/time/Timer.h
 )
 
 set(UCI
 )
 
 set(VIEWS
+	forge/views/TextView.cpp
+	forge/views/TextView.h
+	forge/views/ViewBase.cpp
+	forge/views/ViewBase.h
 )
 
 source_group(${PROJECT_NAME} ${ML_FILES})
@@ -133,6 +250,7 @@ source_group(${PROJECT_NAME} ${HEURISTICS})
 source_group(${PROJECT_NAME} ${ML})
 source_group(${PROJECT_NAME} ${MOVEGEN})
 source_group(${PROJECT_NAME} ${NOTES})
+source_group(${PROJECT_NAME} ${SEARCH})
 source_group(${PROJECT_NAME} ${SOURCE})
 source_group(${PROJECT_NAME} ${TEST})
 source_group(${PROJECT_NAME} ${THIRD_PARTY})
@@ -150,6 +268,7 @@ add_executable(${PROJECT_NAME}
 	${ML}
 	${MOVEGEN}
 	${NOTES}
+	${SEARCH}
 	${SOURCE}
 	${TEST}
 	${THIRD_PARTY}

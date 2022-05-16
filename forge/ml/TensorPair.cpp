@@ -1,6 +1,6 @@
 #include "TensorPair.h"
 
-#include "../globals.h"
+#include "forge/source/globals.h"
 
 using namespace std;
 

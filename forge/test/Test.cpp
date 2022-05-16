@@ -1,6 +1,7 @@
-#include "forge/test/positions.h"
 #include "forge/test/Test.h"
-//#include "forge/views/TextView.h"
+
+#include "forge/test/positions.h"
+#include "forge/views/TextView.h"
 
 #include <Guten/view/GridView.h>
 
@@ -1125,55 +1126,55 @@ namespace forge
 //			forge::RandomSolver solver;
 //		}
 //
-//		void chessMatch()
-//		{
-//			forge::ChessMatch match;
-//
-//			match.reset();
-//			//match.position().fromFEN("1RK5/k6p/4Q3/p4n1P/8/p5p1/8/2B1NBNR b - - 3 112");
-//
-//			match.clock().synchronize(
-//				chrono::minutes(5),
-//				chrono::minutes(5),
-//				chrono::seconds(2),
-//				chrono::seconds(2)
-//			); // Clock is still paused
-//
-//			auto whiteController =
-//				//make_unique<RandomSolver>();
-//				//make_unique<MinimaxSolver>();
-//				//make_unique<MCTS_Solver>();
-//				make_unique<MCTS_Solver_MT>();
-//				//make_unique<KeyboardController>();
-//			 
-//			auto blackController =
-//				//make_unique<RandomSolver>();
-//				make_unique<MinimaxSolver>();
-//				//make_unique<MCTS_Solver>();
-//				//make_unique<MCTS_Solver_MT>();
-//				//make_unique<KeyboardController>();
-//
-//			whiteController->makeHeuristic<
-//				forge::ApplePieHeuristic
-//				//RandomHeuristic>();
-//				//forge::heuristics::Rollout
-//				//NeuralNetworkHeuristic>();
-//			>();
-//
-//			blackController->makeHeuristic<
-//				forge::ApplePieHeuristic
-//				//RandomHeuristic>();
-//				//forge::heuristics::Rollout
-//				//NeuralNetworkHeuristic>();
-//			>();
-//
-//			match.whiteController() = std::move(whiteController);
-//			match.blackController() = std::move(blackController);
-//
-//			match.makeView<TextView>();
-//			match.runGame();
-//		}
-//
+		void chessMatch()
+		{
+			forge::ChessMatch match;
+
+			match.reset();
+			//match.position().fromFEN("1RK5/k6p/4Q3/p4n1P/8/p5p1/8/2B1NBNR b - - 3 112");
+
+			match.clock().synchronize(
+				chrono::minutes(5),
+				chrono::minutes(5),
+				chrono::seconds(2),
+				chrono::seconds(2)
+			); // Clock is still paused
+
+			auto whiteController =
+				//make_unique<RandomSolver>();
+				make_unique<MinimaxSolver>();
+				//make_unique<MCTS_Solver>();
+				//make_unique<MCTS_Solver_MT>();
+				//make_unique<KeyboardController>();
+			 
+			auto blackController =
+				//make_unique<RandomSolver>();
+				//make_unique<MinimaxSolver>();
+				make_unique<MCTS_Solver>();
+				//make_unique<MCTS_Solver_MT>();
+				//make_unique<KeyboardController>();
+
+			whiteController->makeHeuristic<
+				forge::ApplePieHeuristic
+				//forge::RandomHeuristic
+				//forge::heuristics::Rollout
+				//forge::NeuralNetworkHeuristic
+			>();
+
+			blackController->makeHeuristic<
+				forge::ApplePieHeuristic
+				//forge::RandomHeuristic
+				//forge::heuristics::Rollout
+				//forge::NeuralNetworkHeuristic
+			>();
+
+			match.whiteController() = std::move(whiteController);
+			match.blackController() = std::move(blackController);
+
+			match.makeView<forge::TextView>();
+			match.runGame();
+		}
+
 //		void performanceTester()
 //		{
 //			for (size_t t = 5; t <= 8; t++) {
@@ -1453,23 +1454,23 @@ namespace forge
 //			////	}
 //			////}
 //		}
-//
-//		void trainNN()
-//		{
-//			const std::string filename =
-//				// "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv";
-//				//"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
-//				R"dil(D:\DataSets\Chess\stockfish_evals\chessData.csv)dil";
-//					
-//			forge::DataSet ds;
-//
-//			ds.openFile(filename);
-//			ds.batchSize(10'000);
-//
-//			forge::ml::Net net{g_computingDevice};
-//			net.train(ds, 10'000);
-//		}
-//
+
+		void trainNN()
+		{
+			const std::string filename =
+				// "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv";
+				"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
+				//R"dil(D:\DataSets\Chess\stockfish_evals\chessData.csv)dil";
+					
+			forge::DataSet ds;
+
+			ds.openFile(filename);
+			ds.batchSize(10'000);
+
+			forge::ml::Net net{g_computingDevice};
+			net.train(ds, 10'000);
+		}
+
 //		namespace weights
 //		{
 //			void applePie()

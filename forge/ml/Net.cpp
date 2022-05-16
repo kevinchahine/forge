@@ -1,7 +1,7 @@
 #include "Net.h"
 
-#include "../globals.h"
-#include "../Timer.h"
+#include "forge/source/globals.h"
+#include "forge/time/Timer.h"
 
 #include <torch/csrc/api/include/torch/optim/adam.h>
 #include <torch/csrc/api/include/torch/serialize.h>

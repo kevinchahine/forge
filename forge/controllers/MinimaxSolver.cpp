@@ -1,8 +1,7 @@
-#include "MinimaxSolver.h"
+#include "forge/controllers/MinimaxSolver.h"
 
-#include "GameState.h"
+#include "forge/game/GameState.h"
 
-#define NOMINMAX
 #include <limits>
 
 using namespace std;

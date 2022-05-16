@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Solvers.hpp"				// include AI Solvers/Controllers
-#include "KeyboardController.h"
-#include "ReplayController.h"
+#include "forge/controllers/Solvers.hpp"				// include AI Solvers/Controllers
+#include "forge/controllers/KeyboardController.h"
+#include "forge/controllers/ReplayController.h"
 
 // TODO: Still need UCIController
 // TODO: And possibly network controller for remote or multiplayer games

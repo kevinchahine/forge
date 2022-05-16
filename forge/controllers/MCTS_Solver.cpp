@@ -1,6 +1,6 @@
-#include "MCTS_Solver.h"
+#include "forge/controllers/MCTS_Solver.h"
 
-#include "GameState.h"
+#include "forge/game/GameState.h"
 
 using namespace std;
 

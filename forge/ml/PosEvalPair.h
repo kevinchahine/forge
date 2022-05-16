@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Position.h"
+#include "forge/core/Position.h"
 
 #include <iostream>
 #include <iomanip>

@@ -1,5 +1,6 @@
 #pragma once
-#include "Node.h"
+
+#include "forge/search/Node.h"
 
 namespace forge
 {

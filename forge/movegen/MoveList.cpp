@@ -1,6 +1,6 @@
-#include "MoveList.h"
+#include "forge/movegen/MoveList.h"
 
-#include "AttackChecker.h"
+#include "forge/feature_extractor/AttackChecker.h"
 
 #include <algorithm>
 #include <functional>

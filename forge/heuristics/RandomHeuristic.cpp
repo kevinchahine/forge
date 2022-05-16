@@ -1,6 +1,6 @@
-#include "RandomHeuristic.h"
+#include "forge/heuristics/RandomHeuristic.h"
 
-#include "globals.h"
+#include "forge/source/globals.h"
 
 using namespace std;
 

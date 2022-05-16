@@ -1,5 +1,5 @@
-#include "MCTS_Node.h"
-#include "globals.h"
+#include "forge/search/MCTS_Node.h"
+#include "forge/source/globals.h"
 
 #include "Guten/termcolor/termcolor.hpp"
 

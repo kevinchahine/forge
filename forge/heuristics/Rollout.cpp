@@ -1,8 +1,8 @@
 #include "Rollout.h"
 
-#include "../RandomSolver.h"
-#include "../GameHistory.h"
-#include "../GameState.h"
+#include "forge/controllers/RandomSolver.h"
+#include "forge/game/GameHistory.h"
+#include "forge/game/GameState.h"
 
 using namespace std;
 

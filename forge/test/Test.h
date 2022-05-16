@@ -1,35 +1,35 @@
 #pragma once
 
-//#include "forge/controllers/Controllers.hpp"
+#include "forge/controllers/Controllers.hpp"
 
 #include "forge/source/globals.h"
 
 #include "forge/core/Board.h"
 #include "forge/core/Move.h"
 
-//#include "forge/feature_extractor/AttackChecker.h"
-//#include "forge/feature_extractor/Attackers.h"
-//#include "forge/feature_extractor/Threats.h"
-//
-//#include "forge/game/ChessMatch.h"
-//#include "forge/game/GameState.h"
-//
-//#include "forge/heuristics/Heuristics.hpp"
-//#include "forge/heuristics/Weights.hpp"
-//
-//#include "forge/ml/CSVParser.h"
-//#include "forge/ml/DataSet.h"
-//#include "forge/ml/Net.h"
-//
-//#include "forge/movegen/MoveGenerator2.h"
-//
+#include "forge/feature_extractor/AttackChecker.h"
+#include "forge/feature_extractor/Attackers.h"
+#include "forge/feature_extractor/Threats.h"
+
+#include "forge/game/ChessMatch.h"
+#include "forge/game/GameState.h"
+
+#include "forge/heuristics/Heuristics.hpp"
+#include "forge/heuristics/Weights.hpp"
+
+#include "forge/ml/CSVParser.h"
+#include "forge/ml/DataSet.h"
+#include "forge/ml/Net.h"
+
+#include "forge/movegen/MoveGenerator2.h"
+
 //#include "forge/perft/PerformanceTester.h"
 //#include "forge/perft/PerformanceLogger.h"
-//
+
 //#include "forge/search/Node.h"
-//
-//#include "forge/time/Clock.h"
-//#include "forge/time/StopWatch.h"
+
+#include "forge/time/Clock.h"
+#include "forge/time/StopWatch.h"
 
 #include <iostream>
 #include <thread>

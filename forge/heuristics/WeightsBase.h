@@ -1,7 +1,7 @@
 #pragma once
 
-#include "HeuristicBase.h"
-#include "WeightsArchive.h"
+#include "forge/heuristics/HeuristicBase.h"
+#include "forge/heuristics/WeightsArchive.h"
 
 #include <iostream>
 #include <vector>

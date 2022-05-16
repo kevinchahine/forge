@@ -3,6 +3,7 @@
 #include "forge/heuristics/HeuristicBase.h"
 
 #include <iostream>
+#include <memory>
 
 namespace forge
 {
@@ -14,7 +15,7 @@ namespace forge
 
 			virtual heuristic_t eval(const Position& pos) override;
 
-			virtual std::unique_ptr<HeuristicBase> clone() const override { return make_unique<Rollout>(*this); }
+			virtual std::unique_ptr<HeuristicBase> clone() const override { return std::make_unique<Rollout>(*this); }
 
 			virtual std::string name() const override { return "Rollout"; }
 

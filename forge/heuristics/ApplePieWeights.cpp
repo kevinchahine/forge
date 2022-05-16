@@ -97,12 +97,12 @@ namespace forge
 		kingMobility = ar.front();		ar.pop_front();
 
 		// --- Piece Square Table Bonus ---
-		queenPSTB.parse(ar);
-		rookPSTB.parse(ar);
-		bishopPSTB.parse(ar);
-		knightPSTB.parse(ar);
-		pawnPSTB.parse(ar);
-		kingPSTB.parse(ar);
+		//queenPSTB.parse(ar);
+		//rookPSTB.parse(ar);
+		//bishopPSTB.parse(ar);
+		//knightPSTB.parse(ar);
+		//pawnPSTB.parse(ar);
+		//kingPSTB.parse(ar);
 
 		// --- Defended Pieces ---
 		queensDefended = ar.front();	ar.pop_front();

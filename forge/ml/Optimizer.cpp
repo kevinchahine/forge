@@ -1,8 +1,8 @@
 #include "Optimizer.h"
 
-#include "../Position.h"
+#include "forge/core/Position.h"
 
-#include "../rapidcsv.h"
+#include "forge/third_party/rapidcsv.h"
 
 #include <boost/filesystem.hpp>
 

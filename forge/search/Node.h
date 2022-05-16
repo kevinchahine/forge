@@ -131,7 +131,7 @@ namespace forge
 		m_childrenPtrs.reserve(moves.size());
 
 		for (const auto& move : moves) {
-			auto sp = make_shared<NODE_T>();
+			auto sp = std::make_shared<NODE_T>();
 
 			// -- Create new Node --
 			m_childrenPtrs.emplace_back(std::make_shared<NODE_T>());
@@ -147,7 +147,7 @@ namespace forge
 		// 3.) --- Assign sibling pointers ---
 		if (m_childrenPtrs.size()) {
 			for (size_t i = 0; i < m_childrenPtrs.size() - 1; i++) {
-				shared_ptr<NODE_T>& childPtr = m_childrenPtrs.at(i);
+				std::shared_ptr<NODE_T>& childPtr = m_childrenPtrs.at(i);
 				
 				childPtr->m_parentPtr = static_cast<NODE_T*>(this);
 			}
