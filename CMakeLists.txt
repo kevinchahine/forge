@@ -128,6 +128,8 @@ set(ML
 	forge/ml/PositionEvalPair.h
 	forge/ml/TensorPair.cpp
 	forge/ml/TensorPair.h
+	forge/ml/TrainingHistory.cpp
+	forge/ml/TrainingHistory.h	
 )
 
 set(MOVEGEN
@@ -332,14 +334,13 @@ else ()
 	set(Boost_USE_STATIC_RUNTIME	OFF)
 
 	find_package(Boost REQUIRED COMPONENTS
-		##asio 
+		#asio 
 		system 
 		filesystem 
-		##process
+		#process
 		REQUIRED)
 
 	target_link_libraries(${PROJECT_NAME} PUBLIC
-		#${BOOST_LIBRARIES}
 		#Boost::asio
 		Boost::system
 		Boost::filesystem
@@ -360,6 +361,16 @@ else ()
 	#find_package(Xlnt CONFIG REQUIRED)
 	#
 	#target_link_libraries(${PROJECT_NAME} PRIVATE xlnt:xlnt)
+
+	# --- MatPlot++ ---
+	find_package(matplot++ CONFIG REQUIRED)
+	
+	target_link_libraries(${PROJECT_NAME} PRIVATE 
+		Matplot++::cimg 
+		std::filesystem 
+		Matplot++::matplot 
+		Matplot++::nodesoup
+	)
 
 endif (MSVC)
 

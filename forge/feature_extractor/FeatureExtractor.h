@@ -85,7 +85,7 @@ namespace forge
 		IntBoard countAllAttacked() const;
 
 	public:
-		static const size_t MATERIAL_FEATURES_SIZE = 13 * 64;
+		static const size_t MATERIAL_FEATURES_SIZE = 12 * 64;
 		static const size_t MOBILITY_FEATURES_SIZE = 12 * 64;
 		static const size_t ATTACKED_FEATURES_SIZE = 12 * 64;
 

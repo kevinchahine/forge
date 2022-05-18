@@ -78,19 +78,19 @@ namespace forge
 
 		for (size_t bit = 0; bit < 64; bit++) {
 			// TODO: Optimize: Can this be optimized with ifs. Hint: Sparse data.
-			accessor[0][64 * 0 + bit] = static_cast<float>(empty[bit]);
-			accessor[0][64 * 1 + bit] = static_cast<float>(ourKings[bit]);
-			accessor[0][64 * 2 + bit] = static_cast<float>(ourQueens[bit]);
-			accessor[0][64 * 3 + bit] = static_cast<float>(ourBishops[bit]);
-			accessor[0][64 * 4 + bit] = static_cast<float>(ourKnights[bit]);
-			accessor[0][64 * 5 + bit] = static_cast<float>(ourRooks[bit]);
-			accessor[0][64 * 6 + bit] = static_cast<float>(ourPawns[bit]);
-			accessor[0][64 * 7 + bit] = static_cast<float>(theirKings[bit]);
-			accessor[0][64 * 8 + bit] = static_cast<float>(theirQueens[bit]);
-			accessor[0][64 * 9 + bit] = static_cast<float>(theirBishops[bit]);
-			accessor[0][64 * 10 + bit] = static_cast<float>(theirKnights[bit]);
-			accessor[0][64 * 11 + bit] = static_cast<float>(theirRooks[bit]);
-			accessor[0][64 * 12 + bit] = static_cast<float>(theirPawns[bit]);
+			///accessor[0][64 * 0 + bit] = static_cast<float>(empty[bit]);
+			accessor[0][64 * 0 + bit] = static_cast<float>(ourKings[bit]);
+			accessor[0][64 * 1 + bit] = static_cast<float>(ourQueens[bit]);
+			accessor[0][64 * 2 + bit] = static_cast<float>(ourBishops[bit]);
+			accessor[0][64 * 3 + bit] = static_cast<float>(ourKnights[bit]);
+			accessor[0][64 * 4 + bit] = static_cast<float>(ourRooks[bit]);
+			accessor[0][64 * 5 + bit] = static_cast<float>(ourPawns[bit]);
+			accessor[0][64 * 6 + bit] = static_cast<float>(theirKings[bit]);
+			accessor[0][64 * 7 + bit] = static_cast<float>(theirQueens[bit]);
+			accessor[0][64 * 8 + bit] = static_cast<float>(theirBishops[bit]);
+			accessor[0][64 * 9 + bit] = static_cast<float>(theirKnights[bit]);
+			accessor[0][64 * 10 + bit] = static_cast<float>(theirRooks[bit]);
+			accessor[0][64 * 11 + bit] = static_cast<float>(theirPawns[bit]);
 		}
 	}
 

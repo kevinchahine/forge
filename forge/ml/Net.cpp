@@ -21,6 +21,8 @@ namespace forge
 		{
 			cout << "--- Net::train() ---" << endl;
 			
+			this->load("net.pt");
+			
 			ofstream outFile;
 			outFile.open("training_history.txt");
 			outFile << "epoch, (mse) loss" << endl;
@@ -39,7 +41,7 @@ namespace forge
 			saveTimer.resume();
 
 			// TODO: This might need to be put on the GPU. Maybe
-			torch::optim::Adam optimizer(this->parameters(), 0.01);
+			torch::optim::Adam optimizer(this->parameters(), 0.001);
 			
 			// Repeat until we run out of data
 			size_t epoch = 0;
@@ -47,21 +49,21 @@ namespace forge
 			float lossVal = 0.0f;
 
 			do {//while (epoch < nEpochs) {
-				//cout << "Reading next batch...";
+				cout << "Reading next batch..." << flush;
 				chrono::time_point start = chrono::high_resolution_clock::now();
 				TensorPair batch = trainingDS.getNextBatch();
 				batch.moveTo(g_computingDevice);
-				//cout << "Moving TensorPair to GPU...";
-				//cout << "done " << batch.inputs.device() << '\t' << batch.outputs.device() << endl;
+				cout << "done " << batch.inputs.device() << '\t' << batch.outputs.device() << endl;
 
 				chrono::time_point stop = chrono::high_resolution_clock::now();
-				//cout << "done. took " << chrono::duration_cast<chrono::milliseconds>(stop - start).count()
-				//	<< "ms" << endl;
-
+				cout << "done. took " << chrono::duration_cast<chrono::milliseconds>(stop - start).count()
+					<< "ms" << endl;
 
 				// When we reach the end of the dataset, start over until we reach the last epoch
-				if (batch.nSamples() == 0) {
-					trainingDS.reset();
+				if (batch.nSamples() == 0 || batch.nSamples() < trainingDS.batchSize() / 2) {
+					cout << "End of data set reached. Going back to the beginning" << endl;
+					trainingDS.reset();	// go back to the beginning of training file
+					continue;			// go to the end of loop and repeat
 				}
 
 				for (size_t reuse = 0; reuse < 100; reuse++) {
@@ -73,6 +75,7 @@ namespace forge
 
 					// Compute a loss value to judge the prediction of our model.
 					loss = torch::mse_loss(prediction, batch.outputs);
+					loss.cuda();	// ??? Is this right
 
 					// Compute gradients of the loss w.r.t. the parameters of our model
 					loss.backward();
@@ -82,10 +85,13 @@ namespace forge
 
 					//cout << "Epoch duration = " << chrono::duration_cast<chrono::milliseconds>(stop - start).count()
 					//	<< "ms " << endl;
+					//cout << "Epoch: " << epoch << " | Loss: " << lossVal << endl;
 
 					lossVal = loss.item<float>();
-					outFile << epoch << ", " << lossVal << endl;
-					// Output the loss and checkpoint every 100 batches
+					
+					outFile << epoch << ", " << lossVal << '\n';
+
+					// Output the loss and checkpoint periodically
 					if (timer.is_expired()) {
 						cout << "Epoch: " << epoch << " | Loss: " << lossVal << endl;
 
@@ -94,7 +100,9 @@ namespace forge
 					}
 
 					if (saveTimer.is_expired()) {
-						//torch::save(*this, "net.pt");
+						cout << "Saving checkpoint...";
+						this->save("net.pt");
+						cout << "done" << endl;
 						saveTimer.expires_from_now(savePeriod);
 						saveTimer.resume();
 					}
@@ -106,7 +114,24 @@ namespace forge
 			outFile.close();
 			// Save model
 			// TODO: Make this work. * See above 
-			//this->save("trained_models/trained_nn.xml");
+			// torch::save(*this, "trained_models/net.pt");
 		}
+
+		void Net::save(const string & filename) 
+		{
+			torch::serialize::OutputArchive outputArchive;
+
+			this->torch::nn::Module::save(outputArchive);	// Call parents method overload 
+			outputArchive.save_to(filename);
+		}
+
+		void Net::load(const string & filename)
+		{
+			torch::serialize::InputArchive inputArchive;
+
+			inputArchive.load_from(filename);
+			this->torch::nn::Module::load(inputArchive);	// Call parents method overload
+		}
+
 	} // namespace ml
 } // namespace forge

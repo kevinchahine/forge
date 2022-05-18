@@ -12,14 +12,14 @@ class UciBase
 	
 	+ close()
 
-// ------------------------------------ UCI ENGINE ----------------------------
+// ------------------------------------ UCI CLIENT (Chess Engine) ----------------------------
 
-// Sends messages to a UCI Engine
-class UciEngine : public UCI_Base
+// Sends messages to a UCI Client
+class UciClient : public UCI_Base
 	// method						uci command							Comments
 	uci() - void					// uci
 	debug(isDebug: false)			// debug [ on | off ]
-	isready()						// isready							blocks until engine replies with "readyok"
+	isready()						// isready							blocks until client replies with "readyok"
 	setOption(opName, opVal)		// setoption <opName> <opVal>
 	setOptionOp1(opVal)				// 
 	setOptionOp2(opVal)				// 
@@ -28,12 +28,12 @@ class UciEngine : public UCI_Base
 	registerLater()					// register later
 	registerName(<name>)			// register name <name>
 	registerCode(<code>)			// register name <code>
-	ucinewgame()					// ucinewgame \n isready			blocks until engine replies "readyok"
+	ucinewgame()					// ucinewgame \n isready			blocks until client replies "readyok"
 	position()						// position startpos				sends start position
 	position(fen - string, m)		// position fen <fen> moves <m>		sends fen of position and moves to play m can be empty
 	position(pos - Position, m)		// position pos.toFEN()	moves <m>	sends fen of position and moves to play m can be empty
-	go()							// go								tells engine to start searching
-	go(sCMD - UciSearchCommands)	// go sCMD.to_string()				tells engine to start searching. Sends search commands also.
+	go()							// go								tells client to start searching
+	go(sCMD - UciSearchCommands)	// go sCMD.to_string()				tells client to start searching. Sends search commands also.
 	stop()							// stop								stop calculating as soon as possible
 	ponderhit()						// ponderhit						
 	quit()							// quit								quit the program as soon as possible
@@ -55,10 +55,10 @@ class UciSearchCommands
 	- movetime <x>					// search exactly `movetime` msecs 
 	- infinite						// search until "stop" command. Do not exit search until "stop" cmd is issued
 
---------------------------------------- UCI_GUI -------------------------------
+--------------------------------------- UCI_SERVER (Chess GUI) -------------------------------
 
-// Sends messages to a UCI GUI.
-class UciGui : public UciBase
+// Sends messages to a UCI SERVER.
+class UciServer : public UciBase
 	+ id(name, author)				// id <name> \n id <author>
 	+ idName(name)					// id <name> 
 	+ idAuthor(author)				// id <author>
@@ -85,8 +85,8 @@ class UciGui : public UciBase
 	+ infoNodesPerSec(int)			// info nps <nps>					nodes per second searched (send regularly)
 	+ infoTableHits(int)
 	+ infoShreaderEndgameDatabases(int)
-	+ infoCpuLoad(int)				// info cpuload <cpuload>			cpu usage of the engine in x permill
-	+ string(str - string)			// info string <str>				any string to be displayed on engine
+	+ infoCpuLoad(int)				// info cpuload <cpuload>			cpu usage of the client in x permill
+	+ string(str - string)			// info string <str>				any string to be displayed on client
 	+ refutation(vector<Move>)		// info refutation <m1> ... <mi>	
 	+ currLine(vector<Move>)		// info <m1> ... <mi>
 	+ currLine(int, vector<Move>)	// info <cpunr> <m1> ... <mi>

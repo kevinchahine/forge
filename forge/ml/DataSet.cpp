@@ -33,13 +33,13 @@ namespace forge
 		// Load and Parse samples
 		vector<PositionEvalPair> pairs = m_parser.getNextBatch();
 
+		int64_t inputSize = forge::FeatureExtractor::MATERIAL_FEATURES_SIZE;
 		// Create Tensors on CPU to speed up preprocessing
 		TensorPair data{ 
-			(int64_t)pairs.size(),								// # of samples
-			forge::FeatureExtractor::MATERIAL_FEATURES_SIZE + 
-			forge::FeatureExtractor::ATTACKED_FEATURES_SIZE,	// # of input features
-			1,													// # of output features
-			torch::kCPU											// device
+			(int64_t)pairs.size(),	// # of samples
+			inputSize,				// # of input features
+			1,						// # of output features
+			torch::kCPU				// device
 		};
 
 		// Extract Features of each sample
@@ -52,18 +52,9 @@ namespace forge
 			// --- Inputs ---
 			torch::Tensor sampleSlice = data.inputs.slice(0, sampleIndex, sampleIndex + 1);
 
-			size_t nFeatures = forge::FeatureExtractor::MATERIAL_FEATURES_SIZE;
-			size_t nFeatures2 = forge::FeatureExtractor::ATTACKED_FEATURES_SIZE;
-			torch::Tensor materialSlice = sampleSlice.slice(1, 0, nFeatures);
-			extractor.extractMaterial(materialSlice);
-
-			torch::Tensor attackedSlice = sampleSlice.slice(
-				1, 
-				nFeatures,
-				forge::FeatureExtractor::MATERIAL_FEATURES_SIZE + forge::FeatureExtractor::ATTACKED_FEATURES_SIZE
-			);
-			extractor.extractAttacked(attackedSlice);
-
+			//torch::Tensor materialSlice = sampleSlice.slice(1, 0, inputSize);
+			extractor.extractMaterial(sampleSlice);//materialSlice);
+			
 			// --- Output ---
 			data.outputs[sampleIndex] = pair.eval;
 		}
