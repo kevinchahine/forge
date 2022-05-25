@@ -49,36 +49,6 @@ namespace forge
 		// Output Layer:
 		//		A single value that is the evaluation of the position in units of centi-pawns.
 		// 		From perspective of moving player.
-		// 
-		// Input Layer:
-		//			# of nodes	- feature		- feature type
-		//		Material:
-		//			64			- our king		- one-hot
-		//			64			- our queens	- one-hot
-		//			64			- our bishops	- one-hot
-		//			64			- our knights	- one-hot
-		//			64			- our rooks		- one-hot
-		//			64			- our pawns		- one-hot
-		//			64			- their king	- one-hot
-		//			64			- their queens	- one-hot
-		//			64			- their bishops	- one-hot
-		//			64			- their knights	- one-hot
-		//			64			- their rooks	- one-hot
-		//			64			- their pawns	- one-hot
-		//			64			- empty			- one-hot
-		//		Mobility: (How many of each piece can move to a each given square)
-		//			64			- our king		- array
-		//			64			- our queens	- array
-		//			64			- our bishops	- array
-		//			64			- our knights	- array
-		//			64			- our rooks		- array
-		//			64			- our pawns		- array
-		//			64			- their king	- array
-		//			64			- their queens	- array
-		//			64			- their bishops	- array
-		//			64			- their knights	- array
-		//			64			- their rooks	- array
-		//			64			- their pawns	- array
 		//Net m_net;
 	};
 } // namespace forge

@@ -27,7 +27,7 @@ Description of the universal chess interface (UCI)    April  2006
 
 * The engine will always be in forced mode which means it should never start calculating
   or pondering without receiving a "go" command first.
-  "when uci_controller reads "go" from cin, it should start kick of AI controller"
+  "when uci_controller reads "go" from cin, it should start AI controller"
 
 * Before the engine is asked to search on a position, there will always be a position command
   to tell the engine about the current position.

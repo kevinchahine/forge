@@ -41,7 +41,7 @@ namespace forge
 			saveTimer.resume();
 
 			// TODO: This might need to be put on the GPU. Maybe
-			torch::optim::Adam optimizer(this->parameters(), 0.001);
+			torch::optim::Adam optimizer(this->parameters(), 0.002);
 			
 			// Repeat until we run out of data
 			size_t epoch = 0;
