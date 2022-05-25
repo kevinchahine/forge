@@ -96,8 +96,8 @@ set(HEURISTICS
 	forge/heuristics/Heuristics.hpp
 	#forge/heuristics/IWeightsArchive.cpp
 	#forge/heuristics/IWeightsArchive.h
-	#forge/heuristics/NeuralNetworkHeuristic.cpp
-	#forge/heuristics/NeuralNetworkHeuristic.h
+	forge/heuristics/NeuralNetworkHeuristic.cpp
+	forge/heuristics/NeuralNetworkHeuristic.h
 	#forge/heuristics/OWeightsArchive.cpp
 	#forge/heuristics/OWeightsArchive.h
 	forge/heuristics/PositionTable.cpp	
@@ -214,6 +214,8 @@ set(TEST
 	forge/test/Test.h
 	#forge/test/TestFeatureExtractor.cpp
 	#forge/test/TestFeatureExtractor.h
+	forge/test/TestML.cpp
+	forge/test/TestML.h
 	#forge/test/TestMoveGen.cpp
 	#forge/test/TestMoveGen.h
 	#forge/test/TestUci.cpp

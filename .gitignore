@@ -264,3 +264,7 @@ __pycache__/
 
 # Visual Code
 .vscode/
+
+# 
+training_progress/
+

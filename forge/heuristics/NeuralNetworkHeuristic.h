@@ -1,15 +1,15 @@
 #pragma once
 
-#include "HeuristicBase.h"
-//#include "ml/Net.h"
+#include "forge/heuristics/HeuristicBase.h"
+#include "forge/ml/Net.h"
 
 namespace forge
 {
 	class NeuralNetworkHeuristic : public HeuristicBase
 	{
 	public:
-		NeuralNetworkHeuristic() {};
-		//NeuralNetworkHeuristic(const std::string& model_file_name);
+		NeuralNetworkHeuristic() = default;
+		NeuralNetworkHeuristic(const std::string& net_file);
 		NeuralNetworkHeuristic(const NeuralNetworkHeuristic&) = default;
 		NeuralNetworkHeuristic(NeuralNetworkHeuristic&&) = default;
 		virtual ~NeuralNetworkHeuristic() noexcept = default;
@@ -24,16 +24,9 @@ namespace forge
 
 		virtual void print(const Position& pos, std::ostream& os = std::cout) const override;
 
-		size_t nInputNodes() const { return 0; }// m_model.get_layer_pointer(0)->get_inputs_number();
-
-		// size_t nOutputNodes() const { return m_model.get_layer_pointer(last_layer)->get_inputs_number(); ??? }
-
-		//Net & model() { return m_net; }
-		//const Net & model() const { return m_net; }
+		ml::Net & model() { return m_net; }
+		const ml::Net & model() const { return m_net; }
 		
-	protected:
-		////Eigen::Tensor<float, 2> featureExtraction(const Position & pos);
-
 	protected:
 		// A neural network model used to approximate the fitness or favorability of a chess Position.
 		// Input is a 2-D Matrix (12 rows, 64 columns)
@@ -49,6 +42,6 @@ namespace forge
 		// Output Layer:
 		//		A single value that is the evaluation of the position in units of centi-pawns.
 		// 		From perspective of moving player.
-		//Net m_net;
+		ml::Net m_net;
 	};
 } // namespace forge

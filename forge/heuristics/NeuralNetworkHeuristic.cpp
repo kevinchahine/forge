@@ -1,26 +1,36 @@
 #include "NeuralNetworkHeuristic.h"
 
+#include "forge/feature_extractor/FeatureExtractor.h"
+
 using namespace std;
 
 namespace forge
 {
+	NeuralNetworkHeuristic::NeuralNetworkHeuristic(const string& net_file)
+	{
+		m_net.load(net_file);
+
+		m_net.to(torch::kCPU);
+	}
+
 	heuristic_t NeuralNetworkHeuristic::eval(const Position& pos)
 	{
-		////size_t inputSize = m_model.get_layer_pointer(0)->get_inputs_number();
+		// --- Input ---
+		// Tensor which holds input features (one-hot and multi-hot encodings)
+		torch::Tensor inputs = torch::ones({1, forge::FeatureExtractor::MATERIAL_FEATURES_SIZE}, torch::kCPU);
 
-		////Eigen::Tensor<float, 2> inputs(1, inputSize);	// TODO: do this in 2D. Let 1st dim be the feature and the 2nd be the square
-		////Eigen::Tensor<float, 2> outputs(1, 1);
+		// --- Extract ---
+		// Extract one-hot encodings into a tensor
+		FeatureExtractor extractor;
+		extractor.init(pos);
+		extractor.extractMaterial(inputs);
 
-		// --- Preprocess ---
+		// --- Evaluate Position ---
+		torch::Tensor output = m_net.forward(inputs);
 
-		// --- Feature Extraction ---
-		////inputs = this->featureExtraction(pos);
-
-		// --- Feed Forward ---
-		////outputs = m_model.calculate_outputs(inputs);
-
-		// --- Return ---
-		return 0.0;//// outputs(0, 0);
+		// --- Return Evaluation ---
+		heuristic_t eval = output[0].item<float>();
+		return eval;
 	}
 
 	unique_ptr<HeuristicBase> NeuralNetworkHeuristic::clone() const

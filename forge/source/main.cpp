@@ -20,6 +20,8 @@ Designed to be compatible with a variety of displays including:
 
 #include "forge/source/globals.h"
 #include "forge/test/Test.h"
+#include "forge/test/TestML.h"
+#include "forge/test/positions.h"
 // #include "TestFeatureExtractor.h"
 // #include "ml/Optimizer.h"
 
@@ -39,6 +41,7 @@ int main(int argc, char ** argv)
 
 	forge::initGlobals();
 	forge::test::initTestBoards();
+	forge::test::init();
 	
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
@@ -95,6 +98,8 @@ int main(int argc, char ** argv)
 	//forge::test::feature_extractor::init();
 	//forge::test::feature_extractor::findAllAttacked();
 	//forge::test::feature_extractor::countAllAttacked();
+
+	//forge::test::ml::heuristic();
 
 	//forge::test::movegen::stockfishAndForge();
 

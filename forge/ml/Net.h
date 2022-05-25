@@ -7,6 +7,7 @@
 #include <string>
 
 #include <torch/torch.h>
+//#include <torch/script.h>	// https://pytorch.org/tutorials/advanced/cpp_export.html
 // #include "torch\csrc\api\include\torch\nn\module.h"
 // #include "torch\csrc\api\include\torch\nn\modules\linear.h"
 
@@ -17,7 +18,7 @@ namespace forge
 		class Net : public torch::nn::Module
 		{
 		public:
-			Net(const torch::Device & computingDevice) {
+			Net(const torch::Device & computingDevice = torch::kCPU) {
 				size_t inputLayerSize = 
 					FeatureExtractor::MATERIAL_FEATURES_SIZE;
 
@@ -28,10 +29,7 @@ namespace forge
 				
 				// These lines are very important to make sure layers are in the correct device
 				// operations will hang if these arn't called 
-				fc1->to(computingDevice);
-				fc2->to(computingDevice);
-				fc3->to(computingDevice);
-				fc4->to(computingDevice);
+				this->to(computingDevice);
 			}
 			Net(const Net&) = default;
 			Net(Net&&) noexcept = default;
@@ -44,7 +42,7 @@ namespace forge
 				torch::Tensor t = fc1->forward(x);
 				t = torch::relu(t);
 				//t = torch::dropout(t, 0.5, is_training());
-
+				
 				// --- Layer 2 ---
 				t = fc2->forward(t);
 				t = torch::relu(t);
@@ -52,8 +50,8 @@ namespace forge
 				// --- Layer 3 ---
 				t = fc3->forward(t);
 				t = torch::relu(t);
-
-				// --- Layer 4 ---
+				
+				//// --- Layer 4 ---
 				t = fc4->forward(t);
 				
 				return t;
@@ -65,6 +63,14 @@ namespace forge
 
 			void load(const std::string & filename);
 			
+			void to(const torch::Device & device)
+			{
+				fc1->to(device);
+				fc2->to(device);
+				fc3->to(device);
+				fc4->to(device);
+			}
+
 		public:
 			torch::nn::Linear fc1{ nullptr };
 			torch::nn::Linear fc2{ nullptr };

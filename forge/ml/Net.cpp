@@ -132,6 +132,6 @@ namespace forge
 			inputArchive.load_from(filename);
 			this->torch::nn::Module::load(inputArchive);	// Call parents method overload
 		}
-
+		
 	} // namespace ml
 } // namespace forge
