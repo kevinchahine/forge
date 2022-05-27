@@ -1464,7 +1464,8 @@ namespace forge
 
 			ds.openFile(filename);
 			ds.batchSize(30'000);
-
+			ds.skipLines(400'000);	// Start reading from sample this sample
+			
 			forge::ml::Net net{g_computingDevice};
 			net.train(ds, 30'000);
 		}

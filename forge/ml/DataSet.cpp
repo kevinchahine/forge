@@ -19,6 +19,11 @@ namespace forge
 		m_parser.close();
 	}
 
+	void DataSet::skipLines(size_t nlines)
+	{
+		m_parser.skipLines(nlines);
+	}
+
 	void DataSet::reset()
 	{
 		m_parser.reset();

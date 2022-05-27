@@ -36,6 +36,17 @@ namespace forge
 		return m_inFile.is_open();
 	}
 
+	void CSVParser::skipLines(size_t nlines)
+	{
+		if (m_inFile.is_open()) {
+			string line;
+
+			for (size_t l = 0; l < nlines; l++) {
+				getline(m_inFile, line);
+			}
+		}
+	}
+
 	void CSVParser::reset()
 	{
 		close();
