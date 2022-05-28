@@ -83,10 +83,6 @@ namespace forge
 					// Update the parameters based on the calculated gradients
 					optimizer.step();
 
-					//cout << "Epoch duration = " << chrono::duration_cast<chrono::milliseconds>(stop - start).count()
-					//	<< "ms " << endl;
-					//cout << "Epoch: " << epoch << " | Loss: " << lossVal << endl;
-
 					lossVal = loss.item<float>();
 					
 					outFile << epoch << ", " << lossVal << '\n';
