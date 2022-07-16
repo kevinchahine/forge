@@ -73,7 +73,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	//forge::test::chessMatch();				// **************
+	forge::test::chessMatch();				// **************
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
@@ -84,7 +84,7 @@ int main(int argc, char ** argv)
 	//forge::test::logger();
 	//forge::test::csvParser();
 	//forge::test::dataSetPipeline();
-	forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
+	//forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
 
 	//forge::test::weights::applePie();
 	//forge::test::ai::playApplePie();

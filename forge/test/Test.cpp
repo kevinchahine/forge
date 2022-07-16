@@ -1142,16 +1142,16 @@ namespace forge
 
 			auto whiteController =
 				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				//make_unique<MinimaxSolver>();
 				//make_unique<MCTS_Solver>();
-				//make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 			 
 			auto blackController =
 				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				//make_unique<MinimaxSolver>();
 				//make_unique<MCTS_Solver>();
-				//make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
@@ -1464,7 +1464,7 @@ namespace forge
 
 			ds.openFile(filename);
 			ds.batchSize(30'000);
-			ds.skipLines(500'000);	// Start reading from sample this sample
+			ds.skipLines(1'600'000);	// Start reading from sample this sample
 			
 			forge::ml::Net net{g_computingDevice};
 			net.train(ds, 30'000);

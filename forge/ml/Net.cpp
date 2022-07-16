@@ -75,7 +75,8 @@ namespace forge
 
 					// Compute a loss value to judge the prediction of our model.
 					loss = torch::mse_loss(prediction, batch.outputs);
-					loss.cuda();	// ??? Is this right
+					loss.cuda();		// ??? Is this right
+					loss = loss.cuda();	// ??? or this
 
 					// Compute gradients of the loss w.r.t. the parameters of our model
 					loss.backward();

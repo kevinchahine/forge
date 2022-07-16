@@ -64,6 +64,10 @@ namespace forge
 
 		m_searchMonitor.stop();
 
+		cout << termcolor::green << "Nodes searched: " << m_searchMonitor.nodeCount << '\t'
+			<< "search time: " << chrono::duration_cast<chrono::milliseconds>(m_searchMonitor.searchTime.elapsed()).count()/1000.0 << " sec\t"
+			<< m_searchMonitor.nodesPerSecond() << " nodes/sec\n";
+		
 		// --- 4.) Pick and return best move ---
 		return selectBestMove();
 	}
