@@ -1,4 +1,4 @@
-#include "forge/core/Piece.h"
+#include "forge/Piece.h"
 
 #include <sstream>
 

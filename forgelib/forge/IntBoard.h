@@ -1,9 +1,9 @@
 #pragma once
 
-#include "forge/core/BoardSquare.h"
-#include "forge/core/BitBoard.h"
+#include "forge/BoardSquare.h"
+#include "forge/BitBoard.h"
 
-#include "Guten/core/Matrix.h"
+#include <guten/core/Matrix.h>
 
 #include <iostream>
 

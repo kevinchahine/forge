@@ -1,4 +1,4 @@
-#include "forge/core/Color.h"
+#include "forge/Color.h"
 
 namespace forge
 {

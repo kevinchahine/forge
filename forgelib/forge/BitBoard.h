@@ -1,8 +1,9 @@
 #pragma once
 
-#include "forge/core/Direction.h"
+#include "forge/Direction.h"
 
-#include "Guten/core/Matrix.h"
+// TODO: REMOVE
+//#include "Guten/core/Matrix.h"
 
 #include <iostream>
 #include <bitset>
@@ -87,7 +88,8 @@ namespace forge
 
 		friend std::ostream& operator<<(std::ostream& os, const BitBoard& bb);
 
-		guten::core::Matrix toMat() const;
+		// TODO: REMOVE
+		//guten::core::Matrix toMat() const;
 
 		void print(std::ostream& os = std::cout) const;
 

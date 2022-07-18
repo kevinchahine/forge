@@ -1,7 +1,10 @@
-#include "forge/core/BitBoard.h"
+#include <forge/BitBoard.h>
 
-#include <Guten/color/Color.h>
-#include <Guten/termcolor/termcolor.hpp>
+using namespace std;
+
+// TODO: SHOULD NOT NEED GUTEN
+//#include <Guten/color/Color.h>
+//#include <Guten/termcolor/termcolor.hpp>
 
 namespace forge
 {
@@ -326,23 +329,31 @@ namespace forge
 
 		return os;
 	}
-		
-	guten::core::Matrix BitBoard::toMat() const
-	{
-		guten::core::Matrix mat{ 8, 8 };
-
-		for (uint16_t row = 0; row < 8; row++) {
-			for (uint16_t col = 0; col < 8; col++) {
-				BoardSquare bs{ row, col };
-				mat.at(row, col) = ((*this)[bs] ? '1' : '0');
-			}
-		}
-
-		return mat;
-	}
+	
+	// TODO: Should not need this	
+	//guten::core::Matrix BitBoard::toMat() const
+	//{
+	//	guten::core::Matrix mat{ 8, 8 };
+	//
+	//	for (uint16_t row = 0; row < 8; row++) {
+	//		for (uint16_t col = 0; col < 8; col++) {
+	//			BoardSquare bs{ row, col };
+	//			mat.at(row, col) = ((*this)[bs] ? '1' : '0');
+	//		}
+	//	}
+	//
+	//	return mat;
+	//}
 
 	void BitBoard::print(std::ostream & os) const
 	{
-		toMat().print(0, os);
+		for (uint16_t row = 0; row < 8; row++) {
+			for (uint16_t col = 0; col < 8; col++) {
+				BoardSquare bs{ row, col };
+				os << ((*this)[bs] ? '1' : '0');
+			}
+			os << endl;
+		}
+		os << endl;
 	}
 } // namespace forge

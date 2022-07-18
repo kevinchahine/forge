@@ -1,13 +1,13 @@
 #pragma once
 
-#include "forge/core/BitBoard.h"
-#include "forge/core/BoardSquare.h"
-#include "forge/core/Move.h"
-#include "forge/core/Piece.h"
-#include "forge/core/Color.h"
+#include <forge/BitBoard.h>
+#include <forge/BoardSquare.h>
+#include <forge/Move.h>
+#include <forge/Piece.h>
+#include <forge/Color.h>
 
-#include <Guten/color/Color.h>
-#include <Guten/boards/CheckerBoard.h>
+////#include <Guten/color/Color.h>
+////#include <Guten/boards/CheckerBoard.h>
 
 #include <iostream>
 #include <vector>

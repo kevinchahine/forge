@@ -1,4 +1,4 @@
-#include "forge/core/MovePositionPair.h"
+#include "forge/MovePositionPair.h"
 
 #include "forge/source/HashCombine.h"
 

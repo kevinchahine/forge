@@ -30,31 +30,6 @@ set(CONTROLLERS
 	forge/controllers/Solvers.hpp
 )
 
-set(CORE
-	forge/core/BitBoard.cpp
-	forge/core/BitBoard.h
-	forge/core/Board.cpp
-	forge/core/Board.h
-	forge/core/BoardSquare.cpp
-	forge/core/BoardSquare.h
-	forge/core/Color.cpp
-	forge/core/Color.h
-	forge/core/Direction.cpp
-	forge/core/Direction.h
-	forge/core/IntBoard.cpp
-	forge/core/IntBoard.h	
-	forge/core/MoveCounter.h
-	forge/core/Move.cpp
-	forge/core/Move.h
-	forge/core/MovePositionPair.cpp
-	forge/core/MovePositionPair.h
-	forge/core/Movers.h
-	forge/core/Piece.cpp
-	forge/core/Piece.h
-	forge/core/Position.cpp
-	forge/core/Position.h
-)
-
 set(FEATURE_EXTRACTOR
 	forge/feature_extractor/AttackChecker.cpp
 	forge/feature_extractor/AttackChecker.h
@@ -133,11 +108,6 @@ set(ML
 )
 
 set(MOVEGEN
-	forge/movegen/MoveGenerator2.cpp
-	forge/movegen/MoveGenerator2_Definitions.h
-	forge/movegen/MoveGenerator2.h
-	forge/movegen/MoveList.cpp
-	forge/movegen/MoveList.h
 	forge/movegen/PseudoMoveGenerator.cpp
 	forge/movegen/PseudoMoveGenerator.h
 )
@@ -235,9 +205,6 @@ set(TIME
 	forge/time/Timer.h
 )
 
-set(UCI
-)
-
 set(VIEWS
 	forge/views/TextView.cpp
 	forge/views/TextView.h
@@ -245,22 +212,21 @@ set(VIEWS
 	forge/views/ViewBase.h
 )
 
-source_group(${PROJECT_NAME} ${ML_FILES})
-source_group(${PROJECT_NAME} ${CONTROLLERS})
-source_group(${PROJECT_NAME} ${CORE})
-source_group(${PROJECT_NAME} ${FEATURE_EXTRACTOR})
-source_group(${PROJECT_NAME} ${GAME})
-source_group(${PROJECT_NAME} ${HEURISTICS})
-source_group(${PROJECT_NAME} ${ML})
-source_group(${PROJECT_NAME} ${MOVEGEN})
-source_group(${PROJECT_NAME} ${NOTES})
-source_group(${PROJECT_NAME} ${SEARCH})
-source_group(${PROJECT_NAME} ${SOURCE})
-source_group(${PROJECT_NAME} ${TEST})
-source_group(${PROJECT_NAME} ${THIRD_PARTY})
-source_group(${PROJECT_NAME} ${TIME})
-source_group(${PROJECT_NAME} ${UCI})
-source_group(${PROJECT_NAME} ${VIEWS})
+source_group(${PROJECT_NAME} FILES ${ML_FILES})
+source_group(${PROJECT_NAME} FILES ${CONTROLLERS})
+source_group(${PROJECT_NAME} FILES ${CORE})
+source_group(${PROJECT_NAME} FILES ${FEATURE_EXTRACTOR})
+source_group(${PROJECT_NAME} FILES ${GAME})
+source_group(${PROJECT_NAME} FILES ${HEURISTICS})
+source_group(${PROJECT_NAME} FILES ${ML})
+source_group(${PROJECT_NAME} FILES ${MOVEGEN})
+source_group(${PROJECT_NAME} FILES ${NOTES})
+source_group(${PROJECT_NAME} FILES ${SEARCH})
+source_group(${PROJECT_NAME} FILES ${SOURCE})
+source_group(${PROJECT_NAME} FILES ${TEST})
+source_group(${PROJECT_NAME} FILES ${THIRD_PARTY})
+source_group(${PROJECT_NAME} FILES ${TIME})
+source_group(${PROJECT_NAME} FILES ${VIEWS})
 
 add_executable(${PROJECT_NAME}
 	${ML_FILES}
@@ -297,18 +263,14 @@ add_compile_definitions(NOMINMAX)	# same as '#define NOMINMAX'
 
 # --- Libraries (no VCPKG) ---
 
-# --- Guten ---
-message(STATUS "\n----- Guten -----\n")
+# --- forgelib ---
 
-add_subdirectory(guten)
+message(STATUS "\n----- forgelib -----\n")
 
-target_link_libraries(${PROJECT_NAME} PUBLIC
-	Guten
-)
-
-target_include_directories(${PROJECT_NAME} PUBLIC
-	guten
-)
+add_subdirectory(forgelib)
+target_link_libraries(${PROJECT_NAME} PUBLIC forgelib)
+target_include_directories(${PROJECT_NAME} PUBLIC forgelib)
+include_directories(forgelib)
 
 # --- Torch ---
 message(STATUS "\n----- Torch -----")

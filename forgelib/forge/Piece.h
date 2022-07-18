@@ -1,13 +1,13 @@
 #pragma once
 
-#include "forge/core/BitBoard.h"
-#include "forge/core/Color.h"
+#include "forge/BitBoard.h"
+#include "forge/Color.h"
 
 #include <iostream>
 #include <bitset>
 
-#include <Guten/color/Color.h>
-#include <Guten/termcolor/termcolor.hpp>
+////#include <Guten/color/Color.h>
+////#include <Guten/termcolor/termcolor.hpp>
 
 namespace forge
 {

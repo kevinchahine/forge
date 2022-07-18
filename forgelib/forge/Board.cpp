@@ -1,9 +1,9 @@
-#include "forge/core/Board.h"
+#include <forge/Board.h>
 #include "forge/source/HashCombine.h"
 
-#include <Guten/termcolor/termcolor.hpp>
-#include <Guten/color/Color.h>
-#include <Guten/boards/CheckerBoard.h>
+#include <guten/termcolor/termcolor.hpp>
+#include <guten/color/Color.h>
+#include <guten/boards/CheckerBoard.h>
 
 using namespace std;
 
