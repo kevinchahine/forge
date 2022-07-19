@@ -41,12 +41,9 @@ int main(int argc, char ** argv)
 		<< termcolor::white;
 
 	forge::initGlobals();
-	forge::test::initTestBoards();
-	forge::test::init();
+	//forge::test::initTestBoards();
+	//forge::test::init();
 	
-	forge::Board board;
-	cout << forge::AttackChecker::isAttacked(board, forge::BoardSquare{2, 3}) << endl;
-
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();

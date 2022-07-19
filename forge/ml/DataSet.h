@@ -1,6 +1,6 @@
 #pragma once
 
-#include "forge/feature_extractor/FeatureExtractor.h"
+#include "forge/heuristics/FeatureExtractor.h"
 #include "forge/ml/CSVParser.h"
 #include "forge/ml/TensorPair.h"
 

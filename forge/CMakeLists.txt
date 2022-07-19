@@ -40,6 +40,8 @@ set(HEURISTICS
 	heuristics/ApplePieHeuristic.h
 	heuristics/ApplePieWeights.cpp
 	heuristics/ApplePieWeights.h
+	heuristics/FeatureExtractor.cpp
+	heuristics/FeatureExtractor.h
 	heuristics/HeuristicBase.cpp
 	heuristics/HeuristicBase.h
 	heuristics/Heuristics.hpp

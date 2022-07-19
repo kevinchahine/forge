@@ -11,8 +11,6 @@ set(FEATURE_EXTRACTOR
 	forge/feature_extractor/Attackers.cpp
 	forge/feature_extractor/AttackersDefinitions.h
 	forge/feature_extractor/Attackers.h
-	forge/feature_extractor/FeatureExtractor.cpp
-	forge/feature_extractor/FeatureExtractor.h
 	forge/feature_extractor/KingAttacker.cpp
 	forge/feature_extractor/KingAttacker.h
 	forge/feature_extractor/KingAttackers.cpp
@@ -60,12 +58,14 @@ set(SRC
 
 # --- Create Folders for VS ---
 
+source_group(${LIBRARY_NAME} FILES ${FEATURE_EXTRACTOR})
 source_group(${LIBRARY_NAME} FILES ${SRC})
 
 # --- Make this a library (not an app) ---
 
 add_library(${LIBRARY_NAME} STATIC
-${SRC}
+	${FEATURE_EXTRACTOR}	
+	${SRC}
 )
 
 include_directories(.)

@@ -1,6 +1,6 @@
 #include "NeuralNetworkHeuristic.h"
 
-#include "forge/feature_extractor/FeatureExtractor.h"
+#include "forge/heuristics/FeatureExtractor.h"
 
 using namespace std;
 
