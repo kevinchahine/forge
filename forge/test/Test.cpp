@@ -3,7 +3,7 @@
 #include "forge/test/positions.h"
 #include "forge/views/TextView.h"
 
-#include <Guten/view/GridView.h>
+#include <guten/view/GridView.h>
 
 #include <sstream>
 

@@ -1,4 +1,4 @@
-#include "forge/controllers/KeyboardController.h"
+#include "KeyboardController.h"
 
 #include <algorithm>
 #include <functional>

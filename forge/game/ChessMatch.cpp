@@ -1,6 +1,6 @@
 #include "forge/game/ChessMatch.h"
 
-#include "forge/movegen/MoveGenerator2.h"
+#include <forge/MoveGenerator2.h>
 
 using namespace std;
 

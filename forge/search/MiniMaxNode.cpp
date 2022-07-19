@@ -1,7 +1,7 @@
 #include "forge/search/MiniMaxNode.h"
 
-#include "forge/movegen/MoveList.h"
-#include "forge/movegen/MoveGenerator2.h"
+#include <forge/MoveList.h>
+#include <forge/MoveGenerator2.h>
 
 #include <algorithm>
 

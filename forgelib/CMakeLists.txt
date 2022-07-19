@@ -5,6 +5,26 @@ project(${LIBRARY_NAME})
 
 # --- Source Files ---
 
+set(FEATURE_EXTRACTOR
+	forge/feature_extractor/AttackChecker.cpp
+	forge/feature_extractor/AttackChecker.h
+	forge/feature_extractor/Attackers.cpp
+	forge/feature_extractor/AttackersDefinitions.h
+	forge/feature_extractor/Attackers.h
+	forge/feature_extractor/FeatureExtractor.cpp
+	forge/feature_extractor/FeatureExtractor.h
+	forge/feature_extractor/KingAttacker.cpp
+	forge/feature_extractor/KingAttacker.h
+	forge/feature_extractor/KingAttackers.cpp
+	forge/feature_extractor/KingAttackersDefinitions.h
+	forge/feature_extractor/KingAttackers.h
+	forge/feature_extractor/PinDefinitions.h
+	forge/feature_extractor/Pin.h
+	forge/feature_extractor/Threats.cpp
+	forge/feature_extractor/ThreatsDefinitions.h
+	forge/feature_extractor/Threats.h
+)
+
 set(SRC
 	forge/BitBoard.cpp
 	forge/BitBoard.h
@@ -16,6 +36,9 @@ set(SRC
 	forge/Color.h
 	forge/Direction.cpp
 	forge/Direction.h
+	forge/FiftyMoveRule.cpp
+	forge/FiftyMoveRule.h
+	forge/HashCombine.h
 	forge/IntBoard.cpp
 	forge/IntBoard.h	
 	forge/MoveCounter.h
@@ -32,7 +55,7 @@ set(SRC
 	forge/MoveGenerator2_Definitions.h
 	forge/MoveGenerator2.h
 	forge/MoveList.cpp
-	forge/MoveList.h
+	forge/MoveList.h	
 )
 
 # --- Create Folders for VS ---
@@ -42,10 +65,12 @@ source_group(${LIBRARY_NAME} FILES ${SRC})
 # --- Make this a library (not an app) ---
 
 add_library(${LIBRARY_NAME} STATIC
-	${SRC}
+${SRC}
 )
 
 include_directories(.)
+
+target_include_directories(${LIBRARY_NAME} PUBLIC guten)
 
 # --- Compiler Flags ---
 #set(CMAKE_CXX_STANDARD 17)												# TODO: Do we need both?
@@ -61,7 +86,5 @@ add_compile_definitions(NOMINMAX)	# same as '#define NOMINMAX'
 # --- Guten ---
 message(STATUS "\n----- Guten -----\n")
 
-add_subdirectory(guten)
-target_link_libraries(${PROJECT_NAME} PUBLIC Guten)
-target_include_directories(${PROJECT_NAME} PUBLIC guten)
-
+target_link_libraries(${PROJECT_NAME} PUBLIC guten)
+target_include_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

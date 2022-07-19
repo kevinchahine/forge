@@ -1,9 +1,9 @@
 #pragma once
 
-#include "forge/core/MovePositionPair.h"
+#include "forge/MovePositionPair.h"
 #include "forge/feature_extractor/AttackChecker.h"
 
-#include "Guten/termcolor/termcolor.hpp"
+#include <guten/termcolor/termcolor.hpp>
 
 #include <vector>
 

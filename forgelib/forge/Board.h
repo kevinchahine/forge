@@ -6,8 +6,8 @@
 #include <forge/Piece.h>
 #include <forge/Color.h>
 
-////#include <Guten/color/Color.h>
-////#include <Guten/boards/CheckerBoard.h>
+#include <guten/color/Color.h>
+#include <guten/boards/CheckerBoard.h>
 
 #include <iostream>
 #include <vector>

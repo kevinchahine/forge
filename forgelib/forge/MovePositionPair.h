@@ -1,7 +1,7 @@
 #pragma once
 
-#include "forge/core/Move.h"
-#include "forge/core/Position.h"
+#include "forge/Move.h"
+#include "forge/Position.h"
 
 namespace forge
 {

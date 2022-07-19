@@ -25,9 +25,10 @@ Designed to be compatible with a variety of displays including:
 // #include "TestFeatureExtractor.h"
 // #include "ml/Optimizer.h"
 
-#include "Guten/color/Color.h"
+#include <guten/color/Color.h>
 
 #include <iostream>
+#include <forge/feature_extractor/AttackChecker.h>
 
 using namespace std;
 
@@ -43,6 +44,9 @@ int main(int argc, char ** argv)
 	forge::test::initTestBoards();
 	forge::test::init();
 	
+	forge::Board board;
+	cout << forge::AttackChecker::isAttacked(board, forge::BoardSquare{2, 3}) << endl;
+
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();

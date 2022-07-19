@@ -1,6 +1,6 @@
 #pragma once
 
-#include "forge/core/Board.h"
+#include "forge/Board.h"
 #include "forge/feature_extractor/Attackers.h"
 
 namespace forge

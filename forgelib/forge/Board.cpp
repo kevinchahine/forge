@@ -1,5 +1,5 @@
 #include <forge/Board.h>
-#include "forge/source/HashCombine.h"
+#include <forge/HashCombine.h>
 
 #include <guten/termcolor/termcolor.hpp>
 #include <guten/color/Color.h>

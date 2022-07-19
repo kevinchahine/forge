@@ -1,1 +1,326 @@
 cmake_minimum_required(VERSION 3.20)
+
+# --- Establish a Project called forge ---
+set(PROJECT_NAME "forge")
+project(${PROJECT_NAME})
+
+# --- Group source files ---
+set(CONTROLLERS
+	controllers/ControllerBase.cpp
+	controllers/ControllerBase.h
+	controllers/Controllers.hpp
+	controllers/KeyboardController.cpp
+	controllers/KeyboardController.h
+	controllers/MCTS_Solver.cpp
+	controllers/MCTS_Solver.h
+	controllers/MCTS_Solver_MT.cpp
+	controllers/MCTS_Solver_MT.h
+	controllers/MinimaxSolver.cpp
+	controllers/MinimaxSolver.h
+	controllers/RandomSolver.cpp
+	controllers/RandomSolver.h
+	controllers/ReplayController.cpp
+	controllers/ReplayController.h
+	controllers/SolverBase.cpp
+	controllers/SolverBase.h
+	controllers/Solvers.hpp
+)
+
+set(GAME
+	game/ChessMatch.cpp
+	game/ChessMatch.h
+	game/GameHistory.cpp
+	game/GameHistory.h
+	game/GameState.cpp
+	game/GameState.h
+)
+
+set(HEURISTICS
+	heuristics/ApplePieHeuristic.cpp
+	heuristics/ApplePieHeuristic.h
+	heuristics/ApplePieWeights.cpp
+	heuristics/ApplePieWeights.h
+	heuristics/HeuristicBase.cpp
+	heuristics/HeuristicBase.h
+	heuristics/Heuristics.hpp
+	#heuristics/IWeightsArchive.cpp
+	#heuristics/IWeightsArchive.h
+	heuristics/NeuralNetworkHeuristic.cpp
+	heuristics/NeuralNetworkHeuristic.h
+	#heuristics/OWeightsArchive.cpp
+	#heuristics/OWeightsArchive.h
+	heuristics/PositionTable.cpp	
+	heuristics/PositionTable.h
+	heuristics/RandomHeuristic.cpp
+	heuristics/RandomHeuristic.h
+	heuristics/Rollout.cpp
+	heuristics/Rollout.h
+	#heuristics/WeightsArchive.cpp
+	#heuristics/WeightsArchive.h
+	heuristics/WeightsBase.cpp
+	heuristics/WeightsBase.h
+	heuristics/Weights.hpp
+)
+
+set(ML
+	ml/CSVParser.cpp
+	ml/CSVParser.h
+	ml/DataSet.cpp
+	ml/DataSet.h
+	ml/DatasetGenerator.cpp
+	ml/DatasetGenerator.h
+	ml/Net.cpp
+	ml/Net.h
+	ml/PosEvalPair.h
+	ml/PositionEvalPair.h
+	ml/TensorPair.cpp
+	ml/TensorPair.h
+	ml/TrainingHistory.cpp
+	ml/TrainingHistory.h	
+)
+
+set(MOVEGEN
+	movegen/PseudoMoveGenerator.cpp
+	movegen/PseudoMoveGenerator.h
+)
+
+set(NOTES
+	notes/AI.txt
+	notes/Benchmarks.txt
+	notes/BenchmarkTesting.txt
+	notes/Bugs.txt
+	notes/Classes.txt
+	notes/Database.txt
+	notes/DatasetGenerator.txt
+	notes/Features.txt
+	notes/GameStates.txt
+	notes/Goals.txt
+	notes/HighLevelDesign.txt
+	notes/Ideas.txt
+	notes/MCTS.txt
+	notes/ML.txt
+	notes/MoveGeneratorQuintessential2.txt
+	notes/MoveGeneratorQuintessential.txt
+	notes/MoveGeneratorSpecial.txt
+	notes/Multi_threading.txt
+	notes/NameSpaces.txt
+	notes/NN.txt
+	notes/NodeTree.txt
+	notes/Notation.txt
+	notes/Optimizations.txt
+	notes/ProblemPositions.txt
+	notes/ProgramOptions.txt
+	notes/Progress.txt
+	notes/SearchFramework.txt
+	notes/SearchMonitor.txt
+	notes/Stockfish.txt
+	notes/TimeManagement.txt
+	notes/TODO.txt
+	notes/Training.txt
+	notes/UCI_DefinitionNotes.txt
+	notes/UCI_Definition.txt
+	notes/UCI.txt
+	notes/UCI_UML.txt
+	notes/ValidMoveGenerator.txt
+	notes/Versions.txt
+	notes/View.txt
+)
+
+set(PERFT 
+)
+
+set(SEARCH
+	search/ExitCondition.cpp
+	search/ExitCondition.h
+	search/MCTS_Node.cpp
+	search/MCTS_Node.h
+	search/MiniMaxNode.cpp
+	search/MiniMaxNode.h
+	search/Node.cpp
+	search/Node.h
+	search/SearchMonitor.cpp
+	search/SearchMonitor.h
+)
+
+set(SOURCE
+	source/globals.cpp
+	source/globals.h
+	source/main.cpp
+)
+
+set(TEST
+	test/positions.cpp
+	test/positions.h
+	test/Test.cpp
+	test/Test.h
+	#test/TestFeatureExtractor.cpp
+	#test/TestFeatureExtractor.h
+	test/TestML.cpp
+	test/TestML.h
+	#test/TestMoveGen.cpp
+	#test/TestMoveGen.h
+	#test/TestUci.cpp
+	#test/TestUci.h
+)
+
+set(THIRD_PARTY
+	third_party/rapidcsv.h
+)
+
+set(TIME
+	time/Clock.cpp
+	time/Clock.h
+	time/StopWatch.cpp
+	time/StopWatch.h
+	time/Timer.cpp
+	time/Timer.h
+)
+
+set(VIEWS
+	views/TextView.cpp
+	views/TextView.h
+	views/ViewBase.cpp
+	views/ViewBase.h
+)
+
+source_group(${PROJECT_NAME} FILES ${ML_FILES})
+source_group(${PROJECT_NAME} FILES ${CONTROLLERS})
+source_group(${PROJECT_NAME} FILES ${CORE})
+source_group(${PROJECT_NAME} FILES ${FEATURE_EXTRACTOR})
+source_group(${PROJECT_NAME} FILES ${GAME})
+source_group(${PROJECT_NAME} FILES ${HEURISTICS})
+source_group(${PROJECT_NAME} FILES ${ML})
+source_group(${PROJECT_NAME} FILES ${MOVEGEN})
+source_group(${PROJECT_NAME} FILES ${NOTES})
+source_group(${PROJECT_NAME} FILES ${SEARCH})
+source_group(${PROJECT_NAME} FILES ${SOURCE})
+source_group(${PROJECT_NAME} FILES ${TEST})
+source_group(${PROJECT_NAME} FILES ${THIRD_PARTY})
+source_group(${PROJECT_NAME} FILES ${TIME})
+source_group(${PROJECT_NAME} FILES ${VIEWS})
+
+add_executable(${PROJECT_NAME}
+	${ML_FILES}
+	${CONTROLLERS}
+	${CORE}
+	${FEATURE_EXTRACTOR}
+	${GAME}
+	${HEURISTICS}
+	${ML}
+	${MOVEGEN}
+	${NOTES}
+	${SEARCH}
+	${SOURCE}
+	${TEST}
+	${THIRD_PARTY}
+	${TIME}
+	${UCI}
+	${VIEWS}
+)
+
+include_directories(..)
+
+# --- Compiler Flags ---
+set(CMAKE_CXX_STANDARD 17)												# TODO: Do we need both?
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+set(VS_STARTUP_PROJECT ${PROJECT_NAME})
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+message(STATUS "Compiler Version: ${CMAKE_CXX_COMPILER_VERSION} standard ${CMAKE_CXX_STANDARD}")
+
+# --- Set Preprocessor Macros ---
+add_compile_definitions(NOMINMAX)	# same as '#define NOMINMAX'
+
+# --- Libraries (no VCPKG) ---
+
+# --- forgelib ---
+
+message(STATUS "\n----- forgelib -----\n")
+
+target_link_libraries(${PROJECT_NAME} PUBLIC forgelib)
+target_include_directories(${PROJECT_NAME} PUBLIC forgelib)
+include_directories(forgelib)
+
+# --- Torch ---
+message(STATUS "\n----- Torch -----")
+
+set(CMAKE_CUDA_ARCHITECTURES 75)# all)
+find_package(Torch REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+
+target_link_libraries(${PROJECT_NAME} PUBLIC
+	"${TORCH_LIBRARIES}"
+)
+
+# --- Libraries (VCPKG) ---
+if (MSVC)
+	message(STATUS "\nVCPKG packages will be automatically linked to visual studio\n")
+else ()
+	# --- For VCPKG packages ---
+	message(STATUS "call cmake with: cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/code/libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
+
+	# ----- BOOST -----
+
+	message(STATUS "\n----- BOOST -----")
+	set(Boost_USE_STATIC_LIBS		OFF)
+	set(Boost_USE_MULTITHREADED		OFF)
+	set(Boost_USE_STATIC_RUNTIME	OFF)
+
+	find_package(Boost REQUIRED COMPONENTS
+		#asio 
+		system 
+		filesystem 
+		#process
+		REQUIRED)
+
+	target_link_libraries(${PROJECT_NAME} PUBLIC
+		#Boost::asio
+		Boost::system
+		Boost::filesystem
+	)
+
+	message(STATUS "Include dirs ${Boost_INCLUDE_DIRS}")
+	message(STATUS "Boost libraries ${Boost_LIBRARIES}")
+
+	include_directories(${BOOST_INCLUDE_DIRS})
+
+	target_include_directories(${PROJECT_NAME} PUBLIC
+		${BOOST_INCLUDE_DIRS}
+	)
+
+	# --- XLNT ---
+	#message(STATUS "\n----- XLNT -----")
+	#
+	#find_package(Xlnt CONFIG REQUIRED)
+	#
+	#target_link_libraries(${PROJECT_NAME} PRIVATE xlnt:xlnt)
+
+	# --- MatPlot++ ---
+	find_package(matplot++ CONFIG REQUIRED)
+	
+	target_link_libraries(${PROJECT_NAME} PRIVATE 
+		Matplot++::cimg 
+		std::filesystem 
+		Matplot++::matplot 
+		Matplot++::nodesoup
+	)
+
+endif (MSVC)
+
+# The following code block is suggested to be used on Windows.
+# According to https://github.com/pytorch/pytorch/issues/25457,
+# the DLLs need to be copied to avoid memory errors.
+if (MSVC)
+	message(STATUS "--- :P d: :D :)BX8==; MSVC :) ---")
+
+	file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll")
+	add_custom_command(
+		TARGET ${PROJECT_NAME} 
+		POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different
+		${TORCH_DLLS}
+		$<TARGET_FILE_DIR:${PROJECT_NAME}>
+	)
+endif (MSVC)
+

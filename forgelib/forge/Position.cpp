@@ -1,4 +1,4 @@
-#include "forge/core/Position.h"
+#include "forge/Position.h"
 
 #include <sstream>
 

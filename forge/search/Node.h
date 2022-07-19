@@ -1,8 +1,8 @@
 #pragma once
 
-#include "forge/core/Position.h"
+#include <forge/Position.h>
+#include <forge/MoveGenerator2.h>
 #include "forge/heuristics/HeuristicBase.h"	// for heuristic_t
-#include "forge/movegen/MoveGenerator2.h"
 
 #include <vector>
 #include <memory>

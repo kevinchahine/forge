@@ -1,7 +1,7 @@
 #pragma once
 
-#include "forge/core/BoardSquare.h"
-#include "forge/core/Direction.h"	
+#include "forge/BoardSquare.h"
+#include "forge/Direction.h"	
 
 namespace forge
 {

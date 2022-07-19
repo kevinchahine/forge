@@ -1,4 +1,4 @@
-#include "forge/controllers/MCTS_Solver.h"
+#include "MCTS_Solver.h"
 
 #include "forge/game/GameState.h"
 

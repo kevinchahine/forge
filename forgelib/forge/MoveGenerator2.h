@@ -5,9 +5,9 @@
 #include "forge/feature_extractor/Pin.h"
 #include "forge/feature_extractor/Threats.h"
 
-#include "forge/core/Position.h"
+#include "forge/Position.h"
 
-#include "forge/movegen/MoveList.h"
+#include "forge/MoveList.h"
 
 #include <iostream>
 

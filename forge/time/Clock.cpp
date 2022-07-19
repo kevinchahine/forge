@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <sstream>
 
-#include <Guten/termcolor/termcolor.hpp>
+#include <guten/termcolor/termcolor.hpp>
 
 using namespace std;
 

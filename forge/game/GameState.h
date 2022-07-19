@@ -4,7 +4,7 @@
 #include <bitset>
 #include <functional>
 
-#include "forge/core/Position.h"
+#include <forge/Position.h>
 #include "forge/game/GameHistory.h"
 #include "forge/search/MCTS_Node.h"
 #include "forge/search/MiniMaxNode.h"

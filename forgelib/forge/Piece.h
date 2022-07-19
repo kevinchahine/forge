@@ -6,8 +6,8 @@
 #include <iostream>
 #include <bitset>
 
-////#include <Guten/color/Color.h>
-////#include <Guten/termcolor/termcolor.hpp>
+#include <guten/color/Color.h>
+#include <guten/termcolor/termcolor.hpp>
 
 namespace forge
 {

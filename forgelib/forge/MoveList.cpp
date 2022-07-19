@@ -1,4 +1,4 @@
-#include "forge/movegen/MoveList.h"
+#include "forge/MoveList.h"
 
 #include "forge/feature_extractor/AttackChecker.h"
 

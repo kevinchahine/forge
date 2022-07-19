@@ -1,7 +1,7 @@
 #include "forge/search/MCTS_Node.h"
 #include "forge/source/globals.h"
 
-#include "Guten/termcolor/termcolor.hpp"
+#include <guten/termcolor/termcolor.hpp>
 
 #include <random>
 

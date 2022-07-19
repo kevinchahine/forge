@@ -1,6 +1,6 @@
 #pragma once
 
-#include "forge/core/MovePositionPair.h"
+#include <forge/MovePositionPair.h>
 
 #include <queue>
 

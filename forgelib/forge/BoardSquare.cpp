@@ -1,4 +1,4 @@
-#include "forge/core/BoardSquare.h"
+#include <forge/BoardSquare.h>
 
 using namespace std;
 

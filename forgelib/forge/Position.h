@@ -1,9 +1,10 @@
 #pragma once
 
-#include "forge/core/Board.h"
-#include "forge/core/MoveCounter.h"
-#include "forge/game/FiftyMoveRule.h"
-#include "forge/source/HashCombine.h"
+#include "forge/Board.h"
+#include "forge/MoveCounter.h"
+
+#include <forge/FiftyMoveRule.h>
+#include <forge/HashCombine.h>
 
 #include <type_traits>
 

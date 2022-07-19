@@ -1,7 +1,7 @@
 #pragma once
 
-#include "forge/core/Board.h"
-#include "forge/core/BoardSquare.h"
+#include "forge/Board.h"
+#include "forge/BoardSquare.h"
 
 #include <boost/container/static_vector.hpp>
 

@@ -1,4 +1,4 @@
-#include "forge/core/Move.h"
+#include "forge/Move.h"
 
 #include <string>
 #include <sstream>

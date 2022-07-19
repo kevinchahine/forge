@@ -1,7 +1,8 @@
 #pragma once
 
-#include "forge/core/Board.h"
-#include "forge/core/Position.h"
+#include <forge/Board.h>
+#include <forge/Position.h>
+
 #include "forge/controllers/ControllerBase.h"
 #include "forge/game/GameHistory.h"
 #include "forge/game/GameState.h"

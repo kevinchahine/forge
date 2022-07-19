@@ -1,6 +1,6 @@
 #pragma once
 
-#include "forge/core/Position.h"
+#include "forge/Position.h"
 
 namespace forge
 {

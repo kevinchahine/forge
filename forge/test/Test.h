@@ -4,8 +4,8 @@
 
 #include "forge/source/globals.h"
 
-#include "forge/core/Board.h"
-#include "forge/core/Move.h"
+#include <forge/Board.h>
+#include <forge/Move.h>
 
 #include "forge/feature_extractor/AttackChecker.h"
 #include "forge/feature_extractor/Attackers.h"
@@ -21,7 +21,7 @@
 #include "forge/ml/DataSet.h"
 #include "forge/ml/Net.h"
 
-#include "forge/movegen/MoveGenerator2.h"
+#include <forge/MoveGenerator2.h>
 
 //#include "forge/perft/PerformanceTester.h"
 //#include "forge/perft/PerformanceLogger.h"
@@ -35,7 +35,7 @@
 #include <thread>
 #include <chrono>
 
-#include <Guten/guten.hpp>
+#include <guten/guten.hpp>
 
 #ifdef _WIN32		// TODO: Fix this
 #include <conio.h>	// Only for testing (Only Windows compatible)

@@ -1,6 +1,6 @@
 #include "forge/MovePositionPair.h"
 
-#include "forge/source/HashCombine.h"
+#include "forge/HashCombine.h"
 
 namespace forge
 {

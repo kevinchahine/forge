@@ -1,6 +1,6 @@
 #include "IntBoard.h"
 
-#include "Guten/draw/DrawFunctions.h"
+#include <guten/draw/DrawFunctions.h>
 
 #include <numeric>
 #include <iomanip>

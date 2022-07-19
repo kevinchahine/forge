@@ -1,6 +1,6 @@
 #include "forge/game/GameState.h"
-#include "forge/feature_extractor/AttackChecker.h"
-#include "forge/movegen/MoveGenerator2.h"
+#include <forge/feature_extractor/AttackChecker.h>
+#include <forge/MoveGenerator2.h>
 
 using namespace std;
 

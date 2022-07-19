@@ -1,6 +1,6 @@
 #include "TextView.h"
 
-#include <Guten/draw/DrawFunctions.h>
+#include <guten/draw/DrawFunctions.h>
 
 using namespace std;
 
