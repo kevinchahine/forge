@@ -7,6 +7,7 @@
 
 namespace forge
 {
+	// TODO: rename this Random
 	class RandomHeuristic : public HeuristicBase
 	{
 	public:

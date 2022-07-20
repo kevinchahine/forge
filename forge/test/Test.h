@@ -15,7 +15,6 @@
 #include <forge/core/GameState.h>
 
 #include "forge/heuristics/Heuristics.hpp"
-#include "forge/heuristics/Weights.hpp"
 
 #include "forge/ml/CSVParser.h"
 #include "forge/ml/DataSet.h"
@@ -204,6 +203,8 @@ namespace forge
 		void dataSetPipeline();
 
 		void trainNN();
+		
+		void netPerft();
 		
 		namespace weights
 		{

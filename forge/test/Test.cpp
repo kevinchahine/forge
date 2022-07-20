@@ -1470,6 +1470,15 @@ namespace forge
 			net.train(ds, 30'000);
 		}
 
+		void netPerft()
+		{
+			vector<torch::Tensor> inputs;
+
+			for (torch::Tensor & t : inputs) {
+				// t = torch::rand();	// todo: finish this
+			}
+		}
+
 //		namespace weights
 //		{
 //			void applePie()

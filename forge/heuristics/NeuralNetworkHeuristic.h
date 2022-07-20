@@ -5,6 +5,7 @@
 
 namespace forge
 {
+	// TODO: rename this Network
 	class NeuralNetworkHeuristic : public HeuristicBase
 	{
 	public:

@@ -34,29 +34,17 @@ set(GAME
 set(HEURISTICS
 	heuristics/ApplePieHeuristic.cpp
 	heuristics/ApplePieHeuristic.h
-	heuristics/ApplePieWeights.cpp
-	heuristics/ApplePieWeights.h
 	heuristics/FeatureExtractor.cpp
 	heuristics/FeatureExtractor.h
 	heuristics/HeuristicBase.cpp
 	heuristics/HeuristicBase.h
 	heuristics/Heuristics.hpp
-	#heuristics/IWeightsArchive.cpp
-	#heuristics/IWeightsArchive.h
 	heuristics/NeuralNetworkHeuristic.cpp
 	heuristics/NeuralNetworkHeuristic.h
-	#heuristics/OWeightsArchive.cpp
-	#heuristics/OWeightsArchive.h
-	heuristics/PositionTable.cpp	
-	heuristics/PositionTable.h
 	heuristics/RandomHeuristic.cpp
 	heuristics/RandomHeuristic.h
 	heuristics/Rollout.cpp
 	heuristics/Rollout.h
-	#heuristics/WeightsArchive.cpp
-	#heuristics/WeightsArchive.h
-	heuristics/WeightsBase.cpp
-	heuristics/WeightsBase.h
 	heuristics/Weights.hpp
 )
 
@@ -293,6 +281,7 @@ else ()
 
 endif (MSVC)
 
+# Torch:
 # The following code block is suggested to be used on Windows.
 # According to https://github.com/pytorch/pytorch/issues/25457,
 # the DLLs need to be copied to avoid memory errors.

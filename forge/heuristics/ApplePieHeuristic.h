@@ -49,6 +49,8 @@ namespace forge
 	//			- Pawns Rank: The further up the board the better (even for black)
 	//			- # Connected Pawns: Number of times each pawn "attacks" it's friendly pawns
 	//			- 
+	// TODO: rename this Materialistic
+	// TODO: remake this and replace ApplePieWeights with a single array of some kind
 	class ApplePieHeuristic : public HeuristicBase
 	{
 	public:

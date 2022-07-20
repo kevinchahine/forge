@@ -17,7 +17,3 @@ Each game is made up of multiple searches.
 #	Priority - After moves are generated, each resulting position is evaluated, then they are sorted in order of best to first based on their evaluations.
 #	MT - Multi-threading using dynamic tree splitting algorithm
 # 
-
-Date,				Search Algorithm,	Variation,	Evaluation Function,	Move Generator, CPU,		GPU,		OS,		
-10:57PM 5/6/2021,	Minimax,			Basic,		ApplePie,				V0.0,			i5-8300,	Not Used,	Win10, 	
-
