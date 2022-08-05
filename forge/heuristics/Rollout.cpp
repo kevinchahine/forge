@@ -1,8 +1,8 @@
 #include "Rollout.h"
 
 #include "forge/controllers/RandomSolver.h"
-#include "forge/game/GameHistory.h"
-#include "forge/game/GameState.h"
+#include <forge/core/game_history.h>
+#include <forge/core/GameState.h>
 
 using namespace std;
 
@@ -13,7 +13,7 @@ namespace forge
 		heuristic_t Rollout::eval(const Position& pos)
 		{
 			RandomSolver rsolver;	// makes random moves
-			GameHistory history;	// records moves to determine draws
+			game_history history;	// records moves to determine draws
 			GameState gstate;		// determines state of game: win, loss, draw, continue
 
 			// Start with current position

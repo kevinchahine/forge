@@ -4,15 +4,15 @@
 
 #include "forge/source/globals.h"
 
-#include <forge/Board.h>
-#include <forge/Move.h>
+#include <forge/core/Board.h>
+#include <forge/core/Move.h>
 
 #include "forge/feature_extractor/AttackChecker.h"
 #include "forge/feature_extractor/Attackers.h"
 #include "forge/feature_extractor/Threats.h"
 
 #include "forge/game/ChessMatch.h"
-#include "forge/game/GameState.h"
+#include <forge/core/GameState.h>
 
 #include "forge/heuristics/Heuristics.hpp"
 #include "forge/heuristics/Weights.hpp"
@@ -21,7 +21,7 @@
 #include "forge/ml/DataSet.h"
 #include "forge/ml/Net.h"
 
-#include <forge/MoveGenerator2.h>
+#include <forge/core/MoveGenerator2.h>
 
 //#include "forge/perft/PerformanceTester.h"
 //#include "forge/perft/PerformanceLogger.h"

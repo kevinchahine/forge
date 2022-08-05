@@ -4,7 +4,7 @@
 #include "forge/heuristics/HeuristicBase.h"
 #include "forge/search/SearchMonitor.h"
 
-#include <forge/MoveGenerator2.h>
+#include <forge/core/MoveGenerator2.h>
 
 #include <vector>
 #include <type_traits>	// for is_base_of()

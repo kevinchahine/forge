@@ -1,7 +1,7 @@
 #pragma once
 
-#include "forge/MovePositionPair.h"
-#include "forge/MoveGenerator2.h"
+#include <forge/core/MoveGenerator2.h>
+#include <forge/core/MovePositionPair.h>
 
 #include <iostream>
 

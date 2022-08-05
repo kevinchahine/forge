@@ -1,6 +1,6 @@
 #include "MCTS_Solver.h"
 
-#include "forge/game/GameState.h"
+#include <forge/core/GameState.h>
 
 using namespace std;
 

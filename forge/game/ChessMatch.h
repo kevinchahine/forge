@@ -1,11 +1,11 @@
 #pragma once
 
-#include <forge/Board.h>
-#include <forge/Position.h>
+#include <forge/core/Board.h>
+#include <forge/core/Position.h>
+#include <forge/core/game_history.h>
+#include <forge/core/GameState.h>
 
 #include "forge/controllers/ControllerBase.h"
-#include "forge/game/GameHistory.h"
-#include "forge/game/GameState.h"
 #include "forge/views/ViewBase.h"
 #include "forge/time/Clock.h"
 
@@ -34,8 +34,8 @@ namespace forge
 		// Blocking call.
 		GameState runGame();
 
-		GameHistory & history() { return m_history; };
-		const GameHistory & history() const { return m_history; };
+		game_history & history() { return m_history; };
+		const game_history & history() const { return m_history; };
 
 		Position & position() { return m_history.current().position; }
 		const Position & position() const { return m_history.current().position; }
@@ -69,7 +69,7 @@ namespace forge
 		const Clock & clock() const { return m_clock; }
 
 	private:
-		GameHistory m_history;
+		game_history m_history;
 
 		std::unique_ptr<ControllerBase> m_whitesController;
 		std::unique_ptr<ControllerBase> m_blacksController;

@@ -29,10 +29,6 @@ set(CONTROLLERS
 set(GAME
 	game/ChessMatch.cpp
 	game/ChessMatch.h
-	game/GameHistory.cpp
-	game/GameHistory.h
-	game/GameState.cpp
-	game/GameState.h
 )
 
 set(HEURISTICS
@@ -138,8 +134,6 @@ set(SEARCH
 	search/MCTS_Node.h
 	search/MiniMaxNode.cpp
 	search/MiniMaxNode.h
-	search/Node.cpp
-	search/Node.h
 	search/SearchMonitor.cpp
 	search/SearchMonitor.h
 )
@@ -169,15 +163,6 @@ set(THIRD_PARTY
 	third_party/rapidcsv.h
 )
 
-set(TIME
-	time/Clock.cpp
-	time/Clock.h
-	time/StopWatch.cpp
-	time/StopWatch.h
-	time/Timer.cpp
-	time/Timer.h
-)
-
 set(VIEWS
 	views/TextView.cpp
 	views/TextView.h
@@ -198,7 +183,6 @@ source_group(${PROJECT_NAME} FILES ${SEARCH})
 source_group(${PROJECT_NAME} FILES ${SOURCE})
 source_group(${PROJECT_NAME} FILES ${TEST})
 source_group(${PROJECT_NAME} FILES ${THIRD_PARTY})
-source_group(${PROJECT_NAME} FILES ${TIME})
 source_group(${PROJECT_NAME} FILES ${VIEWS})
 
 add_executable(${PROJECT_NAME}
@@ -215,7 +199,6 @@ add_executable(${PROJECT_NAME}
 	${SOURCE}
 	${TEST}
 	${THIRD_PARTY}
-	${TIME}
 	${UCI}
 	${VIEWS}
 )

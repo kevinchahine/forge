@@ -1,6 +1,8 @@
 #pragma once
 
-#include "forge/search/Node.h"
+#include "forge/heuristics/HeuristicBase.h"
+
+#include <forge/core/Node.h>
 
 namespace forge
 {

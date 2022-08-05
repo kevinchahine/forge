@@ -1,5 +1,6 @@
 #pragma once
-#include "Node.h"
+
+#include <forge/core/Node.h>
 
 #include <limits>
 #include <cmath>

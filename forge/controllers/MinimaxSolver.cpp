@@ -1,6 +1,6 @@
 #include "forge/controllers/MinimaxSolver.h"
 
-#include "forge/game/GameState.h"
+#include <forge/core/GameState.h>
 
 #include <limits>
 

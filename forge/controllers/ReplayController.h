@@ -1,7 +1,7 @@
 #pragma once
 
 #include "forge/controllers/ControllerBase.h"
-#include "forge/game/GameHistory.h"
+#include <forge/core/game_history.h>
 
 namespace forge
 {
@@ -18,7 +18,7 @@ namespace forge
 	// Its recommended when playing two ReplayControllers against each other
 	//	to assign white's moves to one ReplayController object and black's
 	//	moves to another.
-	class ReplayController : public ControllerBase, public GameHistory
+	class ReplayController : public ControllerBase, public game_history
 	{
 	public:
 		virtual void reset() override;
@@ -33,7 +33,7 @@ namespace forge
 
 		// Stores the sequence of moves played by one of the players in the GameHistory
 		// The player whose moves are stored is controlled by isWhite
-		void fromHistory(const GameHistory & history, bool isWhite);
+		void fromHistory(const game_history & history, bool isWhite);
 
 	private:
 		bool m_pauseBeforeReturning = false;

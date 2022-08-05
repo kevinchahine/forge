@@ -1,3 +1,7 @@
 [submodule "guten"]
 	path = guten
 	url = git@github.com:kevinchahine/guten.git
+
+[submodule "forgelib"]
+	path = forgelib
+	url = git@github.com:kevinchahine/forgelib.git

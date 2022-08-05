@@ -8,7 +8,7 @@ namespace forge
 {
 	void ReplayController::reset()
 	{
-		GameHistory& super = static_cast<GameHistory&>(*this);
+		game_history& super = static_cast<game_history&>(*this);
 
 		// TODO: Is this good? I think so.
 		super.clear();
@@ -16,7 +16,7 @@ namespace forge
 
 	MovePositionPair ReplayController::getMove(const Position & position)
 	{
-		GameHistory& super = static_cast<GameHistory&>(*this);
+		game_history& super = static_cast<game_history&>(*this);
 		
 		Move nextMove;
 
@@ -45,11 +45,11 @@ namespace forge
 		}
 	}
 	
-	void ReplayController::fromHistory(const GameHistory& history, bool isWhite)
+	void ReplayController::fromHistory(const game_history& history, bool isWhite)
 	{
 		this->reset();
 
-		GameHistory & thisGameHistory = static_cast<GameHistory&>(*this);
+		game_history & thisGameHistory = static_cast<game_history&>(*this);
 
 		//auto myInserter = inserter(thisGameHistory, thisGameHistory.end());
 

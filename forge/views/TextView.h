@@ -1,7 +1,7 @@
 #pragma once
 
 #include "forge/views/ViewBase.h"
-#include <forge/MoveList.h>
+#include <forge/core/MoveList.h>
 
 #include <guten/boards/CheckerBoard.h>
 

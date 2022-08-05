@@ -1142,29 +1142,29 @@ namespace forge
 
 			auto whiteController =
 				//make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
+				make_unique<MinimaxSolver>();
 				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
+				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 			 
 			auto blackController =
 				//make_unique<RandomSolver>();
-				//make_unique<MinimaxSolver>();
+				make_unique<MinimaxSolver>();
 				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
+				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
-				//forge::ApplePieHeuristic>();
+				forge::ApplePieHeuristic>();
 				//forge::RandomHeuristic>();
 				//forge::heuristics::Rollout>();
-				forge::NeuralNetworkHeuristic>("net.pt");
+				//forge::NeuralNetworkHeuristic>("net.pt");
 
 			blackController->makeHeuristic<
-				//forge::ApplePieHeuristic>();
+				forge::ApplePieHeuristic>();
 				//forge::RandomHeuristic>();
 				//forge::heuristics::Rollout>();
-				forge::NeuralNetworkHeuristic>("net.pt");
+				//forge::NeuralNetworkHeuristic>("net.pt");
 
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);
