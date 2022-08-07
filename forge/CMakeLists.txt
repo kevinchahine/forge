@@ -170,20 +170,20 @@ set(VIEWS
 	views/ViewBase.h
 )
 
-source_group(${PROJECT_NAME} FILES ${ML_FILES})
-source_group(${PROJECT_NAME} FILES ${CONTROLLERS})
-source_group(${PROJECT_NAME} FILES ${CORE})
-source_group(${PROJECT_NAME} FILES ${FEATURE_EXTRACTOR})
-source_group(${PROJECT_NAME} FILES ${GAME})
-source_group(${PROJECT_NAME} FILES ${HEURISTICS})
-source_group(${PROJECT_NAME} FILES ${ML})
-source_group(${PROJECT_NAME} FILES ${MOVEGEN})
-source_group(${PROJECT_NAME} FILES ${NOTES})
-source_group(${PROJECT_NAME} FILES ${SEARCH})
-source_group(${PROJECT_NAME} FILES ${SOURCE})
-source_group(${PROJECT_NAME} FILES ${TEST})
-source_group(${PROJECT_NAME} FILES ${THIRD_PARTY})
-source_group(${PROJECT_NAME} FILES ${VIEWS})
+source_group(ml_files FILES ${ML_FILES})
+source_group(controllers FILES ${CONTROLLERS})
+source_group(core FILES ${CORE})
+source_group(features_extractor FILES ${FEATURE_EXTRACTOR})
+source_group(game FILES ${GAME})
+source_group(heuristics FILES ${HEURISTICS})
+source_group(ml FILES ${ML})
+source_group(movegen FILES ${MOVEGEN})
+source_group(notes FILES ${NOTES})
+source_group(search FILES ${SEARCH})
+source_group(source FILES ${SOURCE})
+source_group(test FILES ${TEST})
+source_group(third_party FILES ${THIRD_PARTY})
+source_group(views FILES ${VIEWS})
 
 add_executable(${PROJECT_NAME}
 	${ML_FILES}
@@ -243,7 +243,7 @@ if (MSVC)
 	message(STATUS "\nVCPKG packages will be automatically linked to visual studio\n")
 else ()
 	# --- For VCPKG packages ---
-	message(STATUS "call cmake with: cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/code/libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
+	#message(STATUS "call cmake with: cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/code/libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 	# ----- BOOST -----
 

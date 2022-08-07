@@ -22,3 +22,52 @@ Game Starts: (Periodic things)
 1.) 
 
 Game Ends:
+
+------------------------------------------------
+
+=== UCI MATCH === 
+void playUciMatch()
+{
+	uciServer gui;
+	uci::Command cmd;
+
+	// --- 1.) Set Up ---
+	gui.recv_until_uci();
+
+	gui.send_id("Forge", "Micah");
+
+	gui.send_option();
+	gui.send_option();
+	gui.send_option();
+	gui.send_option();
+
+	gui.send_uciok();
+
+	unique_ptr<SolverBase> solverPtr =
+		make_unique<MinimaxSolver>();
+		//make_unique<MCTS_Solver>();
+
+	gui.on_setoption() = [&] { handle set option command };
+
+	gui.recv_until_isready();
+
+	gui.send_readyok();
+
+	// --- 2.) Play Game ---
+
+	gui.recv_until_ucinewgame();
+	
+	while (true) 
+	{
+		cmd = gui.recv_until_position();
+		Position pos;
+		pos.fromFEN( cmd.as_position().fen() );
+
+		cmd = gui.recv_until_go();
+		uci::go = cmd;
+		
+		Move bestmove = solverPtr->solve(position, gui);
+
+		gui.send_bestmove(bestmove.to_string());
+	}
+}
