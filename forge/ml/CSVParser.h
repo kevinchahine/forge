@@ -22,7 +22,7 @@ namespace forge
 		// Skips a number of lines from the file.
 		// Good for when you don't want to read a large csv file from the beginning 
 		// Call this after open()
-		// Calling this when the file is closed will have no effect
+		// Calling this when the file is closed is a no-op
 		void skipLines(size_t nlines);
 
 		void batchSize(size_t size) { m_batchSize = (size > 0 ? size : 1); /* batch must be atleast 1 row */ }

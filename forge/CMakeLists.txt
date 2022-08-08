@@ -49,6 +49,8 @@ set(HEURISTICS
 )
 
 set(ML
+	ml/CSVDataSet.cpp
+	ml/CSVDataSet.h
 	ml/CSVParser.cpp
 	ml/CSVParser.h
 	ml/DataSet.cpp
@@ -57,7 +59,6 @@ set(ML
 	ml/DatasetGenerator.h
 	ml/Net.cpp
 	ml/Net.h
-	ml/PosEvalPair.h
 	ml/PositionEvalPair.h
 	ml/TensorPair.cpp
 	ml/TensorPair.h

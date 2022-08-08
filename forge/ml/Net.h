@@ -1,6 +1,7 @@
 #pragma once
 
 #include "forge/ml/DataSet.h"
+#include "forge/ml/CSVDataSet.h"
 #include "forge/heuristics/FeatureExtractor.h"
 
 #include <iostream>
@@ -58,6 +59,7 @@ namespace forge
 			}
 
 			void train(DataSet& trainingDS, size_t nEpochs);
+			void train(CSVDataSet& trainingDS, size_t nEpochs);
 
 			void save(const std::string & filename);
 
