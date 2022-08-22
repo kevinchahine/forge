@@ -38,7 +38,7 @@ namespace forge
 		//	
 		//	It is very important that the input layer is passed data in the same way as it is during training.
 		//	For example, if the NN is trained with its 1st layer being `our pawns`, then we should pass in the
-		//	one-hot encoding of our pawns to it and not something else.
+		//	one-hot encoding of our pawns during evaluations.
 		// 
 		// Output Layer:
 		//		A single value that is the evaluation of the position in units of centi-pawns.

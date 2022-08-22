@@ -5,3 +5,6 @@
 [submodule "forgelib"]
 	path = forgelib
 	url = git@github.com:kevinchahine/forgelib.git
+[submodule "ucilib"]
+	path = ucilib
+	url = git@github.com:kevinchahine/ucilib.git

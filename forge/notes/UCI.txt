@@ -43,13 +43,13 @@ void playUciMatch()
 
 	gui.send_uciok();
 
+	gui.on_setoption() = [&] { handle set option command };
+
 	unique_ptr<SolverBase> solverPtr =
 		make_unique<MinimaxSolver>();
 		//make_unique<MCTS_Solver>();
 
-	gui.on_setoption() = [&] { handle set option command };
-
-	gui.recv_until_isready();
+	gui.recv_until_isready();	// here and in the remaining recv() methods are where the on_setoption handlers would be called.
 
 	gui.send_readyok();
 
@@ -61,12 +61,23 @@ void playUciMatch()
 	{
 		cmd = gui.recv_until_position();
 		Position pos;
-		pos.fromFEN( cmd.as_position().fen() );
+		pos.fromFEN( cmd.as_position().fen() );	// don't forget move sequence if it exists
+
+		// !!! Wait for go command !!!
 
 		cmd = gui.recv_until_go();
 		uci::go = cmd;
+
+		// --- Run search using the go parameters ---
 		
-		Move bestmove = solverPtr->solve(position, gui);
+		thread searchThread = 
+		Move bestmove = solverPtr->solve(position, gui);		// !!! Run on a separate thread !!!
+
+		while (true) {
+			gui.poll();
+
+
+		}
 
 		gui.send_bestmove(bestmove.to_string());
 	}

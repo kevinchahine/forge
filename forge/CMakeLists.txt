@@ -29,6 +29,8 @@ set(CONTROLLERS
 set(GAME
 	game/ChessMatch.cpp
 	game/ChessMatch.h
+	game/UciMatch.cpp
+	game/UciMatch.h
 )
 
 set(HEURISTICS
@@ -64,11 +66,6 @@ set(ML
 	ml/TensorPair.h
 	ml/TrainingHistory.cpp
 	ml/TrainingHistory.h	
-)
-
-set(MOVEGEN
-	movegen/PseudoMoveGenerator.cpp
-	movegen/PseudoMoveGenerator.h
 )
 
 set(NOTES
@@ -142,8 +139,6 @@ set(TEST
 	#test/TestFeatureExtractor.h
 	test/TestML.cpp
 	test/TestML.h
-	#test/TestMoveGen.cpp
-	#test/TestMoveGen.h
 	#test/TestUci.cpp
 	#test/TestUci.h
 )
@@ -166,7 +161,6 @@ source_group(features_extractor FILES ${FEATURE_EXTRACTOR})
 source_group(game FILES ${GAME})
 source_group(heuristics FILES ${HEURISTICS})
 source_group(ml FILES ${ML})
-source_group(movegen FILES ${MOVEGEN})
 source_group(notes FILES ${NOTES})
 source_group(search FILES ${SEARCH})
 source_group(source FILES ${SOURCE})
@@ -182,7 +176,6 @@ add_executable(${PROJECT_NAME}
 	${GAME}
 	${HEURISTICS}
 	${ML}
-	${MOVEGEN}
 	${NOTES}
 	${SEARCH}
 	${SOURCE}
@@ -215,6 +208,12 @@ message(STATUS "\n----- forgelib -----\n")
 target_link_libraries(${PROJECT_NAME} PUBLIC forgelib)
 target_include_directories(${PROJECT_NAME} PUBLIC forgelib)
 include_directories(forgelib)
+
+# --- ucilib ---
+
+message(STATUS "\n----- ucilib -----\n")
+
+target_link_libraries(${PROJECT_NAME} PUBLIC ucilib)
 
 # --- Torch ---
 message(STATUS "\n----- Torch -----")

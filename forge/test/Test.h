@@ -12,6 +12,8 @@
 #include "forge/feature_extractor/Threats.h"
 
 #include "forge/game/ChessMatch.h"
+#include "forge/game/UciMatch.h"
+
 #include <forge/core/GameState.h>
 
 #include "forge/heuristics/Heuristics.hpp"
@@ -21,11 +23,6 @@
 #include "forge/ml/Net.h"
 
 #include <forge/core/MoveGenerator2.h>
-
-//#include "forge/perft/PerformanceTester.h"
-//#include "forge/perft/PerformanceLogger.h"
-
-//#include "forge/search/Node.h"
 
 #include "forge/time/Clock.h"
 #include "forge/time/StopWatch.h"
@@ -181,6 +178,8 @@ namespace forge
 		void randomSolver();
 
 		void chessMatch();
+
+		void uciMatch();
 
 		void performanceTester();
 

@@ -1173,6 +1173,13 @@ namespace forge
 			match.runGame();
 		}
 
+		void uciMatch()
+		{
+			game::UciMatch match;
+
+			match.play();
+		}
+
 //		void performanceTester()
 //		{
 //			for (size_t t = 5; t <= 8; t++) {
