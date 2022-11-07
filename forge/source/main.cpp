@@ -40,7 +40,7 @@ int main(int argc, char ** argv)
 		<< termcolor::red << "=============\n"
 		<< termcolor::white;
 
-	forge::initGlobals();
+	//forge::initGlobals();
 	//forge::test::initTestBoards();
 	//forge::test::init();
 	
@@ -75,14 +75,14 @@ int main(int argc, char ** argv)
 	//forge::test::isAttacked();
 	//forge::test::move();
 	//forge::test::chessMatch();				// **************
-	forge::test::uciMatch();					// uuuuuuuuuuuuuu
+	//forge::test::uciMatch();					// uuuuuuuuuuuuuu
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
 	//forge::test::heuristic();
 	//forge::test::solver();
 	//forge::test::insufficientMaterial();
 	//forge::test::gameState();
-	//forge::test::drawByRepetition();
+	forge::test::drawByRepetition();
 	//forge::test::logger();
 	//forge::test::csvParser();
 	//forge::test::dataSetPipeline();

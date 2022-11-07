@@ -1314,50 +1314,57 @@ namespace forge
 //
 //			cout << state << '\n';
 //		}
-//
-//		void drawByRepetition()
-//		{
-//			ChessMatch match;
-//			///match.makeWhiteController<ReplayController>();
-//			///match.makeBlackController<ReplayController>();
-//
-//			unique_ptr<ReplayController> whitePtr = make_unique<ReplayController>();
-//			unique_ptr<ReplayController> blackPtr = make_unique<ReplayController>();
-//
-//			ReplayController & white = *whitePtr;
-//			ReplayController & black = *blackPtr;
-//
-//			///white.push(Move{ BoardSquare{'d', '2'}, BoardSquare{'d', '4'} });	// queen's pawn
-//			///black.push(Move{ BoardSquare{'d', '7'}, BoardSquare{'d', '5'} });	// queen's pawn
-//			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-//			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-//			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-//			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
-//			///
-//			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-//			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-//			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-//			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
-//			///
-//			///white.push(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
-//			///black.push(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
-//			///white.push(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
-//			///black.push(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
-//
-//			cout << "White: " << white.size() << '\n'
-//				<< "Black: " << black.size() << '\n';
-//
-//			match.setWhiteController(std::move(whitePtr));
-//			match.setBlackController(std::move(blackPtr));
-//
-//			white.pauseBeforeReturn();
-//			black.pauseBeforeReturn();
-//
-//			match.makeView<TextView>();
-//
-//			match.runGame();
-//		}
-//
+
+		void drawByRepetition()
+		{
+			ChessMatch match;
+			///match.makeWhiteController<ReplayController>();
+			///match.makeBlackController<ReplayController>();
+
+			unique_ptr<ReplayController> whitePtr = make_unique<ReplayController>();
+			unique_ptr<ReplayController> blackPtr = make_unique<ReplayController>();
+
+			ReplayController & white = *whitePtr;
+			ReplayController & black = *blackPtr;
+
+			white.reset();
+			black.reset();
+
+			// Do other moves
+			white.push_back(Move{ BoardSquare{'d', '2'}, BoardSquare{'d', '4'} });	// queen's pawn
+			black.push_back(Move{ BoardSquare{'d', '7'}, BoardSquare{'d', '5'} });	// queen's pawn
+			white.push_back(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+			black.push_back(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+			white.push_back(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+			black.push_back(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+			
+			white.push_back(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+			black.push_back(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+			white.push_back(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+			black.push_back(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+			
+			white.push_back(Move{ BoardSquare{'d', '1'}, BoardSquare{'d', '3'} });	// white queen
+			black.push_back(Move{ BoardSquare{'d', '8'}, BoardSquare{'d', '6'} });	// black queen
+			white.push_back(Move{ BoardSquare{'d', '3'}, BoardSquare{'d', '1'} });	// white undo
+			black.push_back(Move{ BoardSquare{'d', '6'}, BoardSquare{'d', '8'} });	// black undo
+
+			cout << "White: " << white.size() << '\n'
+				<< "Black: " << black.size() << '\n';
+
+			cout << "White Replay: " << whitePtr->toString() << endl;
+			cout << "Black Replay: " << blackPtr->toString() << endl;
+
+			match.setWhiteController(std::move(whitePtr));
+			match.setBlackController(std::move(blackPtr));
+
+			white.pauseBeforeReturn();
+			black.pauseBeforeReturn();
+
+			match.makeView<TextView>();
+
+			match.runGame();
+		}
+
 //		void logger()
 //		{
 //			PerformanceLogger logger;

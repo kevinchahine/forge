@@ -93,6 +93,8 @@ namespace forge
 				pair = currPlayer->getMove(this->position());
 			}
 			
+			cout << "Move: " << pair.move << endl;
+
 			// Apply the move. 
 			// TODO: Make sure move is legal before adding it.
 			m_history.emplace_back(pair); // Its just that simple.

@@ -35,7 +35,14 @@ namespace forge
 		// The player whose moves are stored is controlled by isWhite
 		void fromHistory(const game_history & history, bool isWhite);
 
+		const game_history& gameHistory() const { return static_cast<const game_history&>(*this); }
+		game_history& gameHistory() { return static_cast<game_history&>(*this); }
+
+		std::string toString() const;
+
 	private:
 		bool m_pauseBeforeReturning = false;
+
+		game_history::const_iterator it;
 	};
 } // namespace forge
