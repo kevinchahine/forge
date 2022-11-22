@@ -74,7 +74,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	//forge::test::chessMatch();				// **************
+	forge::test::chessMatch();				// **************
 	//forge::test::uciMatch();					// uuuuuuuuuuuuuu
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
@@ -82,7 +82,7 @@ int main(int argc, char ** argv)
 	//forge::test::solver();
 	//forge::test::insufficientMaterial();
 	//forge::test::gameState();
-	forge::test::drawByRepetition();
+	//forge::test::drawByRepetition();
 	//forge::test::logger();
 	//forge::test::csvParser();
 	//forge::test::dataSetPipeline();

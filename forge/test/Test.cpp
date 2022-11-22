@@ -1470,9 +1470,9 @@ namespace forge
 		void trainNN()
 		{
 			const std::string filename =
-				// "/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv";
-				"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
-				//R"dil(D:\DataSets\Chess\stockfish_evals\chessData.csv)dil";
+				//"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv";
+				//"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
+				R"dil(D:\DataSets\Chess\stockfish_evals\chessData.csv)dil";
 					
 			forge::DataSet ds;
 
