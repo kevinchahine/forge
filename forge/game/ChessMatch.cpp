@@ -15,7 +15,7 @@ namespace forge
 	{
 		m_history.clear();
 		m_history.emplace_back();
-		m_history.back().position.reset();
+		m_history.back().position.setupNewGame();
 
 		if (m_whitesController != nullptr) m_whitesController->reset();
 		if (m_blacksController != nullptr) m_blacksController->reset();

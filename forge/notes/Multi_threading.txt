@@ -11,3 +11,22 @@ https://craftychess.com/hyatt/search.html		<--- This is the real paper
 
 Consider PVS algorithm if DTS is to hard.
 	PVS is supposed to be very simple and easy to implement. But its not as efficient ofcourse.
+
+=== PARALLEL MCTS ===
+
+Node Parallel Search:
+	Each node is locked independently only when needed.
+
+	MCTS steps:
+		1.) Start at root node (curr = root)
+		2.) Switch:
+			- curr is expanded:
+				If curr is expanded (curr has children)
+				select a child (curr = child_x)
+			- curr is not expanded
+				- evaluate curr (ex: random rollout, heuristic)
+				- expand curr (curr movegen)
+				- propagate evaluation up to root.
+		3.) Go to step 2.) until stopping condition is met (timeout or number of nodes have been searched)
+			
+	

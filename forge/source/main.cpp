@@ -40,7 +40,7 @@ int main(int argc, char ** argv)
 		<< termcolor::red << "=============\n"
 		<< termcolor::white;
 
-	//forge::initGlobals();
+	forge::initGlobals();
 	//forge::test::initTestBoards();
 	//forge::test::init();
 	

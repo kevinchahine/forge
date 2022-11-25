@@ -20,5 +20,9 @@ namespace forge
 		
 			g_computingDevice = torch::kCUDA;
 		}
+		else {
+			cout << "--- CUDA is NOT available! ---" << endl
+				<< "Using CPU for tensor operations instead" << endl;
+		}
 	}
 } // namespace forge

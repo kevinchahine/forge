@@ -33,7 +33,7 @@ namespace forge
 	{
 		(*it).expand();
 
-		// Where any children generated?
+		// Were any children generated?
 		if ((*it).children().size()) {
 			// Yes we must be at an intermediate node. Got to 1st child
 			it.goToFirstChild();

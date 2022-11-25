@@ -6,18 +6,18 @@
 #include <cmath>
 
 namespace forge {
-    class MCTS_Node : public NodeTemplate<MCTS_Node>
-    {
+	class MCTS_Node : public NodeTemplate<MCTS_Node>
+	{
 		using super_t = NodeTemplate<MCTS_Node>;
-
-    public:		// ---------- METHODS -----------------------------------------
+	
+	public:		// ---------- METHODS -----------------------------------------
 		// UCB = x_i + C * sqrt(ln(N) / n_i)
 		// 	x_i - average value of game state (t / n)
 		// 	C - constant "Temperature" (ex : 1.5)
 		// 	N - Parent node visits
 		// 	n_i - Current node visits(if n_i is 0 then use 1 / inf to avoid division by zero)
 		static float calcUCB(float average, float temperature, int parentVisits, int currVisits);
-
+		
 		int totalScore() const { return static_cast<int>(t); }
 
 		int nGamesVisited() const { return static_cast<int>(n); }
@@ -37,7 +37,7 @@ namespace forge {
 		// ucb will need to be recalculated after calling this method if node.t or node.n are non-zero
 		void merge(const MCTS_Node& node);
 
-    private:	// ---------- FIELDS ------------------------------------------
+	private:	// ---------- FIELDS ------------------------------------------
 		// Total score of all children
 		// # of games won by white
 		float t = 0.0f;
@@ -50,10 +50,10 @@ namespace forge {
 		// Its value is calculated from t n and temperature
 		float m_ucb = std::numeric_limits<float>::max(); // 0.0f;
 
-		float temperature = 1.5;
+		float temperature = 1.5;	// TODO: Make this static const
 
-    public:		// ---------- ITERATOR ----------------------------------------
-        class iterator {
+	public:		// ---------- ITERATOR ----------------------------------------
+		class iterator {
         public:
 			iterator() = default;
 			iterator(MCTS_Node* nodePtr) : p_node(nodePtr) {}
@@ -94,7 +94,7 @@ namespace forge {
 		private:
 			MCTS_Node* p_node = nullptr;
 		}; // end class iterator
-
+		
 		iterator begin() { return iterator(this); }
 		iterator end() { return iterator(nullptr); }	// TODO: do we need this and does it make sense
     }; // end class MCTS_Node

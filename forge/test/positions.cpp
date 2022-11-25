@@ -13,7 +13,7 @@ namespace forge
 			g_positions.reserve(20);
 
 			Position pos;
-			pos.reset();
+			pos.setupNewGame();
 			g_positions.emplace_back(pos);
 
 			g_positions.emplace_back("rnb1kbnr/pppp1ppp/4p3/8/6Pq/5P2/PPPPP2P/RNBQKBNR w - - 1 2");

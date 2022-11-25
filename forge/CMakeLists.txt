@@ -118,6 +118,8 @@ set(SEARCH
 	search/ExitCondition.h
 	search/MCTS_Node.cpp
 	search/MCTS_Node.h
+	search/MCTS_Node_MT.cpp
+	search/MCTS_Node_MT.h
 	search/MiniMaxNode.cpp
 	search/MiniMaxNode.h
 	search/SearchMonitor.cpp

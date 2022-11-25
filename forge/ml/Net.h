@@ -19,19 +19,7 @@ namespace forge
 		class Net : public torch::nn::Module
 		{
 		public:
-			Net(const torch::Device & computingDevice = torch::kCPU) {
-				size_t inputLayerSize = 
-					FeatureExtractor::MATERIAL_FEATURES_SIZE;
-
-				fc1 = register_module("fc1", torch::nn::Linear(inputLayerSize, 2048));
-				fc2 = register_module("fc2", torch::nn::Linear(2048, 1024));
-				fc3 = register_module("fc3", torch::nn::Linear(1024, 8));
-				fc4 = register_module("fc4", torch::nn::Linear(8, 1));
-				
-				// These lines are very important to make sure layers are in the correct device
-				// operations will hang if these arn't called 
-				this->to(computingDevice);
-			}
+			Net(const torch::Device& computingDevice = torch::kCPU);
 			Net(const Net&) = default;
 			Net(Net&&) noexcept = default;
 			~Net() noexcept = default;

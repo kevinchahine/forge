@@ -7,9 +7,9 @@
 
 namespace forge
 {
-    class MCTS_Solver : public SolverBase
-    {
-    public:
+	class MCTS_Solver : public SolverBase
+	{
+	public:
 		virtual void reset() override;
 
 		virtual MovePositionPair getMove(const Position& position) override;
@@ -35,9 +35,9 @@ namespace forge
 	public:
 		MovePositionPair solve(const Position& position);
 
-    protected:
-        MCTS_Node m_nodeTree;
+	protected:
+		MCTS_Node m_nodeTree;
 
 		MCTS_Node::iterator it;
-    };
+	};
 } // namespace forge

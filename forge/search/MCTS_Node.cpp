@@ -17,7 +17,7 @@ namespace forge
 	{
 		// Stores all the ucb scores of each child in the same order
 		vector<float> ucbScores(children.size());
-
+		
 		// Copy the ucb scores of each child into ucbScores
 		transform(
 			children.begin(),
@@ -25,10 +25,10 @@ namespace forge
 			ucbScores.begin(),
 			[&](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucb(); return (favorHigh ? ucb : -ucb); }
 		);
-
+		
 		// Create Stochastic Universal Sampling distribution based on our scores
 		discrete_distribution<size_t> dist(ucbScores.begin(), ucbScores.end());	// O(n)
-
+		
 		// Randomly select a child giving higher weight to samples with higher ucb scores
 		return children.begin() + dist(g_rand);
 	}
@@ -53,7 +53,7 @@ namespace forge
 		t += rolloutResult;
 		n += 1.0f;
 		int parentVisits = parentPtr()->nGamesVisited();
-		m_ucb = calcUCB(t / n, temperature, parentVisits, n);
+		m_ucb = calcUCB(t / n, temperature, parentVisits + 1, n);
 
 		//cout
 		//	<< "t         " << t << endl
