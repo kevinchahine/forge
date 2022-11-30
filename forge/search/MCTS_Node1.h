@@ -6,77 +6,69 @@
 #include <cmath>
 
 namespace forge {
-	class MCTS_Node : public NodeTemplate<MCTS_Node>
+	class MCTS_Node1 : public NodeTemplate<MCTS_Node1>
 	{
-	public:
-		using super_t = NodeTemplate<MCTS_Node>;
-
+		using super_t = NodeTemplate<MCTS_Node1>;
+	
+	public:		// ---------- METHODS -----------------------------------------
 		// UCB = x_i + C * sqrt(ln(N) / n_i)
 		// 	x_i - average value of game state (t / n)
+		// 	C - constant "Temperature" (ex : 1.5)
 		// 	N - Parent node visits
 		// 	n_i - Current node visits(if n_i is 0 then use 1 / inf to avoid division by zero)
-		static float calcUCB(float average, float parentVisits, float currVisits) {
-			// UCB = x_i + C * sqrt(ln(N) / n_i)
-			// !!! Warning: parentVisits and currVisits must be greater than 0.
-			//	log(0) = -NaN (undefined)
-			//	x/0	= NaN (undefined)
-			return average + MCTS_Node::temperature * sqrt(log(parentVisits) / currVisits);
-		}
-
+		static float calcUCB(float average, float temperature, int parentVisits, int currVisits);
+		
 		int totalScore() const { return static_cast<int>(t); }
 
 		int nGamesVisited() const { return static_cast<int>(n); }
 
-		bool isVisited() const { return static_cast<int>(n) == 0; }
-		bool isUnvisited() const { return !isVisited(); }
-
 		float average() const { return t / n; }
 
-		float ucb() const;
-
+		float ucb() const { return m_ucb; }
+		
 		// Warning: Update should never be called on the root node. 
 		// Call updateRoot() instead
-		void update(int score);
+		void update(int rolloutResult);
+
+		void updateRoot(int rolloutResult);
 
 		// Accumulates t and n from 'node'
 		// ucb and temperature are left unchanged
 		// ucb will need to be recalculated after calling this method if node.t or node.n are non-zero
-		void merge(const MCTS_Node& node);
+		void merge(const MCTS_Node1& node);
 
-	private: // -------------------------- PRIVATE FIELDS ------------------------
+	private:	// ---------- FIELDS ------------------------------------------
 		// Total score of all children
 		// # of games won by white
 		float t = 0.0f;
 
 		// Total number of games visited
-		// Positive means white is winning
-		// Negative means black is winning
-		// Zero     means both are drawing
-		// Set to positive epsilon
-		// The root node must initialize this to 1.0f to prevent undefined ucb calculations.
-		// Do this by calling MCTS_Node::updateRoot(0.0f) once when root node is initialized.
-		// Hint: 
-		//	log(0.0<x<1.0) < 0.0
-		//	sqrt(-1) is undefined
 		float n = std::numeric_limits<float>::min();
 
-		static const float temperature;
+		// Save ucb here so that it doesn't need to be recalculated each time its used
+		// Precalculate to max value to save time on construction
+		// Its value is calculated from t n and temperature
+		float m_ucb = std::numeric_limits<float>::max(); // 0.0f;
 
-	public: // ---------------------------- ITERATOR -----------------------------
+		float temperature = 1.5;	// TODO: Make this static const
+
+	public:		// ---------- ITERATOR ----------------------------------------
 		class iterator {
-		public:
+        public:
 			iterator() = default;
-			iterator(MCTS_Node* nodePtr) : p_node(nodePtr) {}
-			iterator(MCTS_Node* nodePtr, int depth, int depthLimit) : p_node(nodePtr) {}
+			iterator(MCTS_Node1* nodePtr) : p_node(nodePtr) {}
+			iterator(MCTS_Node1* nodePtr, int depth, int depthLimit) : p_node(nodePtr) {}
+			iterator& operator++();
+			iterator operator++(int) { iterator temp = *this; ++(*this); return temp; }
 			bool operator==(const iterator& it) const { return this->p_node == it.p_node; }
 			bool operator!=(const iterator& it) const { return this->p_node != it.p_node; }
-			MCTS_Node& operator*();
+			MCTS_Node1& operator*();
 
-			bool hasParent() const { return p_node->m_parentPtr != nullptr; }
-			bool hasChildren() const { return p_node->m_childrenPtrs.size(); }
-			bool isRoot() const { return hasParent() == false; }
+			bool parentExists() const { return p_node->m_parentPtr != nullptr; }
+			bool childrenExist() const { return p_node->m_childrenPtrs.size(); }
+			bool isRoot() const { return parentExists() == false; }
 
-			void toParent()
+			void goToParent()
 			{
 				p_node = p_node->m_parentPtr;	// go to parent (might be nullptr)
 			}
@@ -89,24 +81,21 @@ namespace forge {
 			// any children.
 			// maximize - determines whether the selection should favor children which higher
 			//				or lower UCB scores. if maximize == true, then method favors higher UCB scores
-			void toSelectedChild(bool maximize);
+			void goToSelectedChild(bool maximize);
 
 			// Selects child with the best average value.
-			// Then moves to that child.
-			// maximize = true:  look for max ucb. favors white player
-			// maximize = false: look for min ucb. favors black player
+			// Then moves to that child
 			// * See comments for goToSelectedChild()
-			void toBestChild(bool maximize);
+			void goToBestChild();
 
 			// * See comments of goToSelectedChild()
-			void toFirstChild();
+			void goToFirstChild();
 
 		private:
-			MCTS_Node* p_node = nullptr;
+			MCTS_Node1* p_node = nullptr;
 		}; // end class iterator
-
-		iterator root() { return iterator(this); }
+		
 		iterator begin() { return iterator(this); }
 		iterator end() { return iterator(nullptr); }	// TODO: do we need this and does it make sense
-	}; // end class MCTS_Node
+    }; // end class MCTS_Node
 } // namespace forge

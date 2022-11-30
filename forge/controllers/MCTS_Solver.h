@@ -25,7 +25,7 @@ namespace forge
 
 		void expand();
 
-		int rollout();
+		int evaluate();
 
 		void backpropagate(int rolloutResult);
 		
@@ -38,6 +38,6 @@ namespace forge
 	protected:
 		MCTS_Node m_nodeTree;
 
-		MCTS_Node::iterator it;
+		MCTS_Node::iterator curr;
 	};
 } // namespace forge

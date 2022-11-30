@@ -13,8 +13,8 @@ set(CONTROLLERS
 	controllers/KeyboardController.h
 	controllers/MCTS_Solver.cpp
 	controllers/MCTS_Solver.h
-	controllers/MCTS_Solver_MT.cpp
-	controllers/MCTS_Solver_MT.h
+	#controllers/MCTS_Solver_MT.cpp
+	#controllers/MCTS_Solver_MT.h
 	controllers/MinimaxSolver.cpp
 	controllers/MinimaxSolver.h
 	controllers/RandomSolver.cpp
@@ -45,6 +45,8 @@ set(HEURISTICS
 	heuristics/NeuralNetworkHeuristic.h
 	heuristics/RandomHeuristic.cpp
 	heuristics/RandomHeuristic.h
+	heuristics/RandomSlow.cpp
+	heuristics/RandomSlow.h
 	heuristics/Rollout.cpp
 	heuristics/Rollout.h
 	heuristics/Weights.hpp

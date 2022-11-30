@@ -51,8 +51,8 @@ namespace forge
 			const auto & solverChildren = solver.nodeTree().children();
 
 			for (size_t childIndex = 0; childIndex < children.size(); childIndex++) {
-				MCTS_Node & myChild = *children.at(childIndex);
-				MCTS_Node& solverChild = *solverChildren.at(childIndex);
+				MCTS_Node1 & myChild = *children.at(childIndex);
+				MCTS_Node1& solverChild = *solverChildren.at(childIndex);
 
 				myChild.merge(solverChild);	// accumulate t and n components of node
 			}
