@@ -1,4 +1,4 @@
-#include "forge/heuristics/RandomSlow.h"
+#include "forge/heuristic/RandomSlow.h"
 
 #include "forge/source/globals.h"
 
@@ -6,12 +6,11 @@ using namespace std;
 
 namespace forge
 {
-	namespace heuristics
+	namespace heuristic
 	{
-		heuristic_t forge::heuristics::RandomSlow::eval(const Position& pos)
+		heuristic_t RandomSlow::eval(const Position& pos)
 		{
 			heuristic_t eval = this->super_t::eval(pos);
-				//static_cast<RandomHeuristic&>(*this).eval(pos);
 
 			// Spin as if thread was executing
 			chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();

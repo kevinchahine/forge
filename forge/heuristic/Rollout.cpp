@@ -8,7 +8,7 @@ using namespace std;
 
 namespace forge
 {
-	namespace heuristics
+	namespace heuristic
 	{
 		heuristic_t Rollout::eval(const Position& pos)
 		{
@@ -41,5 +41,5 @@ namespace forge
 			// Return the value of the result
 			return gstate.getValue();
 		}
-	} // namespace heuristics
+	} // namespace heuristic
 } // namespace forge

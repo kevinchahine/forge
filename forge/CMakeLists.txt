@@ -33,23 +33,23 @@ set(GAME
 	game/UciMatch.h
 )
 
-set(HEURISTICS
-	heuristics/ApplePieHeuristic.cpp
-	heuristics/ApplePieHeuristic.h
-	heuristics/FeatureExtractor.cpp
-	heuristics/FeatureExtractor.h
-	heuristics/HeuristicBase.cpp
-	heuristics/HeuristicBase.h
-	heuristics/Heuristics.hpp
-	heuristics/NeuralNetworkHeuristic.cpp
-	heuristics/NeuralNetworkHeuristic.h
-	heuristics/RandomHeuristic.cpp
-	heuristics/RandomHeuristic.h
-	heuristics/RandomSlow.cpp
-	heuristics/RandomSlow.h
-	heuristics/Rollout.cpp
-	heuristics/Rollout.h
-	heuristics/Weights.hpp
+set(HEURISTIC
+	heuristic/ApplePie.cpp
+	heuristic/ApplePie.h
+	heuristic/FeatureExtractor.cpp
+	heuristic/FeatureExtractor.h
+	heuristic/Base.cpp
+	heuristic/Base.h
+	heuristic/Heuristics.hpp
+	heuristic/NeuralNetwork.cpp
+	heuristic/NeuralNetwork.h
+	heuristic/Random.cpp
+	heuristic/Random.h
+	heuristic/RandomSlow.cpp
+	heuristic/RandomSlow.h
+	heuristic/Rollout.cpp
+	heuristic/Rollout.h
+	heuristic/Weights.hpp
 )
 
 set(ML
@@ -163,7 +163,7 @@ source_group(controllers FILES ${CONTROLLERS})
 source_group(core FILES ${CORE})
 source_group(features_extractor FILES ${FEATURE_EXTRACTOR})
 source_group(game FILES ${GAME})
-source_group(heuristics FILES ${HEURISTICS})
+source_group(heuristic FILES ${HEURISTIC})
 source_group(ml FILES ${ML})
 source_group(notes FILES ${NOTES})
 source_group(search FILES ${SEARCH})
@@ -178,7 +178,7 @@ add_executable(${PROJECT_NAME}
 	${CORE}
 	${FEATURE_EXTRACTOR}
 	${GAME}
-	${HEURISTICS}
+	${HEURISTIC}
 	${ML}
 	${NOTES}
 	${SEARCH}

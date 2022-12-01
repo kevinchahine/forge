@@ -21,7 +21,7 @@ namespace forge
 		Net::Net(const torch::Device& computingDevice)
 		{
 			size_t inputLayerSize =
-				FeatureExtractor::MATERIAL_FEATURES_SIZE;
+				heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE;
 
 			fc1 = register_module("fc1", torch::nn::Linear(inputLayerSize, 2048));
 			fc2 = register_module("fc2", torch::nn::Linear(2048, 1024));

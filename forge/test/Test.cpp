@@ -1155,20 +1155,20 @@ namespace forge
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
-				//forge::ApplePieHeuristic>();
-				//forge::RandomHeuristic>();
-				forge::heuristics::RandomSlow>();
-				//forge::heuristics::Rollout>();
-				//forge::NeuralNetworkHeuristic>("net.pt");
-				//forge::NeuralNetworkHeuristic>();
+				//forge::heuristic::ApplePie>();
+				//forge::heuristic::Random>();
+				forge::heuristic::RandomSlow>();
+				//forge::heuristic::Rollout>();
+				//forge::heuristic::NeuralNetwork>("net.pt");
+				//forge::heuristic::NeuralNetwork>();
 
 			blackController->makeHeuristic<
-				//forge::ApplePieHeuristic>();
-				//forge::RandomHeuristic>();
-				forge::heuristics::RandomSlow>();
-				//forge::heuristics::Rollout>();
-				//forge::NeuralNetworkHeuristic>("net.pt");
-				//forge::NeuralNetworkHeuristic>();
+				//forge::heuristic::ApplePie>();
+				//forge::heuristic::Random>();
+				forge::heuristic::RandomSlow>();
+				//forge::heuristic::Rollout>();
+				//forge::heuristic::NeuralNetwork>("net.pt");
+				//forge::heuristic::NeuralNetwork>();
 
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);
@@ -1205,12 +1205,12 @@ namespace forge
 //				blackSolver->m_nThreads = t;
 //				
 //				whiteSolver->makeHeuristic<
-//					forge::ApplePieHeuristic
+//					forge::ApplePie
 //					//forge::heuristics::Rollout
 //				>();
 //
 //				blackSolver->makeHeuristic<
-//					forge::ApplePieHeuristic
+//					forge::ApplePie
 //					//forge::heuristics::Rollout
 //				>();
 //
@@ -1242,10 +1242,10 @@ namespace forge
 //
 //		void heuristic()
 //		{
-//			unique_ptr<HeuristicBase> ptr =
-//				make_unique<ApplePieHeuristic>();
-//				//make_unique<RandomHeuristic>();
-//				//make_unique<NeuralNetworkHeuristic>(); 
+//			unique_ptr<heuristic::Base> ptr =
+//				make_unique<ApplePie>();
+//				//make_unique<Random>();
+//				//make_unique<NeuralNetwork>(); 
 //
 //			cout << "--- Heuristics (" << ptr->name() << ") ---" << endl;
 //
@@ -1268,7 +1268,7 @@ namespace forge
 //				//make_unique<RandomSolver>();
 //				make_unique<MinimaxSolver>();
 //
-//			solverPtr->makeHeuristic<RandomHeuristic>();
+//			solverPtr->makeHeuristic<Random>();
 //
 //			solverPtr->reset();
 //
@@ -1437,7 +1437,7 @@ namespace forge
 //			////	}
 //			////
 //			////	// Extract Features
-//			////	Eigen::Tensor<float, 2> features(pairs.size(), forge::FeatureExtractor::MATERIAL_FEATURES_SIZE);
+//			////	Eigen::Tensor<float, 2> features(pairs.size(), forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE);
 //			////
 //			////	for (size_t i = 0; i < pairs.size(); i++) {
 //			////		const PositionEvalPair & pair = pairs[i];
@@ -1445,7 +1445,7 @@ namespace forge
 //			////		const Position & pos = pair.position;
 //			////		heuristic_t eval = pair.eval;
 //			////
-//			////		forge::FeatureExtractor extractor;
+//			////		forge::heuristic::FeatureExtractor extractor;
 //			////		extractor.init(pos);
 //			////
 //			////		Eigen::Tensor<float, 2> f = extractor.extractMaterial();
@@ -1573,8 +1573,8 @@ namespace forge
 //				// Set Controllers/Solvers
 //				{
 //					// --- Make Heuristics and set their weights ---
-//					unique_ptr<forge::ApplePieHeuristic> wHeur = make_unique<forge::ApplePieHeuristic>();
-//					unique_ptr<forge::ApplePieHeuristic> bHeur = make_unique<forge::ApplePieHeuristic>();
+//					unique_ptr<forge::ApplePie> wHeur = make_unique<forge::ApplePie>();
+//					unique_ptr<forge::ApplePie> bHeur = make_unique<forge::ApplePie>();
 //
 //					// Set weights manually
 //					auto & w = wHeur->weights();

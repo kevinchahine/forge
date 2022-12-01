@@ -1,6 +1,6 @@
 #pragma once
 
-#include "forge/heuristics/RandomHeuristic.h"
+#include "forge/heuristic/Random.h"
 
 #include <iostream>
 #include <memory>
@@ -8,7 +8,7 @@
 
 namespace forge
 {
-	namespace heuristics
+	namespace heuristic
 	{
 		// A heuristic which evaluates a position using random values.
 		// The evaluation is independent of the position.
@@ -17,10 +17,10 @@ namespace forge
 		// The purpose of this class to be an easy to implement evaluation function that to produces
 		// a meaningless evaluation.
 		// It can be useful as a benchmark for better evaluation functions.
-		class RandomSlow : public RandomHeuristic
+		class RandomSlow : public Random
 		{
 		private:
-			using super_t = RandomHeuristic;
+			using super_t = Random;
 
 		public:
 			RandomSlow() : m_delay(std::chrono::nanoseconds(1)) {}
@@ -35,7 +35,7 @@ namespace forge
 			// Also delays execution for a set amount of time to simulate execution of better heuristic functions.
 			virtual heuristic_t eval(const Position& pos) override;
 
-			virtual std::unique_ptr<HeuristicBase> clone() const override { return std::make_unique<RandomSlow>(*this); }
+			virtual std::unique_ptr<Base> clone() const override { return std::make_unique<RandomSlow>(*this); }
 
 			virtual std::string name() const override { return "RolloutSlow"; }
 
@@ -48,5 +48,5 @@ namespace forge
 			// Duration of delay when calling eval()
 			std::chrono::nanoseconds m_delay;
 		};
-	} // namespace heuristics
+	} // namespace heuristic
 } // namespace forge

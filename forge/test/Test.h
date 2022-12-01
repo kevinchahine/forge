@@ -16,7 +16,7 @@
 
 #include <forge/core/GameState.h>
 
-#include "forge/heuristics/Heuristics.hpp"
+#include "forge/heuristic/Heuristics.hpp"
 
 #include "forge/ml/CSVParser.h"
 #include "forge/ml/DataSet.h"

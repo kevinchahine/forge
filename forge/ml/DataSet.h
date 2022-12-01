@@ -1,6 +1,6 @@
 #pragma once
 
-#include "forge/heuristics/FeatureExtractor.h"
+#include "forge/heuristic/FeatureExtractor.h"
 #include "forge/ml/CSVParser.h"
 #include "forge/ml/TensorPair.h"
 
@@ -45,6 +45,6 @@ namespace forge
 	protected:
 		CSVParser m_parser;				// Reads batches of samples from dataset file and parses them into PositionEvalPairs
 
-		FeatureExtractor m_extractor;	// Extracts features from Positions and stores them as Tensors
+		heuristic::FeatureExtractor m_extractor;	// Extracts features from Positions and stores them as Tensors
 	};
 } // namespace forge

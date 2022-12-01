@@ -38,7 +38,7 @@ namespace forge
 		// Load and Parse samples
 		vector<PositionEvalPair> pairs = m_parser.getNextBatch();
 
-		int64_t inputSize = forge::FeatureExtractor::MATERIAL_FEATURES_SIZE;
+		int64_t inputSize = forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE;
 		// Create Tensors on CPU to speed up preprocessing
 		TensorPair data{ 
 			(int64_t)pairs.size(),	// # of samples
@@ -51,7 +51,7 @@ namespace forge
 		for (size_t sampleIndex = 0; sampleIndex < pairs.size(); sampleIndex++) {
 			const PositionEvalPair & pair = pairs[sampleIndex];
 			
-			forge::FeatureExtractor extractor;
+			forge::heuristic::FeatureExtractor extractor;
 			extractor.init(pair.position);
 
 			// --- Inputs ---

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "forge/controllers/ControllerBase.h"
-#include "forge/heuristics/HeuristicBase.h"
+#include "forge/heuristic/Base.h"
 #include "forge/search/SearchMonitor.h"
 
 #include <forge/core/MoveGenerator2.h>
@@ -22,8 +22,8 @@ namespace forge
 		SolverBase& operator=(const SolverBase& solver);
 		SolverBase& operator=(SolverBase&&) noexcept = default;
 
-		const std::unique_ptr<HeuristicBase> & heuristicPtr() const { return m_heuristicPtr; }
-		std::unique_ptr<HeuristicBase> & heuristicPtr() { return m_heuristicPtr; }
+		const std::unique_ptr<heuristic::Base> & heuristicPtr() const { return m_heuristicPtr; }
+		std::unique_ptr<heuristic::Base> & heuristicPtr() { return m_heuristicPtr; }
 
 		template<typename T>
 		void makeHeuristic();
@@ -38,7 +38,7 @@ namespace forge
 		SearchMonitor & searchMonitor() { return m_searchMonitor; }
 
 	protected:
-		std::unique_ptr<HeuristicBase> m_heuristicPtr;
+		std::unique_ptr<heuristic::Base> m_heuristicPtr;
 
 	public:
 		SearchMonitor m_searchMonitor;
@@ -47,8 +47,8 @@ namespace forge
 	template<typename T>
 	inline void SolverBase::makeHeuristic()
 	{
-		static_assert(std::is_base_of<HeuristicBase, T>::value,
-			"HeuristicBase is not a base class of type T");
+		static_assert(std::is_base_of<heuristic::Base, T>::value,
+			"heuristic::Base is not a base class of type T");
 
 		m_heuristicPtr = std::make_unique<T>();
 	}
@@ -56,8 +56,8 @@ namespace forge
 	template<typename T>
 	inline void SolverBase::makeHeuristic(const std::vector<heuristic_t>& weights)
 	{
-		static_assert(std::is_base_of<HeuristicBase, T>::value,
-			"HeuristicBase is not a base class of type T");
+		static_assert(std::is_base_of<heuristic::Base, T>::value,
+			"heuristic::Base is not a base class of type T");
 
 		m_heuristicPtr = std::make_unique<T>();
 
@@ -68,8 +68,8 @@ namespace forge
 	template<typename T>
 	inline void SolverBase::makeHeuristic(const std::string& file_name)
 	{
-		static_assert(std::is_base_of<HeuristicBase, T>::value,
-			"HeuristicBase is not a base class of type T");
+		static_assert(std::is_base_of<heuristic::Base, T>::value,
+			"heuristic::Base is not a base class of type T");
 		
 		m_heuristicPtr = std::make_unique<T>(file_name);
 	}

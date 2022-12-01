@@ -1,21 +1,21 @@
 #pragma once
 
-#include "forge/heuristics/HeuristicBase.h"
+#include "forge/heuristic/Base.h"
 
 #include <iostream>
 #include <memory>
 
 namespace forge
 {
-	namespace heuristics 
+	namespace heuristic
 	{
-		class Rollout : public HeuristicBase
+		class Rollout : public Base
 		{
 		public:
 
 			virtual heuristic_t eval(const Position& pos) override;
 
-			virtual std::unique_ptr<HeuristicBase> clone() const override { return std::make_unique<Rollout>(*this); }
+			virtual std::unique_ptr<Base> clone() const override { return std::make_unique<Rollout>(*this); }
 
 			virtual std::string name() const override { return "Rollout"; }
 
@@ -23,5 +23,5 @@ namespace forge
 
 		private:
 		};
-	} // namespace heuristics
+	} // namespace heuristic
 } // namespace forge

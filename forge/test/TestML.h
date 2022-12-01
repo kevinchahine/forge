@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "forge/heuristics/NeuralNetworkHeuristic.h"
+#include "forge/heuristic/NeuralNetwork.h"
 
 namespace forge
 {

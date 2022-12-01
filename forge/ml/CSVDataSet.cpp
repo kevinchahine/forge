@@ -2,7 +2,7 @@
 
 #include "CSVParser.h"
 #include "TensorPair.h"
-#include "forge/heuristics/FeatureExtractor.h"
+#include "forge/heuristic/FeatureExtractor.h"
 
 #include <vector>
 
@@ -20,7 +20,7 @@ namespace forge
 			vector<PositionEvalPair> batch = parser.getNextBatch();
 
 			// --- Preprocess ---
-			int64_t inputSize = forge::FeatureExtractor::MATERIAL_FEATURES_SIZE;
+			int64_t inputSize = forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE;
 
 			// Create Tensors on CPU to speed up preprocessing
 			TensorPair data{ 
@@ -34,7 +34,7 @@ namespace forge
 			for (size_t sampleIndex = 0; sampleIndex < batch.size(); sampleIndex++) {
 				const PositionEvalPair & pair = batch[sampleIndex];
 
-				forge::FeatureExtractor extractor;
+				forge::heuristic::FeatureExtractor extractor;
 				extractor.init(pair.position);
 
 				// --- Inputs ---

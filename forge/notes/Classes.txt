@@ -32,5 +32,5 @@ SolverStatistics:
 	nodes per second searched
 	currmove - Should send the move currently being evaluated to UCI (only the 1st ply)
 
-HeuristicBase:
+heuristic::Base:
 	eval() - int (units of centipawns)

@@ -2,7 +2,7 @@
 
 #include "forge/ml/DataSet.h"
 #include "forge/ml/CSVDataSet.h"
-#include "forge/heuristics/FeatureExtractor.h"
+#include "forge/heuristic/FeatureExtractor.h"
 
 #include <iostream>
 #include <string>
