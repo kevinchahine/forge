@@ -33,7 +33,7 @@ namespace forge
 			
 			// Returns a random evaluation just like class heuristics::Random
 			// Also delays execution for a set amount of time to simulate execution of better heuristic functions.
-			virtual heuristic_t eval(const Position& pos) override;
+			virtual heuristic_t eval(const Position& pos, bool maximizeWhite = true) override;
 
 			virtual std::unique_ptr<Base> clone() const override { return std::make_unique<RandomSlow>(*this); }
 

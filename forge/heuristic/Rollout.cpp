@@ -10,7 +10,7 @@ namespace forge
 {
 	namespace heuristic
 	{
-		heuristic_t Rollout::eval(const Position& pos)
+		heuristic_t Rollout::eval(const Position& pos, bool maximizeWhite)
 		{
 			RandomSolver rsolver;	// makes random moves
 			game_history history;	// records moves to determine draws
@@ -39,7 +39,7 @@ namespace forge
 			// *** By now we will have reached a terminal node (win, loss, or draw) ***
 
 			// Return the value of the result
-			return gstate.getValue();
+			return gstate.getValue(maximizeWhite);
 		}
 	} // namespace heuristic
 } // namespace forge

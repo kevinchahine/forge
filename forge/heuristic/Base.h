@@ -18,7 +18,20 @@ namespace forge
 			// 0 favors a draw.
 			// Evaluation is based on the Heursitic class derived from 
 			// Base and the classes set of weights if it has any.
-			virtual heuristic_t eval(const Position& pos) = 0;
+			// !Warning!: Evaluation does not consider game state.
+			// Ex: If a position is a mate, evaluation may give an evaluation
+			//	that indicates something else, like a draw.
+			//virtual heuristic_t eval(const Position& pos) = 0;
+
+			// Purpose: Evaluates the favorability of a Chess Position from the 
+			// perspective of the player running the search ("The thinking player").
+			// This player is specified by `whiteIsSearching`.
+			// If `whiteIsSearching` is true, then white player is thinking and positive evaluations will favor the white player.
+			// If `whiteIsSearching` is false, then black player is thinking and positive evaluations will favor the black player.
+			// !Warning!: Evaluation does not consider game state.
+			// Ex: If a position is a mate, evaluation may give an evaluation
+			//	that indicates something else, like a draw.
+			virtual heuristic_t eval(const Position& pos, bool whiteIsSearching) = 0;
 
 			// Creates a copy of object and returns its address.
 			// Equivalent to useing copy assignment opertor on objects and references.

@@ -57,7 +57,7 @@ namespace forge
 		return *p_node;
 	}
 
-	void MCTS_Node::iterator::toSelectedChild(bool maximize)
+	void MCTS_Node::iterator::toBestUCB(bool maximize)
 	{
 		// Determine which child has the highest/lowest UCB score
 		
@@ -83,7 +83,7 @@ namespace forge
 		p_node = it->get();
 	}
 	
-	void MCTS_Node::iterator::toBestChild(bool maximize)
+	void MCTS_Node::iterator::toBestAverage(bool maximize)
 	{
 		vector<shared_ptr<MCTS_Node>> & children = p_node->children();
 

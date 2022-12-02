@@ -25,6 +25,8 @@ namespace forge
 		m_searchMonitor.timer.expires_from_now(chrono::hours(1));
 		m_searchMonitor.start();
 
+		bool maximizeWhite = position.moveCounter().isWhitesTurn();
+
 		m_nodeTree = MiniMaxNode{};
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
@@ -61,7 +63,8 @@ namespace forge
 				}
 			}
 			else if (it.isLeafNode()) {
-				(*it).fitness() = heuristicPtr()->eval(pos);
+				bool maximizeWhite = pos.moveCounter().isWhitesTurn();
+				(*it).fitness() = heuristicPtr()->eval(pos, maximizeWhite);
 			}
 			else {
 				// Game is still going
@@ -102,7 +105,8 @@ namespace forge
 			cout << termcolor::push
 				<< termcolor::on_red
 				<< "Error: " << __FUNCTION__ << " line " << __LINE__
-				<< " No solution was found.\n"
+				<< " No solution was found. Maybe there were no legal moves to make." << endl
+				<< "# of children: " << m_nodeTree.children().size() << endl
 				<< termcolor::pop;
 #endif // _DEBUG
 

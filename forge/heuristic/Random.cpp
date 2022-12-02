@@ -8,7 +8,7 @@ namespace forge
 {
 	namespace heuristic
 	{
-		heuristic_t Random::eval(const Position& pos)
+		heuristic_t Random::eval(const Position& pos, bool whiteIsSearching)
 		{
 			// We will break the rules a bit here. Since Random is only
 			// intended for testing, we are going to const_cast our random engine.

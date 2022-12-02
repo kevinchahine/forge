@@ -20,7 +20,7 @@ namespace forge {
 			// !!! Warning: parentVisits and currVisits must be greater than 0.
 			//	log(0) = -NaN (undefined)
 			//	x/0	= NaN (undefined)
-			return average + MCTS_Node::temperature * sqrt(log(parentVisits) / currVisits);
+			return average + MCTS_Node::temperature * sqrt(log(parentVisits + 1.01) / (currVisits + 1.01));
 		}
 
 		int totalScore() const { return static_cast<int>(t); }
@@ -34,8 +34,8 @@ namespace forge {
 
 		float ucb() const;
 
-		// Warning: Update should never be called on the root node. 
-		// Call updateRoot() instead
+		// Adds score to total score
+		// Increments number of visits
 		void update(int score);
 
 		// Accumulates t and n from 'node'
@@ -72,9 +72,14 @@ namespace forge {
 			bool operator!=(const iterator& it) const { return this->p_node != it.p_node; }
 			MCTS_Node& operator*();
 
+			bool isExpanded() const { return p_node->isExpanded(); }
 			bool hasParent() const { return p_node->m_parentPtr != nullptr; }
 			bool hasChildren() const { return p_node->m_childrenPtrs.size(); }
-			bool isRoot() const { return hasParent() == false; }
+			bool isRoot() const { return p_node->isRoot(); }
+			bool isLeaf() const { return p_node->isLeaf(); }
+
+			void expand() { p_node->expand(); }
+			void prune() { p_node->prune(); }
 
 			void toParent()
 			{
@@ -89,14 +94,14 @@ namespace forge {
 			// any children.
 			// maximize - determines whether the selection should favor children which higher
 			//				or lower UCB scores. if maximize == true, then method favors higher UCB scores
-			void toSelectedChild(bool maximize);
+			void toBestUCB(bool maximize);
 
 			// Selects child with the best average value.
 			// Then moves to that child.
 			// maximize = true:  look for max ucb. favors white player
 			// maximize = false: look for min ucb. favors black player
 			// * See comments for goToSelectedChild()
-			void toBestChild(bool maximize);
+			void toBestAverage(bool maximize);
 
 			// * See comments of goToSelectedChild()
 			void toFirstChild();

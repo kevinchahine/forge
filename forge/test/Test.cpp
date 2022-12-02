@@ -1148,24 +1148,24 @@ namespace forge
 				//make_unique<KeyboardController>();
 			 
 			auto blackController =
-				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				make_unique<RandomSolver>();
+				//make_unique<MinimaxSolver>();
 				//make_unique<MCTS_Solver>();
 				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
-				//forge::heuristic::ApplePie>();
+				forge::heuristic::ApplePie>();
 				//forge::heuristic::Random>();
-				forge::heuristic::RandomSlow>();
+				//forge::heuristic::RandomSlow>();
 				//forge::heuristic::Rollout>();
 				//forge::heuristic::NeuralNetwork>("net.pt");
 				//forge::heuristic::NeuralNetwork>();
 
 			blackController->makeHeuristic<
-				//forge::heuristic::ApplePie>();
+				forge::heuristic::ApplePie>();
 				//forge::heuristic::Random>();
-				forge::heuristic::RandomSlow>();
+				//forge::heuristic::RandomSlow>();
 				//forge::heuristic::Rollout>();
 				//forge::heuristic::NeuralNetwork>("net.pt");
 				//forge::heuristic::NeuralNetwork>();

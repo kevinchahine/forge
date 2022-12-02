@@ -35,6 +35,8 @@ namespace forge
 
 		void FeatureExtractor::init(const Position& pos)
 		{
+			cout << __FILE__ << " line " << __LINE__ << " stop using this method" << endl;
+
 			// Orient board so that the moving player (ours) is on the bottom 
 			// and waiting player (theirs) is on the top
 			bool isWhitesTurn = pos.moveCounter().isWhitesTurn();
@@ -51,6 +53,41 @@ namespace forge
 
 			ours = (isWhitesTurn ? board.whites() : board.blacks());
 			theirs = (isWhitesTurn ? board.blacks() : board.whites());
+			occupied = board.occupied();
+			empty = board.empty();
+
+			ourKings = ours & board.kings();
+			ourQueens = ours & board.queens();
+			ourBishops = ours & board.bishops();
+			ourKnights = ours & board.knights();
+			ourRooks = ours & board.rooks();
+			ourPawns = ours & board.pawns();
+
+			theirKings = theirs & board.kings();
+			theirQueens = theirs & board.queens();
+			theirBishops = theirs & board.bishops();
+			theirKnights = theirs & board.knights();
+			theirRooks = theirs & board.rooks();
+			theirPawns = theirs & board.pawns();
+		}
+
+		void FeatureExtractor::init(const Position& pos, bool maximizeWhite)
+		{
+			// Orient board so that the moving player (ours) is on the bottom 
+			// and waiting player (theirs) is on the top
+			board = (maximizeWhite ? pos.board() : pos.board().rotated());
+
+			// *** At this point, colors should be interms of ours/theirs ***
+			// *** OUR   pieces ALWAYS move UP ***
+			// *** THEIR pieces ALWAYS move DOWN ***
+			// *** Now the maximizing players pieces will be on the bottom moving up ***
+			// *** And the minimizing players pieces will be on the top moving down ***
+			// *** ex:
+			//	If its whites is maximizing, our pieces will be white moving up, their pieces will be black moving down
+			//	It its blacks is maximizing, our pieces will be black moving up, their pieces will be white moving down
+
+			ours = (maximizeWhite ? board.whites() : board.blacks());
+			theirs = (maximizeWhite ? board.blacks() : board.whites());
 			occupied = board.occupied();
 			empty = board.empty();
 

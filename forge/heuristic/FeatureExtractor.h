@@ -19,6 +19,8 @@ namespace forge
 		public:
 			void init(const Position& pos);
 
+			void init(const Position& pos, bool maximizeWhite);
+
 			void extractMaterial(torch::Tensor& slice);
 			void extractMobility(torch::Tensor& slice);
 			void extractAttacked(torch::Tensor& slice);

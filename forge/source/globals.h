@@ -5,6 +5,7 @@
 #include <memory>
 
 #include <torch/torch.h>	// TODO: Reduce this to only what we need
+//#include <torch/c10/core/Device.h>
 
 namespace forge
 {

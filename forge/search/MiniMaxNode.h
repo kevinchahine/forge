@@ -32,7 +32,6 @@ namespace forge
 		heuristic_t m_fitness = 0;
 
 		// Best move cooresponding to child with the best fitness
-		// TODO: Make it std::shared_ptr<const MiniMaxNode>
 		std::shared_ptr<MiniMaxNode> p_bestChild = nullptr;
 
 	public:		// ---------- ITERATOR ----------------------------------------
