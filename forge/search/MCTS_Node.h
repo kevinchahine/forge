@@ -11,16 +11,17 @@ namespace forge {
 	public:
 		using super_t = NodeTemplate<MCTS_Node>;
 
-		// UCB = x_i + C * sqrt(ln(N) / n_i)
-		// 	x_i - average value of game state (t / n)
+		// UCB = t/n + C * sqrt(ln(N) / n)
+		// 	t - total score
 		// 	N - Parent node visits
-		// 	n_i - Current node visits(if n_i is 0 then use 1 / inf to avoid division by zero)
-		static float calcUCB(float average, float parentVisits, float currVisits) {
+		// 	n - Current node visits
+		// returns UCB score. Guarenteed to be a real number not +/-infinity or undefined.
+		static float calcUCB(float total, float parentVisits, float currVisits) {
 			// UCB = x_i + C * sqrt(ln(N) / n_i)
 			// !!! Warning: parentVisits and currVisits must be greater than 0.
 			//	log(0) = -NaN (undefined)
 			//	x/0	= NaN (undefined)
-			return average + MCTS_Node::temperature * sqrt(log(parentVisits + 1.01) / (currVisits + 1.01));
+			return (total / (currVisits + 1.0f)) + MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f));
 		}
 
 		int totalScore() const { return static_cast<int>(t); }

@@ -4,6 +4,7 @@
 #include <guten/termcolor/termcolor.hpp>
 
 #include <algorithm>
+#include <functional>	// for std::plus
 #include <random>
 
 using namespace std;
@@ -71,14 +72,30 @@ namespace forge
 			children.begin(),
 			children.end(),
 			ucbScores.begin(),
-			[&](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucb(); return (maximize ? ucb : -ucb); }
+			[](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucb(); return ucb; }
 		);
+		//	[&](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucb(); return (maximize ? ucb : -ucb); }
+		//);
+	
+		std::vector<float>::const_iterator maxUcbIt = std::max_element(ucbScores.begin(), ucbScores.end());
+		size_t maxUcbIndex = maxUcbIt - ucbScores.begin();
 
-		// Create Stochastic Universal Sampling distribution based on our scores
-		discrete_distribution<size_t> dist(ucbScores.begin(), ucbScores.end());	// O(n)
+		// TODO: Add weighted random selection to make engine less predictable.
+		//// Make sure all numbers are greater than 0.0 (and sum is not equal to 0.0)
+		//float min = *std::min_element(ucbScores.begin(), ucbScores.end());
+		//transform(
+		//	ucbScores.begin(), 
+		//	ucbScores.end(), 
+		//	ucbScores.begin(), 
+		//	[min](float ucb) { return ucb - min + 0.0001; }
+		//);
+		//
+		//// Create Stochastic Universal Sampling distribution based on our scores
+		//discrete_distribution<size_t> dist(ucbScores.begin(), ucbScores.end());	// O(n)
 
 		// Randomly select a child giving higher weight to samples with higher ucb scores
-		std::vector<std::shared_ptr<MCTS_Node>>::iterator it = children.begin() + dist(g_rand);
+		//std::vector<std::shared_ptr<MCTS_Node>>::const_iterator it = children.begin() + dist(g_rand);
+		std::vector<std::shared_ptr<MCTS_Node>>::const_iterator it = children.begin() + maxUcbIndex;
 
 		p_node = it->get();
 	}

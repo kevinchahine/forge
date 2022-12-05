@@ -39,7 +39,7 @@ namespace forge
 	MovePositionPair MCTS_Solver::solve(const Position& position)
 	{
 		// --- Start ---
-		m_searchMonitor.timer.expires_from_now(chrono::seconds(1));
+		m_searchMonitor.timer.expires_from_now(chrono::seconds(4));
 		m_searchMonitor.start();
 
 		bool maximizeWhite = position.moveCounter().isWhitesTurn();
@@ -69,7 +69,7 @@ namespace forge
 					else {
 						GameState gstate;
 						gstate(*curr);
-						eval = 100 * gstate.getValue(maximizeWhite);
+						eval = 1'000 * gstate.getValue(maximizeWhite);	// count a win a 10 pawns
 					}
 				}
 				else {
@@ -94,7 +94,26 @@ namespace forge
 			}
 			else {
 				// --- Move DOWN the tree ---
-				curr.toBestUCB(maximizeWhite);
+				if (curr.hasChildren()) {
+					curr.toBestUCB(maximizeWhite);
+				}
+				else {
+					// We reached a terminal node (expended but without children).
+					// The only thing we can do here is go back to the root and continue the search.
+					curr = m_nodeTree.root();	// Causes a deadlock without checking the exit condition.
+					
+					// TODO: Optimize: This code is very inefficient. When all nodes in a subtree are terminal 
+					//	(win/lose/draw no children even when expanded)
+					//	continuing to search this subtree will result in no added computation. 
+					//	A possible optimization is to mark each node as being fully searched when all its
+					//	leaf nodes are terminal.
+					//	Or we can prune subtrees when they are fully searched. (Might not be the best option
+					//	for multithreading. Also we are deleting data we can use in the next search.)
+					if (m_searchMonitor.exitConditionReached()) {
+						m_searchMonitor.stop();	// stop the clock so we can record exact search time.
+						break;
+					}
+				}
 			}
 		}
 

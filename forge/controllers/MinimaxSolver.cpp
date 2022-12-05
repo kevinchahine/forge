@@ -31,7 +31,7 @@ namespace forge
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		MiniMaxNode::iterator it = m_nodeTree.begin();
-		it.setDepthLimit(3);
+		it.setDepthLimit(4);
 
 		while (
 			it != m_nodeTree.end() &&
