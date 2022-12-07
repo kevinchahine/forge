@@ -36,7 +36,7 @@ namespace forge
 		void Net::train(DataSet& trainingDS, size_t nEpochs)
 		{
 			cout << "--- Net::train() ---" << endl;
-			
+
 			this->load("net.pt");
 			
 			ofstream outFile;

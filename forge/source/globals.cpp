@@ -1,5 +1,7 @@
 #include "forge/source/globals.h"
 
+#include <torch/csrc/api/include/torch/cuda.h>
+
 using namespace std;
 
 namespace forge

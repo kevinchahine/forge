@@ -17,6 +17,8 @@ Exit Condition :
 
 namespace forge
 {
+	// TODO: Get rid of this class. 
+	// TODO: Make sure colosseum still works.
 	class ExitCondition
 	{
 	public:

@@ -1,11 +1,12 @@
 #pragma once
 
-#include "forge/util/composite.h"
 #include "forge/search/SearchMonitorTemplate.h"
+
+#include <boost/atomic/atomic.hpp>
 
 namespace forge
 {
-	class SearchMonitor : public SearchMonitorTemplate<forge::composite> {
+	class SearchMonitorAtomic : public SearchMonitorTemplate<boost::atomic> {
 	public:
 	};
 } // namespace forge

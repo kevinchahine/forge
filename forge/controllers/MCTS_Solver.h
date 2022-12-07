@@ -7,7 +7,7 @@
 
 namespace forge
 {
-	class MCTS_Solver : public SolverBase
+	class MCTS_Solver : public SolverBase<forge::composite>
 	{
 	public:
 		virtual void reset() override;
@@ -21,14 +21,7 @@ namespace forge
 		const MCTS_Node& nodeTree() const { return m_nodeTree; }
 
 	protected:
-		void traverse();
 
-		void expand();
-
-		int evaluate();
-
-		void backpropagate(int rolloutResult);
-		
 		// TODO: Could make this constant
 		MovePositionPair selectBestMove();
 

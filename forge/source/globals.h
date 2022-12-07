@@ -4,9 +4,9 @@
 #include <chrono>
 #include <memory>
 
-#include <torch/torch.h>	// TODO: Reduce this to only what we need
-//#include <torch/c10/core/Device.h>
+#include <torch/csrc/api/include/torch/serialize.h>
 
+// --- Global Variables ---
 namespace forge
 {
 	extern std::default_random_engine g_rand;

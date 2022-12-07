@@ -31,7 +31,7 @@ namespace forge
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		MiniMaxNode::iterator it = m_nodeTree.begin();
-		it.setDepthLimit(4);
+		it.setDepthLimit(3);
 
 		while (
 			it != m_nodeTree.end() &&
@@ -74,7 +74,7 @@ namespace forge
 			++it;
 
 			m_searchMonitor.nodeCount = it.getNodeCount();
-			m_searchMonitor.plyCount = std::max(it.getDepth(), m_searchMonitor.plyCount);
+			m_searchMonitor.plyCount = std::max(it.getDepth(), m_searchMonitor.plyCount.value());
 		} // end while (
 
 		// *** Now the search is complete. Hopefully we found a best move. ***

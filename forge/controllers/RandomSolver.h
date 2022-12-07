@@ -2,12 +2,14 @@
 
 #include "SolverBase.h"
 
+#include "forge/util/composite.h"
+
 #include <random>
 #include <time.h>
 
 namespace forge
 {
-	class RandomSolver : public SolverBase
+	class RandomSolver : public SolverBase<forge::composite>
 	{
 	public:
 		virtual MovePositionPair getMove(const Position & position) override;

@@ -5,7 +5,7 @@
 
 namespace forge
 {
-	class MinimaxSolver : public SolverBase
+	class MinimaxSolver : public SolverBase<forge::composite>
 	{
 	public:
 		virtual void reset() override;

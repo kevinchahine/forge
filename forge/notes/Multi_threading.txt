@@ -12,6 +12,9 @@ https://craftychess.com/hyatt/search.html		<--- This is the real paper
 Consider PVS algorithm if DTS is to hard.
 	PVS is supposed to be very simple and easy to implement. But its not as efficient ofcourse.
 
+=== Concurrent SearchMonitor ===
+	nodes search should be atomic
+
 === PARALLEL MCTS ===
 
 Node Parallel Search:

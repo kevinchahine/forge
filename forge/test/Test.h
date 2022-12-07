@@ -1,37 +1,9 @@
 #pragma once
 
-#include "forge/controllers/Controllers.hpp"
+#include <forge/core/BitBoard.h>
+#include <forge/core/Piece.h>
 
-#include "forge/source/globals.h"
-
-#include <forge/core/Board.h>
-#include <forge/core/Move.h>
-
-#include "forge/feature_extractor/AttackChecker.h"
-#include "forge/feature_extractor/Attackers.h"
-#include "forge/feature_extractor/Threats.h"
-
-#include "forge/game/ChessMatch.h"
-#include "forge/game/UciMatch.h"
-
-#include <forge/core/GameState.h>
-
-#include "forge/heuristic/Heuristics.hpp"
-
-#include "forge/ml/CSVParser.h"
-#include "forge/ml/DataSet.h"
-#include "forge/ml/Net.h"
-
-#include <forge/core/MoveGenerator2.h>
-
-#include "forge/time/Clock.h"
-#include "forge/time/StopWatch.h"
-
-#include <iostream>
-#include <thread>
-#include <chrono>
-
-#include <guten/guten.hpp>
+#include <guten/boards/CheckerBoard.h>
 
 #ifdef _WIN32		// TODO: Fix this
 #include <conio.h>	// Only for testing (Only Windows compatible)

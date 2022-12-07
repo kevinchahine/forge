@@ -12,27 +12,60 @@
 
 namespace forge
 {
+	template< template< typename T, typename... > class AC, typename... Args >
 	class SolverBase : public ControllerBase
 	{
 	public:
 		SolverBase() = default;
-		SolverBase(const SolverBase& solver);
+		SolverBase(const SolverBase& solver) :
+			ControllerBase(solver),
+			m_heuristicPtr(solver.m_heuristicPtr->clone()),
+			m_searchMonitor(solver.m_searchMonitor)
+		{	}
 		SolverBase(SolverBase&&) noexcept = default;
 		virtual ~SolverBase() noexcept = default;
-		SolverBase& operator=(const SolverBase& solver);
+		SolverBase& operator=(const SolverBase& solver) 
+		{
+			static_cast<ControllerBase&>(*this) = solver;
+			m_heuristicPtr = solver.m_heuristicPtr->clone();
+			m_searchMonitor = solver.m_searchMonitor;
+			
+			return *this;
+		}
 		SolverBase& operator=(SolverBase&&) noexcept = default;
 
 		const std::unique_ptr<heuristic::Base> & heuristicPtr() const { return m_heuristicPtr; }
 		std::unique_ptr<heuristic::Base> & heuristicPtr() { return m_heuristicPtr; }
 
 		template<typename T>
-		void makeHeuristic();
-
+		void makeHeuristic() 
+		{
+			static_assert(std::is_base_of<heuristic::Base, T>::value,
+				"heuristic::Base is not a base class of type T");
+		
+			m_heuristicPtr = std::make_unique<T>();
+		}
+		
 		template<typename T>
-		void makeHeuristic(const std::vector<heuristic_t> & weights);
+		void makeHeuristic(const std::vector<heuristic_t> & weights)
+		{
+			static_assert(std::is_base_of<heuristic::Base, T>::value,
+				"heuristic::Base is not a base class of type T");
 
+			m_heuristicPtr = std::make_unique<T>();
+
+			//TODO: I don't know.
+			//m_heuristicPtr->weights() = weights;
+		}
+		
 		template<typename T>
-		void makeHeuristic(const std::string& file_name);
+		void makeHeuristic(const std::string& file_name)
+		{
+			static_assert(std::is_base_of<heuristic::Base, T>::value,
+				"heuristic::Base is not a base class of type T");
+
+			m_heuristicPtr = std::make_unique<T>(file_name);
+		}
 
 		const SearchMonitor & searchMonitor() const { return m_searchMonitor; }
 		SearchMonitor & searchMonitor() { return m_searchMonitor; }
@@ -41,36 +74,6 @@ namespace forge
 		std::unique_ptr<heuristic::Base> m_heuristicPtr;
 
 	public:
-		SearchMonitor m_searchMonitor;
+		SearchMonitorTemplate<AC> m_searchMonitor;
 	};
-
-	template<typename T>
-	inline void SolverBase::makeHeuristic()
-	{
-		static_assert(std::is_base_of<heuristic::Base, T>::value,
-			"heuristic::Base is not a base class of type T");
-
-		m_heuristicPtr = std::make_unique<T>();
-	}
-
-	template<typename T>
-	inline void SolverBase::makeHeuristic(const std::vector<heuristic_t>& weights)
-	{
-		static_assert(std::is_base_of<heuristic::Base, T>::value,
-			"heuristic::Base is not a base class of type T");
-
-		m_heuristicPtr = std::make_unique<T>();
-
-		//TODO: I don't know.
-		//m_heuristicPtr->weights() = weights;
-	}
-	
-	template<typename T>
-	inline void SolverBase::makeHeuristic(const std::string& file_name)
-	{
-		static_assert(std::is_base_of<heuristic::Base, T>::value,
-			"heuristic::Base is not a base class of type T");
-		
-		m_heuristicPtr = std::make_unique<T>(file_name);
-	}
 } // namespace forge

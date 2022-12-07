@@ -1,11 +1,40 @@
 #include "forge/test/Test.h"
 
+#include "forge/controllers/Controllers.hpp"
+
+#include <forge/core/Board.h>
+#include <forge/core/Move.h>
+#include <forge/core/GameState.h>
+
+#include "forge/source/globals.h"
+
+#include "forge/feature_extractor/AttackChecker.h"
+#include "forge/feature_extractor/Attackers.h"
+#include "forge/feature_extractor/Threats.h"
+
+#include "forge/game/ChessMatch.h"
+#include "forge/game/UciMatch.h"
+
+#include "forge/heuristic/Heuristics.hpp"
+
+#include "forge/ml/CSVParser.h"
+#include "forge/ml/DataSet.h"
+#include "forge/ml/Net.h"
+
+#include <forge/core/MoveGenerator2.h>
+
+#include "forge/time/Clock.h"
+#include "forge/time/StopWatch.h"
 #include "forge/test/positions.h"
 #include "forge/views/TextView.h"
 
-#include <guten/view/GridView.h>
-
+#include <iostream>
+#include <thread>
+#include <chrono>
 #include <sstream>
+
+#include <guten/guten.hpp>
+#include <guten/view/GridView.h>
 
 #include <boost/filesystem.hpp>
 
@@ -1134,24 +1163,24 @@ namespace forge
 			//match.position().fromFEN("1RK5/k6p/4Q3/p4n1P/8/p5p1/8/2B1NBNR b - - 3 112");
 
 			match.clock().synchronize(
-				chrono::minutes(5),
-				chrono::minutes(5),
-				chrono::seconds(2),
-				chrono::seconds(2)
+				std::chrono::minutes(5),
+				std::chrono::minutes(5),
+				std::chrono::seconds(2),
+				std::chrono::seconds(2)
 			); // Clock is still paused
 
 			auto whiteController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				make_unique<MCTS_Solver>();
-				//make_unique<MCTS_Solver_MT>();
+				//make_unique<MCTS_Solver>();
+				make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 			 
 			auto blackController =
 				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
+				//make_unique<MinimaxSolver>();
 				//make_unique<MCTS_Solver>();
-				//make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<

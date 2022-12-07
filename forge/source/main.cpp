@@ -106,7 +106,7 @@ int main(int argc, char ** argv)
 	//forge::test::movegen::stockfishAndForge();
 
 	//this_thread::sleep_for(chrono::seconds(1));
-	//cout << "Press any key..." << endl;
-	//cin.get();
+	cout << "Press any key..." << endl;
+	cin.get();
 	return 0;
 }

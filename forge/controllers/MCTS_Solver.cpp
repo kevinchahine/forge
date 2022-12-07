@@ -16,6 +16,8 @@ namespace forge
 	{
 		MovePositionPair bestMove = solve(position);
 
+		this->m_searchMonitor.print();
+
 		return bestMove;
 	}
 
@@ -50,14 +52,14 @@ namespace forge
 		curr.expand();
 
 		while (true) {
-
+			
 			// --- Selection ---
 			if (curr.isLeaf()) {
 				heuristic_t eval = 0;
-
+				
 				if ((*curr).isVisited()) {
 					curr.expand();
-
+					
 					if (curr.hasChildren()) {
 						// TODO: Optimization: Since we will "eventually" evaluate all children 
 						// we can optionally evaluate all children at once
@@ -69,13 +71,13 @@ namespace forge
 					else {
 						GameState gstate;
 						gstate(*curr);
-						eval = 1'000 * gstate.getValue(maximizeWhite);	// count a win a 10 pawns
+						eval = 1'500 * gstate.getValue(maximizeWhite);	// count a win a 15 pawns
 					}
 				}
 				else {
 					eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
 				}
-
+				
 				// --- Backpropagate ---
 				while (curr.isRoot() == false) {
 					(*curr).update(eval);

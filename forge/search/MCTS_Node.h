@@ -5,7 +5,10 @@
 #include <limits>
 #include <cmath>
 
+#include <boost/thread/mutex.hpp>
+
 namespace forge {
+
 	class MCTS_Node : public NodeTemplate<MCTS_Node>
 	{
 	public:
@@ -35,6 +38,9 @@ namespace forge {
 
 		float ucb() const;
 
+		boost::mutex& mutex() { return m_mutex; }
+		const boost::mutex& mutex() const { return m_mutex; }
+
 		// Adds score to total score
 		// Increments number of visits
 		void update(int score);
@@ -63,6 +69,9 @@ namespace forge {
 
 		static const float temperature;
 
+		// Used by multithreaded version of MCTS
+		boost::mutex m_mutex;
+
 	public: // ---------------------------- ITERATOR -----------------------------
 		class iterator {
 		public:
@@ -82,6 +91,7 @@ namespace forge {
 			void expand() { p_node->expand(); }
 			void prune() { p_node->prune(); }
 
+			// Moves iterator to parent node
 			void toParent()
 			{
 				p_node = p_node->m_parentPtr;	// go to parent (might be nullptr)
@@ -108,6 +118,7 @@ namespace forge {
 			void toFirstChild();
 
 		private:
+			// node which iterator is currently referencing
 			MCTS_Node* p_node = nullptr;
 		}; // end class iterator
 

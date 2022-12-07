@@ -13,8 +13,8 @@ set(CONTROLLERS
 	controllers/KeyboardController.h
 	controllers/MCTS_Solver.cpp
 	controllers/MCTS_Solver.h
-	#controllers/MCTS_Solver_MT.cpp
-	#controllers/MCTS_Solver_MT.h
+	controllers/MCTS_Solver_MT.cpp
+	controllers/MCTS_Solver_MT.h
 	controllers/MinimaxSolver.cpp
 	controllers/MinimaxSolver.h
 	controllers/RandomSolver.cpp
@@ -120,12 +120,13 @@ set(SEARCH
 	search/ExitCondition.h
 	search/MCTS_Node.cpp
 	search/MCTS_Node.h
-	search/MCTS_Node_MT.cpp
-	search/MCTS_Node_MT.h
+	#search/MCTS_Node_MT.cpp
+	#search/MCTS_Node_MT.h
 	search/MiniMaxNode.cpp
 	search/MiniMaxNode.h
-	search/SearchMonitor.cpp
 	search/SearchMonitor.h
+	search/SearchMonitorAtomic.h 
+	search/SearchMonitorTemplate.h
 )
 
 set(SOURCE
@@ -151,6 +152,11 @@ set(THIRD_PARTY
 	third_party/rapidcsv.h
 )
 
+set(UTIL
+	util/composite.h
+	util/formatted_int.h
+)
+
 set(VIEWS
 	views/TextView.cpp
 	views/TextView.h
@@ -170,6 +176,7 @@ source_group(search FILES ${SEARCH})
 source_group(source FILES ${SOURCE})
 source_group(test FILES ${TEST})
 source_group(third_party FILES ${THIRD_PARTY})
+source_group(util FILES ${UTIL})
 source_group(views FILES ${VIEWS})
 
 add_executable(${PROJECT_NAME}
@@ -185,7 +192,7 @@ add_executable(${PROJECT_NAME}
 	${SOURCE}
 	${TEST}
 	${THIRD_PARTY}
-	${UCI}
+	${UTIL}
 	${VIEWS}
 )
 
