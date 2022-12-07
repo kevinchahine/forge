@@ -19,6 +19,7 @@ Designed to be compatible with a variety of displays including:
 */
 
 #include "forge/source/globals.h"
+#include "forge/source/globals_torch.h"
 #include "forge/test/Test.h"
 #include "forge/test/TestML.h"
 #include "forge/test/positions.h"
@@ -41,6 +42,7 @@ int main(int argc, char ** argv)
 		<< termcolor::white;
 
 	forge::initGlobals();
+	forge::initGlobalsTorch();
 	//forge::test::initTestBoards();
 	//forge::test::init();
 	

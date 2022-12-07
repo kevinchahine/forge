@@ -43,7 +43,7 @@ namespace forge
 	{
 		MCTS_Node::iterator curr = m_nodeTree.root();
 
-		bool maximizeWhite = (*curr).position().moveCounter().isWhitesTurn();
+		//bool maximizeWhite = (*curr).position().moveCounter().isWhitesTurn();
 		
 		while (true) {
 		
@@ -63,17 +63,17 @@ namespace forge
 							// without significantly changing the algorithms behavior.
 							// This can be a good optimization when evaluations are 
 							// more efficient in batches.
-							heuristic_t eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
+							heuristic_t eval = this->m_heuristicPtr->eval((*curr).position());
 						}
 						else {
 							GameState gstate;
 							gstate(*curr);
-							eval = 1'500 * gstate.getValue(maximizeWhite);	// count a win a 15 pawns
+							eval = 1'500 * gstate.getValue(true);	// count a win a 15 pawns
 						}
 					}
 					// --- 1st visit?  ---
 					else {
-						eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
+						eval = this->m_heuristicPtr->eval((*curr).position());
 					}
 					
 					(*curr).mutex().unlock();
@@ -121,7 +121,8 @@ namespace forge
 					// ~~~ Synchronization is required here to maintain proper search order ~~~
 					// ~~~ But no synchronization is permisible to avoid synchronization ~~~
 					// ~~~ overhead. ~~~
-					curr.toBestUCB(maximizeWhite);
+					bool isWhitesTurn = (*curr).position().moveCounter().isWhitesTurn();
+					curr.toBestUCB(isWhitesTurn);
 				}
 				else {
 					// We reached a terminal node (stub: expended but without children).
@@ -147,7 +148,7 @@ namespace forge
 	MovePositionPair MCTS_Solver_MT::solve(const Position& position)
 	{
 		// --- Start ---
-		m_searchMonitor.timer.expires_from_now(chrono::seconds(100));
+		m_searchMonitor.timer.expires_from_now(chrono::seconds(4));
 		m_searchMonitor.start();
 		
 		m_nodeTree.reset();

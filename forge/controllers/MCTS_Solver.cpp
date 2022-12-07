@@ -41,7 +41,7 @@ namespace forge
 	MovePositionPair MCTS_Solver::solve(const Position& position)
 	{
 		// --- Start ---
-		m_searchMonitor.timer.expires_from_now(chrono::seconds(4));
+		m_searchMonitor.timer.expires_from_now(chrono::seconds(10));
 		m_searchMonitor.start();
 
 		bool maximizeWhite = position.moveCounter().isWhitesTurn();
@@ -66,16 +66,16 @@ namespace forge
 						// without significantly changing the algorithms behavior.
 						// This can be a good optimization when evaluations are 
 						// more efficient in batches.
-						heuristic_t eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
+						heuristic_t eval = this->m_heuristicPtr->eval((*curr).position());
 					}
 					else {
 						GameState gstate;
 						gstate(*curr);
-						eval = 1'500 * gstate.getValue(maximizeWhite);	// count a win a 15 pawns
+						eval = 1'500 * gstate.getValue(true);	// count a win a 15 pawns
 					}
 				}
 				else {
-					eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
+					eval = this->m_heuristicPtr->eval((*curr).position());
 				}
 				
 				// --- Backpropagate ---
@@ -97,7 +97,8 @@ namespace forge
 			else {
 				// --- Move DOWN the tree ---
 				if (curr.hasChildren()) {
-					curr.toBestUCB(maximizeWhite);
+					bool isWhitesTurn = (*curr).position().moveCounter().isWhitesTurn();
+					curr.toBestUCB(isWhitesTurn);
 				}
 				else {
 					// We reached a terminal node (expended but without children).

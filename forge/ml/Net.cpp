@@ -1,6 +1,6 @@
 #include "Net.h"
 
-#include "forge/source/globals.h"
+#include "forge/source/globals_torch.h"
 #include "forge/time/Timer.h"
 #include "forge/ml/CSVDataSet.h"
 

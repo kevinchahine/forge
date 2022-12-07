@@ -10,6 +10,11 @@ namespace forge
 {
 	namespace heuristic
 	{
+		heuristic_t Rollout::eval(const Position& pos)
+		{
+			return eval(pos, true);
+		}
+		
 		heuristic_t Rollout::eval(const Position& pos, bool maximizeWhite)
 		{
 			RandomSolver rsolver;	// makes random moves

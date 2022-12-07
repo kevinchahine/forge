@@ -21,7 +21,7 @@ namespace forge
 			// !Warning!: Evaluation does not consider game state.
 			// Ex: If a position is a mate, evaluation may give an evaluation
 			//	that indicates something else, like a draw.
-			//virtual heuristic_t eval(const Position& pos) = 0;
+			virtual heuristic_t eval(const Position& pos) = 0;
 
 			// Purpose: Evaluates the favorability of a Chess Position from the 
 			// perspective of the player running the search ("The thinking player").

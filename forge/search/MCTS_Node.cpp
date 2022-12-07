@@ -22,18 +22,34 @@ namespace forge
 		return left->average() < right->average();
 	}
 	
-	bool compUCB(
-		const shared_ptr<MCTS_Node>& left,
-		const shared_ptr<MCTS_Node>& right)
-	{
-		return left->ucb() < right->ucb();
-	}
+	//bool compUCB(
+	//	const shared_ptr<MCTS_Node>& left,
+	//	const shared_ptr<MCTS_Node>& right)
+	//{
+	//	return left->ucb() < right->ucb();
+	//}
 	
 	// ----------------------------------- METHODS -------------------------------
 	
-	float MCTS_Node::ucb() const
+	//float MCTS_Node::ucb() const
+	//{
+	//	return calcUCB(
+	//		this->average(),
+	//		this->parentPtr()->n,
+	//		this->n);
+	//}
+
+	float MCTS_Node::ucbWhite() const
 	{
-		return calcUCB(
+		return calcUCBWhite(
+			this->average(),
+			this->parentPtr()->n,
+			this->n);
+	}
+
+	float MCTS_Node::ucbBlack() const
+	{
+		return calcUCBBlack(
 			this->average(),
 			this->parentPtr()->n,
 			this->n);
@@ -68,16 +84,32 @@ namespace forge
 		vector<float> ucbScores(children.size());
 
 		// Copy the ucb scores of each child into ucbScores
-		transform(
-			children.begin(),
-			children.end(),
-			ucbScores.begin(),
-			[](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucb(); return ucb; }
-		);
+		if (maximize) {
+			transform(
+				children.begin(),
+				children.end(),
+				ucbScores.begin(),
+				[](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucbWhite(); return ucb; }
+			);
+		}
+		else {
+			transform(
+				children.begin(),
+				children.end(),
+				ucbScores.begin(),
+				[](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucbBlack(); return ucb; }
+			);
+		}
 		//	[&](const shared_ptr<MCTS_Node>& childPtr) { auto ucb = childPtr->ucb(); return (maximize ? ucb : -ucb); }
 		//);
 	
-		std::vector<float>::const_iterator maxUcbIt = std::max_element(ucbScores.begin(), ucbScores.end());
+		std::vector<float>::const_iterator maxUcbIt;
+
+		if (maximize)
+			maxUcbIt = std::max_element(ucbScores.begin(), ucbScores.end());
+		else 
+			maxUcbIt = std::min_element(ucbScores.begin(), ucbScores.end());
+
 		size_t maxUcbIndex = maxUcbIt - ucbScores.begin();
 
 		// TODO: Add weighted random selection to make engine less predictable.

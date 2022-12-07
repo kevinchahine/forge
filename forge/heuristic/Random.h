@@ -19,6 +19,8 @@ namespace forge
 			Random& operator=(const Random&) = default;
 			Random& operator=(Random&&) noexcept = default;
 
+			virtual heuristic_t eval(const Position& pos) override;
+
 			virtual heuristic_t eval(const Position& pos, bool whiteIsSearching = true) override;
 
 			virtual std::unique_ptr<Base> clone() const override;	// TODO: Optimize: Why can't this be inlined. See other derivations as well.

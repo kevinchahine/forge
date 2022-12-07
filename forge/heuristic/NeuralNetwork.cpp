@@ -14,11 +14,11 @@ namespace forge
 		NeuralNetwork::NeuralNetwork(const string& net_file)
 		{
 			m_net.load(net_file);
-
+			
 			m_net.to(torch::kCPU);
 		}
-
-		heuristic_t NeuralNetwork::eval(const Position& pos, bool whiteIsSearching)
+		
+		heuristic_t NeuralNetwork::eval(const Position& pos)
 		{
 			// --- Input ---
 			// Tensor which holds input features (one-hot and multi-hot encodings)
@@ -31,7 +31,7 @@ namespace forge
 			extractor.extractMaterial(inputs);
 
 			// --- Evaluate Position ---
-			
+
 			//m_net.to(forge::g_computingDevice);
 			//inputs = inputs.to(forge::g_computingDevice);
 			torch::Tensor output = m_net.forward(inputs);
@@ -39,6 +39,14 @@ namespace forge
 			// --- Return Evaluation ---
 			heuristic_t eval = output[0].item<float>();
 
+			return eval;
+		}
+		
+		heuristic_t NeuralNetwork::eval(const Position& pos, bool whiteIsSearching)
+		{			
+			// --- Return Evaluation ---
+			heuristic_t eval = this->eval(pos);
+			
 			return (whiteIsSearching ? eval : -eval);
 		}
 

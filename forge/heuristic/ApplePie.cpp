@@ -6,7 +6,7 @@ namespace forge
 {
 	namespace heuristic
 	{
-		heuristic_t ApplePie::eval(const Position& pos, bool whiteIsSearching)
+		heuristic_t ApplePie::eval(const Position& pos)
 		{
 			heuristic_t val =
 				// --- Material ---
@@ -16,6 +16,13 @@ namespace forge
 				imbalance<pieces::Rook>(pos) * m_weights.rookMaterial +
 				imbalance<pieces::Pawn>(pos) * m_weights.pawnMaterial +
 				0;	// Placeholder for nicer syntax
+			
+			return val;
+		}
+
+		heuristic_t ApplePie::eval(const Position& pos, bool whiteIsSearching)
+		{
+			heuristic_t val = eval(pos);
 
 			return (whiteIsSearching ? val : -val);
 		}

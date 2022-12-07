@@ -19,12 +19,25 @@ namespace forge {
 		// 	N - Parent node visits
 		// 	n - Current node visits
 		// returns UCB score. Guarenteed to be a real number not +/-infinity or undefined.
-		static float calcUCB(float total, float parentVisits, float currVisits) {
+		static float calcUCBWhite(float total, float parentVisits, float currVisits) {
 			// UCB = x_i + C * sqrt(ln(N) / n_i)
 			// !!! Warning: parentVisits and currVisits must be greater than 0.
 			//	log(0) = -NaN (undefined)
 			//	x/0	= NaN (undefined)
 			return (total / (currVisits + 1.0f)) + MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f));
+		}
+
+		// UCB = t/n + C * sqrt(ln(N) / n)
+		// 	t - total score
+		// 	N - Parent node visits
+		// 	n - Current node visits
+		// returns UCB score. Guarenteed to be a real number not +/-infinity or undefined.
+		static float calcUCBBlack(float total, float parentVisits, float currVisits) {
+			// UCB = x_i + C * sqrt(ln(N) / n_i)
+			// !!! Warning: parentVisits and currVisits must be greater than 0.
+			//	log(0) = -NaN (undefined)
+			//	x/0	= NaN (undefined)
+			return (total / (currVisits + 1.0f)) - MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f));
 		}
 
 		int totalScore() const { return static_cast<int>(t); }
@@ -36,7 +49,9 @@ namespace forge {
 
 		float average() const { return t / n; }
 
-		float ucb() const;
+		//float ucb() const;
+		float ucbWhite() const;
+		float ucbBlack() const;
 
 		boost::mutex& mutex() { return m_mutex; }
 		const boost::mutex& mutex() const { return m_mutex; }

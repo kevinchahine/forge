@@ -8,6 +8,11 @@ namespace forge
 {
 	namespace heuristic
 	{
+		heuristic_t Random::eval(const Position& pos)
+		{
+			return mydist(g_rand);
+		}
+		
 		heuristic_t Random::eval(const Position& pos, bool whiteIsSearching)
 		{
 			// We will break the rules a bit here. Since Random is only

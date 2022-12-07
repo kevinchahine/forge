@@ -1,13 +1,16 @@
 #include "forge/heuristic/RandomSlow.h"
 
-#include "forge/source/globals.h"
-
 using namespace std;
 
 namespace forge
 {
 	namespace heuristic
 	{
+		heuristic_t RandomSlow::eval(const Position& pos)
+		{
+			return eval(pos, true);
+		}
+		
 		heuristic_t RandomSlow::eval(const Position& pos, bool maximizeWhite)
 		{
 			heuristic_t eval = this->super_t::eval(pos, maximizeWhite);

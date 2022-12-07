@@ -56,6 +56,8 @@ namespace forge
 		class ApplePie : public Base
 		{
 		public:
+			virtual heuristic_t eval(const Position& pos) override;
+
 			virtual heuristic_t eval(const Position& pos, bool whiteIsSearching) override;
 
 			virtual std::unique_ptr<Base> clone() const override;

@@ -132,6 +132,8 @@ set(SEARCH
 set(SOURCE
 	source/globals.cpp
 	source/globals.h
+	source/globals_torch.cpp
+	source/globals_torch.h
 	source/main.cpp
 )
 

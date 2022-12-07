@@ -2,8 +2,6 @@
 
 #include "forge/heuristic/Random.h"
 
-#include <iostream>
-#include <memory>
 #include <chrono>
 
 namespace forge
@@ -31,6 +29,8 @@ namespace forge
 			RandomSlow& operator=(const RandomSlow&) = default;
 			RandomSlow& operator=(RandomSlow&&) noexcept = default;
 			
+			virtual heuristic_t eval(const Position& pos) override;
+
 			// Returns a random evaluation just like class heuristics::Random
 			// Also delays execution for a set amount of time to simulate execution of better heuristic functions.
 			virtual heuristic_t eval(const Position& pos, bool maximizeWhite = true) override;
