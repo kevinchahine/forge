@@ -19,7 +19,7 @@ namespace forge
 
 		virtual std::string getName() const override { return "MCTS"; }
 
-		virtual std::string getNameVariant() const override { return "MultiThreaded"; }
+		virtual std::string getNameVariant() const override { return "Concurrent"; }
 
 		///const MCTS_Node& nodeTree() const { return m_nodeTree; }
 

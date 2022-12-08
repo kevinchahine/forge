@@ -72,6 +72,7 @@ namespace forge
 						GameState gstate;
 						gstate(*curr);
 						eval = 1'500 * gstate.getValue(true);	// count a win a 15 pawns
+						(*curr).prune();	// This is a terminal node. We don't want to search it again.
 					}
 				}
 				else {
@@ -96,7 +97,7 @@ namespace forge
 			}
 			else {
 				// --- Move DOWN the tree ---
-				if (curr.hasChildren()) {
+				if ((*curr).isPruned() == false && curr.hasChildren()) {
 					bool isWhitesTurn = (*curr).position().moveCounter().isWhitesTurn();
 					curr.toBestUCB(isWhitesTurn);
 				}
@@ -105,6 +106,12 @@ namespace forge
 					// The only thing we can do here is go back to the root and continue the search.
 					curr = m_nodeTree.root();	// Causes a deadlock without checking the exit condition.
 					
+					if (m_searchMonitor.exitConditionReached()) {
+						m_searchMonitor.stop();	// stop the clock so we can record exact search time.
+						break;
+					}
+
+					// *******************************
 					// TODO: Optimize: This code is very inefficient. When all nodes in a subtree are terminal 
 					//	(win/lose/draw no children even when expanded)
 					//	continuing to search this subtree will result in no added computation. 
@@ -112,10 +119,7 @@ namespace forge
 					//	leaf nodes are terminal.
 					//	Or we can prune subtrees when they are fully searched. (Might not be the best option
 					//	for multithreading. Also we are deleting data we can use in the next search.)
-					if (m_searchMonitor.exitConditionReached()) {
-						m_searchMonitor.stop();	// stop the clock so we can record exact search time.
-						break;
-					}
+					// *******************************
 				}
 			}
 		}

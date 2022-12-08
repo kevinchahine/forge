@@ -33,7 +33,7 @@ namespace forge
 			return GameState();
 		}
 		else {
-			cout << "White controller: " << m_whitesController->getName() << '\n';
+			cout << "White controller: " << m_whitesController->getName() << ' ' << m_whitesController->getNameVariant() << '\n';
 		}
 
 		if (m_blacksController == nullptr) {
@@ -41,7 +41,7 @@ namespace forge
 			return GameState();
 		}
 		else {
-			cout << "Black controller: " << m_blacksController->getName() << '\n';
+			cout << "Black controller: " << m_blacksController->getName() << ' ' << m_blacksController->getNameVariant() << '\n';
 		}
 
 		// --- Prepare board for a new game ---

@@ -16,7 +16,7 @@ namespace forge
 
 		virtual std::string getName() const override { return "MCTS"; }
 
-		virtual std::string getNameVariant() const override { return "Basic"; }
+		virtual std::string getNameVariant() const override { return "Sequential"; }
 
 		const MCTS_Node& nodeTree() const { return m_nodeTree; }
 
