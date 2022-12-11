@@ -7,11 +7,14 @@
 
 #include <boost/atomic/atomic.hpp>
 #include <boost/thread/mutex.hpp>
+#include <boost/lockfree/lockfree_forward.hpp>
 
 namespace forge
 {
-	class MCTS_Solver_MT : public SolverBaseTemplate<boost::atomic>
+	class MCTS_ProducerConsumer : public SolverBaseTemplate<boost::atomic>
 	{
+		using WorkQueue = boost::lockfree::queue<forge::MCTS_Node::iterator>;
+
 	public:
 		virtual void reset() override;
 
@@ -19,7 +22,7 @@ namespace forge
 
 		virtual std::string getName() const override { return "MCTS"; }
 
-		virtual std::string getNameVariant() const override { return "Concurrent"; }
+		virtual std::string getNameVariant() const override { return "ProducerConsumer"; }
 
 		///const MCTS_Node& nodeTree() const { return m_nodeTree; }
 
@@ -31,7 +34,11 @@ namespace forge
 		// TODO: Could make this constant
 		MovePositionPair selectBestMove();
 
-		void solveOneThread();
+		void select(WorkQueue & selectionQueue);
+
+		void expandAndEvaluate(WorkQueue& selectionQueue, WorkQueue& backPropQueue);
+
+		void backpropagate(WorkQueue& backPropQueue);
 
 	public:
 		MovePositionPair solve(const Position& position);

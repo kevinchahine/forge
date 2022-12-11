@@ -111,7 +111,7 @@ namespace forge
 			// If player is a computer, a few milliseconds lost can be a big deal. 
 			if (true) {
 				m_clock.stop();
-
+				
 				// Show Board
 				if (m_viewPtr != nullptr) {
 					m_viewPtr->show(m_history.current().position, pair.move);

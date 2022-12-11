@@ -1172,15 +1172,15 @@ namespace forge
 			auto whiteController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Solver>();
+				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 			 
 			auto blackController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
-				make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Solver>();
+				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 
 			whiteController->makeHeuristic<
@@ -1198,6 +1198,12 @@ namespace forge
 				//forge::heuristic::Rollout>();
 				//forge::heuristic::NeuralNetwork>("net.pt");
 				//forge::heuristic::NeuralNetwork>();
+	
+			whiteController->searchMonitor().timeLimit = std::chrono::seconds(4);
+			blackController->searchMonitor().timeLimit = std::chrono::seconds(4);
+			
+			//whiteController->threadCount() = 16;
+			//blackController->threadCount() = 16;
 
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);
@@ -1293,7 +1299,7 @@ namespace forge
 //
 //			position.board().print();
 //
-//			unique_ptr<SolverBase> solverPtr =
+//			unique_ptr<SolverBaseTemplate> solverPtr =
 //				//make_unique<RandomSolver>();
 //				make_unique<MinimaxSolver>();
 //

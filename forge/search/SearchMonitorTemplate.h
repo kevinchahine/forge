@@ -43,6 +43,7 @@ namespace forge
 			stopFlag = false;
 			searchTime.reset();
 			searchTime.resume();
+			timer.expires_from_now(timeLimit);
 			timer.resume();	// TODO: timer needs to be reset to desired search time also
 		}
 
@@ -99,6 +100,7 @@ namespace forge
 
 		// Times out when desired stop time is reached.
 		Timer timer;
+		std::chrono::nanoseconds timeLimit = std::chrono::nanoseconds::max();
 
 		// Can be used to terminate search from outside algorithm.
 		AC<bool, Args... > stopFlag = false;

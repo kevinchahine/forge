@@ -7,7 +7,7 @@
 
 namespace forge
 {
-	class MCTS_Solver : public SolverBase<forge::composite>
+	class MCTS_Solver : public SolverBaseTemplate<forge::composite>
 	{
 	public:
 		virtual void reset() override;

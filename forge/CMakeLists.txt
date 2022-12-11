@@ -15,6 +15,8 @@ set(CONTROLLERS
 	controllers/MCTS_Solver.h
 	controllers/MCTS_Solver_MT.cpp
 	controllers/MCTS_Solver_MT.h
+	controllers/MCTS_ProducerConsumer.cpp
+	controllers/MCTS_ProducerConsumer.h
 	controllers/MinimaxSolver.cpp
 	controllers/MinimaxSolver.h
 	controllers/RandomSolver.cpp
@@ -138,6 +140,8 @@ set(SOURCE
 )
 
 set(TEST
+	test/Benchmark.cpp
+	test/Benchmark.h
 	test/positions.cpp
 	test/positions.h
 	test/Test.cpp
@@ -258,12 +262,14 @@ else ()
 		system 
 		filesystem 
 		#process
+		lockfree
 		REQUIRED)
 
 	target_link_libraries(${PROJECT_NAME} PUBLIC
 		#Boost::asio
 		Boost::system
 		Boost::filesystem
+		Boost::lockfree
 	)
 
 	message(STATUS "Include dirs ${Boost_INCLUDE_DIRS}")
@@ -276,11 +282,12 @@ else ()
 	)
 
 	# --- XLNT ---
-	#message(STATUS "\n----- XLNT -----")
-	#
-	#find_package(Xlnt CONFIG REQUIRED)
-	#
-	#target_link_libraries(${PROJECT_NAME} PRIVATE xlnt:xlnt)
+	message(STATUS "\n----- XLNT -----")
+	
+	find_package(Xlnt CONFIG REQUIRED)
+	find_package(Xlnt CONFIG REQUIRED)
+	
+	target_link_libraries(${PROJECT_NAME} PRIVATE xlnt::xlnt)
 
 	# --- MatPlot++ ---
 	find_package(matplot++ CONFIG REQUIRED)

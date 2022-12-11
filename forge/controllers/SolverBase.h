@@ -12,19 +12,24 @@
 
 namespace forge
 {
-	template< template< typename T, typename... > class AC, typename... Args >
 	class SolverBase : public ControllerBase
 	{
 	public:
-		SolverBase() = default;
-		SolverBase(const SolverBase& solver) :
+	};
+
+	template< template< typename T, typename... > class AC, typename... Args >
+	class SolverBaseTemplate : public SolverBase
+	{
+	public:
+		SolverBaseTemplate() = default;
+		SolverBaseTemplate(const SolverBaseTemplate& solver) :
 			ControllerBase(solver),
 			m_heuristicPtr(solver.m_heuristicPtr->clone()),
 			m_searchMonitor(solver.m_searchMonitor)
 		{	}
-		SolverBase(SolverBase&&) noexcept = default;
-		virtual ~SolverBase() noexcept = default;
-		SolverBase& operator=(const SolverBase& solver) 
+		SolverBaseTemplate(SolverBaseTemplate&&) noexcept = default;
+		virtual ~SolverBaseTemplate() noexcept = default;
+		SolverBaseTemplate& operator=(const SolverBaseTemplate& solver) 
 		{
 			static_cast<ControllerBase&>(*this) = solver;
 			m_heuristicPtr = solver.m_heuristicPtr->clone();
@@ -32,7 +37,7 @@ namespace forge
 			
 			return *this;
 		}
-		SolverBase& operator=(SolverBase&&) noexcept = default;
+		SolverBaseTemplate& operator=(SolverBaseTemplate&&) noexcept = default;
 
 		const std::unique_ptr<heuristic::Base> & heuristicPtr() const { return m_heuristicPtr; }
 		std::unique_ptr<heuristic::Base> & heuristicPtr() { return m_heuristicPtr; }
@@ -67,8 +72,8 @@ namespace forge
 			m_heuristicPtr = std::make_unique<T>(file_name);
 		}
 
-		const SearchMonitor & searchMonitor() const { return m_searchMonitor; }
-		SearchMonitor & searchMonitor() { return m_searchMonitor; }
+		const SearchMonitorTemplate<AC>& searchMonitor() const { return m_searchMonitor; }
+		SearchMonitorTemplate<AC>& searchMonitor() { return m_searchMonitor; }
 
 	protected:
 		std::unique_ptr<heuristic::Base> m_heuristicPtr;

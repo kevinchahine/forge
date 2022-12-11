@@ -29,6 +29,13 @@ namespace forge
 	//	return left->ucb() < right->ucb();
 	//}
 
+	bool compVisits(
+		const shared_ptr<MCTS_Node>& left,
+		const shared_ptr<MCTS_Node>& right)
+	{
+		return left->nVisits() < right->nVisits();
+	}
+
 	// ----------------------------------- METHODS -------------------------------
 
 	//float MCTS_Node::ucb() const
@@ -153,10 +160,21 @@ namespace forge
 		else {
 			it = std::min_element(children.begin(), children.end(), compAverage);
 		}
+		
+		p_node = it->get();
+	}
+	
+	void MCTS_Node::iterator::toMostVisited()
+	{
+		vector<shared_ptr<MCTS_Node>>& children = p_node->children();
+		
+		vector<shared_ptr<MCTS_Node>>::iterator it;
+
+		it = std::max_element(children.begin(), children.end(), compVisits);
 
 		p_node = it->get();
 	}
-
+	
 	void MCTS_Node::iterator::toFirstChild()
 	{
 		p_node = p_node->children().front().get();

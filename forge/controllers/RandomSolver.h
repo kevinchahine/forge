@@ -9,7 +9,7 @@
 
 namespace forge
 {
-	class RandomSolver : public SolverBase<forge::composite>
+	class RandomSolver : public SolverBaseTemplate<forge::composite>
 	{
 	public:
 		virtual MovePositionPair getMove(const Position & position) override;

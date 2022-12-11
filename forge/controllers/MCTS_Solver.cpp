@@ -16,7 +16,7 @@ namespace forge
 	{
 		MovePositionPair bestMove = solve(position);
 
-		this->m_searchMonitor.print();
+		this->searchMonitor().print();
 
 		return bestMove;
 	}
@@ -28,7 +28,8 @@ namespace forge
 		bool maximize = m_nodeTree.position().moveCounter().isWhitesTurn();
 
 		//bestIt.toBestUCB(maximize);	// Stochastic selection
-		bestIt.toBestAverage(maximize);		// Best selection
+		//bestIt.toBestAverage(maximize);		// Best selection
+		bestIt.toMostVisited();
 
 		MovePositionPair solution {
 			(*bestIt).move(),
@@ -41,7 +42,6 @@ namespace forge
 	MovePositionPair MCTS_Solver::solve(const Position& position)
 	{
 		// --- Start ---
-		m_searchMonitor.timer.expires_from_now(chrono::seconds(10));
 		m_searchMonitor.start();
 
 		bool maximizeWhite = position.moveCounter().isWhitesTurn();
@@ -58,9 +58,12 @@ namespace forge
 				heuristic_t eval = 0;
 				
 				if ((*curr).isVisited()) {
-					curr.expand();
 					
+					curr.expand();
+
 					if (curr.hasChildren()) {
+						curr.toFirstChild();
+					
 						// TODO: Optimization: Since we will "eventually" evaluate all children 
 						// we can optionally evaluate all children at once
 						// without significantly changing the algorithms behavior.
@@ -72,7 +75,6 @@ namespace forge
 						GameState gstate;
 						gstate(*curr);
 						eval = 1'500 * gstate.getValue(true);	// count a win a 15 pawns
-						(*curr).prune();	// This is a terminal node. We don't want to search it again.
 					}
 				}
 				else {

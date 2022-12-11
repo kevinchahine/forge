@@ -17,7 +17,7 @@ namespace forge
 	{
 		MovePositionPair bestMove = solve(position);
 		
-		this->m_searchMonitor.print();
+		searchMonitor().print();
 
 		return bestMove;
 	}
@@ -29,7 +29,7 @@ namespace forge
 		bool maximize = m_nodeTree.position().moveCounter().isWhitesTurn();
 		
 		//bestIt.toBestUCB(maximize);	// Stochastic selection
-		bestIt.toBestAverage(maximize);		// Best selection
+		//bestIt.toBestAverage(maximize);		// Best selection
 		
 		MovePositionPair solution{
 			(*bestIt).move(),
@@ -180,7 +180,6 @@ namespace forge
 	MovePositionPair MCTS_Solver_MT::solve(const Position& position)
 	{
 		// --- Start ---
-		m_searchMonitor.timer.expires_from_now(chrono::seconds(4));
 		m_searchMonitor.start();
 		
 		m_nodeTree.reset();
@@ -189,8 +188,8 @@ namespace forge
 		
 		// ~~~ Concurrent Section ~~~
 
-		size_t nThreads = 16;// boost::thread::hardware_concurrency();
 		std::vector<boost::thread> pool;
+		const size_t nThreads = (m_nThreads == 0 ? 3 /*boost::thread::hardware_concurrency()*/ : m_nThreads);
 		pool.reserve(nThreads);
 
 		for (size_t t = 0; t < nThreads; t++) {

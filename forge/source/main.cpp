@@ -20,9 +20,12 @@ Designed to be compatible with a variety of displays including:
 
 #include "forge/source/globals.h"
 #include "forge/source/globals_torch.h"
+
+#include "forge/test/Benchmark.h"
 #include "forge/test/Test.h"
 #include "forge/test/TestML.h"
 #include "forge/test/positions.h"
+
 // #include "TestFeatureExtractor.h"
 // #include "ml/Optimizer.h"
 
@@ -43,9 +46,11 @@ int main(int argc, char ** argv)
 
 	forge::initGlobals();
 	forge::initGlobalsTorch();
+
+	//forge::test::benchmark::mcts();
+
 	//forge::test::initTestBoards();
 	//forge::test::init();
-	
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
@@ -107,8 +112,8 @@ int main(int argc, char ** argv)
 
 	//forge::test::movegen::stockfishAndForge();
 
-	//this_thread::sleep_for(chrono::seconds(1));
-	cout << "Press any key..." << endl;
-	cin.get();
+	this_thread::sleep_for(chrono::seconds(1));
+	//cout << "Press any key..." << endl;
+	//cin.get();
 	return 0;
 }

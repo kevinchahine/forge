@@ -42,7 +42,7 @@ namespace forge {
 
 		int totalScore() const { return static_cast<int>(t); }
 
-		int nGamesVisited() const { return static_cast<int>(n); }
+		int nVisits() const { return static_cast<int>(n); }
 
 		bool isVisited() const { return static_cast<int>(n) == 0; }
 		bool isUnvisited() const { return !isVisited(); }
@@ -128,6 +128,8 @@ namespace forge {
 			// maximize = false: look for min ucb. favors black player
 			// * See comments for goToSelectedChild()
 			void toBestAverage(bool maximize);
+
+			void toMostVisited();
 
 			// * See comments of goToSelectedChild()
 			void toFirstChild();
