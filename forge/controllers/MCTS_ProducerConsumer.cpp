@@ -37,20 +37,20 @@ namespace forge
 		return solution;
 	}
 	
-	void MCTS_ProducerConsumer::select(WorkQueue& selectionQueue)
+	void MCTS_ProducerConsumer::select(WorkQueue& evalExpandWork)
 	{
 		//selectionQueue.push(nodes);
 
 		// Mark nodes as already being selected
 	}
 	
-	void MCTS_ProducerConsumer::expandAndEvaluate(WorkQueue& selectionQueue, WorkQueue& backPropQueue)
+	void MCTS_ProducerConsumer::expandAndEvaluate(WorkQueue& evalExpandWork, WorkQueue& backpropWork)
 	{
 		while (true) {
 
 			MCTS_Node::iterator it;
 			
-			selectionQueue.pop(it);
+			evalExpandWork.pop(it);
 
 			// -- -Expand or Evaluate ---
 			if ((*it).nVisits() == 0) {
@@ -72,18 +72,18 @@ namespace forge
 
 			// TODO: Mark nodes as evaluated (thats nvisites)
 
-			backPropQueue.push(it);
+			backpropWork.push(it);
 
 			break;// todo: REMOVE THIS
 		}
 	}
 	
-	void MCTS_ProducerConsumer::backpropagate(WorkQueue& backPropQueue)
+	void MCTS_ProducerConsumer::backpropagate(WorkQueue& backpropWork)
 	{
 		while (true) {
 			MCTS_Node::iterator it;
 
-			backPropQueue.pop(it);
+			backpropWork.pop(it);
 
 			int score = (*it).totalScore();
 
@@ -102,15 +102,15 @@ namespace forge
 	{
 		// Selector finds leaf nodes, then puts them in this work queue.
 		// Other threads then expand and eval the leaf nodes.
-		WorkQueue expandEvalWork;
+		WorkQueue evalExpandWork;
 
 		// When threads evaluate leaf nodes, they put those nodes in this work queue.
 		// The back propagation thread works on this work queue.
-		WorkQueue backPropWork;
+		WorkQueue backpropWork;
 
 		// --- Spawn Selection Threads (Producers) ---
 		boost::thread selector = boost::thread{
-			[&]() { select(expandEvalWork); }
+			[&]() { select(evalExpandWork); }
 		};
 
 		// --- Spawn Expand and Evaluate Threads (Producers/Consumers) ---
@@ -119,12 +119,14 @@ namespace forge
 		vector<boost::thread> expanderPool;
 		
 		for (size_t t = 0; t < N_THREADS - 2; t++) {
-			expanderPool.emplace_back([&]() { expandAndEvaluate(expandEvalWork, backPropWork); });
+			expanderPool.emplace_back(
+				[&]() { expandAndEvaluate(evalExpandWork, backpropWork); }
+			);
 		}
 
 		// --- Spawn Back Propagation Threads (Consumers) ---
 		boost::thread backpropagater = boost::thread{
-			[&]() { backpropagate(backPropWork); }
+			[&]() { backpropagate(backpropWork); }
 		};
 
 		// --- Join Threads ---
@@ -139,7 +141,7 @@ namespace forge
 
 		// *** TODO: Optimize: let main thread do backpropagation. Then we will have one less thread to spawn.
 
-		return MovePositionPair();
+		return selectBestMove();
 	}
 } // namespace forge
 
