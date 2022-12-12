@@ -34,11 +34,11 @@ namespace forge
 		// TODO: Could make this constant
 		MovePositionPair selectBestMove();
 
-		void select(WorkQueue & evalExpandWork);
-
-		void expandAndEvaluate(WorkQueue& evalExpandWork, WorkQueue& backpropWork);
-
-		void backpropagate(WorkQueue& backpropWork);
+		//void select(WorkQueue & evalExpandWork);
+		//
+		//void expandAndEvaluate(WorkQueue& evalExpandWork, WorkQueue& backpropWork);
+		//
+		//void backpropagate(WorkQueue& backpropWork);
 
 	public:
 		MovePositionPair solve(const Position& position);

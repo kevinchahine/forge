@@ -9,7 +9,7 @@ namespace forge
 	void MCTS_Solver::reset()
 	{
 		m_nodeTree.reset();
-		curr = m_nodeTree.begin();
+		curr = m_nodeTree.root();
 	}
 
 	MovePositionPair MCTS_Solver::getMove(const Position& position)

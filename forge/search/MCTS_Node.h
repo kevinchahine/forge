@@ -4,6 +4,7 @@
 
 #include <limits>
 #include <cmath>
+#include <stack>
 
 #include <boost/thread/mutex.hpp>
 
@@ -91,25 +92,25 @@ namespace forge {
 		class iterator {
 		public:
 			iterator() = default;
-			iterator(MCTS_Node* nodePtr) : p_node(nodePtr) {}
-			iterator(MCTS_Node* nodePtr, int depth, int depthLimit) : p_node(nodePtr) {}
-			bool operator==(const iterator& it) const { return this->p_node == it.p_node; }
-			bool operator!=(const iterator& it) const { return this->p_node != it.p_node; }
+			iterator(MCTS_Node* nodePtr) { nodes.push(nodePtr); }
+			//iterator(MCTS_Node* nodePtr, int depth, int depthLimit) : p_node(nodePtr) {}
+			bool operator==(const iterator& it) const { return this->nodes.top() == it.nodes.top(); }
+			bool operator!=(const iterator& it) const { return this->nodes.top() != it.nodes.top(); }
 			MCTS_Node& operator*();
 
-			bool isExpanded() const { return p_node->isExpanded(); }
-			bool hasParent() const { return p_node->m_parentPtr != nullptr; }
-			bool hasChildren() const { return p_node->m_childrenPtrs.size(); }
-			bool isRoot() const { return p_node->isRoot(); }
-			bool isLeaf() const { return p_node->isLeaf(); }
+			bool isExpanded() const { return nodes.top()->isExpanded(); }
+			bool hasParent() const { return nodes.top()->m_parentPtr != nullptr; }
+			bool hasChildren() const { return nodes.top()->m_childrenPtrs.size(); }
+			bool isRoot() const { return nodes.top()->isRoot(); }
+			bool isLeaf() const { return nodes.top()->isLeaf(); }
 
-			void expand() { p_node->expand(); }
-			void prune() { p_node->prune(); }
+			void expand() { nodes.top()->expand(); }
+			void prune() { nodes.top()->prune(); }
 
 			// Moves iterator to parent node
 			void toParent()
 			{
-				p_node = p_node->m_parentPtr;	// go to parent (might be nullptr)
+				nodes.pop();	// empty stack means we are past the root
 			}
 
 			// Selects the child with the highest UCB value
@@ -136,11 +137,9 @@ namespace forge {
 
 		private:
 			// node which iterator is currently referencing
-			MCTS_Node* p_node = nullptr;
+			std::stack<MCTS_Node*> nodes;
 		}; // end class iterator
 
 		iterator root() { return iterator(this); }
-		iterator begin() { return iterator(this); }
-		iterator end() { return iterator(nullptr); }	// TODO: do we need this and does it make sense
 	}; // end class MCTS_Node
 } // namespace forge

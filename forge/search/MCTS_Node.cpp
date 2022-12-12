@@ -78,7 +78,7 @@ namespace forge
 
 	MCTS_Node& MCTS_Node::iterator::operator*()
 	{
-		return *p_node;
+		return *nodes.top();
 	}
 
 	void MCTS_Node::iterator::toBestUCB(bool maximize)
@@ -86,7 +86,7 @@ namespace forge
 		// Determine which child has the highest/lowest UCB score
 
 		// Stores all the ucb scores of each child in the same order
-		std::vector<std::shared_ptr<MCTS_Node>>& children = p_node->children();
+		std::vector<std::shared_ptr<MCTS_Node>>& children = nodes.top()->children();
 
 		vector<float> ucbScores(children.size());
 
@@ -110,7 +110,7 @@ namespace forge
 
 		// If all children are pruned (fully searched) then this node can be marked as pruned (fully searched).
 		if (isCompletelySearch == true) {
-			p_node->prune();
+			nodes.top()->prune();
 		}
 		
 		std::vector<float>::const_iterator maxUcbIt;
@@ -139,12 +139,12 @@ namespace forge
 		//std::vector<std::shared_ptr<MCTS_Node>>::const_iterator it = children.begin() + dist(g_rand);
 		std::vector<std::shared_ptr<MCTS_Node>>::const_iterator it = children.begin() + maxUcbIndex;
 
-		p_node = it->get();
+		nodes.push((*it).get());
 	}
 
 	void MCTS_Node::iterator::toBestAverage(bool maximize)
 	{
-		vector<shared_ptr<MCTS_Node>>& children = p_node->children();
+		vector<shared_ptr<MCTS_Node>>& children = nodes.top()->children();
 
 #ifdef _DEBUG
 		if (children.empty()) {
@@ -161,22 +161,22 @@ namespace forge
 			it = std::min_element(children.begin(), children.end(), compAverage);
 		}
 		
-		p_node = it->get();
+		nodes.push(it->get());
 	}
 	
 	void MCTS_Node::iterator::toMostVisited()
 	{
-		vector<shared_ptr<MCTS_Node>>& children = p_node->children();
+		vector<shared_ptr<MCTS_Node>>& children = nodes.top()->children();
 		
 		vector<shared_ptr<MCTS_Node>>::iterator it;
 
 		it = std::max_element(children.begin(), children.end(), compVisits);
 
-		p_node = it->get();
+		nodes.push(it->get());
 	}
 	
 	void MCTS_Node::iterator::toFirstChild()
 	{
-		p_node = p_node->children().front().get();
+		nodes.push(nodes.top()->children().front().get());
 	}
 } // namespace forge
