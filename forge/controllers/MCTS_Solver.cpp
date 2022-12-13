@@ -64,6 +64,7 @@ namespace forge
 					curr.expand();
 
 					if (curr.hasChildren()) {
+						// *** Intermediate Node ***
 						curr.toFirstChild();
 					
 						// TODO: Optimization: Since we will "eventually" evaluate all children 
@@ -74,9 +75,11 @@ namespace forge
 						heuristic_t eval = this->m_heuristicPtr->eval((*curr).position());
 					}
 					else {
+						// *** Terminal Node ***
 						GameState gstate;
 						gstate(*curr);
 						eval = 1'500 * gstate.getValue(true);	// count a win a 15 pawns
+						(*curr).lastVisit();
 					}
 				}
 				else {
@@ -108,10 +111,9 @@ namespace forge
 				else {
 					// We reached a terminal node (expended but without children).
 					// The only thing we can do here is go back to the root and continue the search.
-					badTraversals++;
-					//if (badTraversals % 100 == 0) {
-						cout << badTraversals << " bad traversals discovered" << endl;
-					//}
+					(*curr).nBadVisits++;	// TODO: remove
+					badTraversals++;		// TODO: remove. remove field from class also
+
 					curr = m_nodeTree.root();	// Causes a deadlock without checking the exit condition.
 					
 					if (m_searchMonitor.exitConditionReached()) {
@@ -131,6 +133,38 @@ namespace forge
 				}
 			}
 		}
+
+		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvv REMOVE VVVVVVVVVVVVVVVVVVVVVVV
+		cout << guten::color::lightred;
+
+		if (badTraversals > 0) {
+			cout << badTraversals << " bad traversals discovered" << endl;
+		}
+
+		curr = m_nodeTree.root();
+
+		stack<MCTS_Node*> frontier;
+
+		frontier.push(&m_nodeTree);
+
+		while (frontier.size()) {
+			const MCTS_Node* top = frontier.top();
+			frontier.pop();
+
+			if (top->nBadVisits > 0) {
+				cout << top->nBadVisits << "\tbad visits." << endl;
+
+				cout << "----" << endl;
+			}
+
+			for (const auto& child : top->children()) {
+				frontier.push(child.get());
+			}
+		}
+
+		cout << guten::color::white;
+
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 		return selectBestMove();
 	}

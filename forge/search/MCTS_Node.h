@@ -48,6 +48,10 @@ namespace forge {
 		bool isVisited() const { return static_cast<int>(n) == 0; }
 		bool isUnvisited() const { return !isVisited(); }
 
+		// Puts node in a state that it will not be selected by UCB score.
+		// Sets n visits to infinity.
+		void lastVisit() { n = std::numeric_limits<float>::infinity(); }
+
 		float average() const { return t / n; }
 
 		//float ucb() const;
@@ -87,6 +91,9 @@ namespace forge {
 
 		// Used by multithreaded version of MCTS
 		boost::mutex m_mutex;
+
+	public:
+		int nBadVisits = 0;	// TODO: remove, this was only used for debugging
 
 	public: // ---------------------------- ITERATOR -----------------------------
 		class iterator {

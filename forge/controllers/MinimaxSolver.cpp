@@ -16,7 +16,7 @@ namespace forge
 	MovePositionPair MinimaxSolver::getMove(const Position& position)
 	{
 		MovePositionPair bestMove = solve(position);
-		
+
 		return bestMove;
 	}
 
@@ -31,7 +31,7 @@ namespace forge
 		m_nodeTree.position() = position;	// Copy position into root of node tree
 
 		MiniMaxNode::iterator it = m_nodeTree.begin();
-		it.setDepthLimit(3);
+		it.setDepthLimit(4);
 
 		while (
 			it != m_nodeTree.end() &&
@@ -83,9 +83,9 @@ namespace forge
 
 		cout << termcolor::bright_blue << "Best Move Ptr = " << m_nodeTree.bestMovePtr() << '\n';
 		cout << termcolor::green << "Nodes searched: " << m_searchMonitor.nodeCount << '\t'
-			<< "search time: " << chrono::duration_cast<chrono::milliseconds>(m_searchMonitor.searchTime.elapsed()).count()/1000.0 << " sec\t"
+			<< "search time: " << chrono::duration_cast<chrono::milliseconds>(m_searchMonitor.searchTime.elapsed()).count() / 1000.0 << " sec\t"
 			<< m_searchMonitor.nodesPerSecond() << " nodes/sec\n";
-		
+
 		m_searchMonitor.stop();
 
 		// --- Determine the best move ---
