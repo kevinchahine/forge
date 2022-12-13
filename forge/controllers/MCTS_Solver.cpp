@@ -41,6 +41,8 @@ namespace forge
 
 	MovePositionPair MCTS_Solver::solve(const Position& position)
 	{
+		int badTraversals = 0;
+
 		// --- Start ---
 		m_searchMonitor.start();
 
@@ -106,6 +108,10 @@ namespace forge
 				else {
 					// We reached a terminal node (expended but without children).
 					// The only thing we can do here is go back to the root and continue the search.
+					badTraversals++;
+					//if (badTraversals % 100 == 0) {
+						cout << badTraversals << " bad traversals discovered" << endl;
+					//}
 					curr = m_nodeTree.root();	// Causes a deadlock without checking the exit condition.
 					
 					if (m_searchMonitor.exitConditionReached()) {
