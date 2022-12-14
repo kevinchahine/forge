@@ -22,12 +22,12 @@ namespace forge
 		return left->average() < right->average();
 	}
 
-	//bool compUCB(
-	//	const shared_ptr<MCTS_Node>& left,
-	//	const shared_ptr<MCTS_Node>& right)
-	//{
-	//	return left->ucb() < right->ucb();
-	//}
+	bool compUCB(
+		const shared_ptr<MCTS_Node>& left,
+		const shared_ptr<MCTS_Node>& right)
+	{
+		return left->ucb() < right->ucb();
+	}
 
 	bool compVisits(
 		const shared_ptr<MCTS_Node>& left,
@@ -38,25 +38,9 @@ namespace forge
 
 	// ----------------------------------- METHODS -------------------------------
 
-	//float MCTS_Node::ucb() const
-	//{
-	//	return calcUCB(
-	//		this->average(),
-	//		this->parentPtr()->n,
-	//		this->n);
-	//}
-
-	float MCTS_Node::ucbWhite() const
+	float MCTS_Node::ucb() const
 	{
-		return calcUCBWhite(
-			this->average(),
-			this->parentPtr()->n,
-			this->n);
-	}
-
-	float MCTS_Node::ucbBlack() const
-	{
-		return calcUCBBlack(
+		return calcUCB(
 			this->average(),
 			this->parentPtr()->n,
 			this->n);
@@ -66,6 +50,13 @@ namespace forge
 	{
 		t += score;
 		n += 1.0f;
+	}
+
+	void MCTS_Node::sort(bool maximize)
+	{
+		vector<shared_ptr<MCTS_Node>> c = children();
+
+		//std::sort(c.begin(), c.end());
 	}
 
 	void MCTS_Node::merge(const MCTS_Node& node)
@@ -81,7 +72,7 @@ namespace forge
 		return *nodes.top();
 	}
 
-	void MCTS_Node::iterator::toBestUCB(bool maximize)
+	void MCTS_Node::iterator::toBestUCB()
 	{
 		// Determine which child has the highest/lowest UCB score
 
@@ -99,12 +90,12 @@ namespace forge
 			// Check to see if the node's subtree has already been fully searched.
 			if (childPtr->isPruned()) {
 				// Since this node has been fully searched. Give it a value which will not be selected for the search.
-				ucbScores.at(n) = (maximize ? std::numeric_limits<float>::lowest() : std::numeric_limits<float>::max());
+				ucbScores.at(n) = std::numeric_limits<float>::lowest();
 			}
 			else {
 				// Recalculate ucb score
 				isCompletelySearch = false;
-				ucbScores.at(n) = (maximize ? childPtr->ucbWhite() : childPtr->ucbBlack());
+				ucbScores.at(n) = childPtr->ucb();
 			}
 		}
 
@@ -113,27 +104,10 @@ namespace forge
 			nodes.top()->prune();
 		}
 		
-		std::vector<float>::const_iterator maxUcbIt;
-
-		if (maximize)
-			maxUcbIt = std::max_element(ucbScores.begin(), ucbScores.end());
-		else
-			maxUcbIt = std::min_element(ucbScores.begin(), ucbScores.end());
-
+		std::vector<float>::const_iterator maxUcbIt = 
+			std::max_element(ucbScores.begin(), ucbScores.end());
+		
 		size_t maxUcbIndex = maxUcbIt - ucbScores.begin();
-
-		// TODO: Add weighted random selection to make engine less predictable.
-		//// Make sure all numbers are greater than 0.0 (and sum is not equal to 0.0)
-		//float min = *std::min_element(ucbScores.begin(), ucbScores.end());
-		//transform(
-		//	ucbScores.begin(), 
-		//	ucbScores.end(), 
-		//	ucbScores.begin(), 
-		//	[min](float ucb) { return ucb - min + 0.0001; }
-		//);
-		//
-		//// Create Stochastic Universal Sampling distribution based on our scores
-		//discrete_distribution<size_t> dist(ucbScores.begin(), ucbScores.end());	// O(n)
 
 		// Randomly select a child giving higher weight to samples with higher ucb scores
 		//std::vector<std::shared_ptr<MCTS_Node>>::const_iterator it = children.begin() + dist(g_rand);
@@ -142,7 +116,7 @@ namespace forge
 		nodes.push((*it).get());
 	}
 
-	void MCTS_Node::iterator::toBestAverage(bool maximize)
+	void MCTS_Node::iterator::toBestAverage()
 	{
 		vector<shared_ptr<MCTS_Node>>& children = nodes.top()->children();
 
@@ -151,15 +125,10 @@ namespace forge
 			throw std::runtime_error("Error: No children exist.");
 		}
 #endif
-
+		
 		vector<shared_ptr<MCTS_Node>>::iterator it;
-
-		if (maximize) {
-			it = std::max_element(children.begin(), children.end(), compAverage);
-		}
-		else {
-			it = std::min_element(children.begin(), children.end(), compAverage);
-		}
+		
+		it = std::max_element(children.begin(), children.end(), compAverage);
 		
 		nodes.push(it->get());
 	}

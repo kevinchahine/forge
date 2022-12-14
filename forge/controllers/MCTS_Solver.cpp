@@ -25,13 +25,11 @@ namespace forge
 	{
 		MCTS_Node::iterator bestIt = m_nodeTree.root();
 
-		bool maximize = m_nodeTree.position().moveCounter().isWhitesTurn();
-
-		//bestIt.toBestUCB(maximize);	// Stochastic selection
-		//bestIt.toBestAverage(maximize);		// Best selection
+		//bestIt.toBestUCB();		// Stochastic selection
+		//bestIt.toBestAverage();	// Best selection
 		bestIt.toMostVisited();
 
-		MovePositionPair solution {
+		MovePositionPair solution{
 			(*bestIt).move(),
 			(*bestIt).position()
 		};
@@ -41,21 +39,19 @@ namespace forge
 
 	MovePositionPair MCTS_Solver::solve(const Position& position)
 	{
-		int badTraversals = 0;
-
 		// --- Start ---
 
 		auto& sm = m_searchMonitor;
 		sm.start();
 
 		// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
+		int badTraversals = 0;
+
 		sm.selection.reset();
 		sm.evaluation.reset();
 		sm.expansion.reset();
 		sm.backprop.reset();
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-		bool maximizeWhite = position.moveCounter().isWhitesTurn();
 
 		m_nodeTree.reset();
 		m_nodeTree.position() = position;
@@ -63,13 +59,13 @@ namespace forge
 		curr.expand();
 
 		while (true) {
-			
+
 			// --- Selection ---
 			if (curr.isLeaf()) {
 				heuristic_t eval = 0;
-				
+
 				if ((*curr).isVisited()) {
-					
+
 					sm.expansion.resume();		// BENCHMARKING
 					curr.expand();
 					sm.expansion.pause();		// BENCHMARKING
@@ -78,38 +74,44 @@ namespace forge
 					if (curr.hasChildren()) {
 						// *** Intermediate Node ***
 						curr.toFirstChild();	// BENCHMARKING
-					
+
 						// TODO: Optimization: Since we will "eventually" evaluate all children 
 						// we can optionally evaluate all children at once
 						// without significantly changing the algorithms behavior.
 						// This can be a good optimization when evaluations are 
 						// more efficient in batches.
-						heuristic_t eval = this->m_heuristicPtr->eval((*curr).position());
+						bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
+						heuristic_t eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
 					}
 					else {
 						// *** Terminal Node ***
+						bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
 						GameState gstate;
 						gstate(*curr);
-						eval = 1'500 * gstate.getValue(true);	// count a win as 15 pawns
+						eval = 1'500 * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
+
 						(*curr).lastVisit();
 					}
 					sm.evaluation.pause();		// BENCHMARKING
 				}
 				else {
 					sm.evaluation.resume();		// BENCHMARKING	
-					eval = this->m_heuristicPtr->eval((*curr).position());
+					bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
+					eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
 					sm.evaluation.pause();		// BENCHMARKING
 				}
-				
+
 				// --- Backpropagate ---
 				sm.backprop.resume();
 				while (curr.isRoot() == false) {
 					(*curr).update(eval);
+					eval = -eval;
 					curr.toParent();
 				}
-				
+
 				// *** Now curr is at the root ***
 				(*curr).update(eval);	// one more time for the root
+				eval = -eval;
 
 				// --- Check stopping condition ---
 				sm.nodeCount++;
@@ -123,8 +125,7 @@ namespace forge
 				sm.selection.resume();
 				// --- Move DOWN the tree ---
 				if ((*curr).isPruned() == false && curr.hasChildren()) {
-					bool isWhitesTurn = (*curr).position().moveCounter().isWhitesTurn();
-					curr.toBestUCB(isWhitesTurn);
+					curr.toBestUCB();
 					sm.selection.pause();
 				}
 				else {
@@ -134,7 +135,7 @@ namespace forge
 					badTraversals++;		// TODO: remove. remove field from class also
 
 					curr = m_nodeTree.root();	// Causes a deadlock without checking the exit condition.
-					
+
 					sm.selection.pause();
 					if (sm.exitConditionReached()) {
 						sm.stop();	// stop the clock so we can record exact search time.

@@ -1199,8 +1199,8 @@ namespace forge
 				//forge::heuristic::NeuralNetwork>("net.pt");
 				//forge::heuristic::NeuralNetwork>();
 			
-			whiteController->searchMonitor().timeLimit = std::chrono::seconds(4);
-			blackController->searchMonitor().timeLimit = std::chrono::seconds(4);
+			whiteController->searchMonitor().timeLimit = std::chrono::seconds(10);
+			blackController->searchMonitor().timeLimit = std::chrono::seconds(10);
 			
 			//whiteController->threadCount() = 16;
 			//blackController->threadCount() = 16;

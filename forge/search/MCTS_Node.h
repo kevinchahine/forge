@@ -20,25 +20,12 @@ namespace forge {
 		// 	N - Parent node visits
 		// 	n - Current node visits
 		// returns UCB score. Guarenteed to be a real number not +/-infinity or undefined.
-		static float calcUCBWhite(float total, float parentVisits, float currVisits) {
+		static float calcUCB(float total, float parentVisits, float currVisits) {
 			// UCB = x_i + C * sqrt(ln(N) / n_i)
 			// !!! Warning: parentVisits and currVisits must be greater than 0.
 			//	log(0) = -NaN (undefined)
 			//	x/0	= NaN (undefined)
 			return (total / (currVisits + 1.0f)) + MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f));
-		}
-
-		// UCB = t/n + C * sqrt(ln(N) / n)
-		// 	t - total score
-		// 	N - Parent node visits
-		// 	n - Current node visits
-		// returns UCB score. Guarenteed to be a real number not +/-infinity or undefined.
-		static float calcUCBBlack(float total, float parentVisits, float currVisits) {
-			// UCB = x_i + C * sqrt(ln(N) / n_i)
-			// !!! Warning: parentVisits and currVisits must be greater than 0.
-			//	log(0) = -NaN (undefined)
-			//	x/0	= NaN (undefined)
-			return (total / (currVisits + 1.0f)) - MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f));
 		}
 
 		int totalScore() const { return static_cast<int>(t); }
@@ -54,16 +41,22 @@ namespace forge {
 
 		float average() const { return t / n; }
 
-		//float ucb() const;
-		float ucbWhite() const;
-		float ucbBlack() const;
-
+		float ucb() const;
+		
 		boost::mutex& mutex() { return m_mutex; }
 		const boost::mutex& mutex() const { return m_mutex; }
 
 		// Adds score to total score
 		// Increments number of visits
 		void update(int score);
+
+		// Sorts children according to UCB scores.
+		// Uses insertion sort to optimize nearly sorted arrays.
+		// Should be called right after node is updated to keep children nodes in order. 
+		// maximize:
+		//	true - children with max UCB go first
+		//	false - children with min UCB go first
+		void sort(bool maximize);
 
 		// Accumulates t and n from 'node'
 		// ucb and temperature are left unchanged
@@ -128,14 +121,14 @@ namespace forge {
 			// any children.
 			// maximize - determines whether the selection should favor children which higher
 			//				or lower UCB scores. if maximize == true, then method favors higher UCB scores
-			void toBestUCB(bool maximize);
+			void toBestUCB();
 
 			// Selects child with the best average value.
 			// Then moves to that child.
 			// maximize = true:  look for max ucb. favors white player
 			// maximize = false: look for min ucb. favors black player
 			// * See comments for goToSelectedChild()
-			void toBestAverage(bool maximize);
+			void toBestAverage();
 
 			void toMostVisited();
 
