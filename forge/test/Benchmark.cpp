@@ -10,6 +10,7 @@
 #include <chrono>
 #include <sstream>
 
+#include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/thread/thread.hpp>
 
@@ -160,9 +161,14 @@ namespace forge
 				forge::test::init();	// initialize positions
 
 				xlnt::workbook wb;
-				//wb.load(filename);
 
-				xlnt::worksheet ws = wb.active_sheet();
+				if (boost::filesystem::exists(filename)) {
+					cout << "Loading existing workbook \'" << filename << "\'...";
+					wb.load(filename);
+					cout << "done" << endl;
+				}
+				
+				xlnt::worksheet ws = wb.create_sheet();
 
 				xlnt::row_t headerRow = xlnt::row_t(6);
 
