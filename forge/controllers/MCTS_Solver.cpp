@@ -74,6 +74,7 @@ namespace forge
 					if (curr.hasChildren()) {
 						// *** Intermediate Node ***
 						curr.toFirstChild();	// BENCHMARKING
+						//curr.toBestUCB();
 
 						// TODO: Optimization: Since we will "eventually" evaluate all children 
 						// we can optionally evaluate all children at once
@@ -109,9 +110,9 @@ namespace forge
 					curr.toParent();
 				}
 
-				// *** Now curr is at the root ***
-				(*curr).update(eval);	// one more time for the root
-				eval = -eval;
+				//// *** Now curr is at the root ***
+				//(*curr).update(eval);	// one more time for the root
+				//eval = -eval;
 
 				// --- Check stopping condition ---
 				sm.nodeCount++;
@@ -124,7 +125,7 @@ namespace forge
 			else {
 				sm.selection.resume();
 				// --- Move DOWN the tree ---
-				if ((*curr).isPruned() == false && curr.hasChildren()) {
+				if (/*(*curr).isPruned() == false && */curr.hasChildren()) {
 					curr.toBestUCB();
 					sm.selection.pause();
 				}
@@ -160,6 +161,9 @@ namespace forge
 
 		if (badTraversals > 0) {
 			cout << badTraversals << " bad traversals discovered" << endl;
+		}
+		else {
+			cout << guten::color::green << " no bad traversals Yay!!!" << endl;
 		}
 
 		curr = m_nodeTree.root();

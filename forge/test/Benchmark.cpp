@@ -157,16 +157,17 @@ namespace forge
 			void mcts_phases()
 			{
 				string filename = "benchmark_mcts_phases.xlsx";
+				//boost::filesystem::path path = filename;
 
 				forge::test::init();	// initialize positions
 
 				xlnt::workbook wb;
 
-				if (boost::filesystem::exists(filename)) {
-					cout << "Loading existing workbook \'" << filename << "\'...";
-					wb.load(filename);
-					cout << "done" << endl;
-				}
+				//if (boost::filesystem::exists(path)) {
+				//	cout << "Loading existing workbook \'" << filename << "\'...";
+				//	wb.load(filename);
+				//	cout << "done" << endl;
+				//}
 				
 				xlnt::worksheet ws = wb.create_sheet();
 

@@ -37,26 +37,20 @@ namespace forge {
 
 		// Puts node in a state that it will not be selected by UCB score.
 		// Sets n visits to infinity.
-		void lastVisit() { n = std::numeric_limits<float>::infinity(); }
+		void lastVisit();
 
 		float average() const { return t / n; }
 
-		float ucb() const;
+		float ucb() const { return ucbScore; }
 		
 		boost::mutex& mutex() { return m_mutex; }
 		const boost::mutex& mutex() const { return m_mutex; }
 
+		void expand();
+		
 		// Adds score to total score
 		// Increments number of visits
 		void update(int score);
-
-		// Sorts children according to UCB scores.
-		// Uses insertion sort to optimize nearly sorted arrays.
-		// Should be called right after node is updated to keep children nodes in order. 
-		// maximize:
-		//	true - children with max UCB go first
-		//	false - children with min UCB go first
-		void sort(bool maximize);
 
 		// Accumulates t and n from 'node'
 		// ucb and temperature are left unchanged
@@ -81,6 +75,9 @@ namespace forge {
 		float n = std::numeric_limits<float>::min();
 
 		static const float temperature;
+
+		// Stored hear to prevent recalculating between updates.
+		float ucbScore = 0.0f;
 
 		// Used by multithreaded version of MCTS
 		boost::mutex m_mutex;
