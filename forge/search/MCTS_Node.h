@@ -32,7 +32,7 @@ namespace forge {
 
 		int nVisits() const { return static_cast<int>(n); }
 
-		bool isVisited() const { return static_cast<int>(n) == 0; }
+		bool isVisited() const { return n >= 0.9f; }
 		bool isUnvisited() const { return !isVisited(); }
 
 		// Puts node in a state that it will not be selected by UCB score.

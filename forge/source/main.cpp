@@ -49,6 +49,7 @@ int main(int argc, char ** argv)
 
 	//forge::test::benchmark::mcts();
 	//forge::test::benchmark::mcts_phases();
+	//forge::test::benchmark::mcts_phases_without_search();
 
 	//forge::test::initTestBoards();
 	//forge::test::init();

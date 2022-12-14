@@ -18,6 +18,20 @@ namespace forge
 
 		this->searchMonitor().print();
 
+		const auto& sm = searchMonitor();
+		const auto s = chrono::duration_cast<chrono::milliseconds>(sm.selection.elapsed()).count();
+		const auto ev = chrono::duration_cast<chrono::milliseconds>(sm.evaluation.elapsed()).count();
+		const auto ex = chrono::duration_cast<chrono::milliseconds>(sm.expansion.elapsed()).count();
+		const auto bp = chrono::duration_cast<chrono::milliseconds>(sm.backprop.elapsed()).count();
+		const auto tl = chrono::duration_cast<chrono::milliseconds>(sm.searchTime.elapsed()).count();
+
+		cout
+			<< "selection:       " << s << endl
+			<< "evaluation:      " << ev << endl
+			<< "expansion:       " << ex << endl
+			<< "backpropagation: " << bp << endl
+			<< "total:           " << tl << endl;
+
 		return bestMove;
 	}
 
@@ -63,7 +77,6 @@ namespace forge
 			// --- Selection ---
 			if (curr.isLeaf()) {
 				heuristic_t eval = 0;
-
 				if ((*curr).isVisited()) {
 
 					sm.expansion.resume();		// BENCHMARKING
@@ -109,11 +122,12 @@ namespace forge
 					eval = -eval;
 					curr.toParent();
 				}
-
+				
+				curr = m_nodeTree.root();
 				//// *** Now curr is at the root ***
 				//(*curr).update(eval);	// one more time for the root
 				//eval = -eval;
-
+				
 				// --- Check stopping condition ---
 				sm.nodeCount++;
 				if (sm.exitConditionReached()) {
@@ -125,11 +139,12 @@ namespace forge
 			else {
 				sm.selection.resume();
 				// --- Move DOWN the tree ---
-				if (/*(*curr).isPruned() == false && */curr.hasChildren()) {
+				if ((*curr).isPruned() == false && curr.hasChildren()) {
 					curr.toBestUCB();
 					sm.selection.pause();
 				}
 				else {
+					cout << "bad visit" << endl;
 					// We reached a terminal node (expended but without children).
 					// The only thing we can do here is go back to the root and continue the search.
 					(*curr).nBadVisits++;	// TODO: remove
