@@ -44,7 +44,16 @@ namespace forge
 		int badTraversals = 0;
 
 		// --- Start ---
-		m_searchMonitor.start();
+
+		auto& sm = m_searchMonitor;
+		sm.start();
+
+		// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
+		sm.selection.reset();
+		sm.evaluation.reset();
+		sm.expansion.reset();
+		sm.backprop.reset();
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 		bool maximizeWhite = position.moveCounter().isWhitesTurn();
 
@@ -61,11 +70,14 @@ namespace forge
 				
 				if ((*curr).isVisited()) {
 					
+					sm.expansion.resume();		// BENCHMARKING
 					curr.expand();
+					sm.expansion.pause();		// BENCHMARKING
 
+					sm.evaluation.resume();		// BENCHMARKING
 					if (curr.hasChildren()) {
 						// *** Intermediate Node ***
-						curr.toFirstChild();
+						curr.toFirstChild();	// BENCHMARKING
 					
 						// TODO: Optimization: Since we will "eventually" evaluate all children 
 						// we can optionally evaluate all children at once
@@ -78,15 +90,19 @@ namespace forge
 						// *** Terminal Node ***
 						GameState gstate;
 						gstate(*curr);
-						eval = 1'500 * gstate.getValue(true);	// count a win a 15 pawns
+						eval = 1'500 * gstate.getValue(true);	// count a win as 15 pawns
 						(*curr).lastVisit();
 					}
+					sm.evaluation.pause();		// BENCHMARKING
 				}
 				else {
+					sm.evaluation.resume();		// BENCHMARKING	
 					eval = this->m_heuristicPtr->eval((*curr).position());
+					sm.evaluation.pause();		// BENCHMARKING
 				}
 				
 				// --- Backpropagate ---
+				sm.backprop.resume();
 				while (curr.isRoot() == false) {
 					(*curr).update(eval);
 					curr.toParent();
@@ -96,17 +112,20 @@ namespace forge
 				(*curr).update(eval);	// one more time for the root
 
 				// --- Check stopping condition ---
-				m_searchMonitor.nodeCount++;
-				if (m_searchMonitor.exitConditionReached()) {
-					m_searchMonitor.stop();	// stop the clock so we can record exact search time.
+				sm.nodeCount++;
+				if (sm.exitConditionReached()) {
+					sm.stop();	// stop the clock so we can record exact search time.
 					break;
 				}
+				sm.backprop.pause();
 			}
 			else {
+				sm.selection.resume();
 				// --- Move DOWN the tree ---
 				if ((*curr).isPruned() == false && curr.hasChildren()) {
 					bool isWhitesTurn = (*curr).position().moveCounter().isWhitesTurn();
 					curr.toBestUCB(isWhitesTurn);
+					sm.selection.pause();
 				}
 				else {
 					// We reached a terminal node (expended but without children).
@@ -116,8 +135,9 @@ namespace forge
 
 					curr = m_nodeTree.root();	// Causes a deadlock without checking the exit condition.
 					
-					if (m_searchMonitor.exitConditionReached()) {
-						m_searchMonitor.stop();	// stop the clock so we can record exact search time.
+					sm.selection.pause();
+					if (sm.exitConditionReached()) {
+						sm.stop();	// stop the clock so we can record exact search time.
 						break;
 					}
 

@@ -1158,21 +1158,21 @@ namespace forge
 		void chessMatch()
 		{
 			forge::ChessMatch match;
-
+			
 			match.reset();
 			//match.position().fromFEN("1RK5/k6p/4Q3/p4n1P/8/p5p1/8/2B1NBNR b - - 3 112");
-
+			
 			match.clock().synchronize(
 				std::chrono::minutes(5),
 				std::chrono::minutes(5),
 				std::chrono::seconds(2),
 				std::chrono::seconds(2)
 			); // Clock is still paused
-
+			
 			auto whiteController =
 				//make_unique<RandomSolver>();
-				make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Solver>();
+				//make_unique<MinimaxSolver>();
+				make_unique<MCTS_Solver>();
 				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
 			 
@@ -1182,7 +1182,7 @@ namespace forge
 				make_unique<MCTS_Solver>();
 				//make_unique<MCTS_Solver_MT>();
 				//make_unique<KeyboardController>();
-
+			
 			whiteController->makeHeuristic<
 				forge::heuristic::ApplePie>();
 				//forge::heuristic::Random>();
@@ -1190,7 +1190,7 @@ namespace forge
 				//forge::heuristic::Rollout>();
 				//forge::heuristic::NeuralNetwork>("net.pt");
 				//forge::heuristic::NeuralNetwork>();
-
+			
 			blackController->makeHeuristic<
 				forge::heuristic::ApplePie>();
 				//forge::heuristic::Random>();
@@ -1198,27 +1198,27 @@ namespace forge
 				//forge::heuristic::Rollout>();
 				//forge::heuristic::NeuralNetwork>("net.pt");
 				//forge::heuristic::NeuralNetwork>();
-	
+			
 			whiteController->searchMonitor().timeLimit = std::chrono::seconds(4);
 			blackController->searchMonitor().timeLimit = std::chrono::seconds(4);
 			
 			//whiteController->threadCount() = 16;
 			//blackController->threadCount() = 16;
-
+			
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);
-
+			
 			match.makeView<forge::TextView>();
 			match.runGame();
 		}
-
+		
 		void uciMatch()
 		{
 			game::UciMatch match;
-
+			
 			match.play();
 		}
-
+		
 //		void performanceTester()
 //		{
 //			for (size_t t = 5; t <= 8; t++) {

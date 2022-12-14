@@ -152,6 +152,86 @@ namespace forge
 
 				wb.save("benchmark.xlsx");
 			}
+			
+			void mcts_phases()
+			{
+				string filename = "benchmark_mcts_phases.xlsx";
+
+				forge::test::init();	// initialize positions
+
+				xlnt::workbook wb;
+				//wb.load(filename);
+
+				xlnt::worksheet ws = wb.active_sheet();
+
+				xlnt::row_t headerRow = xlnt::row_t(6);
+
+				int col = 0;
+				xlnt::column_t positionCol(++col);
+				xlnt::column_t selectionCol(++col);
+				xlnt::column_t evaluationCol(++col);
+				xlnt::column_t expansionCol(++col);
+				xlnt::column_t backpropCol(++col);
+				xlnt::column_t totalCol(++col);
+
+				MCTS_Solver mcts;
+
+				ws.cell("A1").value("Search:");
+				ws.cell("B1").value(mcts.getName());
+
+				mcts.makeHeuristic<heuristic::ApplePie>();
+				ws.cell("A2").value("Heuristic:");
+				ws.cell("B2").value(mcts.heuristicPtr()->name());
+
+				chrono::seconds timeLimit = chrono::seconds(4);
+				mcts.searchMonitor().timeLimit = timeLimit;
+				ws.cell("A3").value("Search Time (seconds)");
+				ws.cell("B3").value(timeLimit.count());
+
+				// --- Headers --- 
+				ws.cell(selectionCol, headerRow - 1).value("Execution time (msec)");
+				ws.merge_cells(xlnt::range_reference(selectionCol, headerRow - 1, totalCol, headerRow - 1));
+				
+				ws.cell(positionCol, headerRow).value("position");
+				ws.cell(selectionCol, headerRow).value("selection");
+				ws.cell(evaluationCol, headerRow).value("evaluation");
+				ws.cell(expansionCol, headerRow).value("expansion");
+				ws.cell(backpropCol, headerRow).value("backpropagation");
+				ws.cell(totalCol, headerRow).value("total");
+
+				for (size_t p = 0; p < g_positions.size(); p++) {
+					try
+					{
+						const Position& pos = g_positions.at(p);
+						const string& fen = pos.toFEN();
+
+						cout << "----- Position " << p << ' ' << fen << "-----" << endl;
+						pos.board().printMini();
+						xlnt::row_t row(headerRow + p + 1);
+
+						ws.cell(positionCol, row).value(fen);
+
+						mcts.getMove(pos);
+
+						const auto& sm = mcts.searchMonitor();
+						ws.cell(selectionCol, row).value(chrono::duration_cast<chrono::milliseconds>(sm.selection.elapsed()).count());
+						ws.cell(evaluationCol, row).value(chrono::duration_cast<chrono::milliseconds>(sm.evaluation.elapsed()).count());
+						ws.cell(expansionCol, row).value(chrono::duration_cast<chrono::milliseconds>(sm.expansion.elapsed()).count());
+						ws.cell(backpropCol, row).value(chrono::duration_cast<chrono::milliseconds>(sm.backprop.elapsed()).count());
+						ws.cell(totalCol, row).value(chrono::duration_cast<chrono::milliseconds>(sm.searchTime.elapsed()).count());
+
+						cout << "Saving to " << filename << "...";
+						wb.save(filename);
+						cout << "done" << endl;
+					}
+					catch (const std::exception& e)
+					{
+						cout << e.what() << endl;
+					}
+				}
+
+				wb.save(filename);
+			}
 		} // namespace benchmark
 	} // namespace test
 } // namespace forge
