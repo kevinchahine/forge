@@ -187,5 +187,7 @@ namespace forge
 			void playApplePie();
 		} // namespace ai
 
+		void gameHistory();
+
 	} // namespace test
 } // namespace forge

@@ -97,8 +97,10 @@ int main(int argc, char ** argv)
 	//forge::test::dataSetPipeline();
 	//forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
 
+	//forge::test::gameHistory();
+
 	//forge::test::weights::applePie();
-	//forge::test::ai::playApplePie();
+	//forge::test::ai::playMaterial();
 	//forge::test::optimizer();
 	//forge::ml::Optimizer op;
 	//op.train();

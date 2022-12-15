@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Base.h"
-#include "ApplePieWeights.h"
+#include "MaterialWeights.h"
 
 #include <array>
 
@@ -51,9 +51,7 @@ namespace forge
 		//			- Pawns Rank: The further up the board the better (even for black)
 		//			- # Connected Pawns: Number of times each pawn "attacks" it's friendly pawns
 		//			- 
-		// TODO: rename this Materialistic
-		// TODO: remake this and replace ApplePieWeights with a single array of some kind
-		class ApplePie : public Base
+		class Material : public Base
 		{
 		public:
 			virtual heuristic_t eval(const Position& pos) override;
@@ -62,15 +60,12 @@ namespace forge
 
 			virtual std::unique_ptr<Base> clone() const override;
 
-			virtual std::string name() const override { return "ApplePie"; }
+			virtual std::string name() const override { return "Material"; }
 
 			virtual void print(const Position& pos, std::ostream& os = std::cout) const override;
 
-			ApplePieWeights& weights() { return m_weights; }
-			const ApplePieWeights& weights() const { return m_weights; }
-
 		protected:
-			ApplePieWeights m_weights;
+			MaterialWeights m_weights;
 		};
 	} // namespace heuristic
 } // namespace forge

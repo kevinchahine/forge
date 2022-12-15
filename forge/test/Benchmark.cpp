@@ -3,7 +3,7 @@
 #include "forge/controllers/MCTS_Solver.h"
 #include "forge/controllers/MCTS_Solver_MT.h"
 
-#include "forge/heuristic/ApplePie.h"
+#include "forge/heuristic/Material.h"
 
 #include "forge/test/positions.h"
 
@@ -42,8 +42,8 @@ namespace forge
 				ws.cell("A1").value("Search");
 				ws.cell("B1").value(sequentialMCTS.getName());
 
-				sequentialMCTS.makeHeuristic<heuristic::ApplePie>();
-				concurrentMCTS.makeHeuristic<heuristic::ApplePie>();
+				sequentialMCTS.makeHeuristic<heuristic::Material>();
+				concurrentMCTS.makeHeuristic<heuristic::Material>();
 				ws.cell("A2").value("Heuristic");
 				ws.cell("B2").value(sequentialMCTS.heuristicPtr()->name());
 
@@ -186,7 +186,7 @@ namespace forge
 				ws.cell("A1").value("Search:");
 				ws.cell("B1").value(mcts.getName());
 
-				mcts.makeHeuristic<heuristic::ApplePie>();
+				mcts.makeHeuristic<heuristic::Material>();
 				ws.cell("A2").value("Heuristic:");
 				ws.cell("B2").value(mcts.heuristicPtr()->name());
 
@@ -285,7 +285,7 @@ namespace forge
 				ws.cell("A1").value("Search:");
 				ws.cell("B1").value(mcts.getName());
 
-				mcts.makeHeuristic<heuristic::ApplePie>();
+				mcts.makeHeuristic<heuristic::Material>();
 				ws.cell("A2").value("Heuristic:");
 				ws.cell("B2").value(mcts.heuristicPtr()->name());
 
@@ -304,7 +304,7 @@ namespace forge
 				ws.cell(expansionCol, headerRow).value("expansion");
 				ws.cell(backpropCol, headerRow).value("backpropagation");
 
-				unique_ptr<forge::heuristic::Base> heuristic = make_unique<forge::heuristic::ApplePie>();
+				unique_ptr<forge::heuristic::Base> heuristic = make_unique<forge::heuristic::Material>();
 
 				for (size_t p = 0; p < g_positions.size(); p++) {
 					try

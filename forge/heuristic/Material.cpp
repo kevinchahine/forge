@@ -1,4 +1,4 @@
-#include "ApplePie.h"
+#include "Material.h"
 
 using namespace std;
 
@@ -6,7 +6,7 @@ namespace forge
 {
 	namespace heuristic
 	{
-		heuristic_t ApplePie::eval(const Position& pos)
+		heuristic_t Material::eval(const Position& pos)
 		{
 			heuristic_t val =
 				// --- Material ---
@@ -20,16 +20,16 @@ namespace forge
 			return val;
 		}
 
-		heuristic_t ApplePie::eval(const Position& pos, bool whiteIsSearching)
+		heuristic_t Material::eval(const Position& pos, bool whiteIsSearching)
 		{
 			heuristic_t val = eval(pos);
 
 			return (whiteIsSearching ? val : -val);
 		}
 
-		unique_ptr<Base> ApplePie::clone() const
+		unique_ptr<Base> Material::clone() const
 		{
-			return make_unique<ApplePie>(*this);
+			return make_unique<Material>(*this);
 		}
 
 		// TODO: Can we rewrite this as a single function
@@ -57,7 +57,7 @@ namespace forge
 			W weight;
 		};
 
-		void ApplePie::print(const Position& pos, std::ostream& os) const
+		void Material::print(const Position& pos, std::ostream& os) const
 		{
 			os
 				<< "Piece Imbalances:\n"

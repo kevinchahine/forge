@@ -1184,7 +1184,7 @@ namespace forge
 				//make_unique<KeyboardController>();
 			
 			whiteController->makeHeuristic<
-				forge::heuristic::ApplePie>();
+				forge::heuristic::Material>();
 				//forge::heuristic::Random>();
 				//forge::heuristic::RandomSlow>();
 				//forge::heuristic::Rollout>();
@@ -1192,7 +1192,7 @@ namespace forge
 				//forge::heuristic::NeuralNetwork>();
 			
 			blackController->makeHeuristic<
-				forge::heuristic::ApplePie>();
+				forge::heuristic::Material>();
 				//forge::heuristic::Random>();
 				//forge::heuristic::RandomSlow>();
 				//forge::heuristic::Rollout>();
@@ -1240,12 +1240,12 @@ namespace forge
 //				blackSolver->m_nThreads = t;
 //				
 //				whiteSolver->makeHeuristic<
-//					forge::ApplePie
+//					forge::Material
 //					//forge::heuristics::Rollout
 //				>();
 //
 //				blackSolver->makeHeuristic<
-//					forge::ApplePie
+//					forge::Material
 //					//forge::heuristics::Rollout
 //				>();
 //
@@ -1278,7 +1278,7 @@ namespace forge
 //		void heuristic()
 //		{
 //			unique_ptr<heuristic::Base> ptr =
-//				make_unique<ApplePie>();
+//				make_unique<Material>();
 //				//make_unique<Random>();
 //				//make_unique<NeuralNetwork>(); 
 //
@@ -1534,11 +1534,35 @@ namespace forge
 			}
 		}
 
+		void gameHistory()
+		{
+			game_history history;
+
+			for (int i = 0; i < 3; i++) {
+				history.emplace_back(Move("b2b3"), g_positions.at(i));
+			}
+
+			stringstream ss;
+
+			ss << history;
+
+			cout << ss.str() << endl;
+
+			istringstream iss(ss.str());
+
+			game_history history2;
+
+			iss >> history2;
+
+			cout << history2 << endl;
+
+		}
+
 //		namespace weights
 //		{
 //			void applePie()
 //			{
-//				ApplePieWeights w;
+//				MaterialWeights w;
 //
 //				// --- Material ---
 //				w.queenMaterial = 900;
@@ -1591,7 +1615,7 @@ namespace forge
 //					cout << elem << '\t';
 //				}
 //
-//				ApplePieWeights w2;
+//				MaterialWeights w2;
 //
 //				w2.parse(ar);
 //
@@ -1601,15 +1625,15 @@ namespace forge
 //
 //		namespace ai
 //		{
-//			void playApplePie()
+//			void playMaterial()
 //			{
 //				forge::ChessMatch match;
 //
 //				// Set Controllers/Solvers
 //				{
 //					// --- Make Heuristics and set their weights ---
-//					unique_ptr<forge::ApplePie> wHeur = make_unique<forge::ApplePie>();
-//					unique_ptr<forge::ApplePie> bHeur = make_unique<forge::ApplePie>();
+//					unique_ptr<forge::Material> wHeur = make_unique<forge::Material>();
+//					unique_ptr<forge::Material> bHeur = make_unique<forge::Material>();
 //
 //					// Set weights manually
 //					auto & w = wHeur->weights();

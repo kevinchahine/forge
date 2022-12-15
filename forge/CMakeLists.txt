@@ -36,8 +36,9 @@ set(GAME
 )
 
 set(HEURISTIC
-	heuristic/ApplePie.cpp
-	heuristic/ApplePie.h
+	heuristic/Material.cpp
+	heuristic/Material.h
+	heuristic/MaterialWeights.h
 	heuristic/FeatureExtractor.cpp
 	heuristic/FeatureExtractor.h
 	heuristic/Base.cpp
