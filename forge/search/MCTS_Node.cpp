@@ -28,36 +28,22 @@ namespace forge
 	{
 		return left->ucb() < right->ucb();
 	}
-
+	
 	bool compVisits(
 		const shared_ptr<MCTS_Node>& left,
 		const shared_ptr<MCTS_Node>& right)
 	{
 		return left->nVisits() < right->nVisits();
 	}
-
+	
 	// ----------------------------------- METHODS -------------------------------
-
+	
 	void MCTS_Node::lastVisit()
 	{
 		t = -std::numeric_limits<float>::infinity();
 		ucbScore = -std::numeric_limits<float>::infinity();
-		
-		//// *** now the front node is unsorted amongst its siblings ***
-		//
-		//auto& c = parentPtr()->children();
-		////shared_ptr<MCTS_Node> us = c.front();
-		//
-		//// --- Pop this node ---
-		//pop_heap(c.begin(), c.end());
-		////c.pop_back();
-		//
-		////c.push_back(us);
-		//push_heap(c.begin(), c.end());
-		//
-		//return;
 	}
-
+	
 	void MCTS_Node::expand()
 	{
 		// --- Generate Children ---
@@ -73,18 +59,13 @@ namespace forge
 				children.front()->average(),
 				children.front()->parentPtr()->n,
 				children.front()->n);
-
+			
 			for (auto& c : children) {
 				c->ucbScore = UCB;
 			}
-			
-			// *** We don't actually need to call make_heap ***
-			// *** because initially, all ucb scores will be ***
-			// *** the same ***.
-			//make_heap(c.begin(), c.end(), compUCB);
 		}
 	}
-
+	
 	void MCTS_Node::update(int score)
 	{
 		// --- Update UCB values ---
@@ -94,21 +75,6 @@ namespace forge
 			this->average(),
 			this->parentPtr()->n,
 			this->n);
-
-		//// *** now the front node is unsorted amongst its siblings ***
-		//
-		//auto& c = parentPtr()->children();
-		////shared_ptr<MCTS_Node> us = c.front();
-		//
-		//// --- Pop this node ---
-		//pop_heap(c.begin(), c.end());
-		////c.pop_back();
-		//
-		//// --- Push it back in heap order ---
-		////c.push_back(us);
-		//push_heap(c.begin(), c.end());
-		//
-		//return;
 	}
 
 	void MCTS_Node::merge(const MCTS_Node& node)
@@ -119,7 +85,6 @@ namespace forge
 			this->average(),
 			this->parentPtr()->n,
 			this->n);
-
 	}
 
 	// ----------------------------------- ITERATOR ------------------------------
@@ -131,10 +96,6 @@ namespace forge
 
 	void MCTS_Node::iterator::toBestUCB()
 	{
-		////auto& c = nodes.top()->children();
-		////
-		////nodes.push(c.front().get());// node with MAX UCB
-
 		// Determine which child has the highest/lowest UCB score
 		
 		// Stores all the ucb scores of each child in the same order
