@@ -20,6 +20,12 @@ namespace forge
 		
 		heuristic_t NeuralNetwork::eval(const Position& pos)
 		{
+			cout << __FILE__ << " line " << __LINE__ << ". Don't use this method. Use other overload instead." << endl;
+			return 999;
+		}
+		
+		heuristic_t NeuralNetwork::eval(const Position& pos, bool whiteIsSearching)
+		{			
 			// --- Input ---
 			// Tensor which holds input features (one-hot and multi-hot encodings)
 			torch::Tensor inputs = torch::ones({ 1, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE }, torch::kCPU);
@@ -27,27 +33,17 @@ namespace forge
 			// --- Extract ---
 			// Extract one-hot encodings into a tensor
 			FeatureExtractor extractor;
-			extractor.init(pos);
+			extractor.init(pos, whiteIsSearching);
 			extractor.extractMaterial(inputs);
 
 			// --- Evaluate Position ---
 
-			//m_net.to(forge::g_computingDevice);
-			//inputs = inputs.to(forge::g_computingDevice);
 			torch::Tensor output = m_net.forward(inputs);
 
 			// --- Return Evaluation ---
 			heuristic_t eval = output[0].item<float>();
 
 			return eval;
-		}
-		
-		heuristic_t NeuralNetwork::eval(const Position& pos, bool whiteIsSearching)
-		{			
-			// --- Return Evaluation ---
-			heuristic_t eval = this->eval(pos);
-			
-			return (whiteIsSearching ? eval : -eval);
 		}
 
 		unique_ptr<Base> NeuralNetwork::clone() const

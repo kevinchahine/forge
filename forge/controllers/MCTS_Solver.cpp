@@ -18,19 +18,19 @@ namespace forge
 
 		this->searchMonitor().print();
 
-		const auto& sm = searchMonitor();
-		const auto s = chrono::duration_cast<chrono::milliseconds>(sm.selection.elapsed()).count();
-		const auto ev = chrono::duration_cast<chrono::milliseconds>(sm.evaluation.elapsed()).count();
-		const auto ex = chrono::duration_cast<chrono::milliseconds>(sm.expansion.elapsed()).count();
-		const auto bp = chrono::duration_cast<chrono::milliseconds>(sm.backprop.elapsed()).count();
-		const auto tl = chrono::duration_cast<chrono::milliseconds>(sm.searchTime.elapsed()).count();
-
-		cout
-			<< "selection:       " << s << endl
-			<< "evaluation:      " << ev << endl
-			<< "expansion:       " << ex << endl
-			<< "backpropagation: " << bp << endl
-			<< "total:           " << tl << endl;
+		//const auto& sm = searchMonitor();
+		//const auto s = chrono::duration_cast<chrono::milliseconds>(sm.selection.elapsed()).count();
+		//const auto ev = chrono::duration_cast<chrono::milliseconds>(sm.evaluation.elapsed()).count();
+		//const auto ex = chrono::duration_cast<chrono::milliseconds>(sm.expansion.elapsed()).count();
+		//const auto bp = chrono::duration_cast<chrono::milliseconds>(sm.backprop.elapsed()).count();
+		//const auto tl = chrono::duration_cast<chrono::milliseconds>(sm.searchTime.elapsed()).count();
+		//
+		//cout
+		//	<< "selection:       " << s << endl
+		//	<< "evaluation:      " << ev << endl
+		//	<< "expansion:       " << ex << endl
+		//	<< "backpropagation: " << bp << endl
+		//	<< "total:           " << tl << endl;
 
 		return bestMove;
 	}
@@ -81,6 +81,7 @@ namespace forge
 
 					sm.expansion.resume();		// BENCHMARKING
 					curr.expand();
+					sm.expansionCount.add(1);
 					sm.expansion.pause();		// BENCHMARKING
 
 					sm.evaluation.resume();		// BENCHMARKING

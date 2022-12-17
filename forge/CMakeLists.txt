@@ -62,8 +62,6 @@ set(ML
 	ml/CSVParser.h
 	ml/DataSet.cpp
 	ml/DataSet.h
-	ml/DatasetGenerator.cpp
-	ml/DatasetGenerator.h
 	ml/Net.cpp
 	ml/Net.h
 	ml/PositionEvalPair.h
@@ -143,6 +141,8 @@ set(SOURCE
 set(TEST
 	test/Benchmark.cpp
 	test/Benchmark.h
+	test/heuristics.cpp
+	test/heuristics.h
 	test/positions.cpp
 	test/positions.h
 	test/Test.cpp

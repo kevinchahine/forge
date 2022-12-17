@@ -35,13 +35,12 @@ namespace forge
 				const PositionEvalPair & pair = batch[sampleIndex];
 
 				forge::heuristic::FeatureExtractor extractor;
-				extractor.init(pair.position);
+				extractor.init(pair.position, true);	// true means that the evaluation is always in the perspective of the white player
 
 				// --- Inputs ---
 				torch::Tensor sampleSlice = data.inputs.slice(0, sampleIndex, sampleIndex + 1);
 
-				//torch::Tensor materialSlice = sampleSlice.slice(1, 0, inputSize);
-				extractor.extractMaterial(sampleSlice);//materialSlice);
+				extractor.extractMaterial(sampleSlice);
 
 				// --- Output ---
 				data.outputs[sampleIndex] = pair.eval;

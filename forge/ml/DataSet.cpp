@@ -52,7 +52,7 @@ namespace forge
 			const PositionEvalPair & pair = pairs[sampleIndex];
 			
 			forge::heuristic::FeatureExtractor extractor;
-			extractor.init(pair.position);
+			extractor.init(pair.position, true);
 
 			// --- Inputs ---
 			torch::Tensor sampleSlice = data.inputs.slice(0, sampleIndex, sampleIndex + 1);

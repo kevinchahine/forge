@@ -95,6 +95,8 @@ namespace forge
 		AC<int, Args... > plyCount = 0;
 		AC<int, Args... > plyLimit = std::numeric_limits<int>::max();
 
+		AC<int, Args... > expansionCount = 0;
+
 		// Keeps track of duration of search
 		StopWatch searchTime;
 

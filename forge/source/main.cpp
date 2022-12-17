@@ -22,6 +22,7 @@ Designed to be compatible with a variety of displays including:
 #include "forge/source/globals_torch.h"
 
 #include "forge/test/Benchmark.h"
+#include "forge/test/heuristics.h"
 #include "forge/test/Test.h"
 #include "forge/test/TestML.h"
 #include "forge/test/positions.h"
@@ -48,11 +49,11 @@ int main(int argc, char ** argv)
 	forge::initGlobalsTorch();
 
 	//forge::test::benchmark::mcts();
-	//forge::test::benchmark::mcts_phases();
+	forge::test::benchmark::mcts_phases();
 	//forge::test::benchmark::mcts_phases_without_search();
 
+	forge::test::init();
 	//forge::test::initTestBoards();
-	//forge::test::init();
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
@@ -83,7 +84,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	forge::test::chessMatch();				// **************
+	//forge::test::chessMatch();				// **************
 	//forge::test::uciMatch();					// uuuuuuuuuuuuuu
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();
@@ -113,6 +114,7 @@ int main(int argc, char ** argv)
 	//forge::test::feature_extractor::countAllAttacked();
 
 	//forge::test::ml::heuristic();
+	//forge::test::heuristics::nn();
 
 	//forge::test::movegen::stockfishAndForge();
 

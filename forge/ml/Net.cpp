@@ -8,8 +8,6 @@
 #include <torch/csrc/api/include/torch/serialize.h>
 #include <torch/csrc/api/include/torch/cuda.h>
 
-#include <fstream>	// TODO: remove this its only temporary
-
 // https://pytorch.org/tutorials/advanced/cpp_frontend.html#writing-the-training-loop	// training in PyTorch (GPU also)
 
 using namespace std;
@@ -37,7 +35,7 @@ namespace forge
 		{
 			cout << "--- Net::train() ---" << endl;
 
-			this->load("net.pt");
+			//this->load("net.pt");
 			
 			ofstream outFile;
 			outFile.open("training_history.txt");
@@ -113,7 +111,7 @@ namespace forge
 					}
 
 					if (saveTimer.is_expired()) {
-						cout << "Saving checkpoint...";
+						cout << "Saving checkpoint to net.pt...";
 						this->save("net.pt");
 						cout << "done" << endl;
 						saveTimer.expires_from_now(savePeriod);
@@ -249,6 +247,7 @@ namespace forge
 		{
 			torch::serialize::InputArchive inputArchive;
 
+			// TODO: Make sure file exists first
 			inputArchive.load_from(filename);
 			this->torch::nn::Module::load(inputArchive);	// Call parents method overload
 		}

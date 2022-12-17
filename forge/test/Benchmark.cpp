@@ -180,6 +180,7 @@ namespace forge
 				xlnt::column_t expansionCol(++col);
 				xlnt::column_t backpropCol(++col);
 				xlnt::column_t totalCol(++col);
+				xlnt::column_t nodeCol(++col);
 
 				MCTS_Solver mcts;
 
@@ -196,7 +197,7 @@ namespace forge
 				ws.cell("B3").value(timeLimit.count());
 
 				// --- Headers --- 
-				ws.cell(selectionCol, headerRow - 1).value("Execution time (msec)");
+				ws.cell(selectionCol, headerRow - 1).value("Execution time (nsec / node)");
 				ws.merge_cells(xlnt::range_reference(selectionCol, headerRow - 1, totalCol, headerRow - 1));
 				
 				ws.cell(positionCol, headerRow).value("position");
@@ -205,6 +206,7 @@ namespace forge
 				ws.cell(expansionCol, headerRow).value("expansion");
 				ws.cell(backpropCol, headerRow).value("backpropagation");
 				ws.cell(totalCol, headerRow).value("total");
+				ws.cell(nodeCol, headerRow).value("node count");
 
 				for (size_t p = 0; p < g_positions.size(); p++) {
 					try
@@ -221,24 +223,27 @@ namespace forge
 						mcts.getMove(pos);
 
 						const auto& sm = mcts.searchMonitor();
-						const auto s = chrono::duration_cast<chrono::milliseconds>(sm.selection.elapsed()).count();
-						const auto ev = chrono::duration_cast<chrono::milliseconds>(sm.evaluation.elapsed()).count();
-						const auto ex = chrono::duration_cast<chrono::milliseconds>(sm.expansion.elapsed()).count();
-						const auto bp = chrono::duration_cast<chrono::milliseconds>(sm.backprop.elapsed()).count();
-						const auto tl = chrono::duration_cast<chrono::milliseconds>(sm.searchTime.elapsed()).count();
+						size_t nc = sm.nodeCount.value();
+						int expansionCount = sm.expansionCount.value();
+						const auto sl = /*chrono::duration_cast<chrono::milliseconds>*/(sm.selection.elapsed() / nc).count();
+						const auto ev = /*chrono::duration_cast<chrono::milliseconds>*/(sm.evaluation.elapsed() / nc).count();
+						const auto ex = /*chrono::duration_cast<chrono::milliseconds>*/(sm.expansion.elapsed() / expansionCount).count();
+						const auto bp = /*chrono::duration_cast<chrono::milliseconds>*/(sm.backprop.elapsed() / nc).count();
+						const auto tl = /*chrono::duration_cast<chrono::milliseconds>*/(sm.searchTime.elapsed() / nc).count();
 
-						//cout
-						//	<< "selection:       " << s << endl
-						//	<< "evaluation:      " << ev << endl
-						//	<< "expansion:       " << ex << endl
-						//	<< "backpropagation: " << bp << endl
-						//	<< "total:           " << tl << endl;
+						cout
+							<< "selection:       " << sl << " nsec / node" << endl
+							<< "evaluation:      " << ev << " nsec / node" << endl
+							<< "expansion:       " << ex << " nsec / node" << endl
+							<< "backpropagation: " << bp << " nsec / node" << endl
+							<< "total:           " << tl << " nsec / node" << endl;
 
-						ws.cell(selectionCol, row).value(s);
+						ws.cell(selectionCol, row).value(sl);
 						ws.cell(evaluationCol, row).value(ev);
-						ws.cell(expansionCol, row).value(ev);
+						ws.cell(expansionCol, row).value(ex);
 						ws.cell(backpropCol, row).value(bp);
 						ws.cell(totalCol, row).value(tl);
+						ws.cell(nodeCol, row).value(nc);
 
 						cout << "Saving to " << filename << "...";
 						wb.save(filename);
@@ -369,7 +374,7 @@ namespace forge
 						const auto ep = empty.elapsed().count();
 
 						//cout
-						//	<< "selection:       " << s << endl
+						//	<< "selection:       " << sl << endl
 						//	<< "evaluation:      " << ev << endl
 						//	<< "expansion:       " << ex << endl
 						//	<< "backpropagation: " << bp << endl

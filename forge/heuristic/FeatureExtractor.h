@@ -17,9 +17,11 @@ namespace forge
 		class FeatureExtractor
 		{
 		public:
-			void init(const Position& pos);
-
-			void init(const Position& pos, bool maximizeWhite);
+			// Evaluates the position from the perspective of the specified player
+			// ex:
+			//	forWhite = true:	evaluates board with white peices on the bottom (white pawns move up)
+			//	forWhite = false:	evaluates board with black pieces on the bottom (black pawns move up)
+			void init(const Position& pos, bool forWhite);
 
 			void extractMaterial(torch::Tensor& slice);
 			void extractMobility(torch::Tensor& slice);
