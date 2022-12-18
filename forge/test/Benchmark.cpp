@@ -336,7 +336,7 @@ namespace forge
 
 						// --- evaluation ---
 						evaluation.resume();
-						bool maximizeWhite = (*it).position().moveCounter().isBlacksTurn();
+						bool maximizeWhite = (*it).position().isBlacksTurn();
 						heuristic_t eval = heuristic->eval((*it).position(), maximizeWhite);
 						evaluation.pause();
 

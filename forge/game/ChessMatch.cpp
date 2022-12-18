@@ -61,7 +61,7 @@ namespace forge
 			// Who's turn is it anyways?
 			ControllerBase* currPlayer = nullptr;
 
-			if (this->position().moveCounter().isWhitesTurn()) {
+			if (this->position().isWhitesTurn()) {
 				// White's turn
 				cout << "Whites turn...\n";
 				currPlayer = m_whitesController.get();

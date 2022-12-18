@@ -23,7 +23,7 @@ namespace forge
 	{
 		MCTS_Node::iterator bestIt = m_nodeTree.root();
 
-		bool maximize = m_nodeTree.position().moveCounter().isWhitesTurn();
+		bool maximize = m_nodeTree.position().isWhitesTurn();
 
 		//bestIt.toBestUCB(maximize);	// Stochastic selection
 		//bestIt.toBestAverage(maximize);		// Best selection

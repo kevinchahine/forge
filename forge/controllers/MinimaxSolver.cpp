@@ -25,7 +25,7 @@ namespace forge
 		m_searchMonitor.timer.expires_from_now(chrono::hours(1));
 		m_searchMonitor.start();
 
-		bool maximizeWhite = position.moveCounter().isWhitesTurn();
+		bool maximizeWhite = position.isWhitesTurn();
 
 		m_nodeTree = MiniMaxNode{};
 		m_nodeTree.position() = position;	// Copy position into root of node tree
@@ -63,7 +63,7 @@ namespace forge
 				}
 			}
 			else if (it.isLeafNode()) {
-				bool maximizeWhite = pos.moveCounter().isWhitesTurn();
+				bool maximizeWhite = pos.isWhitesTurn();
 				(*it).fitness() = heuristicPtr()->eval(pos, maximizeWhite);
 			}
 			else {

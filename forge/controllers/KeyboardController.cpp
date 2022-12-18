@@ -37,7 +37,7 @@ namespace forge
 
 		// Where are 'our' pieces? (Pieces of player who is making the move).
 		BitBoard ours = (
-			position.moveCounter().isWhitesTurn() ?
+			position.isWhitesTurn() ?
 			position.board().whites() :
 			position.board().blacks());
 

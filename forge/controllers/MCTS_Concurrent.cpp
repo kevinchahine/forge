@@ -32,7 +32,7 @@ namespace forge
 		//				// without significantly changing the algorithms behavior.
 		//				// This can be a good optimization when evaluations are 
 		//				// more efficient in batches.
-		//				bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
+		//				bool maximizeWhite = (*curr).position().isBlacksTurn();
 		//				eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
 		//
 		//				// *** We have completely discovered and evaluated a new node ***
@@ -48,7 +48,7 @@ namespace forge
 		//			}
 		//			else {
 		//				// *** Terminal Node ***
-		//				bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
+		//				bool maximizeWhite = (*curr).position().isBlacksTurn();
 		//				GameState gstate;
 		//				gstate(*curr);
 		//				eval = 1'500 * gstate.getValue(maximizeWhite);	// count a win as 15 pawns

@@ -43,7 +43,7 @@ namespace forge
 		// Only makes sense for minimax
 		// Find child with max or min fitness and assign it to this node.
 		// Using min or max will depend on which player is moving.
-		if (m_position.moveCounter().isWhitesTurn()) {
+		if (m_position.isWhitesTurn()) {
 			// --- White player is moving ---
 
 			// White is maximizing so find child with highest fitness.

@@ -16,16 +16,26 @@ namespace forge {
 		using super_t = NodeTemplate<MCTS_Node>;
 
 		// UCB = t/n + C * sqrt(ln(N) / n)
-		// 	t - total score
+		// 	t - total score (should not be +/- infinity)
 		// 	N - Parent node visits
 		// 	n - Current node visits
+		//	mark - 0 or -inf
 		// returns UCB score. Guarenteed to be a real number not +/-infinity or undefined.
-		static float calcUCB(float total, float parentVisits, float currVisits) {
+		static float calcUCB(float total, float parentVisits, float currVisits, float mark) {
 			// UCB = x_i + C * sqrt(ln(N) / n_i)
 			// !!! Warning: parentVisits and currVisits must be greater than 0.
 			//	log(0) = -NaN (undefined)
 			//	x/0	= NaN (undefined)
-			return (total / (currVisits + 1.0f)) + MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f));
+			
+			// --- Convert to units of pawns ---
+			total = total / 100.0f;
+
+			total = total / (1 + abs(total));
+
+			return
+				(total / (currVisits + 1.0f)) +
+				MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f)) +
+				mark;
 		}
 
 		int totalScore() const { return static_cast<int>(t); }
@@ -80,9 +90,14 @@ namespace forge {
 		//	sqrt(-1) is undefined
 		float n = std::numeric_limits<float>::min();
 
+		// Set this value to -inf to identify a node as one which should not be selected during
+		// the selection phase. 
+		// ex: terminal nodes should be marked with -inf by calling this->lastVisit()
+		float mark = 0.0f;
+
 		static const float temperature;
 
-		// Stored hear to prevent recalculating between updates.
+		// Stored here to prevent recalculating between updates.
 		float ucbScore = 0.0f;
 
 		// Used by multithreaded version of MCTS

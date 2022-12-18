@@ -897,7 +897,7 @@ namespace forge
 //				//p.move<WhiteKing>(Move{ b.whiteKing(), b.whiteKing().rightOne() });	// Make a move as white
 //				// *** Now its blacks turn.
 //
-//				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << " turn" << endl;
+//				cout << (p.isWhitesTurn() ? "Whites" : "Blacks") << " turn" << endl;
 //
 //				MoveGenerator2 gen;
 //				MoveList legals = gen.generate(p);
@@ -997,7 +997,7 @@ namespace forge
 //
 //				for (const auto & pos : positions) {
 //					cout << endl << "=== It is "
-//						<< (pos.moveCounter().isWhitesTurn() ? "whites" : "blacks") << " turn ===\n";
+//						<< (pos.isWhitesTurn() ? "whites" : "blacks") << " turn ===\n";
 //
 //					MoveList legals = gen.generate(pos);
 //
@@ -1047,7 +1047,7 @@ namespace forge
 //				}
 //				cb.print();
 //
-//				cout << (p.moveCounter().isWhitesTurn() ? "Whites" : "Blacks") << "	turn" << endl;
+//				cout << (p.isWhitesTurn() ? "Whites" : "Blacks") << "	turn" << endl;
 //				cout << moves.size() << " legal moves generated" << endl;
 //
 //				guten::grids::GridView gridView;
@@ -1076,7 +1076,7 @@ namespace forge
 //
 //					{
 //						stringstream ss;
-//						ss << (AttackChecker::isAttacked(elem.position.board(), elem.position.moveCounter().isBlacksTurn()) ?
+//						ss << (AttackChecker::isAttacked(elem.position.board(), elem.position.isBlacksTurn()) ?
 //							"Illegal" : "Legal");
 //						guten::draw::putText(miniText, ss.str(), guten::Point{ 1, 0 });
 //					}

@@ -47,23 +47,22 @@ namespace forge
 						// without significantly changing the algorithms behavior.
 						// This can be a good optimization when evaluations are 
 						// more efficient in batches.
-						bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
+						bool maximizeWhite = (*curr).position().isBlacksTurn();
 						eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
 					}
 					else {
 						// *** Terminal Node ***
-						bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
+						bool maximizeWhite = (*curr).position().isBlacksTurn();
 						GameState gstate;
 						gstate(*curr);
-						eval = 1'500 * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
-
+						eval = 1500 * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
 						(*curr).lastVisit();
 					}
 					sm.evaluation.pause();		// BENCHMARKING
 				}
 				else {
 					sm.evaluation.resume();		// BENCHMARKING	
-					bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
+					bool maximizeWhite = (*curr).position().isBlacksTurn();
 					eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
 					sm.evaluation.pause();		// BENCHMARKING
 				}
@@ -72,16 +71,13 @@ namespace forge
 				sm.backprop.resume();
 				while (curr.isRoot() == false) {
 					(*curr).update(eval);
-					(*curr).sort();
 					eval = -eval;
 					curr.toParent();
+					(*curr).sort();
 				}
 				
-				curr = m_nodeTree.root();
-				//// *** Now curr is at the root ***
-				//(*curr).update(eval);	// one more time for the root
-				//eval = -eval;
-				
+				curr = m_nodeTree.root();// *** Now curr is at the root ***
+
 				// --- Check stopping condition ---
 				sm.nodeCount++;
 				if (sm.exitConditionReached()) {
