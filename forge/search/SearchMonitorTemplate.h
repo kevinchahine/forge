@@ -83,7 +83,7 @@ namespace forge
 				<< "\t" << formatted_int(plyCount.value()) << " plys\n"
 				<< "\t" << plysPerSecond() << " plys per second\n"
 				<< "\t" << "Search time: "
-				/******/ << chrono::duration<float, std::ratio<1, 1>>(searchTime.elapsed()).count()
+				/******/ << std::chrono::duration<float, std::ratio<1, 1>>(searchTime.elapsed()).count()
 				/******/ << " seconds\n"
 				<< '\n';
 		}

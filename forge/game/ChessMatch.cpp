@@ -1,4 +1,5 @@
 #include "forge/game/ChessMatch.h"
+#include "forge/controllers/SolverBase.h"
 
 #include <forge/core/MoveGenerator2.h>
 
@@ -6,13 +7,11 @@ using namespace std;
 
 namespace forge
 {
-	ChessMatch::ChessMatch()
-	{
+	ChessMatch::ChessMatch() {
 		reset();
 	}
 
-	void ChessMatch::reset()
-	{
+	void ChessMatch::reset() {
 		m_history.clear();
 		m_history.emplace_back();
 		m_history.back().position.setupNewGame();
@@ -23,8 +22,7 @@ namespace forge
 		m_clock.resetAll();
 	}
 
-	GameState forge::ChessMatch::runGame()
-	{
+	GameState forge::ChessMatch::runGame() {
 		cout << "Chess match is about to start...\n";
 
 		// --- Make sure we have controllers/solvers ---
@@ -58,11 +56,10 @@ namespace forge
 
 		GameState gstate;
 
-		while (true)
-		{
+		while (true) {
 			// --- CONTROLLER ---
 			// Who's turn is it anyways?
-			ControllerBase * currPlayer = nullptr;
+			ControllerBase* currPlayer = nullptr;
 
 			if (this->position().moveCounter().isWhitesTurn()) {
 				// White's turn
@@ -74,9 +71,14 @@ namespace forge
 				cout << "Blacks turn...\n";
 				currPlayer = m_blacksController.get();
 			}
-			
+
 			// --- Prompt current player for a move ---
 			MovePositionPair pair = currPlayer->getMove(this->position());
+
+			forge::SolverBase* solverBasePtr = dynamic_cast<forge::SolverBase*>(currPlayer);
+			if (solverBasePtr) {
+				solverBasePtr->printSearchMonitor();
+			}
 
 			// --- VIEW ---
 			// Show Board with highlights of legal moves but only if move was a partial move.
@@ -92,13 +94,13 @@ namespace forge
 				// Prompt AGAIN for COMPLETE move
 				pair = currPlayer->getMove(this->position());
 			}
-			
+
 			cout << "Move: " << pair.move << endl;
 
 			// Apply the move. 
 			// TODO: Make sure move is legal before adding it.
 			m_history.emplace_back(pair); // Its just that simple.
-			
+
 			// Check the game state
 			gstate(m_history);
 			if (gstate.state != GameState::STATE::CONTINUE) {
@@ -109,16 +111,14 @@ namespace forge
 
 			// If displaying board, pause clock to prevent loosing time from next player.
 			// If player is a computer, a few milliseconds lost can be a big deal. 
-			if (true) {
-				m_clock.stop();
-				
-				// Show Board
-				if (m_viewPtr != nullptr) {
-					m_viewPtr->show(m_history.current().position, pair.move);
-				}
+			m_clock.stop();
 
-				m_clock.resume();
+			// Show Board
+			if (m_viewPtr != nullptr) {
+				m_viewPtr->show(m_history.current().position, pair.move);
 			}
+
+			m_clock.resume();
 
 			m_clock.click(); // Next players turn
 		} // end while(true)

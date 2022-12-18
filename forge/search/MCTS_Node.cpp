@@ -87,6 +87,24 @@ namespace forge
 			this->n);
 	}
 
+	void MCTS_Node::sort() 
+	{
+		//vector<shared_ptr<MCTS_Node>>& c = children();
+		//
+		//// --- Insertion Sort (Max to Min) ---
+		//for (int i = 1; i < c.size(); ++i) {
+		//	shared_ptr<MCTS_Node> key = c.at(i);
+		//	int j = i - 1;
+		//
+		//	while (j >= 0 && c.at(j)->ucb() < key->ucb()) {
+		//		c.at(j + 1) = c.at(j);
+		//		--j;
+		//	}
+		//
+		//	c.at(j + 1) = key;
+		//}
+	}
+
 	// ----------------------------------- ITERATOR ------------------------------
 
 	MCTS_Node& MCTS_Node::iterator::operator*()
@@ -123,6 +141,7 @@ namespace forge
 		
 		// If all children are pruned (fully searched) then this node can be marked as pruned (fully searched).
 		if (isCompletelySearch == true) {
+			cout << guten::color::lightred << "Node pruned" << guten::color::white << endl;
 			nodes.top()->prune();
 		}
 		
@@ -168,6 +187,6 @@ namespace forge
 
 	void MCTS_Node::iterator::toFirstChild()
 	{
-		nodes.push(nodes.top()->children().front().get());
+		nodes.push(nodes.top()->children().back().get());
 	}
 } // namespace forge

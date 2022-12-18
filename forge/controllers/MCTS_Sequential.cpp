@@ -6,7 +6,7 @@ using namespace std;
 
 namespace forge
 {
-	MovePositionPair MCTS_Sequential::solve()
+	void MCTS_Sequential::solve()
 	{
 		// --- Start ---
 		m_nodeTree.root().expand();
@@ -25,10 +25,10 @@ namespace forge
 		curr.expand();
 
 		while (true) {
-
-			// --- Selection ---
 			if (curr.isLeaf()) {
 				heuristic_t eval = 0;
+				
+				// --- 2nd visit? ---
 				if ((*curr).isVisited()) {
 
 					sm.expansion.resume();		// BENCHMARKING
@@ -48,7 +48,7 @@ namespace forge
 						// This can be a good optimization when evaluations are 
 						// more efficient in batches.
 						bool maximizeWhite = (*curr).position().moveCounter().isBlacksTurn();
-						heuristic_t eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
+						eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
 					}
 					else {
 						// *** Terminal Node ***
@@ -72,6 +72,7 @@ namespace forge
 				sm.backprop.resume();
 				while (curr.isRoot() == false) {
 					(*curr).update(eval);
+					(*curr).sort();
 					eval = -eval;
 					curr.toParent();
 				}
@@ -90,6 +91,7 @@ namespace forge
 				sm.backprop.pause();
 			}
 			else {
+				// --- Selection ---
 				sm.selection.resume();
 				// --- Move DOWN the tree ---
 				if ((*curr).isPruned() == false && curr.hasChildren()) {
@@ -158,7 +160,5 @@ namespace forge
 		cout << guten::color::white;
 
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-		return selectBestMove();
 	}
 } // namespace forge

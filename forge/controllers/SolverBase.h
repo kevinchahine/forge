@@ -15,6 +15,7 @@ namespace forge
 	class SolverBase : public ControllerBase
 	{
 	public:
+		virtual void printSearchMonitor() const = 0;
 	};
 
 	template< template< typename T, typename... > class AC, typename... Args >
@@ -71,6 +72,8 @@ namespace forge
 
 			m_heuristicPtr = std::make_unique<T>(file_name);
 		}
+
+		virtual void printSearchMonitor() const override { m_searchMonitor.print(); }
 
 		const SearchMonitorTemplate<AC>& searchMonitor() const { return m_searchMonitor; }
 		SearchMonitorTemplate<AC>& searchMonitor() { return m_searchMonitor; }

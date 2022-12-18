@@ -57,6 +57,12 @@ namespace forge {
 		// ucb will need to be recalculated after calling this method if node.t or node.n are non-zero
 		void merge(const MCTS_Node& node);
 
+		// Sorts children pointers according to UCB scores.
+		// Should be called once after each update.
+		// Does not need to be called after update() if the order doesn't change.
+		// Performs an insertion sort which works faster when elements are already mostly in order.
+		void sort();
+
 	private: // -------------------------- PRIVATE FIELDS ------------------------
 		// Total score of all children
 		// # of games won by white
@@ -131,6 +137,9 @@ namespace forge {
 
 			// * See comments of goToSelectedChild()
 			void toFirstChild();
+
+			// TODO: Implement this
+			//void toNextSibling();
 
 		private:
 			// node which iterator is currently referencing

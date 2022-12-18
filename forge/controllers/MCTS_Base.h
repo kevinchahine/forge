@@ -33,7 +33,7 @@ namespace forge
 		const MCTS_Node& nodeTree() const { return m_nodeTree; }
 
 	protected:
-		virtual MovePositionPair solve() = 0;
+		virtual void solve() = 0;
 
 		MovePositionPair selectBestMove() {
 			MCTS_Node::iterator bestIt = m_nodeTree.root();

@@ -12,6 +12,6 @@ namespace forge
 		virtual std::string getNameVariant() const override { return "Sequential"; }
 
 	public:
-		virtual MovePositionPair solve() override;
+		virtual void solve() override;
 	};
 } // namespace forge
