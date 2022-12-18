@@ -1,4 +1,4 @@
-#include "MCTS_Solver_MT.h"
+#include "MCTS_Concurrent.h"
 
 #include <forge/core/GameState.h>
 
@@ -146,37 +146,31 @@ namespace forge
 		//}
 	}
 	
-	MovePositionPair MCTS_Concurrent::solve(const Position& position)
+	MovePositionPair MCTS_Concurrent::solve()
 	{
 		// --- Start ---
-		m_searchMonitor.start();
-		
-		m_nodeTree.reset();
-		m_nodeTree.position() = position;
 		m_nodeTree.root().expand();
-		
+
 		// ~~~ Concurrent Section ~~~
 
 		std::vector<boost::thread> pool;
-		const size_t nThreads = (m_nThreads == 0 ? 3 /*boost::thread::hardware_concurrency()*/ : m_nThreads);
+		const size_t nThreads = (m_nThreads == 0 ? boost::thread::hardware_concurrency() : m_nThreads);
 		pool.reserve(nThreads);
 
 		for (size_t t = 0; t < nThreads; t++) {
 			pool.push_back(
 				boost::thread{ 
-					[this, &position]() { this->solveOneThread(); } 
+					[this]() { this->solveOneThread(); } 
 				}
 			);
 		}
+
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 		for (boost::thread& t : pool) {
 			t.join();
 		}
 
 		// ~~~ End of Concurrent Section ~~~
-
-		m_searchMonitor.stop();	// stop the clock so we can record exact search time.
-
-		return selectBestMove();
 	}
 } // namespace forge

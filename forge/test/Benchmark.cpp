@@ -1,7 +1,7 @@
 #include "Benchmark.h"
 
-#include "forge/controllers/MCTS_Solver.h"
-#include "forge/controllers/MCTS_Solver_MT.h"
+#include "forge/controllers/MCTS_Sequential.h"
+#include "forge/controllers/MCTS_Concurrent.h"
 
 #include "forge/heuristic/Material.h"
 
@@ -37,8 +37,8 @@ namespace forge
 				xlnt::column_t avgNodesCol(g_positions.size() + 2);
 				xlnt::column_t avgNPSCol(avgNodesCol + 1);
 
-				MCTS_Solver sequentialMCTS;
-				MCTS_Solver_MT concurrentMCTS;
+				MCTS_Sequential sequentialMCTS;
+				MCTS_Concurrent concurrentMCTS;
 				ws.cell("A1").value("Search");
 				ws.cell("B1").value(sequentialMCTS.getName());
 
@@ -182,7 +182,7 @@ namespace forge
 				xlnt::column_t totalCol(++col);
 				xlnt::column_t nodeCol(++col);
 
-				MCTS_Solver mcts;
+				MCTS_Sequential mcts;
 
 				ws.cell("A1").value("Search:");
 				ws.cell("B1").value(mcts.getName());
@@ -214,7 +214,7 @@ namespace forge
 						const Position& pos = g_positions.at(p);
 						const string& fen = pos.toFEN();
 
-						cout << "----- Position " << p << ' ' << fen << "-----" << endl;
+						cout << "----- Position " << p << ' ' << fen << " -----" << endl;
 						pos.board().printMini();
 						xlnt::row_t row(headerRow + p + 1);
 
@@ -285,7 +285,7 @@ namespace forge
 				xlnt::column_t backpropCol(++col);
 				xlnt::column_t emptyCol(++col);
 
-				MCTS_Solver mcts;
+				MCTS_Sequential mcts;
 
 				ws.cell("A1").value("Search:");
 				ws.cell("B1").value(mcts.getName());

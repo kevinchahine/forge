@@ -20,7 +20,7 @@ namespace forge
 		void solveOneThread();
 
 	public:
-		MovePositionPair solve(const Position& position);
+		virtual MovePositionPair solve() override;
 
 	protected:
 		size_t m_nThreads = 0;	// 0 means search will determine thread count based on hardware concurrency

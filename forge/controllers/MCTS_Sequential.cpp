@@ -1,4 +1,4 @@
-#include "MCTS_Solver.h"
+#include "MCTS_Sequential.h"
 
 #include <forge/core/GameState.h>
 
@@ -6,26 +6,22 @@ using namespace std;
 
 namespace forge
 {
-	MovePositionPair MCTS_Sequential::solve(const Position& position)
+	MovePositionPair MCTS_Sequential::solve()
 	{
 		// --- Start ---
-		MCTS_Node::iterator curr;
-
-		auto& sm = m_searchMonitor;
-		sm.start();
+		m_nodeTree.root().expand();
 
 		// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
 		int badTraversals = 0;
 
+		auto& sm = m_searchMonitor;
 		sm.selection.reset();
 		sm.evaluation.reset();
 		sm.expansion.reset();
 		sm.backprop.reset();
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-		m_nodeTree.reset();
-		m_nodeTree.position() = position;
-		curr = m_nodeTree.root();
+		MCTS_Node::iterator curr = m_nodeTree.root();
 		curr.expand();
 
 		while (true) {

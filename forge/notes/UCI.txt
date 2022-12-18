@@ -47,7 +47,7 @@ void playUciMatch()
 
 	unique_ptr<SolverBase> solverPtr =
 		make_unique<MinimaxSolver>();
-		//make_unique<MCTS_Solver>();
+		//make_unique<MCTS_Sequential>();
 
 	gui.recv_until_isready();	// here and in the remaining recv() methods are where the on_setoption handlers would be called.
 

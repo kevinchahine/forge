@@ -11,10 +11,12 @@ set(CONTROLLERS
 	controllers/Controllers.hpp
 	controllers/KeyboardController.cpp
 	controllers/KeyboardController.h
-	controllers/MCTS_Solver.cpp
-	controllers/MCTS_Solver.h
-	controllers/MCTS_Solver_MT.cpp
-	controllers/MCTS_Solver_MT.h
+	controllers/MCTS_Base.cpp
+	controllers/MCTS_Base.h
+	controllers/MCTS_Sequential.cpp
+	controllers/MCTS_Sequential.h
+	controllers/MCTS_Concurrent.cpp
+	controllers/MCTS_Concurrent.h
 	controllers/MCTS_ProducerConsumer.cpp
 	controllers/MCTS_ProducerConsumer.h
 	controllers/MinimaxSolver.cpp

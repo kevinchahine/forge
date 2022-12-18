@@ -49,7 +49,7 @@ int main(int argc, char ** argv)
 	forge::initGlobalsTorch();
 
 	//forge::test::benchmark::mcts();
-	forge::test::benchmark::mcts_phases();
+	//forge::test::benchmark::mcts_phases();
 	//forge::test::benchmark::mcts_phases_without_search();
 
 	forge::test::init();
@@ -84,7 +84,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	//forge::test::chessMatch();				// **************
+	forge::test::chessMatch();				// **************
 	//forge::test::uciMatch();					// uuuuuuuuuuuuuu
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();

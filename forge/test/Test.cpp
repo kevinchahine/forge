@@ -1172,15 +1172,15 @@ namespace forge
 			auto whiteController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				make_unique<MCTS_Solver>();
-				//make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Sequential>();
+				//make_unique<MCTS_Concurrent>();
 				//make_unique<KeyboardController>();
 			 
 			auto blackController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				make_unique<MCTS_Solver>();
-				//make_unique<MCTS_Solver_MT>();
+				make_unique<MCTS_Sequential>();
+				//make_unique<MCTS_Concurrent>();
 				//make_unique<KeyboardController>();
 			
 			whiteController->makeHeuristic<
@@ -1227,14 +1227,14 @@ namespace forge
 //				auto whiteSolver =
 //					//make_unique<RandomSolver>();
 //					//make_unique<MinimaxSolver>();
-//					//make_unique<MCTS_Solver>();
-//					make_unique<MCTS_Solver_MT>();
+//					//make_unique<MCTS_Sequential>();
+//					make_unique<MCTS_Concurrent>();
 //
 //				auto blackSolver =
 //					//make_unique<RandomSolver>();
 //					//make_unique<MinimaxSolver>();
-//					//make_unique<MCTS_Solver>();
-//					make_unique<MCTS_Solver_MT>();
+//					//make_unique<MCTS_Sequential>();
+//					make_unique<MCTS_Concurrent>();
 //
 //				whiteSolver->m_nThreads = t;
 //				blackSolver->m_nThreads = t;
