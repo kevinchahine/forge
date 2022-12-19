@@ -38,8 +38,6 @@ namespace forge
 		MovePositionPair selectBestMove() {
 			MCTS_Node::iterator bestIt = m_nodeTree.root();
 
-			//bestIt.toBestUCB();		// Stochastic selection
-			//bestIt.toBestAverage();	// Best selection
 			bestIt.toMostVisited();
 
 			MovePositionPair solution {

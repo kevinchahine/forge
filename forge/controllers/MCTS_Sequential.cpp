@@ -10,6 +10,8 @@ namespace forge
 	{
 		// --- Start ---
 		m_nodeTree.root().expand();
+		MCTS_Node::iterator curr = m_nodeTree.root();
+		//curr.expand();
 
 		// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
 		int badTraversals = 0;
@@ -20,9 +22,6 @@ namespace forge
 		sm.expansion.reset();
 		sm.backprop.reset();
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-		MCTS_Node::iterator curr = m_nodeTree.root();
-		curr.expand();
 
 		while (true) {
 			if (curr.isLeaf()) {
@@ -105,7 +104,6 @@ namespace forge
 
 					sm.selection.pause();
 					if (sm.exitConditionReached()) {
-						sm.stop();	// stop the clock so we can record exact search time.
 						break;
 					}
 

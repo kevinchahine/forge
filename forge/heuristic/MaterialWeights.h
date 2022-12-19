@@ -31,7 +31,7 @@ namespace forge
 			// Based on value of simply having a number of each piece
 			heuristic_t queenMaterial = 901;
 			heuristic_t rookMaterial = 501;
-			heuristic_t bishopMaterial = 305;
+			heuristic_t bishopMaterial = 351;
 			heuristic_t knightMaterial = 301;
 			heuristic_t pawnMaterial = 101;
 		}; // class MaterialWeights

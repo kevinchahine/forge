@@ -61,6 +61,7 @@ namespace forge
 			void goToNextSibling()
 			{
 				p_node = p_node->m_nextPtr;	// go to next sibling
+				// TODO: But what if next was actually the parent
 				m_nodeCount++;			// We've reached a new node
 			}
 

@@ -8,7 +8,8 @@
 
 #include <boost/thread/mutex.hpp>
 
-namespace forge {
+namespace forge
+{
 
 	class MCTS_Node : public NodeTemplate<MCTS_Node>
 	{
@@ -26,12 +27,12 @@ namespace forge {
 			// !!! Warning: parentVisits and currVisits must be greater than 0.
 			//	log(0) = -NaN (undefined)
 			//	x/0	= NaN (undefined)
-			
+
 			// --- Convert to units of pawns ---
 			total = total / 100.0f;
 
 			total = total / (1 + abs(total));
-
+			
 			return
 				(total / (currVisits + 1.0f)) +
 				MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f)) +
@@ -52,12 +53,12 @@ namespace forge {
 		float average() const { return t / n; }
 
 		float ucb() const { return ucbScore; }
-		
+
 		boost::mutex& mutex() { return m_mutex; }
 		const boost::mutex& mutex() const { return m_mutex; }
 
 		void expand();
-		
+
 		// Adds score to total score
 		// Increments number of visits
 		void update(int score);
@@ -73,6 +74,9 @@ namespace forge {
 		// Performs an insertion sort which works faster when elements are already mostly in order.
 		void sort();
 
+		MCTS_Node* nextPtr() const { return m_nextPtr; }
+		bool hasNext() const { return m_nextPtr != nullptr; }
+		
 	private: // -------------------------- PRIVATE FIELDS ------------------------
 		// Total score of all children
 		// # of games won by white
@@ -100,35 +104,44 @@ namespace forge {
 		// Stored here to prevent recalculating between updates.
 		float ucbScore = 0.0f;
 
+		// Address of next child node if one exists
+		// Otherwise null
+		// Do not deallocated
+		MCTS_Node* m_nextPtr = nullptr;
+
 		// Used by multithreaded version of MCTS
 		boost::mutex m_mutex;
+		
+	public:// remove
+		boost::mutex m_expandMutex; // remove
 
 	public:
 		int nBadVisits = 0;	// TODO: remove, this was only used for debugging
 
 	public: // ---------------------------- ITERATOR -----------------------------
-		class iterator {
+		class iterator
+		{
 		public:
 			iterator() = default;
-			iterator(MCTS_Node* nodePtr) { nodes.push(nodePtr); }
-			//iterator(MCTS_Node* nodePtr, int depth, int depthLimit) : p_node(nodePtr) {}
-			bool operator==(const iterator& it) const { return this->nodes.top() == it.nodes.top(); }
-			bool operator!=(const iterator& it) const { return this->nodes.top() != it.nodes.top(); }
+			iterator(MCTS_Node* nodePtr) : p_node(nodePtr) {}
+			bool operator==(const iterator& it) const { return this->p_node == it.p_node; }
+			bool operator!=(const iterator& it) const { return this->p_node != it.p_node; }
 			MCTS_Node& operator*();
 
-			bool isExpanded() const { return nodes.top()->isExpanded(); }
-			bool hasParent() const { return nodes.top()->m_parentPtr != nullptr; }
-			bool hasChildren() const { return nodes.top()->m_childrenPtrs.size(); }
-			bool isRoot() const { return nodes.top()->isRoot(); }
-			bool isLeaf() const { return nodes.top()->isLeaf(); }
+			bool isExpanded() const { return p_node->isExpanded(); }
+			bool hasParent() const { return p_node->m_parentPtr != nullptr; }
+			bool hasChildren() const { return p_node->m_childrenPtrs.size(); }
+			bool isRoot() const { return p_node->isRoot(); }
+			bool isLeaf() const { return p_node->isLeaf(); }
 
-			void expand() { nodes.top()->expand(); }
-			void prune() { nodes.top()->prune(); }
+			void expand() { p_node->expand(); }
+			void prune() { p_node->prune(); }
 
 			// Moves iterator to parent node
-			void toParent()
-			{
-				nodes.pop();	// empty stack means we are past the root
+			// Can move to a null parent.
+			// If called on root, this iterator will be invalidated.
+			void toParent() {
+				p_node = p_node->parentPtr();
 			}
 
 			// Selects the child with the highest UCB value
@@ -139,7 +152,7 @@ namespace forge {
 			// any children.
 			// maximize - determines whether the selection should favor children which higher
 			//				or lower UCB scores. if maximize == true, then method favors higher UCB scores
-			void toBestUCB();
+			void toBestUCB(int nThBest = 0);
 
 			// Selects child with the best average value.
 			// Then moves to that child.
@@ -154,11 +167,12 @@ namespace forge {
 			void toFirstChild();
 
 			// TODO: Implement this
-			//void toNextSibling();
+			void toNext();
 
 		private:
 			// node which iterator is currently referencing
-			std::stack<MCTS_Node*> nodes;
+			//std::stack<std::vector<std::shared_ptr<MCTS_Node> nodes;
+			MCTS_Node* p_node = nullptr;
 		}; // end class iterator
 
 		iterator root() { return iterator(this); }
