@@ -18,22 +18,21 @@ Designed to be compatible with a variety of displays including:
 	- Terminal interface.
 */
 
+#include "forge/drivers/train.h"
+
 #include "forge/source/globals.h"
 #include "forge/source/globals_torch.h"
 
-#include "forge/test/Benchmark.h"
-#include "forge/test/heuristics.h"
-#include "forge/test/Test.h"
-#include "forge/test/TestML.h"
-#include "forge/test/positions.h"
+//#include "forge/test/Benchmark.h"
+//#include "forge/test/heuristics.h"
+//#include "forge/test/Test.h"
+//#include "forge/test/positions.h"
 
 // #include "TestFeatureExtractor.h"
-// #include "ml/Optimizer.h"
 
 #include <guten/color/Color.h>
 
 #include <iostream>
-#include <forge/feature_extractor/AttackChecker.h>
 
 using namespace std;
 
@@ -48,11 +47,13 @@ int main(int argc, char ** argv)
 	forge::initGlobals();
 	forge::initGlobalsTorch();
 
+	forge::drivers::train_nn();
+
 	//forge::test::benchmark::mcts();
 	//forge::test::benchmark::mcts_phases();
 	//forge::test::benchmark::mcts_phases_without_search();
 
-	forge::test::init();
+	//forge::test::init();
 	//forge::test::initTestBoards();
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
@@ -84,7 +85,7 @@ int main(int argc, char ** argv)
 	//forge::test::legalMoveGenerator();	// ***********************************
 	//forge::test::isAttacked();
 	//forge::test::move();
-	forge::test::chessMatch();				// **************
+	//forge::test::chessMatch();				// **************
 	//forge::test::uciMatch();					// uuuuuuuuuuuuuu
 	//forge::test::performanceTester();
 	//forge::test::nodeIterator();

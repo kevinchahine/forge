@@ -8,6 +8,8 @@ namespace forge
 {
 	torch::Device g_computingDevice = torch::kCPU;
 
+	std::filesystem::path g_checkpointDir = CHECKPOINT_DIR;
+
 	void initGlobalsTorch()
 	{
 		// --- Computing Device ---
@@ -24,5 +26,7 @@ namespace forge
 			cout << "--- CUDA is NOT available! ---" << endl
 				<< "Using CPU for tensor operations instead" << endl;
 		}
+
+		cout << "Checkpoint Dir = " << forge::g_checkpointDir << endl;
 	}
 } // namespace forge

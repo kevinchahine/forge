@@ -14,6 +14,7 @@ cd build
 cmake \
 	-DCMAKE_TOOLCHAIN_FILE="/media/kevin/barracuda/Code/libraries/vcpkg/scripts/buildsystems/vcpkg.cmake" \
 	-DCMAKE_PREFIX_PATH="/media/kevin/barracuda/Code/libraries/libtorch/libtorch-cxx11-abi-shared-with-deps-1.11.0+cu113/libtorch" \
+	-DCHECKPOINT_DIR="/media/kevin/barracuda/owncloud/ML/forge" \
 	..
 
 #cmake --build . --config Release

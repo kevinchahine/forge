@@ -13,9 +13,9 @@ namespace forge
 	{
 		NeuralNetwork::NeuralNetwork(const string& net_file)
 		{
-			m_net.load(net_file);
-			
-			m_net.to(torch::kCPU);
+			//m_net.load(net_file);
+			//
+			//m_net.to(torch::kCPU);
 		}
 		
 		heuristic_t NeuralNetwork::eval(const Position& pos)
@@ -26,24 +26,25 @@ namespace forge
 		
 		heuristic_t NeuralNetwork::eval(const Position& pos, bool whiteIsSearching)
 		{			
-			// --- Input ---
-			// Tensor which holds input features (one-hot and multi-hot encodings)
-			torch::Tensor inputs = torch::ones({ 1, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE }, torch::kCPU);
-
-			// --- Extract ---
-			// Extract one-hot encodings into a tensor
-			FeatureExtractor extractor;
-			extractor.init(pos, whiteIsSearching);
-			extractor.extractMaterial(inputs);
-
-			// --- Evaluate Position ---
-
-			torch::Tensor output = m_net.forward(inputs);
-
-			// --- Return Evaluation ---
-			heuristic_t eval = output[0].item<float>();
-
-			return eval;
+			//// --- Input ---
+			//// Tensor which holds input features (one-hot and multi-hot encodings)
+			//torch::Tensor inputs = torch::ones({ 1, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE }, torch::kCPU);
+			//
+			//// --- Extract ---
+			//// Extract one-hot encodings into a tensor
+			//FeatureExtractor extractor;
+			//extractor.init(pos, whiteIsSearching);
+			//extractor.extractMaterial(inputs);
+			//
+			//// --- Evaluate Position ---
+			//
+			//torch::Tensor output = m_net.forward(inputs);
+			//
+			//// --- Return Evaluation ---
+			//heuristic_t eval = output[0].item<float>();
+			//
+			//return eval;
+			return 111;
 		}
 
 		unique_ptr<Base> NeuralNetwork::clone() const

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "forge/heuristic/Base.h"
-#include "forge/ml/Net.h"
+#include "forge/ml/Network.h"
 
 namespace forge
 {
@@ -29,8 +29,8 @@ namespace forge
 
 			virtual void print(const Position& pos, std::ostream& os = std::cout) const override;
 
-			ml::Net& model() { return m_net; }
-			const ml::Net& model() const { return m_net; }
+			Network& model() { return m_net; }
+			const Network& model() const { return m_net; }
 
 		protected:
 			// A neural network model used to approximate the fitness or favorability of a chess Position.
@@ -47,7 +47,7 @@ namespace forge
 			// Output Layer:
 			//		A single value that is the evaluation of the position in units of centi-pawns.
 			// 		From perspective of moving player.
-			ml::Net m_net;
+			Network m_net;
 		};
 	} // namespace heuristic
 } // namespace forge

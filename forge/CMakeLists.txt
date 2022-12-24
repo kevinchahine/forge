@@ -30,6 +30,13 @@ set(CONTROLLERS
 	controllers/Solvers.hpp
 )
 
+set(DRIVERS
+	drivers/train.cpp
+	drivers/train.h
+	drivers/play.cpp
+	drivers/play.h
+)
+
 set(GAME
 	game/ChessMatch.cpp
 	game/ChessMatch.h
@@ -58,17 +65,14 @@ set(HEURISTIC
 )
 
 set(ML
-	ml/CSVDataSet.cpp
-	ml/CSVDataSet.h
-	ml/CSVParser.cpp
-	ml/CSVParser.h
-	ml/DataSet.cpp
-	ml/DataSet.h
-	ml/Net.cpp
-	ml/Net.h
-	ml/PositionEvalPair.h
-	ml/TensorPair.cpp
-	ml/TensorPair.h
+	ml/DatasetGenerator.cpp
+	ml/DatasetGenerator.h
+	ml/Network.cpp
+	ml/Network.h
+	ml/StockfishDataset.cpp
+	ml/StockfishDataset.h
+	ml/Trainer.cpp
+	ml/Trainer.h
 	ml/TrainingHistory.cpp
 	ml/TrainingHistory.h	
 )
@@ -176,6 +180,7 @@ set(VIEWS
 source_group(ml_files FILES ${ML_FILES})
 source_group(controllers FILES ${CONTROLLERS})
 source_group(core FILES ${CORE})
+source_group(drivers FILES ${DRIVERS})
 source_group(features_extractor FILES ${FEATURE_EXTRACTOR})
 source_group(game FILES ${GAME})
 source_group(heuristic FILES ${HEURISTIC})
@@ -192,6 +197,7 @@ add_executable(${PROJECT_NAME}
 	${ML_FILES}
 	${CONTROLLERS}
 	${CORE}
+	${DRIVERS}
 	${FEATURE_EXTRACTOR}
 	${GAME}
 	${HEURISTIC}
@@ -216,8 +222,24 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 message(STATUS "Compiler Version: ${CMAKE_CXX_COMPILER_VERSION} standard ${CMAKE_CXX_STANDARD}")
 
-# --- Set Preprocessor Macros ---
+if(MSVC)
+	target_compile_options(${PROJECT_NAME} PRIVATE "/MP")	# parallel compilation
+endif()
+
+# --- Set Preprocessor Directives ---
+# NOMINMAX
 add_compile_definitions(NOMINMAX)	# same as '#define NOMINMAX'
+
+# CHECKPOINT_DIR
+option(CHECKPOINT_DIR "Sets directory for saving pytorch checkpoints")
+
+message(STATUS "CHECKPOINT_DIR: ${CHECKPOINT_DIR}")
+
+if (CHECKPOINT_DIR)
+	add_compile_definitions(CHECKPOINT_DIR="${CHECKPOINT_DIR}")
+else()
+	message(WARNING "CHECKPOINT_DIR has not been set. Please call cmake command with the option -DCHECKPOINT_DIR=path/to/checkpoint/dir")
+endif()
 
 # --- Libraries (no VCPKG) ---
 

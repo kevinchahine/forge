@@ -17,10 +17,6 @@
 
 #include "forge/heuristic/Heuristics.hpp"
 
-#include "forge/ml/CSVParser.h"
-#include "forge/ml/DataSet.h"
-#include "forge/ml/Net.h"
-
 #include <forge/core/MoveGenerator2.h>
 
 #include "forge/time/Clock.h"
@@ -1505,34 +1501,6 @@ namespace forge
 //			////	}
 //			////}
 //		}
-
-		void trainNN()
-		{
-			const std::string filename =
-				//"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData-small.csv";
-				//"/home/kevin/barracuda/Datasets/Chess/stockfish_evals/chessData.csv";
-				//R"dil(D:\DataSets\Chess\stockfish_evals\chessData.csv)dil";
-				R"dil(C:\Users\kchah\ownCloud\Datasets\stockfish_evals\chessData.csv)dil";
-
-			forge::DataSet ds;
-
-			ds.openFile(filename);
-			ds.batchSize(30'000);
-			ds.skipLines(1'600'000);	// Start reading from sample this sample
-			
-			forge::ml::Net net;// {g_computingDevice};
-
-			net.train(ds, 30'000);
-		}
-
-		void netPerft()
-		{
-			vector<torch::Tensor> inputs;
-
-			for (torch::Tensor & t : inputs) {
-				// t = torch::rand();	// todo: finish this
-			}
-		}
 
 		void gameHistory()
 		{
