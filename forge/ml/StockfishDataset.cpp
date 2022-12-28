@@ -10,6 +10,8 @@
 #include "forge/heuristic/FeatureExtractor.h"
 #include "forge/source/globals_torch.h"
 
+#include "forge/time/stopwatch.h"// TODO: remove
+
 using namespace std;
 
 namespace forge
@@ -25,30 +27,62 @@ namespace forge
 
 			FenEval obj;
 
-			boost::regex regex =
-				boost::regex(R"dil(\s*([KkQqRrBbNnPp\d\/]+\s+[BbWw]\s+[KQkq-]+\s+[-abcdefgh\d]+\s+\d+\s+\d+)\s*,\s*#{0,1}\s*([-+0123456789]+))dil");
-			
-			boost::sregex_token_iterator regex_it =
-				boost::sregex_token_iterator(line.begin(), line.end(), regex, { 1, 2 });
-
-			boost::sregex_token_iterator end;
-
-			if (regex_it != end) {
-				obj.fen = *regex_it++;
+			// --- Find 1st non space character ---
+			size_t fenBegin = line.find_first_not_of(' ');
+			if (fenBegin == string::npos) {
+				return obj;
 			}
-			else {
-				obj.fen.clear();
+			 
+			// --- Find 1st (and only) Comma ---
+			size_t fenEnd = line.find_first_of(',', fenBegin);
+			if (fenEnd == string::npos) {
 				return obj;
 			}
 
-			if (regex_it != end) {
-				stringstream ss(*regex_it++);
-				ss >> obj.eval;
-			}
-			else {
-				obj.fen.clear();
+			// --- Find 1st numeric character ---
+			size_t evalBegin = line.find_first_of("-+0123456789", fenEnd);
+			if (evalBegin == string::npos) {
 				return obj;
 			}
+
+			// --- Find last numeric character ---
+			size_t evalEnd = line.find_last_of("-+0123456789", evalBegin);
+			if (evalEnd == string::npos) {
+				return obj;
+			}
+
+			// --- Fen ---
+			obj.fen = line.substr(fenBegin, fenEnd);
+
+			// --- Eval ---
+			stringstream ss(line.substr(evalBegin, evalEnd));
+			ss >> obj.eval;
+
+			//boost::regex regex =
+			//	//boost::regex(R"dil(\s*([KkQqRrBbNnPp\d\/]+\s+[BbWw]\s+[KQkq-]+\s+[-abcdefgh\d]+\s+\d+\s+\d+)\s*,\s*#{0,1}\s*([-+0123456789]+))dil");
+			//	boost::regex(R"dil(\s*(.*)\s*,\s*(.*))dil");
+			//
+			//boost::sregex_token_iterator regex_it =
+			//	boost::sregex_token_iterator(line.begin(), line.end(), regex, { 1, 2 });
+			//
+			//boost::sregex_token_iterator end;
+			//
+			//if (regex_it != end) {
+			//	obj.fen = *regex_it++;
+			//}
+			//else {
+			//	obj.fen.clear();
+			//	return obj;
+			//}
+			//
+			//if (regex_it != end) {
+			//	stringstream ss(*regex_it++);
+			//	ss >> obj.eval;
+			//}
+			//else {
+			//	obj.fen.clear();
+			//	return obj;
+			//}
 
 			return obj;
 		}
@@ -79,7 +113,7 @@ namespace forge
 			_nSamples(ds._nSamples) {
 
 			this->open(ds._csvFile);
-			
+
 			skip(_lineCount);
 		}
 
@@ -91,7 +125,7 @@ namespace forge
 			_nSamples = ds._nSamples;
 
 			this->open(ds._csvFile);
-			
+
 			skip(_lineCount);
 
 			return (*this);
@@ -141,14 +175,14 @@ namespace forge
 				load();
 			}
 
-			if (_batch.nSamples()  == 0) {
+			if (_batch.nSamples() == 0) {
 				cout << "Error: dataset is empty even after load()" << endl;
 				return torch::data::Example<>{};
 			}
 
 			// --- Next Element ---
 			_lineCount++;
-			
+
 			// --- Position --- 
 			torch::Tensor input = _batch.input[_batchIt];
 
@@ -162,76 +196,137 @@ namespace forge
 
 		void StockfishDataset::countSamples() {
 
-			chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
+			//chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
+			//
+			//const int SZ = 1024 * 1024;
+			//
+			//vector<char> buff(SZ);
+			//
+			//ifstream inFile;
+			//inFile.open(_csvFile);
+			//
+			//size_t count = 0;
+			//
+			//while (int cc = fileRead(inFile, buff)) {
+			//	count += countLines(buff, cc);
+			//}
+			//
+			//chrono::high_resolution_clock::time_point stop = chrono::high_resolution_clock::now();
+			//
+			//cout << "Counting lines took " << chrono::duration_cast<chrono::milliseconds>(stop - start).count() 
+			//	<< " milliseconds" << endl;
+			//
+			//_nSamples = count;
 
-			const int SZ = 1024 * 1024;
+			_nSamples = 13'000'000;
+		}
 
-			vector<char> buff(SZ);
+		void printTime(const string& name, const StopWatch& sw, const StopWatch& total) {
+			cout << name << ": "
+				<< chrono::duration_cast<chrono::microseconds>(sw.elapsed()).count() << " usec"
+				<< setw(15) << 100.0f * (float) sw.elapsed().count() / (float) total.elapsed().count() << " %"
+				<< endl;
+		}
 
-			ifstream inFile;
-			inFile.open(_csvFile);
-
-			size_t count = 0;
-
-			while (int cc = fileRead(inFile, buff)) {
-				count += countLines(buff, cc);
-			}
-
-			chrono::high_resolution_clock::time_point stop = chrono::high_resolution_clock::now();
-
-			cout << "Counting lines took " << chrono::duration_cast<chrono::milliseconds>(stop - start).count() 
-				<< " milliseconds" << endl;
-
-			_nSamples = count;
+		void printTime(const string& name, const chrono::nanoseconds& sw, const chrono::nanoseconds& total) {
+			cout << name << ": "
+				<< chrono::duration_cast<chrono::microseconds>(sw).count() << " usec"
+				<< setw(15) << 100.0f * (float) sw.count() / (float) total.count() << " %"
+				<< endl;
 		}
 
 		void StockfishDataset::load() {
-			// --- Reset Tensors ---
-			_batch.input = torch::zeros({ _batchSize, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE }, torch::kCPU);
-			_batch.output = torch::zeros({ _batchSize, 1 }, torch::kCPU);
-			_batchIt = 0;
+			StopWatch loadTime;
+			StopWatch resizeTime;
+			StopWatch getlineTime;
+			StopWatch parseTime;
+			StopWatch fenTime;
+			StopWatch extractTime;
+			StopWatch toDeviceTime;
 
+			loadTime.reset();
+			loadTime.resume();
+
+			// --- Reset Tensors ---
+			resizeTime.resume();
+			_batch.resize(_batchSize, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1, torch::kCPU);
+			_batchIt = 0;
+			resizeTime.pause();
+			
 			// --- Parse Lines ---
 			string line;
 			size_t count = 0;
 
+			getlineTime.resume();
 			while (getline(_in, line) && count < _batchSize) {
+				getlineTime.pause();
+
 				try {
 					// --- Parse Line info FEN and int ---
+					parseTime.resume();
 					FenEval fe = FenEval::parse(line);
+					parseTime.pause();
 
 					if (fe.isInValid()) {
 						stringstream ss;
 						ss << "Line could not be parsed: " << line;
 						throw std::runtime_error(ss.str());
 					}
-					
+
 					// --- Convert FEN to Position ---
+					fenTime.resume();
 					Position pos;
 					pos.fromFEN(fe.fen);
+					fenTime.pause();
 
 					// --- Convert To Tensors ---
 
 					// -- Input Tensor --
+					extractTime.resume();
 					forge::heuristic::FeatureExtractor extractor;
 					extractor.init(pos, forge::WHITE);// Extract features from whites perspective
 					// *** Whites on the bottom moving up ***
 					torch::Tensor sampleSlice = _batch.input.slice(0, count, count + 1);
 					extractor.extractMaterial(sampleSlice);
+					extractTime.pause();
+
 					// -- Output Tensor --
 					_batch.output[count] = fe.eval;
-
 				} catch (const std::exception& e) {
 					cout << "Exception _in " << __FILE__ << " line " << __LINE__ << ": " << e.what() << endl
 						<< '\t' << line << endl;
-					cin.get();
+					//cin.get();
 				}
 
 				count++;
+
+				getlineTime.resume();
 			}
 
 			// --- Move Batch to Training Device ---
+			toDeviceTime.resume();
 			_batch.to(forge::g_computingDevice);
+			toDeviceTime.pause();
+
+			chrono::nanoseconds measured =
+				resizeTime.elapsed() +
+				getlineTime.elapsed() +
+				parseTime.elapsed() +
+				fenTime.elapsed() +
+				extractTime.elapsed() +
+				toDeviceTime.elapsed();
+
+			cout << "Execution time from load():" << endl;
+			printTime("resize:      ", resizeTime, loadTime);
+			printTime("getline:     ", getlineTime, loadTime);
+			printTime("parse:       ", parseTime, loadTime);
+			printTime("fen:         ", fenTime, loadTime);
+			printTime("extract:     ", extractTime, loadTime);
+			printTime("todevice:    ", toDeviceTime, loadTime);
+			printTime("measured:    ", measured, loadTime.elapsed());
+			printTime("total:       ", loadTime, loadTime);
+			cout << endl;
+			cin.get();
 		}
 	} // namespace ml
 } // namespace forge

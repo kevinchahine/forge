@@ -1,3 +1,4 @@
+#include "forge/ml/CheckpointManager.h"
 #include "forge/ml/trainer.h"
 #include "forge/ml/network.h"
 
@@ -20,7 +21,8 @@ namespace forge
 			DataLoader& loader,
 			torch::optim::Optimizer& optimizer,
 			size_t epoch,
-			size_t data_size) {
+			size_t data_size,
+			CheckpointManager& checkpointManager) {
 			size_t index = 0;
 			network->train();
 
@@ -43,9 +45,9 @@ namespace forge
 
 			// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-			//for (auto & it = loader.begin(); it != loader.end(); it++) {
-				//auto& batch = (*it);
 			for (auto& batch : loader) {
+				cout << "----------------------------------Starting batch...." << endl;
+
 				getTime.pause();
 
 				transferTime.resume();
@@ -53,58 +55,68 @@ namespace forge
 				auto targets = batch.target.to(g_computingDevice);
 				transferTime.pause();
 
+				cout << data.device() << ' ' << targets.device() << endl;
+
 				nSamples += data.sizes()[0];
 
 				//for (size_t reuse = 0; reuse < 64; reuse++) {
 					//cout << "Resuse: " << reuse << endl;
 					// --- Forward Pass ---
-					forwardTime.resume();
-					auto output = network->forward(data);
-					forwardTime.pause();
+				forwardTime.resume();
+				auto output = network->forward(data);
+				forwardTime.pause();
 
-					//cout << "pred: " << output[0].item template<float>() << " target: " << targets[0].item template<float>() << endl;
+				//cout << "pred: " << output[0].item template<float>() << " target: " << targets[0].item template<float>() << endl;
 
-					// --- Calc Loss --- 
-					lossTime.resume();
-					//cout << output.sizes() << '\t' << targets.sizes() << endl;
-					auto loss = torch::mse_loss(output, targets);
-					//cout << "loss: " << loss.sizes() << " " << loss << endl;
-					if (std::isnan(loss.template item<float>())) {
-						cout << "Error: nan" << endl;
-						continue;
-					}
-					totalLoss += loss.template item<float>();
-					lossTime.pause();
-					
-					// --- Calc Gradient and Optimize ---
-					optimTime.resume();
-					optimizer.zero_grad();
-					loss.backward();
-					optimizer.step();
-					optimTime.pause();
+				// --- Calc Loss --- 
+				lossTime.resume();
+				//cout << output.sizes() << '\t' << targets.sizes() << endl;
+				auto loss = torch::mse_loss(output, targets);
+				//cout << "loss: " << loss.sizes() << " " << loss << endl;
+				if (std::isnan(loss.template item<float>())) {
+					cout << "Error: nan" << endl;
+					continue;
+				}
+				totalLoss += loss.template item<float>();
+				lossTime.pause();
 
-					if (printTimer.is_expired()) {
-						totalTime.pause();
-						std::cout
-							<< "Train Epoch: " << epoch
-							<< " nSamples: " << nSamples << " of " << data_size << ' '
-							<< setprecision(3) << float(nSamples) / data_size << "% of dataset"
-							<< "\tTotal Loss:         " << totalLoss / nSamples
-							<< "\tBatch Loss:         " << loss.template item<float>() / output.sizes()[0] << endl
-							//<< "\tgetTime:      " << getTime.elapsed().count() / nSamples << " nsec/sample" << endl
-							//<< "\tforwardTime:  " << forwardTime.elapsed().count() / nSamples << " nsec/sample" << endl
-							//<< "\ttransferTime: " << transferTime.elapsed().count() / nSamples << " nsec/sample" << endl
-							//<< "\tlossTime:     " << lossTime.elapsed().count() / nSamples << " nsec/sample" << endl
-							//<< "\toptimTime:    " << optimTime.elapsed().count() / nSamples << " nsec/sample" << endl
-							//<< "\ttotalTime:    " << totalTime.elapsed().count() / nSamples << " nsec/sample" << endl
-							<< std::endl;
+				// --- Calc Gradient and Optimize ---
+				optimTime.resume();
+				optimizer.zero_grad();
+				loss.backward();
+				optimizer.step();
+				optimTime.pause();
 
-						printTimer.expires_from_now(chrono::seconds(2));
-						printTimer.resume();
-						totalTime.resume();
-					}
+				if (printTimer.is_expired()) {
+					totalTime.pause();
+					std::cout
+						<< "Train Epoch: " << epoch
+						<< " nSamples: " << nSamples << " of " << data_size << ' '
+						<< setprecision(3) << float(nSamples) / data_size << "% of dataset"
+						<< "\tTotal Loss:         " << totalLoss / nSamples
+						<< "\tBatch Loss:         " << loss.template item<float>() / output.sizes()[0] << endl
+						<< "\tgetTime:      " << getTime.elapsed().count() / nSamples << " nsec/sample" << endl
+						<< "\tforwardTime:  " << forwardTime.elapsed().count() / nSamples << " nsec/sample" << endl
+						<< "\ttransferTime: " << transferTime.elapsed().count() / nSamples << " nsec/sample" << endl
+						<< "\tlossTime:     " << lossTime.elapsed().count() / nSamples << " nsec/sample" << endl
+						<< "\toptimTime:    " << optimTime.elapsed().count() / nSamples << " nsec/sample" << endl
+						<< "\ttotalTime:    " << totalTime.elapsed().count() / nSamples << " nsec/sample" << endl
+						;
+
+					filesystem::path file = checkpointManager.generateFilename();
+
+					cout << "saving to " << file.generic_string() << "...";
+					torch::save(network, file.generic_string());
+					cout << "done" << endl;
+					cout << endl;
+
+					printTimer.expires_from_now(chrono::seconds(8));
+					printTimer.resume();
+					totalTime.resume();
+				}
 				//} // reuse loop
 
+				cout << "batch done........." << endl;
 				getTime.resume();
 			}
 		}
@@ -129,16 +141,31 @@ namespace forge
 				torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
 					std::move(dataset), 5'000);
 
+			CheckpointManager checkpointManager;
+			checkpointManager.checkpointDir(g_checkpointDir);
+			checkpointManager.name("networkA");
+
 			// --- Training Loop ---
 
 			Network network;
+
+			filesystem::path latest = checkpointManager.latest();
+			if (filesystem::exists(latest)) {
+				cout << latest.generic_string() << " exists. Loading checkpoint...";
+				torch::load(network, latest.generic_string());
+				cout << "done" << endl;
+			}
+			else {
+				cout << "Uhho " << latest.generic_string() << " does not exist" << endl;
+			}
+
 			network->to(g_computingDevice);
 
 			torch::optim::Adam optimizer(
 				network->parameters(), torch::optim::AdamOptions(0.002));
 
 			for (size_t epoch = 0; epoch < 10; epoch++) {
-				trainEpoch(network, *loader, optimizer, epoch + 1, size);
+				trainEpoch(network, *loader, optimizer, epoch + 1, size, checkpointManager);
 				cout << endl;
 			}
 		}

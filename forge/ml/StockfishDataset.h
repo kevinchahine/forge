@@ -38,6 +38,25 @@ namespace forge
 			public:
 				size_t nSamples() const { return std::min(input.sizes()[0], output.sizes()[0]); }
 
+				void resize(int64_t nSamples, int64_t inputs, int64_t outputs, const torch::Device& device) {
+					if (input.sizes()[0] != nSamples || input.sizes()[1] != inputs) {
+						//input = input.to(torch::kCPU);
+						input = torch::zeros({ nSamples, inputs }, device);
+					}
+
+					if (output.sizes()[0] != nSamples || output.sizes()[1] != outputs) {
+						//output = output.to(torch::kCPU);
+						output = torch::zeros({ nSamples, outputs }, device);
+					}
+
+					input = input.to(device);
+					output = output.to(device);
+				}
+
+				void resize(int64_t nSamples, int64_t inputs, int64_t outputs) {
+					resize(nSamples, inputs, outputs, input.device());
+				}
+
 				void to(torch::Device& device) {
 					input = input.to(device);
 					output = output.to(device);
@@ -49,8 +68,8 @@ namespace forge
 					return os;
 				}
 			public:
-				torch::Tensor input;
-				torch::Tensor output;
+				torch::Tensor input ;//= torch::zeros({ 1, 1 });
+				torch::Tensor output;// = torch::zeros({ 1, 1 });
 			};
 
 		public: // -------------------- METHODS -------------------------------
@@ -87,7 +106,7 @@ namespace forge
 		protected: // ----------------- FIELDS --------------------------------
 			std::filesystem::path _csvFile;
 			std::ifstream _in;// stream comming from 
-			
+
 			int64_t _batchSize = 10'000; // number of samples to load from the dataset
 			int64_t _lineCount = 0;// which line are we at in the dataset
 			int64_t _nSamples = 0;// total number of samples in dataset

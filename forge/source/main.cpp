@@ -27,6 +27,7 @@ Designed to be compatible with a variety of displays including:
 //#include "forge/test/heuristics.h"
 //#include "forge/test/Test.h"
 //#include "forge/test/positions.h"
+//#include "forge/test/Test.h"
 
 // #include "TestFeatureExtractor.h"
 

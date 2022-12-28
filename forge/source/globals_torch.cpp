@@ -9,7 +9,7 @@ namespace forge
 	torch::Device g_computingDevice = torch::kCPU;
 
 	std::filesystem::path g_checkpointDir = CHECKPOINT_DIR;
-
+	
 	void initGlobalsTorch()
 	{
 		// --- Computing Device ---

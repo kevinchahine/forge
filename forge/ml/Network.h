@@ -1,3 +1,9 @@
+// https://pytorch.org/cppdocs/frontend.html
+// https://github.com/pytorch/examples/tree/main/cpp
+// 
+// To save and load
+// https://discuss.pytorch.org/t/libtorch-save-mnist-c-examples-trained-model-into-a-file-and-load-in-from-another-c-file-to-use-for-prediction/51681/9	
+
 #include <iostream>
 
 #include <torch/torch.h>
