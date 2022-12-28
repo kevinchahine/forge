@@ -57,9 +57,13 @@ namespace forge
 					resize(nSamples, inputs, outputs, input.device());
 				}
 
-				void to(torch::Device& device) {
-					input = input.to(device);
-					output = output.to(device);
+				TensorPair to(torch::Device& device) {
+					TensorPair ret;
+
+					ret.input = input.to(device);
+					ret.output = output.to(device);
+
+					return ret;
 				}
 
 				friend std::ostream& operator<<(std::ostream& os, const TensorPair& pair) {
@@ -68,7 +72,7 @@ namespace forge
 					return os;
 				}
 			public:
-				torch::Tensor input ;//= torch::zeros({ 1, 1 });
+				torch::Tensor input ;// = torch::zeros({ 1, 1 });
 				torch::Tensor output;// = torch::zeros({ 1, 1 });
 			};
 
@@ -111,8 +115,12 @@ namespace forge
 			int64_t _lineCount = 0;// which line are we at in the dataset
 			int64_t _nSamples = 0;// total number of samples in dataset
 
-			TensorPair _batch;
-			int64_t _batchIt = 0;
+			// TODO: rename:
+			//	- preprocessingBatch, inferenceBatch
+			//	- preBatch, postBatch
+			TensorPair _cpuBatch;// Batch storing data on CPU. Used for preprocessing
+			TensorPair _gpuBatch;// Batch storing data on GPU. Used for training operations
+			int64_t _gpuBatchIt = 0;
 		};
 	} // namespace ml
 } // namespace forge

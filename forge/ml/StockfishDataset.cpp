@@ -40,13 +40,13 @@ namespace forge
 			}
 
 			// --- Find 1st numeric character ---
-			size_t evalBegin = line.find_first_of("-+0123456789", fenEnd);
+			size_t evalBegin = line.find_first_of("-+1234567890", fenEnd);
 			if (evalBegin == string::npos) {
 				return obj;
 			}
 
 			// --- Find last numeric character ---
-			size_t evalEnd = line.find_last_of("-+0123456789", evalBegin);
+			size_t evalEnd = line.find_last_of("-+1234567890", evalBegin);
 			if (evalEnd == string::npos) {
 				return obj;
 			}
@@ -57,33 +57,7 @@ namespace forge
 			// --- Eval ---
 			stringstream ss(line.substr(evalBegin, evalEnd));
 			ss >> obj.eval;
-
-			//boost::regex regex =
-			//	//boost::regex(R"dil(\s*([KkQqRrBbNnPp\d\/]+\s+[BbWw]\s+[KQkq-]+\s+[-abcdefgh\d]+\s+\d+\s+\d+)\s*,\s*#{0,1}\s*([-+0123456789]+))dil");
-			//	boost::regex(R"dil(\s*(.*)\s*,\s*(.*))dil");
-			//
-			//boost::sregex_token_iterator regex_it =
-			//	boost::sregex_token_iterator(line.begin(), line.end(), regex, { 1, 2 });
-			//
-			//boost::sregex_token_iterator end;
-			//
-			//if (regex_it != end) {
-			//	obj.fen = *regex_it++;
-			//}
-			//else {
-			//	obj.fen.clear();
-			//	return obj;
-			//}
-			//
-			//if (regex_it != end) {
-			//	stringstream ss(*regex_it++);
-			//	ss >> obj.eval;
-			//}
-			//else {
-			//	obj.fen.clear();
-			//	return obj;
-			//}
-
+			
 			return obj;
 		}
 
@@ -106,7 +80,8 @@ namespace forge
 		// --------------------------------------------------------------------
 
 		StockfishDataset::StockfishDataset(const StockfishDataset& ds) :
-			_batch(ds._batch),
+			_cpuBatch(ds._cpuBatch),
+			_gpuBatch(ds._gpuBatch),
 			_csvFile(ds._csvFile),
 			_batchSize(ds._batchSize),
 			_lineCount(ds._lineCount),
@@ -118,7 +93,8 @@ namespace forge
 		}
 
 		StockfishDataset& StockfishDataset::operator=(const StockfishDataset& ds) {
-			_batch = ds._batch;
+			_cpuBatch = ds._cpuBatch;
+			_gpuBatch = ds._gpuBatch;
 			_csvFile = ds._csvFile;
 			_batchSize = ds._batchSize;
 			_lineCount = ds._lineCount;
@@ -170,12 +146,12 @@ namespace forge
 
 		torch::data::Example<> StockfishDataset::get(size_t index) {
 			// --- Do we need to load another batch? ---
-			if (_batchIt >= _batch.nSamples()) {
+			if (_gpuBatchIt >= _gpuBatch.nSamples()) {
 				//cout << "Loading another batch" << endl;
 				load();
 			}
 
-			if (_batch.nSamples() == 0) {
+			if (_gpuBatch.nSamples() == 0) {
 				cout << "Error: dataset is empty even after load()" << endl;
 				return torch::data::Example<>{};
 			}
@@ -184,12 +160,12 @@ namespace forge
 			_lineCount++;
 
 			// --- Position --- 
-			torch::Tensor input = _batch.input[_batchIt];
+			torch::Tensor input = _gpuBatch.input[_gpuBatchIt];
 
 			// --- Evaluation ---
-			torch::Tensor output = _batch.output[_batchIt];
+			torch::Tensor output = _gpuBatch.output[_gpuBatchIt];
 
-			_batchIt++;
+			_gpuBatchIt++;
 
 			return { input, output };
 		}
@@ -249,8 +225,9 @@ namespace forge
 
 			// --- Reset Tensors ---
 			resizeTime.resume();
-			_batch.resize(_batchSize, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1, torch::kCPU);
-			_batchIt = 0;
+			// Should be a no-op after 1st call!!!
+			_cpuBatch.resize(_batchSize, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1, torch::kCPU);
+			_gpuBatchIt = 0;
 			resizeTime.pause();
 			
 			// --- Parse Lines ---
@@ -286,12 +263,12 @@ namespace forge
 					forge::heuristic::FeatureExtractor extractor;
 					extractor.init(pos, forge::WHITE);// Extract features from whites perspective
 					// *** Whites on the bottom moving up ***
-					torch::Tensor sampleSlice = _batch.input.slice(0, count, count + 1);
+					torch::Tensor sampleSlice = _cpuBatch.input.slice(0, count, count + 1);
 					extractor.extractMaterial(sampleSlice);
 					extractTime.pause();
 
 					// -- Output Tensor --
-					_batch.output[count] = fe.eval;
+					_cpuBatch.output[count] = fe.eval;
 				} catch (const std::exception& e) {
 					cout << "Exception _in " << __FILE__ << " line " << __LINE__ << ": " << e.what() << endl
 						<< '\t' << line << endl;
@@ -305,7 +282,7 @@ namespace forge
 
 			// --- Move Batch to Training Device ---
 			toDeviceTime.resume();
-			_batch.to(forge::g_computingDevice);
+			_gpuBatch = _cpuBatch.to(forge::g_computingDevice);// should be a no-op if g_computingDevice is CPU
 			toDeviceTime.pause();
 
 			chrono::nanoseconds measured =
@@ -316,17 +293,17 @@ namespace forge
 				extractTime.elapsed() +
 				toDeviceTime.elapsed();
 
-			cout << "Execution time from load():" << endl;
-			printTime("resize:      ", resizeTime, loadTime);
-			printTime("getline:     ", getlineTime, loadTime);
-			printTime("parse:       ", parseTime, loadTime);
-			printTime("fen:         ", fenTime, loadTime);
-			printTime("extract:     ", extractTime, loadTime);
-			printTime("todevice:    ", toDeviceTime, loadTime);
-			printTime("measured:    ", measured, loadTime.elapsed());
-			printTime("total:       ", loadTime, loadTime);
-			cout << endl;
-			cin.get();
+			//cout << "Execution time from load():" << endl;
+			//printTime("resize:      ", resizeTime, loadTime);
+			//printTime("getline:     ", getlineTime, loadTime);
+			//printTime("parse:       ", parseTime, loadTime);
+			//printTime("fen:         ", fenTime, loadTime);
+			//printTime("extract:     ", extractTime, loadTime);
+			//printTime("todevice:    ", toDeviceTime, loadTime);
+			//printTime("measured:    ", measured, loadTime.elapsed());
+			//printTime("total:       ", loadTime, loadTime);
+			//cout << endl;
+			//cin.get();
 		}
 	} // namespace ml
 } // namespace forge

@@ -9,8 +9,7 @@ namespace forge
 {
 	namespace heuristic
 	{
-		bool checkTensorSize(const torch::Tensor& slice, size_t nColumns)
-		{
+		bool checkTensorSize(const torch::Tensor& slice, size_t nColumns) {
 			const bool GOOD_SIZE = true;
 			const bool BAD_SIZE = false;
 
@@ -33,8 +32,7 @@ namespace forge
 			return GOOD_SIZE;
 		}
 
-		void FeatureExtractor::init(const Position& pos, bool forWhite)
-		{
+		void FeatureExtractor::init(const Position& pos, bool forWhite) {
 			// Orient board so that the moving player (ours) is on the bottom 
 			// and waiting player (theirs) is on the top
 			board = (forWhite ? pos.board() : pos.board().rotated());
@@ -70,16 +68,13 @@ namespace forge
 
 		// ------------------------- EXTRACT METHODS ---------------------------------
 
-		void FeatureExtractor::extractMaterial(torch::Tensor& slice)
-		{
+		void FeatureExtractor::extractMaterial(torch::Tensor& slice) {
 			if (checkTensorSize(slice, MATERIAL_FEATURES_SIZE) == false)
 				return;
 
 			auto accessor = slice.accessor<float, 2>();	// Good for CPU access
 
 			for (size_t bit = 0; bit < 64; bit++) {
-				// TODO: Optimize: Can this be optimized with ifs. Hint: Sparse data.
-				///accessor[0][64 * 0 + bit] = static_cast<float>(empty[bit]);
 				accessor[0][64 * 0 + bit] = static_cast<float>(ourKings[bit]);
 				accessor[0][64 * 1 + bit] = static_cast<float>(ourQueens[bit]);
 				accessor[0][64 * 2 + bit] = static_cast<float>(ourBishops[bit]);
@@ -95,8 +90,7 @@ namespace forge
 			}
 		}
 
-		void FeatureExtractor::extractMobility(torch::Tensor& slice)
-		{
+		void FeatureExtractor::extractMobility(torch::Tensor& slice) {
 			if (checkTensorSize(slice, MOBILITY_FEATURES_SIZE) == false)
 				return;
 
@@ -116,8 +110,7 @@ namespace forge
 		//	10th 64: theirAttackedKnights
 		//  11th 64: theirAttackedRooks
 		//  12th 64: theirAttackedPawns
-		void FeatureExtractor::extractAttacked(torch::Tensor& slice)
-		{
+		void FeatureExtractor::extractAttacked(torch::Tensor& slice) {
 			if (checkTensorSize(slice, ATTACKED_FEATURES_SIZE) == false)
 				return;
 
@@ -159,8 +152,7 @@ namespace forge
 			}
 		}
 
-		BitBoard FeatureExtractor::findAllAttacked() const
-		{
+		BitBoard FeatureExtractor::findAllAttacked() const {
 			BitBoard victims;
 
 			// --- Up ---
@@ -190,8 +182,7 @@ namespace forge
 			return victims;
 		}
 
-		IntBoard FeatureExtractor::countAllAttacked() const
-		{
+		IntBoard FeatureExtractor::countAllAttacked() const {
 			IntBoard counts;
 
 			// --- Up ---
