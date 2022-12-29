@@ -55,7 +55,7 @@ namespace forge
 
 				nSamples += data.sizes()[0];
 
-				for (size_t reuse = 0; reuse < 2; reuse++) {
+				for (size_t reuse = 0; reuse < 64; reuse++) {
 					//cout << "Resuse: " << reuse << endl;
 					// --- Forward Pass ---
 					forwardTime.resume();
