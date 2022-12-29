@@ -3,6 +3,8 @@
 #include <filesystem>
 
 #include "forge/ml/StockfishDataset.h"
+#include "forge/ml/Network.h"
+#include "forge/ml/CheckpointManager.h"
 
 namespace forge
 {
@@ -16,8 +18,19 @@ namespace forge
 
 			void train();
 
+			void test();
+
+		private:
+			void init();
+
 		private:
 			std::filesystem::path _checkpointDir;
+
+			CheckpointManager _checkpoint;
+
+			StockfishDataset _dataset;
+
+			Network _network;
 		};
 	} // namespace ml
 } // namespace forge

@@ -14,6 +14,12 @@ namespace forge
 			//trainer.checkpointDir();
 			trainer.train();
 		}
+
+		void test_nn() {
+			forge::ml::Trainer trainer;
+
+			trainer.test();
+		}
 	} // namespace drivers
 } // namespace forge
 

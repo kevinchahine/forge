@@ -49,6 +49,7 @@ int main(int argc, char ** argv)
 	forge::initGlobalsTorch();
 
 	forge::drivers::train_nn();
+	//forge::drivers::test_nn();
 
 	//forge::test::benchmark::mcts();
 	//forge::test::benchmark::mcts_phases();
