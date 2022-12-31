@@ -29,8 +29,8 @@ namespace forge
 
 			virtual void print(const Position& pos, std::ostream& os = std::cout) const override;
 
-			Network& model() { return m_net; }
-			const Network& model() const { return m_net; }
+			NetworkA& model() { return m_net; }
+			const NetworkA& model() const { return m_net; }
 
 		protected:
 			// A neural network model used to approximate the fitness or favorability of a chess Position.
@@ -47,7 +47,7 @@ namespace forge
 			// Output Layer:
 			//		A single value that is the evaluation of the position in units of centi-pawns.
 			// 		From perspective of moving player.
-			Network m_net;
+			NetworkA m_net;
 		};
 	} // namespace heuristic
 } // namespace forge

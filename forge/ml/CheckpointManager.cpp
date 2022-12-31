@@ -1,6 +1,7 @@
 #include "CheckpointManager.h"
 
 #include <sstream>
+#include <iomanip>
 #include <exception>
 
 using namespace std;
@@ -14,6 +15,10 @@ namespace forge
 				filesystem::create_directories(dir);
 
 			_checkpointDir = dir;
+		}
+
+		std::filesystem::path CheckpointManager::networkDir() const {
+			return _checkpointDir / "checkpoints" / _name;
 		}
 		
 		size_t CheckpointManager::countCheckpoints() const {
@@ -54,11 +59,18 @@ namespace forge
 		}
 		
 		std::filesystem::path CheckpointManager::latest() const {
-			filesystem::path dir = _checkpointDir / "checkpoints" / _name;
+			filesystem::path dir = networkDir();
 
-			string leaf = _name + "00000" + _ext.string();
+			stringstream leaf;
 
-			filesystem::path file = dir / leaf;
+			leaf << _name << "_";
+
+			//leaf << "default";
+			leaf << right << "00000";
+
+			leaf << _ext.string();
+
+			filesystem::path file = dir / leaf.str();
 
 			if (filesystem::exists(file)) {
 				return file;
@@ -68,17 +80,28 @@ namespace forge
 			}
 		}
 		
-		std::filesystem::path CheckpointManager::generateFilename() const {
+		std::filesystem::path CheckpointManager::generateFilename(int epoch) const {
 
-			filesystem::path dir = _checkpointDir / "checkpoints" / _name;
+			filesystem::path dir = networkDir();
 
 			if (filesystem::exists(dir) == false) {
 				filesystem::create_directories(dir);
 			}
 
-			string leaf = _name + "00000" + _ext.string();
+			stringstream leaf;
 
-			filesystem::path file = dir / leaf;
+			leaf << _name << "_";
+
+			if (epoch == -1) {
+				leaf << "default";
+			}
+			else {
+				leaf << right << setfill('0') << setw(5) << epoch;
+			}
+				
+			leaf << _ext.string();
+
+			filesystem::path file = dir / leaf.str();
 
 			return file;
 		}

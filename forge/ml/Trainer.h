@@ -30,7 +30,7 @@ namespace forge
 
 			StockfishDataset _dataset;
 
-			Network _network;
+			NetworkE _network;
 		};
 	} // namespace ml
 } // namespace forge

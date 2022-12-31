@@ -14,6 +14,8 @@ namespace forge
 			void checkpointDir(const std::filesystem::path& dir);
 			const std::filesystem::path& checkpointDir() const { return _checkpointDir; }
 
+			std::filesystem::path networkDir() const;
+				
 			void name(const std::string& name) { _name = name; }
 			const std::string& name() const { return _name; }
 
@@ -27,7 +29,7 @@ namespace forge
 			// Determines a filename where the next checkpoint can be saved.
 			// This method will generate a file name which does not yet exist.
 			// It can be created when saving a checkpoint.
-			std::filesystem::path generateFilename() const;
+			std::filesystem::path generateFilename(int epoch = -1) const;
 
 		private:
 			std::filesystem::path _checkpointDir;

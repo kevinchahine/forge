@@ -16,7 +16,7 @@ namespace forge
 		// returns total loss of the epoch
 		template<typename DataLoader>
 		float trainEpoch(
-			Network& network,
+			NetworkE& network,
 			DataLoader& loader,
 			torch::optim::Optimizer& optimizer,
 			size_t epoch,
@@ -122,6 +122,13 @@ namespace forge
 				getTime.resume();
 			}
 
+			filesystem::path file = checkpointManager.generateFilename(epoch);
+			
+			cout << "saving to " << file.generic_string() << "...";
+			torch::save(network, file.generic_string());
+			cout << "done" << endl;
+			cout << endl;
+
 			return totalLoss / batchCount;
 		}
 
@@ -130,9 +137,12 @@ namespace forge
 		void Trainer::train() {
 			this->init();
 			ofstream out;
-			out.open("loss.txt");
-			out << "Training" << endl;
-			out << setw(10) << "Epoch:" << setw(10) << "Loss:" << endl;
+
+			filesystem::path lossFile = _checkpoint.networkDir() / "loss.txt";
+			out.open(lossFile.generic_string());
+			out << left
+				<< "Training:" << endl
+				<< setw(10) << "Epoch:" << setw(10) << "Loss:" << endl;
 
 			cout << "Mapping dataset" << endl;
 			auto dataset = _dataset.map(torch::data::transforms::Stack<>());
@@ -147,7 +157,7 @@ namespace forge
 			torch::optim::Adam optimizer(
 				_network->parameters(), torch::optim::AdamOptions(0.002));
 
-			for (size_t epoch = 0; epoch < 1'000; epoch++) {
+			for (size_t epoch = 0; epoch < 20; epoch++) {
 				float epochLoss = trainEpoch(_network, *loader, optimizer, epoch + 1, size, _checkpoint);
 				out << setw(10) << epoch << setw(10) << epochLoss << endl;
 				cout << endl;
@@ -204,7 +214,8 @@ namespace forge
 
 		void Trainer::init() {
 			// --- Load Data ---
-			filesystem::path path = R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData.csv)dil";
+			filesystem::path path = 
+				R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData.csv)dil";
 
 			cout << "Preparing dataset" << endl;
 			_dataset = StockfishDataset();
@@ -212,7 +223,7 @@ namespace forge
 			_dataset.skip(0);
 
 			_checkpoint.checkpointDir(g_checkpointDir);
-			_checkpoint.name("networkA");
+			_checkpoint.name("networkE");
 
 			// --- Training Loop ---
 

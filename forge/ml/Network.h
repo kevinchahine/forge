@@ -10,17 +10,10 @@
 
 #include "forge/heuristic/FeatureExtractor.h"
 
-namespace forge
-{
-	namespace ml
-	{
-	} // namespace ml
-} // namespace forge
-
-class NetworkImpl : public torch::nn::SequentialImpl
+class NetworkAImpl : public torch::nn::SequentialImpl
 {
 public:
-	NetworkImpl() {
+	NetworkAImpl() {
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1024));
 		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(1024, 512));
@@ -32,6 +25,62 @@ public:
 
 private:
 };
-TORCH_MODULE(Network);
+TORCH_MODULE(NetworkA);
 
+class NetworkBImpl : public torch::nn::SequentialImpl
+{
+public:
+	NetworkBImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 256));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 128));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(128, 64));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(64, 1));
+	}
+};
+TORCH_MODULE(NetworkB);
 
+class NetworkCImpl : public torch::nn::SequentialImpl
+{
+public:
+	NetworkCImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 512));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 256));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 128));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(128, 1));
+	}
+};
+TORCH_MODULE(NetworkC);
+
+class NetworkDImpl : public torch::nn::SequentialImpl
+{
+public:
+	NetworkDImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 512));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 512));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 512));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 1));
+	}
+};
+TORCH_MODULE(NetworkD);
+
+class NetworkEImpl : public torch::nn::SequentialImpl
+{
+public:
+	NetworkEImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 512));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 512));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 1));
+	}
+};
+TORCH_MODULE(NetworkE);
