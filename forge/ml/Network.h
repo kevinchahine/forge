@@ -84,3 +84,16 @@ public:
 	}
 };
 TORCH_MODULE(NetworkE);
+
+class NetworkFImpl : public torch::nn::SequentialImpl
+{
+public:
+	NetworkFImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 128));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 128));
+		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(128, 1));
+	}
+};
+TORCH_MODULE(NetworkF);

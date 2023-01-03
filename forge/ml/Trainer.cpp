@@ -16,7 +16,7 @@ namespace forge
 		// returns total loss of the epoch
 		template<typename DataLoader>
 		float trainEpoch(
-			NetworkE& network,
+			NetworkF& network,
 			DataLoader& loader,
 			torch::optim::Optimizer& optimizer,
 			size_t epoch,
@@ -223,7 +223,7 @@ namespace forge
 			_dataset.skip(0);
 
 			_checkpoint.checkpointDir(g_checkpointDir);
-			_checkpoint.name("networkE");
+			_checkpoint.name("networkF");
 
 			// --- Training Loop ---
 

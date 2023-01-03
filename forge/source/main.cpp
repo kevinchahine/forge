@@ -18,6 +18,7 @@ Designed to be compatible with a variety of displays including:
 	- Terminal interface.
 */
 
+#include "forge/drivers/play.h"
 #include "forge/drivers/train.h"
 
 #include "forge/source/globals.h"
@@ -48,7 +49,9 @@ int main(int argc, char ** argv)
 	forge::initGlobals();
 	forge::initGlobalsTorch();
 
-	forge::drivers::train_nn();
+	forge::drivers::play_chess_match();
+
+	//forge::drivers::train_nn();
 	//forge::drivers::test_nn();
 
 	//forge::test::benchmark::mcts();

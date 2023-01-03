@@ -33,6 +33,9 @@ namespace forge
 			//	that indicates something else, like a draw.
 			virtual heuristic_t eval(const Position& pos, bool whiteIsSearching) = 0;
 
+			// TODO: make pure virtual
+			virtual std::vector<heuristic_t> eval(const std::vector<const Position&>& positions, bool whiteIsSearching);
+
 			// Creates a copy of object and returns its address.
 			// Equivalent to useing copy assignment opertor on objects and references.
 			// For polymorphic base pointers, this can be used to create a copy when 
