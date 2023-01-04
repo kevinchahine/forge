@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <forge/core/Position.h>
 
 namespace forge
@@ -34,7 +36,7 @@ namespace forge
 			virtual heuristic_t eval(const Position& pos, bool whiteIsSearching) = 0;
 
 			// TODO: make pure virtual
-			virtual std::vector<heuristic_t> eval(const std::vector<const Position&>& positions, bool whiteIsSearching);
+			virtual std::vector<heuristic_t> eval(const std::vector<const Position *>& positions, bool whiteIsSearching) = 0;
 
 			// Creates a copy of object and returns its address.
 			// Equivalent to useing copy assignment opertor on objects and references.

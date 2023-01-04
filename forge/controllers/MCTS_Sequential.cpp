@@ -37,6 +37,8 @@ namespace forge
 
 					sm.evaluation.resume();		// BENCHMARKING
 					if (curr.hasChildren()) {
+						// --- 2nd Visit ---
+						
 						// *** Intermediate Node ***
 						curr.toFirstChild();	// BENCHMARKING
 						//curr.toBestUCB();
@@ -47,7 +49,6 @@ namespace forge
 						// This can be a good optimization when evaluations are 
 						// more efficient in batches.
 						bool maximizeWhite = (*curr).position().isBlacksTurn();
-
 
 						eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
 					}
@@ -62,6 +63,7 @@ namespace forge
 					sm.evaluation.pause();		// BENCHMARKING
 				}
 				else {
+					// --- 1st Visit ---
 					sm.evaluation.resume();		// BENCHMARKING	
 					bool maximizeWhite = (*curr).position().isBlacksTurn();
 					eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);

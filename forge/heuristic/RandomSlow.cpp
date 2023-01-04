@@ -24,6 +24,17 @@ namespace forge
 
 			return eval;
 		}
+		
+		vector<heuristic_t> RandomSlow::eval(const vector<const Position *> & positions, bool whiteIsSearching) {
+			vector<heuristic_t> evals;
+			evals.reserve(positions.size());
+
+			for (const Position * p : positions) {
+				evals.push_back(this->eval(Position(), whiteIsSearching));
+			}
+
+			return evals;
+		}
 	} // namespace heuristics
 } // namespace forge
 

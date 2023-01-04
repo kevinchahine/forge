@@ -20,6 +20,17 @@ namespace forge
 			return mydist(g_rand);	// just return a random number
 		}
 
+		vector<heuristic_t> Random::eval(const vector<const Position *> & positions, bool whiteIsSearching) {
+			vector<heuristic_t> evals;
+			evals.reserve(positions.size());
+
+			for (const Position * p : positions) {
+				evals.push_back(mydist(g_rand));
+			}
+
+			return evals;
+		}
+
 		unique_ptr<Base> Random::clone() const
 		{
 			return make_unique<Random>(*this);

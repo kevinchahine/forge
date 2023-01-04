@@ -46,5 +46,10 @@ namespace forge
 			// Return the value of the result
 			return gstate.getValue(maximizeWhite);
 		}
+		std::vector<heuristic_t> Rollout::eval(const std::vector<const Position *> & positions, bool whiteIsSearching) {
+			cout << "Error: " << __FILE__ << " line " << __LINE__ << ": method not implemented" << endl;
+
+			return std::vector<heuristic_t>();
+		}
 	} // namespace heuristic
 } // namespace forge

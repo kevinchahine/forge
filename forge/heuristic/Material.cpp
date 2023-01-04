@@ -27,6 +27,17 @@ namespace forge
 			return (whiteIsSearching ? val : -val);
 		}
 
+		vector<heuristic_t> Material::eval(const vector<const Position *> & positions, bool whiteIsSearching) {
+			vector<heuristic_t> evals;
+			evals.reserve(positions.size());
+
+			for (const Position * p : positions) {
+				evals.push_back(this->eval(*p, whiteIsSearching));
+			}
+
+			return evals;
+		}
+
 		unique_ptr<Base> Material::clone() const
 		{
 			return make_unique<Material>(*this);

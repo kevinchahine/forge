@@ -23,6 +23,8 @@ namespace forge
 
 			virtual heuristic_t eval(const Position& pos, bool whiteIsSearching = true) override;
 
+			virtual std::vector<heuristic_t> eval(const std::vector<const Position *> & positions, bool whiteIsSearching) override;
+			
 			virtual std::unique_ptr<Base> clone() const override;	// TODO: Optimize: Why can't this be inlined. See other derivations as well.
 
 			virtual std::string name() const override { return "Random"; }

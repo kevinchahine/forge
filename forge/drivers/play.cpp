@@ -39,7 +39,7 @@ namespace forge
 			//make_unique<MCTS_Concurrent>();
 			//make_unique<KeyboardController>();
 
-			string networkFile = R"dil(C:/Users/kchah/ownCloud/ML/forge/checkpoints/networkE/networkE_00005.pt)dil";
+			string networkFile = R"dil(C:/Users/kchah/ownCloud/ML/forge/checkpoints/networkC/networkC_00006.pt)dil";
 
 			whiteController->makeHeuristic<
 				//forge::heuristic::Material>();
