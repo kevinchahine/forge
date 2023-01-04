@@ -42,20 +42,20 @@ namespace forge
 			string networkFile = R"dil(C:/Users/kchah/ownCloud/ML/forge/checkpoints/networkC/networkC_00006.pt)dil";
 
 			whiteController->makeHeuristic<
-				//forge::heuristic::Material>();
-			//forge::heuristic::Random>();
-			//forge::heuristic::RandomSlow>();
-			//forge::heuristic::Rollout>();
-			forge::heuristic::NeuralNetwork>(networkFile);
-			//forge::heuristic::NeuralNetwork>();
+				forge::heuristic::Material>();
+				//forge::heuristic::Random>();
+				//forge::heuristic::RandomSlow>();
+				//forge::heuristic::Rollout>();
+				//forge::heuristic::NeuralNetwork>(networkFile);
+				//forge::heuristic::NeuralNetwork>();
 
 			blackController->makeHeuristic<
-			//	forge::heuristic::Material>();
-			//forge::heuristic::Random>();
-			//forge::heuristic::RandomSlow>();
-			//forge::heuristic::Rollout>();
-			forge::heuristic::NeuralNetwork>(networkFile);
-			//forge::heuristic::NeuralNetwork>();
+				forge::heuristic::Material>();
+				//forge::heuristic::Random>();
+				//forge::heuristic::RandomSlow>();
+				//forge::heuristic::Rollout>();
+				//forge::heuristic::NeuralNetwork>(networkFile);
+				//forge::heuristic::NeuralNetwork>();
 
 			whiteController->searchMonitor().timeLimit = std::chrono::seconds(4);
 			blackController->searchMonitor().timeLimit = std::chrono::seconds(4);

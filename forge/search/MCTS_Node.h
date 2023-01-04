@@ -1,6 +1,7 @@
 #pragma once
 
 #include <forge/core/Node.h>
+#include <forge/search/UCB.h>
 
 #include <limits>
 #include <cmath>
@@ -10,34 +11,10 @@
 
 namespace forge
 {
-
 	class MCTS_Node : public NodeTemplate<MCTS_Node>
 	{
 	public:
 		using super_t = NodeTemplate<MCTS_Node>;
-
-		// UCB = t/n + C * sqrt(ln(N) / n)
-		// 	t - total score (should not be +/- infinity)
-		// 	N - Parent node visits
-		// 	n - Current node visits
-		//	mark - 0 or -inf
-		// returns UCB score. Guarenteed to be a real number not +/-infinity or undefined.
-		static float calcUCB(float total, float parentVisits, float currVisits, float mark) {
-			// UCB = x_i + C * sqrt(ln(N) / n_i)
-			// !!! Warning: parentVisits and currVisits must be greater than 0.
-			//	log(0) = -NaN (undefined)
-			//	x/0	= NaN (undefined)
-
-			// --- Convert to units of pawns ---
-			total = total / 100.0f;
-
-			total = total / (1 + abs(total));
-			
-			return
-				(total / (currVisits + 1.0f)) +
-				MCTS_Node::temperature * sqrt(log(parentVisits + 1.0f) / (currVisits + 1.0f)) +
-				mark;
-		}
 
 		int totalScore() const { return static_cast<int>(t); }
 
@@ -54,19 +31,19 @@ namespace forge
 
 		float ucb() const { return ucbScore; }
 
-		boost::mutex& mutex() { return m_mutex; }
-		const boost::mutex& mutex() const { return m_mutex; }
+		boost::mutex & mutex() { return m_mutex; }
+		const boost::mutex & mutex() const { return m_mutex; }
 
 		void expand();
 
 		// Adds score to total score
 		// Increments number of visits
-		void update(int score);
+		void update(float score, float nEvals = 1);
 
 		// Accumulates t and n from 'node'
 		// ucb and temperature are left unchanged
 		// ucb will need to be recalculated after calling this method if node.t or node.n are non-zero
-		void merge(const MCTS_Node& node);
+		void merge(const MCTS_Node & node);
 
 		// Sorts children pointers according to UCB scores.
 		// Should be called once after each update.
@@ -74,12 +51,13 @@ namespace forge
 		// Performs an insertion sort which works faster when elements are already mostly in order.
 		void sort();
 
-		MCTS_Node* nextPtr() const { return m_nextPtr; }
+		MCTS_Node * nextPtr() const { return m_nextPtr; }
 		bool hasNext() const { return m_nextPtr != nullptr; }
-		
+
 	private: // -------------------------- PRIVATE FIELDS ------------------------
 		// Total score of all children
-		// # of games won by white
+		// # of games won by white - 
+		// # of games won by black
 		float t = 0.0f;
 
 		// Total number of games visited
@@ -107,11 +85,11 @@ namespace forge
 		// Address of next child node if one exists
 		// Otherwise null
 		// Do not deallocated
-		MCTS_Node* m_nextPtr = nullptr;
+		MCTS_Node * m_nextPtr = nullptr;
 
 		// Used by multithreaded version of MCTS
 		boost::mutex m_mutex;
-		
+
 	public:// remove
 		boost::mutex m_expandMutex; // remove
 
@@ -123,10 +101,11 @@ namespace forge
 		{
 		public:
 			iterator() = default;
-			iterator(MCTS_Node* nodePtr) : p_node(nodePtr) {}
-			bool operator==(const iterator& it) const { return this->p_node == it.p_node; }
-			bool operator!=(const iterator& it) const { return this->p_node != it.p_node; }
-			MCTS_Node& operator*();
+			iterator(MCTS_Node * nodePtr) : p_node(nodePtr) {}
+			bool operator==(const iterator & it) const { return this->p_node == it.p_node; }
+			bool operator!=(const iterator & it) const { return this->p_node != it.p_node; }
+			const MCTS_Node & operator*() const { return *p_node; }
+			MCTS_Node & operator*() { return *p_node; }
 
 			bool isExpanded() const { return p_node->isExpanded(); }
 			bool hasParent() const { return p_node->m_parentPtr != nullptr; }
@@ -172,7 +151,7 @@ namespace forge
 		private:
 			// node which iterator is currently referencing
 			//std::stack<std::vector<std::shared_ptr<MCTS_Node> nodes;
-			MCTS_Node* p_node = nullptr;
+			MCTS_Node * p_node = nullptr;
 		}; // end class iterator
 
 		iterator root() { return iterator(this); }

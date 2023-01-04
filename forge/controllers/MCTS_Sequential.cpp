@@ -1,13 +1,53 @@
 #include "MCTS_Sequential.h"
 
 #include <forge/core/GameState.h>
+#include <forge/search/UCB.h>
 
 using namespace std;
 
 namespace forge
 {
-	void MCTS_Sequential::solve()
-	{
+	// -------------------------------- HELPER FUNCTIONS -------------------------
+
+	vector<const Position *> getChildrenPositions(const MCTS_Node::iterator & it) {
+		const auto & children = (*it).children();
+
+		vector<const Position *> pChildren;
+
+		pChildren.reserve(children.size());
+
+		for (const auto & child : children) {
+			pChildren.emplace_back(&child->position());// get address of child position
+		}
+
+		return pChildren;
+	}
+
+	// Returns sum of children evaluations
+	float updateChildrenUCB(const MCTS_Node::iterator & it, const vector<heuristic_t> & childrenEvals) {
+		const auto & children = (*it).children();
+		
+		#if _DEBUG
+		assert(children.size() == childrenEvals.size());
+		#endif 
+
+		float sum = 0.0f;
+
+		for (size_t i = 0; i < childrenEvals.size(); i++) {
+			const auto & child = children.at(i);
+			float eval = UCB::mapRange(childrenEvals.at(i));
+
+			child->update(eval);
+
+			sum += eval;
+		}
+
+		return sum;
+	}
+
+	// -------------------------------- METHODS ----------------------------------
+
+	void MCTS_Sequential::solve() {
 		// --- Start ---
 		m_nodeTree.root().expand();
 		MCTS_Node::iterator curr = m_nodeTree.root();
@@ -16,7 +56,7 @@ namespace forge
 		// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
 		int badTraversals = 0;
 
-		auto& sm = m_searchMonitor;
+		auto & sm = m_searchMonitor;
 		sm.selection.reset();
 		sm.evaluation.reset();
 		sm.expansion.reset();
@@ -24,74 +64,16 @@ namespace forge
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 		while (true) {
-			if (curr.isLeaf()) {
-				heuristic_t eval = 0;
-				
-				// --- 2nd visit? ---
-				if ((*curr).isVisited()) {
+			float eval = 0.0f;
+			size_t nEvals = 0;
 
-					sm.expansion.resume();		// BENCHMARKING
-					curr.expand();
-					sm.expansionCount.add(1);
-					sm.expansion.pause();		// BENCHMARKING
+			// --- Is Expanded? ---
+			if (curr.isExpanded()) {
+				// Yes node has been Expanded. Continue with selection.
 
-					sm.evaluation.resume();		// BENCHMARKING
-					if (curr.hasChildren()) {
-						// --- 2nd Visit ---
-						
-						// *** Intermediate Node ***
-						curr.toFirstChild();	// BENCHMARKING
-						//curr.toBestUCB();
-
-						// TODO: Optimization: Since we will "eventually" evaluate all children 
-						// we can optionally evaluate all children at once
-						// without significantly changing the algorithms behavior.
-						// This can be a good optimization when evaluations are 
-						// more efficient in batches.
-						bool maximizeWhite = (*curr).position().isBlacksTurn();
-
-						eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
-					}
-					else {
-						// *** Terminal Node ***
-						bool maximizeWhite = (*curr).position().isBlacksTurn();
-						GameState gstate;
-						gstate(*curr);
-						eval = 1500 * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
-						(*curr).lastVisit();
-					}
-					sm.evaluation.pause();		// BENCHMARKING
-				}
-				else {
-					// --- 1st Visit ---
-					sm.evaluation.resume();		// BENCHMARKING	
-					bool maximizeWhite = (*curr).position().isBlacksTurn();
-					eval = this->m_heuristicPtr->eval((*curr).position(), maximizeWhite);
-					sm.evaluation.pause();		// BENCHMARKING
-				}
-
-				// --- Backpropagate ---
-				sm.backprop.resume();
-				while (curr.isRoot() == false) {
-					(*curr).update(eval);
-					eval = -eval;
-					curr.toParent();
-					(*curr).sort();
-				}
-				
-				curr = m_nodeTree.root();// *** Now curr is at the root ***
-
-				// --- Check stopping condition ---
-				sm.nodeCount++;
-				if (sm.exitConditionReached()) {
-					sm.stop();	// stop the clock so we can record exact search time.
-					break;
-				}
-				sm.backprop.pause();
-			}
-			else {
 				// --- Selection ---
 				sm.selection.resume();
+
 				// --- Move DOWN the tree ---
 				if ((*curr).isPruned() == false && curr.hasChildren()) {
 					curr.toBestUCB();
@@ -122,40 +104,90 @@ namespace forge
 					// *******************************
 				}
 			}
-		}
+			else {
+				// No node is still Fresh
+				curr.expand();
+
+				// --- Is Terminal or Intermediate? ---
+				if (curr.hasChildren()) {
+					// Intermediate Node. Evaluate using Heuristic.
+
+					bool maximizeWhite = (*curr).position().isWhitesTurn();
+
+					vector<const Position *> pChildren = getChildrenPositions(curr);
+
+					vector<heuristic_t> evals = this->m_heuristicPtr->eval(pChildren, maximizeWhite);
+
+					eval = -updateChildrenUCB(curr, evals);
+
+					nEvals = evals.size();
+				}
+				else {
+					// Terminal Node. Evaluate using Game State.
+					bool maximizeWhite = (*curr).position().isBlacksTurn();
+					GameState gstate;
+					gstate(*curr);
+					eval = (float) UCB::WINNING_EVAL * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
+					nEvals = 1;
+
+					(*curr).lastVisit();
+				}
+				
+				// --- Backpropagate ---
+				sm.backprop.resume();
+				while (curr.isRoot() == false) {
+					(*curr).update(eval);
+					eval = -eval;
+					curr.toParent();
+					(*curr).sort();
+				}
+
+				//curr = m_nodeTree.root();
+
+				// *** Now curr is at the root ***
+
+				// --- Check stopping condition ---
+				sm.nodeCount.add(nEvals);
+				if (sm.exitConditionReached()) {
+					sm.stop();	// stop the clock so we can record exact search time.
+					break;
+				}
+				sm.backprop.pause();
+			}
+		} // end while(true)
 
 		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvv REMOVE VVVVVVVVVVVVVVVVVVVVVVV
-		cout << guten::color::lightred;
-
-		if (badTraversals > 0) {
-			cout << badTraversals << " bad traversals discovered" << endl;
-		}
-		else {
-			cout << guten::color::green << " no bad traversals Yay!!!" << endl;
-		}
-
-		curr = m_nodeTree.root();
-
-		stack<MCTS_Node*> frontier;
-
-		frontier.push(&m_nodeTree);
-
-		while (frontier.size()) {
-			const MCTS_Node* top = frontier.top();
-			frontier.pop();
-
-			if (top->nBadVisits > 0) {
-				cout << top->nBadVisits << "\tbad visits." << endl;
-
-				cout << "----" << endl;
-			}
-
-			for (const auto& child : top->children()) {
-				frontier.push(child.get());
-			}
-		}
-
-		cout << guten::color::white;
+		////cout << guten::color::lightred;
+		////
+		////if (badTraversals > 0) {
+		////	cout << badTraversals << " bad traversals discovered" << endl;
+		////}
+		////else {
+		////	cout << guten::color::green << " no bad traversals Yay!!!" << endl;
+		////}
+		////
+		////curr = m_nodeTree.root();
+		////
+		////stack<MCTS_Node *> frontier;
+		////
+		////frontier.push(&m_nodeTree);
+		////
+		////while (frontier.size()) {
+		////	const MCTS_Node * top = frontier.top();
+		////	frontier.pop();
+		////
+		////	if (top->nBadVisits > 0) {
+		////		cout << top->nBadVisits << "\tbad visits." << endl;
+		////
+		////		cout << "----" << endl;
+		////	}
+		////
+		////	for (const auto & child : top->children()) {
+		////		frontier.push(child.get());
+		////	}
+		////}
+		////
+		////cout << guten::color::white;
 
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	}

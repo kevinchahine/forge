@@ -48,6 +48,10 @@ namespace forge
 			return solution;
 		}
 
+	public:
+		// Evaluation for a win in units of centi pawns
+		const static heuristic_t WIN_EVAL = 1'500;
+
 	protected:
 		MCTS_Node m_nodeTree;
 	};

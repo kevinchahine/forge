@@ -136,6 +136,8 @@ set(SEARCH
 	search/SearchMonitor.h
 	search/SearchMonitorAtomic.h 
 	search/SearchMonitorTemplate.h
+	search/UCB.cpp
+	search/UCB.h
 )
 
 set(SOURCE
