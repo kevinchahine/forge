@@ -25,6 +25,7 @@ namespace forge
 		heuristic_t NeuralNetwork::eval(const Position & pos, bool whiteIsSearching) {
 			// --- Input ---
 			// Tensor which holds input features (one-hot and multi-hot encodings)
+			// TODO: reuse the inputsCPU tensor to prevent slow tensor reallocation
 			torch::Tensor inputs = torch::zeros({ 1, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE }, torch::kCPU);
 
 			// --- Extract ---
@@ -52,50 +53,44 @@ namespace forge
 
 		vector<heuristic_t> NeuralNetwork::eval(const vector<const Position *> & positions, bool whiteIsSearching) {
 			int nSamples = positions.size();
-		
-			// --- Input ---
-			// Tensor which holds input features (one-hot encodings)
-			if (inputsCPU.dim() != 2 ||
-				inputsCPU.size(0) != nSamples ||
-				inputsCPU.size(1) != forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE) {
-				inputsCPU = torch::zeros({ nSamples, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE }, torch::kCPU);
-			}
-		
+
+			inputsCPU = inputsCPU.resize_({ nSamples, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE });
+
 			// --- Extract ---
 			// Extract one-hot encodings into a tensor
 			FeatureExtractor extractor;
-		
+
 			for (int i = 0; i < nSamples; i++) {
 				//for (T it = begin, size_t sampleIndex = 0; it != end; it++, sampleIndex++) {
 				const Position & position = *positions.at(i);
-		
+
 				extractor.init(position, whiteIsSearching);
-		
+
 				torch::Tensor sampleSlice = inputsCPU.slice(0, i, i + 1);
-		
+
 				extractor.extractMaterial(sampleSlice);
 			}
-		
+
 			// --- Evaluate Position ---
-		
+
 			//m_net->to(torch::kCUDA);
 			m_net->to(torch::kCPU);
 			torch::Tensor inputsDevice = inputsCPU.to(torch::kCPU);
-		
+
 			torch::Tensor output = m_net->forward(inputsDevice);
-		
+
 			output = output.to(torch::kCPU);
-		
+
 			// --- Return Evaluation ---
 			std::vector<heuristic_t> evals(nSamples);
-		
+
 			auto accessor = output.accessor<float, 2>();	// Good for CPU access
-		
+
 			for (size_t i = 0; i < nSamples; i++) {
 				evals.at(i) = accessor[i][0];//.template item<float>();
 				//heuristic_t eval = output[0].template item<float>();
 			}
-		
+
 			return evals;
 		}
 

@@ -15,17 +15,20 @@ namespace forge
 
 			if (slice.dim() != 2) {
 				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
-					<< "\tslice must be a 2D tensor with 1 row and " << nColumns << " columns" << endl;
+					<< "\tslice must be a 2D tensor with 1 row and " << nColumns << " columns. slice.sizes() = " << slice.sizes() << endl;
+				cin.get();
 				return BAD_SIZE;
 			}
 			else if (slice.size(0) != 1) {
 				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
-					<< "\tslice must be a 2D tensor with 1 row" << endl;
+					<< "\tslice must be a 2D tensor with 1 row. slice.sizes() = " << slice.sizes() << endl;
+				cin.get();
 				return BAD_SIZE;
 			}
 			else if (slice.size(1) != nColumns) {
 				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
-					<< "\tslice must be a 2D tensor with " << nColumns << " columns" << endl;
+					<< "\tslice must be a 2D tensor with " << nColumns << " columns. slice.sizes() = " << slice.sizes() << endl;
+				cin.get();
 				return BAD_SIZE;
 			}
 

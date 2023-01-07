@@ -18,6 +18,7 @@ Designed to be compatible with a variety of displays including:
 	- Terminal interface.
 */
 
+#include "forge/drivers/dataset_helpers.h"
 #include "forge/drivers/play.h"
 #include "forge/drivers/train.h"
 
@@ -49,9 +50,10 @@ int main(int argc, char ** argv)
 	forge::initGlobals();
 	forge::initGlobalsTorch();
 
-	forge::drivers::play_chess_match();
+	//forge::drivers::split_dataset(90.0f, R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData.csv)dil");
+	//forge::drivers::play_chess_match();
 
-	//forge::drivers::train_nn();
+	forge::drivers::train_nn();
 	//forge::drivers::test_nn();
 
 	//forge::test::benchmark::mcts();

@@ -31,6 +31,8 @@ set(CONTROLLERS
 )
 
 set(DRIVERS
+	drivers/dataset_helpers.cpp
+	drivers/dataset_helpers.h
 	drivers/train.cpp
 	drivers/train.h
 	drivers/play.cpp
@@ -171,6 +173,7 @@ set(THIRD_PARTY
 
 set(UTIL
 	util/composite.h
+	util/demangle.h
 	util/formatted_int.h
 )
 
@@ -288,6 +291,7 @@ else ()
 
 	find_package(Boost REQUIRED COMPONENTS
 		#asio 
+		core
 		system 
 		filesystem 
 		#process
@@ -296,6 +300,7 @@ else ()
 
 	target_link_libraries(${PROJECT_NAME} PUBLIC
 		#Boost::asio
+		Boost::core
 		Boost::system
 		Boost::filesystem
 		Boost::lockfree

@@ -51,7 +51,7 @@ namespace forge
 			// 		From perspective of moving player.
 			NetworkC m_net;
 
-			torch::Tensor inputsCPU;
+			torch::Tensor inputsCPU = torch::zeros({ 40, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE }, torch::kCPU);
 		};
 	} // namespace heuristic
 } // namespace forge

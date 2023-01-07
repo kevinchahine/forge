@@ -4,6 +4,8 @@
 #include <string>
 #include <filesystem>
 
+#include "forge/util/demangle.h"
+
 namespace forge
 {
 	namespace ml
@@ -17,6 +19,8 @@ namespace forge
 			std::filesystem::path networkDir() const;
 				
 			void name(const std::string& name) { _name = name; }
+			template<typename NetworkType>
+			void name(const NetworkType & net) { _name = forge::util::demangle(net); }
 			const std::string& name() const { return _name; }
 
 			size_t countCheckpoints() const;
@@ -35,6 +39,7 @@ namespace forge
 			std::filesystem::path _checkpointDir;
 			std::filesystem::path _ext = ".pt";// extension of checkpoint file (ex: .pt) TODO: 
 			std::string _name = "default";
+			int nDigits = 2;
 		};
 	} // namespace ml
 } // namespace forge

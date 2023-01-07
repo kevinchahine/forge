@@ -172,29 +172,29 @@ namespace forge
 
 		void StockfishDataset::countSamples() {
 
-			//chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
-			//
-			//const int SZ = 1024 * 1024;
-			//
-			//vector<char> buff(SZ);
-			//
-			//ifstream inFile;
-			//inFile.open(_csvFile);
-			//
-			//size_t count = 0;
-			//
-			//while (int cc = fileRead(inFile, buff)) {
-			//	count += countLines(buff, cc);
-			//}
-			//
-			//chrono::high_resolution_clock::time_point stop = chrono::high_resolution_clock::now();
-			//
-			//cout << "Counting lines took " << chrono::duration_cast<chrono::milliseconds>(stop - start).count() 
-			//	<< " milliseconds" << endl;
-			//
-			//_nSamples = count;
+			chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
+			
+			const int SZ = 1024 * 1024;
+			
+			vector<char> buff(SZ);
+			
+			ifstream inFile;
+			inFile.open(_csvFile);
+			
+			size_t count = 0;
+			
+			while (int cc = fileRead(inFile, buff)) {
+				count += countLines(buff, cc);
+			}
+			
+			chrono::high_resolution_clock::time_point stop = chrono::high_resolution_clock::now();
+			
+			cout << "Counting lines took " << chrono::duration_cast<chrono::milliseconds>(stop - start).count() 
+				<< " milliseconds" << endl;
+			
+			_nSamples = count;
 
-			_nSamples = 13'000'000;
+			//_nSamples = 13'000'000;
 		}
 
 		void printTime(const string& name, const StopWatch& sw, const StopWatch& total) {

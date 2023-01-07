@@ -14,15 +14,15 @@ namespace forge
 	namespace ml
 	{
 		// returns total loss of the epoch
-		template<typename DataLoader>
+		template<typename DataLoader, typename NetworkType>
 		float trainEpoch(
-			NetworkF& network,
-			DataLoader& loader,
-			torch::optim::Optimizer& optimizer,
+			NetworkType & network,
+			DataLoader & loader,
+			torch::optim::Optimizer & optimizer,
 			size_t epoch,
 			size_t data_size,
-			CheckpointManager& checkpointManager) {
-			size_t index = 0;
+			CheckpointManager & checkpointManager) {
+			size_t index = 0;// TODO: remove this if unneeded
 			network->train();
 
 			float totalLoss = 0;
@@ -45,7 +45,7 @@ namespace forge
 
 			// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-			for (auto& batch : loader) {
+			for (auto & batch : loader) {
 				getTime.pause();
 
 				transferTime.resume();
@@ -56,9 +56,10 @@ namespace forge
 				nSamples += data.sizes()[0];
 				batchCount++;
 
-				for (size_t reuse = 0; reuse < 32; reuse++) {
+				for (size_t reuse = 0; reuse < 1; reuse++) {
 					//cout << "Resuse: " << reuse << endl;
 					// --- Forward Pass ---
+
 					forwardTime.resume();
 					auto output = network->forward(data);
 					forwardTime.pause();
@@ -94,7 +95,7 @@ namespace forge
 						std::cout
 							<< "Train Epoch: " << epoch
 							<< " nSamples: " << nSamples << " of " << data_size << ' '
-							<< setprecision(3) << 100.0f * float(nSamples) / data_size << "% of dataset" << endl
+							<< setprecision(3) << 100.0f * float(nSamples) / data_size << "% of trainDataset" << endl
 							<< "\tEpoch Time:   " << chrono::duration_cast<chrono::seconds>(totalTime.elapsed()).count() << " sec" << endl
 							<< "\tTotal Loss:   " << totalLoss / batchCount << endl
 							<< "\tBatch Loss:   " << loss.template item<float>() << endl
@@ -113,7 +114,7 @@ namespace forge
 						cout << "done" << endl;
 						cout << endl;
 
-						printTimer.expires_from_now(chrono::seconds(60));
+						printTimer.expires_from_now(chrono::seconds(6/*60*/));
 						printTimer.resume();
 						totalTime.resume();
 					}
@@ -123,7 +124,7 @@ namespace forge
 			}
 
 			filesystem::path file = checkpointManager.generateFilename(epoch);
-			
+
 			cout << "saving to " << file.generic_string() << "...";
 			torch::save(network, file.generic_string());
 			cout << "done" << endl;
@@ -132,100 +133,77 @@ namespace forge
 			return totalLoss / batchCount;
 		}
 
-		// --------------------------------------------------------------------
+		template<typename DataLoader, typename NetworkType>
+		float testEpoch(
+			NetworkType & network,
+			DataLoader & loader) {
 
-		void Trainer::train() {
-			this->init();
-			ofstream out;
+			cout << "--- Test Epoch ---" << endl;
 
-			filesystem::path lossFile = _checkpoint.networkDir() / "loss.txt";
-			out.open(lossFile.generic_string());
-			out << left
-				<< "Training:" << endl
-				<< setw(10) << "Epoch:" << setw(10) << "Loss:" << endl;
-
-			cout << "Mapping dataset" << endl;
-			auto dataset = _dataset.map(torch::data::transforms::Stack<>());
-			auto size = dataset.size().value();
-			int batchSize = 5'000;
-
-			cout << "Preparing loader" << endl;
-			auto loader =
-				torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
-					std::move(dataset), batchSize);
-
-			torch::optim::Adam optimizer(
-				_network->parameters(), torch::optim::AdamOptions(0.002));
-
-			for (size_t epoch = 0; epoch < 20; epoch++) {
-				float epochLoss = trainEpoch(_network, *loader, optimizer, epoch + 1, size, _checkpoint);
-				out << setw(10) << epoch << setw(10) << epochLoss << endl;
-				cout << endl;
-			}
-		}
-
-		void Trainer::test() {
-			this->init();
-
-			cout << "Mapping dataset" << endl;
-			auto dataset = _dataset.map(torch::data::transforms::Stack<>());
-			auto size = dataset.size().value();
-
-			cout << "Preparing loader" << endl;
-			auto loader =
-				torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
-					std::move(dataset), 5'000);
+			network->train(false);
 
 			float totalLoss = 0;
 			size_t nSamples = 0;
-			forge::Timer printTimer;
+			int batchCount = 0;
 
-			for (auto& batch : *loader) {
+			for (auto & batch : loader) {
 				auto data = batch.data.to(g_computingDevice);
 				auto targets = batch.target.to(g_computingDevice);
 
 				nSamples += data.sizes()[0];
+				batchCount++;
 
-				// --- Forward Pass ---
-				auto output = _network->forward(data);
+				auto output = network->forward(data);
 
-				// --- Calc Loss --- 
 				auto loss = torch::mse_loss(output, targets);
 
 				if (std::isnan(loss.template item<float>())) {
 					cout << "Error: nan" << endl;
 					continue;
 				}
+
 				totalLoss += loss.template item<float>();
-
-				if (printTimer.is_expired()) {
-					std::cout
-						<< " nSamples: " << nSamples << " of " << size << ' '
-						<< "\t" << setprecision(3) << 100.0f * float(nSamples) / size << "% of dataset" << endl
-						<< "\tTotal Loss:         " << totalLoss / nSamples << endl
-						<< "\tBatch Loss:         " << loss.template item<float>() / output.sizes()[0] << endl
-						;
-
-					printTimer.expires_from_now(chrono::seconds(8));
-					printTimer.resume();
-				}
 			}
+
+			cout << "Test Loss: " << totalLoss / batchCount << endl;
+
+			return totalLoss / batchCount;
 		}
 
-		void Trainer::init() {
-			// --- Load Data ---
-			filesystem::path path = 
-				R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData.csv)dil";
+		// --------------------------------------------------------------------
 
-			cout << "Preparing dataset" << endl;
-			_dataset = StockfishDataset();
-			_dataset.open(path);
-			_dataset.skip(0);
+		void Trainer::train() {
+			// --- Load Data ---
+			filesystem::path path;
+
+			// --- Training Data ---
+
+			cout << "Preparing Train Dataset" << endl;
+
+			path =
+				R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData_train.csv)dil";
+
+			_trainDataset = StockfishDataset();
+			_trainDataset.open(path);
+			_trainDataset.skip(0);
+
+			// --- Testing Data ---
+
+			cout << "Preparing Test Dataset" << endl;
+
+			path =
+				R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData_test.csv)dil";
+
+			_testDataset = StockfishDataset();
+			_testDataset.open(path);
+			_testDataset.skip(0);
+
+			// --- Checkpoints ---
 
 			_checkpoint.checkpointDir(g_checkpointDir);
-			_checkpoint.name("networkF");
+			_checkpoint.name(_network);
 
-			// --- Training Loop ---
+			// --- Load/Make Network ---
 
 			filesystem::path latest = _checkpoint.latest();
 			if (filesystem::exists(latest)) {
@@ -237,8 +215,73 @@ namespace forge
 				cout << "Uhho " << latest.generic_string() << " does not exist" << endl;
 			}
 
-			_network->to(g_computingDevice);
-		}
+			_network->to(g_computingDevice); 
+			
+			ofstream out;
 
+			filesystem::path lossFile = _checkpoint.networkDir() / "loss.txt";
+
+			// --- Log File ---
+
+			out.open(lossFile.generic_string());
+			if (out.is_open()) {
+				cout << "Saving loss to: " << lossFile.generic_string() << endl;
+			}
+			else {
+				cout << "Error: Could not open a loss file for writting. " << lossFile.generic_string() << endl;
+			}
+
+			out << left
+				<< "Training:" << endl
+				<< setw(15) << "Epoch:" << setw(15) << "Train Loss: " << setw(15) << "Test Loss: " << endl
+				<< flush;
+
+			// --- Training Data ---
+
+			cout << "Mapping Training Dataset" << endl;
+			auto trainDataset = _trainDataset.map(torch::data::transforms::Stack<>());
+			auto trainSize = trainDataset.size().value();
+			int batchSize = 5'000;
+
+			cout << "Preparing Training Data Loader" << endl;
+			auto trainLoader =
+				torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
+					std::move(trainDataset), batchSize);
+
+			cout << "Creating Optimizer" << endl;
+			torch::optim::Adam optimizer(
+				_network->parameters(), torch::optim::AdamOptions(0.002));
+
+			// --- Testing Data ---
+
+			cout << "Mapping Testing Dataset" << endl;
+			auto testDataset = _testDataset.map(torch::data::transforms::Stack<>());
+			auto testSize = testDataset.size().value();
+
+			cout << "Preparing Testing Data Loader" << endl;
+			auto testLoader =
+				torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
+					std::move(testDataset), batchSize);
+
+			// --- Training Loop ---
+
+			cout << "--- Training Loop ---" << endl;
+
+			for (size_t epoch = 0; epoch < 20; epoch++) {
+				cout << "--- Epoch: " << epoch + 1 << " ---" << endl;
+				out << setw(15) << epoch + 1 << ' ' << flush;
+
+				// --- Train Epoch ---
+				float epochLoss = trainEpoch(_network, *trainLoader, optimizer, epoch + 1, trainSize, _checkpoint);
+				out << setw(15) << epochLoss << ' ' << flush;
+				
+				// --- Test Epoch ---
+				float validationLoss = testEpoch(_network, *testLoader);
+				out << setw(15) << validationLoss << ' ' << flush;
+
+				out << endl << flush;
+				cout << endl;
+			}
+		}
 	} // namespace ml
 } // namespace forge

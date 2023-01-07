@@ -66,7 +66,7 @@ namespace forge
 			leaf << _name << "_";
 
 			//leaf << "default";
-			leaf << right << "00000";
+			leaf << right << setfill('0') << setw(nDigits) << '\0';
 
 			leaf << _ext.string();
 
@@ -96,7 +96,7 @@ namespace forge
 				leaf << "default";
 			}
 			else {
-				leaf << right << setfill('0') << setw(5) << epoch;
+				leaf << right << setfill('0') << setw(nDigits) << epoch;
 			}
 				
 			leaf << _ext.string();

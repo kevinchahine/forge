@@ -28,9 +28,11 @@ namespace forge
 
 			CheckpointManager _checkpoint;
 
-			StockfishDataset _dataset;
+			StockfishDataset _trainDataset;
 
-			NetworkF _network;
+			StockfishDataset _testDataset;
+
+			NetworkJ _network;
 		};
 	} // namespace ml
 } // namespace forge
