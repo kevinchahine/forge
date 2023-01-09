@@ -147,7 +147,6 @@ public:
 		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.15)));
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 1));
 	}
-
 private:
 };
 TORCH_MODULE(NetworkI);
@@ -164,7 +163,42 @@ public:
 		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.15)));
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 1));
 	}
-
 private:
 };
 TORCH_MODULE(NetworkJ);
+
+class NetworkKImpl : public torch::nn::SequentialImpl
+{
+public:
+	NetworkKImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 512));
+		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.2)));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 256));
+		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.2)));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 256));
+		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.2)));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 32));
+		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.2)));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(32, 1));
+	}
+private:
+};
+TORCH_MODULE(NetworkK);
+
+class NetworkLImpl : public torch::nn::SequentialImpl
+{
+public:
+	NetworkLImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 512));
+		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.2)));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 256));
+		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.2)));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 256));
+		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.2)));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 32));
+		torch::nn::SequentialImpl::push_back(torch::nn::LeakyReLU(torch::nn::LeakyReLUOptions().negative_slope(0.2)));
+		torch::nn::SequentialImpl::push_back(torch::nn::Linear(32, 1));
+	}
+private:
+};
+TORCH_MODULE(NetworkL);

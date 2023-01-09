@@ -119,7 +119,7 @@ namespace forge
 			//	- preprocessingBatch, inferenceBatch
 			//	- preBatch, postBatch
 			TensorPair _cpuBatch;// Batch storing data on CPU. Used for preprocessing
-			TensorPair _gpuBatch;// Batch storing data on GPU. Used for training operations
+			TensorPair _gpuBatch;// Batch storing data on GPU. Used for training/testing
 			int64_t _gpuBatchIt = 0;
 		};
 	} // namespace ml

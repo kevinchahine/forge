@@ -18,11 +18,6 @@ namespace forge
 
 			void train();
 
-			void test();
-
-		private:
-			void init();
-
 		private:
 			std::filesystem::path _checkpointDir;
 
@@ -32,7 +27,7 @@ namespace forge
 
 			StockfishDataset _testDataset;
 
-			NetworkJ _network;
+			NetworkC _network;
 		};
 	} // namespace ml
 } // namespace forge

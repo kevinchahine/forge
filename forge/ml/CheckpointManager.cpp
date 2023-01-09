@@ -17,8 +17,14 @@ namespace forge
 			_checkpointDir = dir;
 		}
 
-		std::filesystem::path CheckpointManager::networkDir() const {
-			return _checkpointDir / "checkpoints" / _name;
+		filesystem::path CheckpointManager::networkDir() const {
+			filesystem::path p = _checkpointDir / "checkpoints" / _name;
+
+			if (filesystem::exists(p) == false) {
+				filesystem::create_directories(p);
+			}
+
+			return p;
 		}
 		
 		size_t CheckpointManager::countCheckpoints() const {
