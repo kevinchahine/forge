@@ -15,7 +15,7 @@ namespace forge
 
 		void expand();
 
-		void prune();
+		/////void prune();
 
 		heuristic_t& fitness() { return m_fitness; }
 		const heuristic_t& fitness() const { return m_fitness; }
@@ -72,7 +72,7 @@ namespace forge
 
 				if (p_node != nullptr) {
 					// *** Now we're at the parent node ***
-					p_node->prune();			// prune children of parent
+					////p_node->prune();			// prune children of parent
 
 					// We've already been here so we need to keep iterating to 
 					// later nodes

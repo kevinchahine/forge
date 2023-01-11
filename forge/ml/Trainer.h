@@ -27,7 +27,7 @@ namespace forge
 
 			StockfishDataset _testDataset;
 
-			NetworkC _network;
+			NetworkA _network;
 		};
 	} // namespace ml
 } // namespace forge

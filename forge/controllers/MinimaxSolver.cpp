@@ -44,7 +44,7 @@ namespace forge
 			// TODO: WE REALLY NEED TO DO THIS NEXT
 			// Could this be done more easily in isLeafNode() see below vvv
 			GameState state;
-			state(*it);
+			state.init(*it);
 
 			// --- 4.) Evaluate this position ---
 			// We only want to evaluate leaf nodes

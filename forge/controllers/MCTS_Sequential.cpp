@@ -7,44 +7,6 @@ using namespace std;
 
 namespace forge
 {
-	// -------------------------------- HELPER FUNCTIONS -------------------------
-
-	vector<const Position *> getChildrenPositions(const MCTS_Node::iterator & it) {
-		const auto & children = (*it).children();
-
-		vector<const Position *> pChildren;
-
-		pChildren.reserve(children.size());
-
-		for (const auto & child : children) {
-			pChildren.emplace_back(&child->position());// get address of child position
-		}
-
-		return pChildren;
-	}
-
-	// Returns sum of children evaluations
-	float updateChildrenUCB(const MCTS_Node::iterator & it, const vector<heuristic_t> & childrenEvals) {
-		const auto & children = (*it).children();
-		
-		#if _DEBUG
-		assert(children.size() == childrenEvals.size());
-		#endif 
-
-		float sum = 0.0f;
-
-		for (size_t i = 0; i < childrenEvals.size(); i++) {
-			const auto & child = children.at(i);
-			float eval = UCB::mapRange(childrenEvals.at(i));
-
-			child->update(eval);
-
-			sum += eval;
-		}
-
-		return sum;
-	}
-
 	// -------------------------------- METHODS ----------------------------------
 
 	void MCTS_Sequential::solve() {
@@ -75,7 +37,7 @@ namespace forge
 				sm.selection.resume();
 
 				// --- Move DOWN the tree ---
-				if ((*curr).isPruned() == false && curr.hasChildren()) {
+				if (curr.hasChildren()) {
 					curr.toBestUCB();
 					sm.selection.pause();
 				}
@@ -108,28 +70,33 @@ namespace forge
 				// No node is still Fresh
 				curr.expand();
 
+				GameState gstate;
+				gstate.init(*curr);// Pass in number of children. Use more efficient overload.
+
 				// --- Is Terminal or Intermediate? ---
-				if (curr.hasChildren()) {
+				if (gstate.isGameOn() /*&& curr.hasChildren()*/) {
 					// Intermediate Node. Evaluate using Heuristic.
 
 					bool maximizeWhite = (*curr).position().isWhitesTurn();
 
-					vector<const Position *> pChildren = getChildrenPositions(curr);
+					vector<const Position *> pChildren = (*curr).getChildrenPositions();
 
 					vector<heuristic_t> evals = this->m_heuristicPtr->eval(pChildren, maximizeWhite);
 
-					eval = -updateChildrenUCB(curr, evals);
+					eval = -(*curr).updateChildrenUCB(evals);
 
 					nEvals = evals.size();
 				}
 				else {
 					// Terminal Node. Evaluate using Game State.
 					bool maximizeWhite = (*curr).position().isBlacksTurn();
-					GameState gstate;
-					gstate(*curr);
 					eval = (float) UCB::WINNING_EVAL * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
 					nEvals = 1;
 
+					(*curr).lastVisit();
+				}
+
+				if (curr.hasChildren() == false) {
 					(*curr).lastVisit();
 				}
 				
@@ -155,40 +122,5 @@ namespace forge
 				sm.backprop.pause();
 			}
 		} // end while(true)
-
-		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvv REMOVE VVVVVVVVVVVVVVVVVVVVVVV
-		////cout << guten::color::lightred;
-		////
-		////if (badTraversals > 0) {
-		////	cout << badTraversals << " bad traversals discovered" << endl;
-		////}
-		////else {
-		////	cout << guten::color::green << " no bad traversals Yay!!!" << endl;
-		////}
-		////
-		////curr = m_nodeTree.root();
-		////
-		////stack<MCTS_Node *> frontier;
-		////
-		////frontier.push(&m_nodeTree);
-		////
-		////while (frontier.size()) {
-		////	const MCTS_Node * top = frontier.top();
-		////	frontier.pop();
-		////
-		////	if (top->nBadVisits > 0) {
-		////		cout << top->nBadVisits << "\tbad visits." << endl;
-		////
-		////		cout << "----" << endl;
-		////	}
-		////
-		////	for (const auto & child : top->children()) {
-		////		frontier.push(child.get());
-		////	}
-		////}
-		////
-		////cout << guten::color::white;
-
-		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	}
 } // namespace forge

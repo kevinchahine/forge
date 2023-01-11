@@ -25,6 +25,8 @@ namespace forge
 
 			MovePositionPair bestMove = selectBestMove();
 
+			m_history.push_back(bestMove);
+
 			return bestMove;
 		}
 

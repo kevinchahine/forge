@@ -6,6 +6,7 @@
 #include <limits>
 #include <cmath>
 #include <stack>
+#include <vector>
 
 #include <boost/thread/mutex.hpp>
 
@@ -53,6 +54,12 @@ namespace forge
 
 		MCTS_Node * nextPtr() const { return m_nextPtr; }
 		bool hasNext() const { return m_nextPtr != nullptr; }
+
+		// Get the Positions of children that this iterator currently points to.
+		// Stores positions as a vector of pointers
+		std::vector<const Position *> getChildrenPositions();
+
+		float updateChildrenUCB(const std::vector<heuristic_t> & childrenEvals);
 
 	private: // -------------------------- PRIVATE FIELDS ------------------------
 		// Total score of all children
@@ -114,8 +121,7 @@ namespace forge
 			bool isLeaf() const { return p_node->isLeaf(); }
 
 			void expand() { p_node->expand(); }
-			void prune() { p_node->prune(); }
-
+			
 			// Moves iterator to parent node
 			// Can move to a null parent.
 			// If called on root, this iterator will be invalidated.
@@ -144,9 +150,6 @@ namespace forge
 
 			// * See comments of goToSelectedChild()
 			void toFirstChild();
-
-			// TODO: Implement this
-			void toNext();
 
 		private:
 			// node which iterator is currently referencing

@@ -118,6 +118,41 @@ namespace forge
 		}
 	}
 
+	vector<const Position *> MCTS_Node::getChildrenPositions() {
+		const auto & children = (*this).children();
+
+		vector<const Position *> pChildren;
+
+		pChildren.reserve(children.size());
+
+		for (const auto & child : children) {
+			pChildren.emplace_back(&child->position());// get address of child position
+		}
+
+		return pChildren;
+	}
+
+	float MCTS_Node::updateChildrenUCB(const vector<heuristic_t> & childrenEvals) {
+		const auto & children = this->children();
+
+		#if _DEBUG
+		assert(children.size() == childrenEvals.size());
+		#endif 
+
+		float sum = 0.0f;
+
+		for (size_t i = 0; i < childrenEvals.size(); i++) {
+			const auto & child = children.at(i);
+			float eval = UCB::mapRange(childrenEvals.at(i));
+
+			child->update(eval);
+
+			sum += eval;
+		}
+
+		return sum;
+	}
+
 	// ----------------------------------- ITERATOR ------------------------------
 
 	void MCTS_Node::iterator::toBestUCB(int nThBest) {
@@ -157,24 +192,5 @@ namespace forge
 
 	void MCTS_Node::iterator::toFirstChild() {
 		p_node = p_node->children().back().get();
-	}
-
-	void MCTS_Node::iterator::toNext() {
-		while (true) {
-			if (p_node->hasNext()) {
-				// --- Go to Sibling ---
-				p_node = p_node->nextPtr();
-				break;
-			}
-
-			if (p_node->hasParent()) {
-				// --- Going to Aunt/Uncle (through parent) ---
-				p_node = p_node->parentPtr();
-			}
-			else {
-				// *** We reached the Root ***
-				break;
-			}
-		}
 	}
 } // namespace forge

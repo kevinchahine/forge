@@ -102,7 +102,7 @@ namespace forge
 			m_history.emplace_back(pair); // Its just that simple.
 
 			// Check the game state
-			gstate(m_history);
+			gstate.init(m_history);
 			if (gstate.state != GameState::STATE::CONTINUE) {
 				cout << "Game over: " << gstate << '\n';
 				m_viewPtr->show(m_history.current().position);

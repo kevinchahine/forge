@@ -126,7 +126,7 @@ namespace forge
 					
 					for (size_t t = 1; t <= CONCURRENCY; t++) {
 						cout << "Thread Count = " << t << endl;
-						concurrentMCTS.threadCount() = t;
+						concurrentMCTS.threadCount(t);
 					
 						xlnt::row_t row = xlnt::row_t(sequentialRow + t);
 					
@@ -346,11 +346,11 @@ namespace forge
 						expansion.pause();
 
 						// --- selection ---
-						selection.resume();
-						if ((*it).isPruned() == false && it.hasChildren()) {
-							it.toBestUCB();
-						}
-						selection.pause();
+						///selection.resume();
+						///if ((*it).isPruned() == false && it.hasChildren()) {
+						///	it.toBestUCB();
+						///}
+						///selection.pause();
 
 						// --- backpropagation ---
 						backpropagation.resume();

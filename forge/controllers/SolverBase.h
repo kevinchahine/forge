@@ -3,6 +3,7 @@
 #include "forge/controllers/ControllerBase.h"
 #include "forge/heuristic/Base.h"
 #include "forge/search/SearchMonitor.h"
+#include "forgelib/forge/core/game_history.h"
 
 #include <forge/core/MoveGenerator2.h>
 
@@ -16,6 +17,13 @@ namespace forge
 	{
 	public:
 		virtual void printSearchMonitor() const = 0;
+
+	protected:
+		// Stores history of moves made by this agent since the beginning of the game.
+		// Only stores moves made by this agent (not opponent).
+		// This is used to detect draw by repetitions during search. 
+		// Each subclass must push its next move during each call to getMove()
+		game_history m_history;
 	};
 
 	template< template< typename T, typename... > class AC, typename... Args >

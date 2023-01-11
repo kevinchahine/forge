@@ -184,6 +184,7 @@ namespace forge
 				R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData_train.csv)dil";
 
 			_trainDataset = StockfishDataset();
+			_trainDataset.batchSize(100'00);
 			_trainDataset.open(path);
 			_trainDataset.skip(0);
 

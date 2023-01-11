@@ -26,7 +26,7 @@ namespace forge
 
 			// Determine current state. 
 			// We might already be at a terminal node.
-			gstate(history);
+			gstate.init(history);
 
 			// Repeat until reaching a terminal node
 			while (gstate.isGameOn()) {
@@ -38,7 +38,7 @@ namespace forge
 				history.emplace_back(next);
 
 				// Determine state
-				gstate(history);
+				gstate.init(history);
 			}
 
 			// *** By now we will have reached a terminal node (win, loss, or draw) ***
