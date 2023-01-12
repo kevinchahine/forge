@@ -14,6 +14,7 @@ class NetworkAImpl : public torch::nn::SequentialImpl
 {
 public:
 	NetworkAImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Flatten(torch::nn::FlattenOptions().start_dim(1).end_dim(4)));
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1024));
 		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(1024, 512));
@@ -31,6 +32,7 @@ class NetworkBImpl : public torch::nn::SequentialImpl
 {
 public:
 	NetworkBImpl() {
+		torch::nn::SequentialImpl::push_back(torch::nn::Flatten(torch::nn::FlattenOptions().start_dim(1).end_dim(4)));
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 256));
 		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 128));

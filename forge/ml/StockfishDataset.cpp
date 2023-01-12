@@ -226,7 +226,7 @@ namespace forge
 			// --- Reset Tensors ---
 			resizeTime.resume();
 			// Should be a no-op after 1st call!!!
-			_cpuBatch.resize(_batchSize, forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1, torch::kCPU);
+			_cpuBatch.resize(_batchSize, torch::kCPU);
 			_gpuBatchIt = 0;
 			resizeTime.pause();
 			

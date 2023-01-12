@@ -3,6 +3,8 @@
 #include <queue>
 #include <filesystem>
 
+#include "forge/heuristic/FeatureExtractor.h"
+
 #include <torch/torch.h>
 
 namespace forge
@@ -38,23 +40,32 @@ namespace forge
 			public:
 				size_t nSamples() const { return std::min(input.sizes()[0], output.sizes()[0]); }
 
-				void resize(int64_t nSamples, int64_t inputs, int64_t outputs, const torch::Device& device) {
-					if (input.sizes()[0] != nSamples || input.sizes()[1] != inputs) {
-						//input = input.to(torch::kCPU);
-						input = torch::zeros({ nSamples, inputs }, device);
+				void resize(int64_t nSamples, const torch::Device& device) {
+
+					// --- Input Tensor ---
+					c10::IntArrayRef sizes = input.sizes();
+					
+					if (sizes.size() != 4 || 
+						sizes.at(0) != nSamples ||
+						sizes.at(1) != 8 ||
+						sizes.at(2) != 8 ||
+						sizes.at(3) != heuristic::FeatureExtractor::N_LAYERS) {
+
+						input = torch::zeros({ nSamples, 8, 8, heuristic::FeatureExtractor::N_LAYERS }, device);
 					}
 
-					if (output.sizes()[0] != nSamples || output.sizes()[1] != outputs) {
-						//output = output.to(torch::kCPU);
-						output = torch::zeros({ nSamples, outputs }, device);
+					// --- Output Tensor ---
+
+					if (output.sizes()[0] != nSamples || output.sizes()[1] != 1) {
+						output = torch::zeros({ nSamples, 1 }, device);
 					}
 
 					input = input.to(device);
 					output = output.to(device);
 				}
 
-				void resize(int64_t nSamples, int64_t inputs, int64_t outputs) {
-					resize(nSamples, inputs, outputs, input.device());
+				void resize(int64_t nSamples) {
+					resize(nSamples, input.device());
 				}
 
 				TensorPair to(torch::Device& device) {
@@ -72,8 +83,8 @@ namespace forge
 					return os;
 				}
 			public:
-				torch::Tensor input ;// = torch::zeros({ 1, 1 });
-				torch::Tensor output;// = torch::zeros({ 1, 1 });
+				torch::Tensor input;
+				torch::Tensor output;
 			};
 
 		public: // -------------------- METHODS -------------------------------

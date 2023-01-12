@@ -69,8 +69,6 @@ set(HEURISTIC
 set(ML
 	ml/CheckpointManager.cpp
 	ml/CheckpointManager.h
-	ml/DatasetGenerator.cpp
-	ml/DatasetGenerator.h
 	ml/Network.cpp
 	ml/Network.h
 	ml/StockfishDataset.cpp

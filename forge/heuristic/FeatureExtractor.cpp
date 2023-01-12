@@ -9,25 +9,22 @@ namespace forge
 {
 	namespace heuristic
 	{
-		bool checkTensorSize(const torch::Tensor& slice, size_t nColumns) {
+		// ---------------------------- STATIC FIELDS -------------------------
+
+		const std::vector<int64_t> FeatureExtractor::TENSOR_SAMPLE_SIZE = { 1, 8, 8, N_LAYERS };
+
+		// ---------------------------- HELPER FUNCTIONS ----------------------
+
+		bool checkTensorSize(const torch::Tensor & slice) {
+			// --- Alias ---
 			const bool GOOD_SIZE = true;
 			const bool BAD_SIZE = false;
 
-			if (slice.dim() != 2) {
+			// --- Check Dimensions ---
+			if (slice.sizes() != FeatureExtractor::TENSOR_SAMPLE_SIZE) {
 				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
-					<< "\tslice must be a 2D tensor with 1 row and " << nColumns << " columns. slice.sizes() = " << slice.sizes() << endl;
-				cin.get();
-				return BAD_SIZE;
-			}
-			else if (slice.size(0) != 1) {
-				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
-					<< "\tslice must be a 2D tensor with 1 row. slice.sizes() = " << slice.sizes() << endl;
-				cin.get();
-				return BAD_SIZE;
-			}
-			else if (slice.size(1) != nColumns) {
-				cout << "Error: " << __FILE__ << " line " << __LINE__ << endl
-					<< "\tslice must be a 2D tensor with " << nColumns << " columns. slice.sizes() = " << slice.sizes() << endl;
+					<< "\tTensor must be a 4D tensor of shape " << FeatureExtractor::TENSOR_SAMPLE_SIZE << endl
+					<< "\tInstead got a Tensor of shape " << slice.sizes() << endl;
 				cin.get();
 				return BAD_SIZE;
 			}
@@ -35,7 +32,7 @@ namespace forge
 			return GOOD_SIZE;
 		}
 
-		void FeatureExtractor::init(const Position& pos, bool forWhite) {
+		void FeatureExtractor::init(const Position & pos, bool forWhite) {
 			// Orient board so that the moving player (ours) is on the bottom 
 			// and waiting player (theirs) is on the top
 			board = (forWhite ? pos.board() : pos.board().rotated());
@@ -71,87 +68,29 @@ namespace forge
 
 		// ------------------------- EXTRACT METHODS ---------------------------------
 
-		void FeatureExtractor::extractMaterial(torch::Tensor& slice) {
-			if (checkTensorSize(slice, MATERIAL_FEATURES_SIZE) == false)
+		void FeatureExtractor::extractMaterial(torch::Tensor & slice) {
+			if (checkTensorSize(slice) == false)
 				return;
 
-			auto accessor = slice.accessor<float, 2>();	// Good for CPU access
+			auto accessor = slice.accessor<float, 4>();	// Good for fast CPU access
 
 			for (size_t bit = 0; bit < 64; bit++) {
-				accessor[0][64 * 0 + bit] = static_cast<float>(ourKings[bit]);
-				accessor[0][64 * 1 + bit] = static_cast<float>(ourQueens[bit]);
-				accessor[0][64 * 2 + bit] = static_cast<float>(ourBishops[bit]);
-				accessor[0][64 * 3 + bit] = static_cast<float>(ourKnights[bit]);
-				accessor[0][64 * 4 + bit] = static_cast<float>(ourRooks[bit]);
-				accessor[0][64 * 5 + bit] = static_cast<float>(ourPawns[bit]);
-				accessor[0][64 * 6 + bit] = static_cast<float>(theirKings[bit]);
-				accessor[0][64 * 7 + bit] = static_cast<float>(theirQueens[bit]);
-				accessor[0][64 * 8 + bit] = static_cast<float>(theirBishops[bit]);
-				accessor[0][64 * 9 + bit] = static_cast<float>(theirKnights[bit]);
-				accessor[0][64 * 10 + bit] = static_cast<float>(theirRooks[bit]);
-				accessor[0][64 * 11 + bit] = static_cast<float>(theirPawns[bit]);
-			}
-		}
+				int64_t row = bit / 8;
+				int64_t col = bit % 8;
 
-		void FeatureExtractor::extractMobility(torch::Tensor& slice) {
-			if (checkTensorSize(slice, MOBILITY_FEATURES_SIZE) == false)
-				return;
-
-			// TODO: something goes here
-		}
-
-		// nodes:
-		//  1th  64: ourAttackedKings	
-		//	2st  64: ourAttackedQueens
-		//	3nd  64: ourAttackedBishops
-		//	4rd  64: ourAttackedKnights
-		//  5th  64: ourAttackedRooks
-		//  6th  64: ourAttackedPawns
-		//  7th  64: theirAttackedKings
-		//	8th  64: theirAttackedQueens
-		//	9th  64: theirAttackedBishops
-		//	10th 64: theirAttackedKnights
-		//  11th 64: theirAttackedRooks
-		//  12th 64: theirAttackedPawns
-		void FeatureExtractor::extractAttacked(torch::Tensor& slice) {
-			if (checkTensorSize(slice, ATTACKED_FEATURES_SIZE) == false)
-				return;
-
-			// --- Attacked Pieces ---
-			IntBoard attackedPieces = countAllAttacked();
-
-			IntBoard ourAttackedKings = attackedPieces & ourKings;
-			IntBoard ourAttackedQueens = attackedPieces & ourQueens;
-			IntBoard ourAttackedBishops = attackedPieces & ourBishops;
-			IntBoard ourAttackedKnights = attackedPieces & ourKnights;
-			IntBoard ourAttackedRooks = attackedPieces & ourRooks;
-			IntBoard ourAttackedPawns = attackedPieces & ourPawns;
-
-			IntBoard theirAttackedKings = attackedPieces & theirKings;
-			IntBoard theirAttackedQueens = attackedPieces & theirQueens;
-			IntBoard theirAttackedBishops = attackedPieces & theirBishops;
-			IntBoard theirAttackedKnights = attackedPieces & theirKnights;
-			IntBoard theirAttackedRooks = attackedPieces & theirRooks;
-			IntBoard theirAttackedPawns = attackedPieces & theirPawns;
-
-			auto accessor = slice.accessor<float, 2>();	// Good for CPU access
-
-			for (size_t row = 0; row < 8; row++) {
-				for (size_t col = 0; col < 8; col++) {
-					// TODO: Optimize: Can this be optimized with ifs. Hint: Sparse data.
-					accessor[0][64 * 0 + (row * 8 + col)] = static_cast<float>(ourAttackedKings[row][col]);
-					accessor[0][64 * 1 + (row * 8 + col)] = static_cast<float>(ourAttackedQueens[row][col]);
-					accessor[0][64 * 2 + (row * 8 + col)] = static_cast<float>(ourAttackedBishops[row][col]);
-					accessor[0][64 * 3 + (row * 8 + col)] = static_cast<float>(ourAttackedKnights[row][col]);
-					accessor[0][64 * 4 + (row * 8 + col)] = static_cast<float>(ourAttackedRooks[row][col]);
-					accessor[0][64 * 5 + (row * 8 + col)] = static_cast<float>(ourAttackedPawns[row][col]);
-					accessor[0][64 * 6 + (row * 8 + col)] = static_cast<float>(theirAttackedKings[row][col]);
-					accessor[0][64 * 7 + (row * 8 + col)] = static_cast<float>(theirAttackedQueens[row][col]);
-					accessor[0][64 * 8 + (row * 8 + col)] = static_cast<float>(theirAttackedBishops[row][col]);
-					accessor[0][64 * 9 + (row * 8 + col)] = static_cast<float>(theirAttackedKnights[row][col]);
-					accessor[0][64 * 10 + (row * 8 + col)] = static_cast<float>(theirAttackedRooks[row][col]);
-					accessor[0][64 * 11 + (row * 8 + col)] = static_cast<float>(theirAttackedPawns[row][col]);
-				}
+				accessor[0][row][col][0] = static_cast<float>(ourKings[bit]);
+				accessor[0][row][col][1] = static_cast<float>(ourQueens[bit]);
+				accessor[0][row][col][2] = static_cast<float>(ourBishops[bit]);
+				accessor[0][row][col][3] = static_cast<float>(ourKnights[bit]);
+				accessor[0][row][col][4] = static_cast<float>(ourRooks[bit]);
+				accessor[0][row][col][5] = static_cast<float>(ourPawns[bit]);
+				accessor[0][row][col][6] = static_cast<float>(theirKings[bit]);
+				accessor[0][row][col][7] = static_cast<float>(theirQueens[bit]);
+				accessor[0][row][col][8] = static_cast<float>(theirBishops[bit]);
+				accessor[0][row][col][9] = static_cast<float>(theirKnights[bit]);
+				accessor[0][row][col][10] = static_cast<float>(theirRooks[bit]);
+				accessor[0][row][col][11] = static_cast<float>(theirPawns[bit]);
+				accessor[0][row][col][12] = static_cast<float>(empty[bit]);
 			}
 		}
 
