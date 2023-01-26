@@ -151,6 +151,8 @@ namespace forge
 			// * See comments of goToSelectedChild()
 			void toFirstChild();
 
+			void toBestStochastic();
+
 		private:
 			// node which iterator is currently referencing
 			//std::stack<std::vector<std::shared_ptr<MCTS_Node> nodes;

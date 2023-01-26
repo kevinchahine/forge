@@ -184,7 +184,7 @@ namespace forge
 				R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData_train.csv)dil";
 
 			_trainDataset = StockfishDataset();
-			_trainDataset.batchSize(1'000);
+			_trainDataset.batchSize(10'000);
 			_trainDataset.open(path);
 			_trainDataset.skip(0);
 
@@ -202,7 +202,7 @@ namespace forge
 			// --- Checkpoints ---
 
 			_checkpoint.checkpointDir(g_checkpointDir);
-			_checkpoint.name(_network);
+			_checkpoint.name(_network->name());
 
 			// --- Load/Make Network ---
 

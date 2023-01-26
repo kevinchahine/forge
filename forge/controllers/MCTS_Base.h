@@ -23,7 +23,8 @@ namespace forge
 
 			m_searchMonitor.stop();	// stop the clock so we can record exact search time.
 
-			MovePositionPair bestMove = selectBestMove();
+			//MovePositionPair bestMove = selectBestMove();
+			MovePositionPair bestMove = selectBestStochasticMove();
 
 			m_history.push_back(bestMove);
 
@@ -43,6 +44,19 @@ namespace forge
 			bestIt.toMostVisited();
 
 			MovePositionPair solution {
+				(*bestIt).move(),
+				(*bestIt).position()
+			};
+
+			return solution;
+		}
+
+		MovePositionPair selectBestStochasticMove() {
+			MCTS_Node::iterator bestIt = m_nodeTree.root();
+
+			bestIt.toBestStochastic();
+
+			MovePositionPair solution{
 				(*bestIt).move(),
 				(*bestIt).position()
 			};

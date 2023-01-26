@@ -19,12 +19,12 @@ namespace forge
 				// !!! Make sure this remains an aggregate class !!!
 				// !!! Or define a full constructor !!!
 			public:
-				static FenEval parse(const std::string& line);
+				static FenEval parse(const std::string & line);
 
 				bool isValid() const { return fen.size(); }
 				bool isInValid() const { return !isValid(); }
 
-				friend std::ostream& operator<<(std::ostream& os, const FenEval& fe) {
+				friend std::ostream & operator<<(std::ostream & os, const FenEval & fe) {
 					os << fe.fen << '\t' << fe.eval;
 
 					return os;
@@ -40,18 +40,18 @@ namespace forge
 			public:
 				size_t nSamples() const { return std::min(input.sizes()[0], output.sizes()[0]); }
 
-				void resize(int64_t nSamples, const torch::Device& device) {
+				void resize(int64_t nSamples, const torch::Device & device) {
 
 					// --- Input Tensor ---
 					c10::IntArrayRef sizes = input.sizes();
-					
-					if (sizes.size() != 4 || 
-						sizes.at(0) != nSamples ||
-						sizes.at(1) != 8 ||
-						sizes.at(2) != 8 ||
-						sizes.at(3) != heuristic::FeatureExtractor::N_LAYERS) {
 
-						input = torch::zeros({ nSamples, 8, 8, heuristic::FeatureExtractor::N_LAYERS }, device);
+					if (sizes.size() != 4 ||
+						sizes.at(0) != nSamples ||
+						sizes.at(1) != heuristic::FeatureExtractor::N_LAYERS ||
+						sizes.at(2) != 8 ||
+						sizes.at(3) != 8) {
+
+						input = torch::zeros({ nSamples, heuristic::FeatureExtractor::N_LAYERS, 8, 8 }, device);
 					}
 
 					// --- Output Tensor ---
@@ -68,7 +68,7 @@ namespace forge
 					resize(nSamples, input.device());
 				}
 
-				TensorPair to(torch::Device& device) {
+				TensorPair to(torch::Device & device) {
 					TensorPair ret;
 
 					ret.input = input.to(device);
@@ -77,7 +77,7 @@ namespace forge
 					return ret;
 				}
 
-				friend std::ostream& operator<<(std::ostream& os, const TensorPair& pair) {
+				friend std::ostream & operator<<(std::ostream & os, const TensorPair & pair) {
 					os << pair.input.device() << '\t'
 						<< pair.output.device() << '\t';
 					return os;
@@ -90,17 +90,17 @@ namespace forge
 		public: // -------------------- METHODS -------------------------------
 
 			StockfishDataset() = default;
-			StockfishDataset(const StockfishDataset&);
-			StockfishDataset(StockfishDataset&&) noexcept = default;
+			StockfishDataset(const StockfishDataset &);
+			StockfishDataset(StockfishDataset &&) noexcept = default;
 			~StockfishDataset() noexcept = default;
-			StockfishDataset& operator=(const StockfishDataset&);
-			StockfishDataset& operator=(StockfishDataset&&) noexcept = default;
+			StockfishDataset & operator=(const StockfishDataset &);
+			StockfishDataset & operator=(StockfishDataset &&) noexcept = default;
 
-			void open(const std::filesystem::path& csvPath);
+			void open(const std::filesystem::path & csvPath);
 
 			void skip(size_t nLines);
 
-			const std::filesystem::path& filePath() const { return _csvFile; }
+			const std::filesystem::path & filePath() const { return _csvFile; }
 
 			void batchSize(size_t batchSize) { _batchSize = batchSize; }
 			size_t batchSize() { return _batchSize; }

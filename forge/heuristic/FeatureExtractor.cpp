@@ -11,7 +11,7 @@ namespace forge
 	{
 		// ---------------------------- STATIC FIELDS -------------------------
 
-		const std::vector<int64_t> FeatureExtractor::TENSOR_SAMPLE_SIZE = { 1, 8, 8, N_LAYERS };
+		const std::vector<int64_t> FeatureExtractor::TENSOR_SAMPLE_SIZE = { 1, N_LAYERS, 8, 8 };
 
 		// ---------------------------- HELPER FUNCTIONS ----------------------
 
@@ -78,19 +78,19 @@ namespace forge
 				int64_t row = bit / 8;
 				int64_t col = bit % 8;
 
-				accessor[0][row][col][0] = static_cast<float>(ourKings[bit]);
-				accessor[0][row][col][1] = static_cast<float>(ourQueens[bit]);
-				accessor[0][row][col][2] = static_cast<float>(ourBishops[bit]);
-				accessor[0][row][col][3] = static_cast<float>(ourKnights[bit]);
-				accessor[0][row][col][4] = static_cast<float>(ourRooks[bit]);
-				accessor[0][row][col][5] = static_cast<float>(ourPawns[bit]);
-				accessor[0][row][col][6] = static_cast<float>(theirKings[bit]);
-				accessor[0][row][col][7] = static_cast<float>(theirQueens[bit]);
-				accessor[0][row][col][8] = static_cast<float>(theirBishops[bit]);
-				accessor[0][row][col][9] = static_cast<float>(theirKnights[bit]);
-				accessor[0][row][col][10] = static_cast<float>(theirRooks[bit]);
-				accessor[0][row][col][11] = static_cast<float>(theirPawns[bit]);
-				accessor[0][row][col][12] = static_cast<float>(empty[bit]);
+				accessor[0][0][row][col] = static_cast<float>(ourKings[bit]);
+				accessor[0][1][row][col] = static_cast<float>(ourQueens[bit]);
+				accessor[0][2][row][col] = static_cast<float>(ourBishops[bit]);
+				accessor[0][3][row][col] = static_cast<float>(ourKnights[bit]);
+				accessor[0][4][row][col] = static_cast<float>(ourRooks[bit]);
+				accessor[0][5][row][col] = static_cast<float>(ourPawns[bit]);
+				accessor[0][6][row][col] = static_cast<float>(theirKings[bit]);
+				accessor[0][7][row][col] = static_cast<float>(theirQueens[bit]);
+				accessor[0][8][row][col] = static_cast<float>(theirBishops[bit]);
+				accessor[0][9][row][col] = static_cast<float>(theirKnights[bit]);
+				accessor[0][10][row][col] = static_cast<float>(theirRooks[bit]);
+				accessor[0][11][row][col] = static_cast<float>(theirPawns[bit]);
+				accessor[0][12][row][col] = static_cast<float>(empty[bit]);
 			}
 		}
 

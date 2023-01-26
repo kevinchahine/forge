@@ -193,4 +193,41 @@ namespace forge
 	void MCTS_Node::iterator::toFirstChild() {
 		p_node = p_node->children().back().get();
 	}
+	
+	void MCTS_Node::iterator::toBestStochastic() {
+		vector<shared_ptr<MCTS_Node>> & children = p_node->children();
+
+		// --- Count number of visits ---
+		vector<int> nVisits(children.size());
+
+		// Sum of all visits
+		int sum = 0;
+
+		for (int i = 0; i < nVisits.size(); i++) {
+			nVisits.at(i) = children.at(i)->nVisits();
+			sum += nVisits.at(i);
+		}
+
+		int average = sum / nVisits.size();
+
+		// --- Find all moves which are better than average ---
+		vector<int> bestEvals;
+		vector<int> bestIndex;
+
+		for (int i = 0; i < nVisits.size(); i++) {
+			if (nVisits.at(i) > average) {
+				bestEvals.push_back(nVisits.at(i));
+				bestIndex.push_back(i);
+			}
+		}
+
+		// --- Stochastic Selection ---
+		discrete_distribution<> dist(bestEvals.begin(), bestEvals.end());
+
+		size_t nBestIndex = dist(g_rand);
+
+		size_t selectionIndex = bestIndex.at(nBestIndex);
+
+		p_node = children.at(selectionIndex).get();
+	}
 } // namespace forge

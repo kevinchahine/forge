@@ -51,9 +51,9 @@ int main(int argc, char ** argv)
 	forge::initGlobalsTorch();
 
 	//forge::drivers::split_dataset(90.0f, R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData.csv)dil");
-	//forge::drivers::play_chess_match();
+	forge::drivers::play_chess_match();
 
-	forge::drivers::train_nn();
+	//forge::drivers::train_nn();
 
 	//forge::test::benchmark::mcts();
 	//forge::test::benchmark::mcts_phases();

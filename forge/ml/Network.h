@@ -10,23 +10,65 @@
 
 #include "forge/heuristic/FeatureExtractor.h"
 
-class NetworkAImpl : public torch::nn::SequentialImpl
+namespace forge
 {
-public:
-	NetworkAImpl() {
-		torch::nn::SequentialImpl::push_back(torch::nn::Flatten(torch::nn::FlattenOptions().start_dim(1).end_dim(4)));
-		torch::nn::SequentialImpl::push_back(torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1024));
-		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
-		torch::nn::SequentialImpl::push_back(torch::nn::Linear(1024, 512));
-		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
-		torch::nn::SequentialImpl::push_back(torch::nn::Linear(512, 256));
-		torch::nn::SequentialImpl::push_back(torch::nn::Functional(torch::relu));
-		torch::nn::SequentialImpl::push_back(torch::nn::Linear(256, 1));
-	}
+	namespace ml
+	{
+		class Flatten : public torch::nn::Module
+		{
+		public:
+			static torch::Tensor forward(torch::Tensor t) {
+				int64_t nSamples = t.size(0);
 
-private:
-};
-TORCH_MODULE(NetworkA);
+				int64_t elements = 1;
+				for (int i = 1; i < t.dim(); i++) {
+					elements *= t.size(i);
+				}
+
+				return t.view({ nSamples, elements });
+			}
+		};
+
+		class Network : public torch::nn::Module {
+		public:
+			virtual torch::Tensor forward(torch::Tensor x) = 0;
+
+			virtual std::string name() = 0;
+		};
+
+		class NetworkA : public Network
+		{
+		public:
+			NetworkA() {
+				l1 = register_module("l1", torch::nn::Linear(forge::heuristic::FeatureExtractor::MATERIAL_FEATURES_SIZE, 1024));
+				l2 = register_module("l2", torch::nn::Linear(1024, 512));
+				l3 = register_module("l3", torch::nn::Linear(512, 256));
+				l4 = register_module("l4", torch::nn::Linear(256, 1));
+			}
+
+			virtual torch::Tensor forward(torch::Tensor x) override {
+				x = forge::ml::Flatten::forward(x);
+				x = l1->forward(x);
+				x = torch::relu(x);
+				x = l2->forward(x);
+				x = torch::relu(x);
+				x = l3->forward(x);
+				x = torch::relu(x);
+				x = l4->forward(x);
+
+				return x;
+			}
+
+			virtual std::string name() override { return "NetworkA"; }
+
+		private:
+			torch::nn::Linear l1{ nullptr };
+			torch::nn::Linear l2{ nullptr };
+			torch::nn::Linear l3{ nullptr };
+			torch::nn::Linear l4{ nullptr };
+		};
+	} // namespace ml
+} // namespace forge
 
 class NetworkBImpl : public torch::nn::SequentialImpl
 {

@@ -27,7 +27,7 @@ namespace forge
 
 			StockfishDataset _testDataset;
 
-			NetworkA _network;
+			std::shared_ptr<Network> _network = std::make_shared<NetworkA>();
 		};
 	} // namespace ml
 } // namespace forge

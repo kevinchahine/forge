@@ -57,12 +57,12 @@ namespace forge
 				//forge::heuristic::NeuralNetwork>(networkFile);
 				//forge::heuristic::NeuralNetwork>();
 
-			//whiteController->searchMonitor().timeLimit = std::chrono::seconds(10);
-			//blackController->searchMonitor().timeLimit = std::chrono::seconds(10);
+			whiteController->searchMonitor().timeLimit = std::chrono::seconds(5);
+			blackController->searchMonitor().timeLimit = std::chrono::seconds(5);
 
-			int nodeLimit = 6'000'000;
-			whiteController->searchMonitor().nodeLimit = nodeLimit;
-			blackController->searchMonitor().nodeLimit = nodeLimit;
+			//int nodeLimit = 6'000'000;
+			//whiteController->searchMonitor().nodeLimit = nodeLimit;
+			//blackController->searchMonitor().nodeLimit = nodeLimit;
 
 			//whiteController->threadCount() = 16;
 			//blackController->threadCount() = 16;
