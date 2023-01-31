@@ -30,14 +30,14 @@ namespace forge
 				//make_unique<MinimaxSolver>();
 				make_unique<MCTS_Sequential>();
 				//make_unique<MCTS_Concurrent>();
-			//make_unique<KeyboardController>();
+				//make_unique<KeyboardController>();
 
 			auto blackController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
 				make_unique<MCTS_Sequential>();
 				//make_unique<MCTS_Concurrent>();
-			//make_unique<KeyboardController>();
+				//make_unique<KeyboardController>();
 
 			string networkFile = R"dil("C:\Users\kchah\ownCloud\ML\forge\checkpoints\networkC\networkC_00001.pt")dil";
 
@@ -57,8 +57,8 @@ namespace forge
 				//forge::heuristic::NeuralNetwork>(networkFile);
 				//forge::heuristic::NeuralNetwork>();
 
-			whiteController->searchMonitor().timeLimit = std::chrono::seconds(5);
-			blackController->searchMonitor().timeLimit = std::chrono::seconds(5);
+			whiteController->searchMonitor().timeLimit = std::chrono::seconds(10);
+			blackController->searchMonitor().timeLimit = std::chrono::seconds(10);
 
 			//int nodeLimit = 6'000'000;
 			//whiteController->searchMonitor().nodeLimit = nodeLimit;

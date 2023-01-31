@@ -125,9 +125,9 @@ int main(int argc, char ** argv)
 
 	//forge::test::movegen::stockfishAndForge();
 
-	//cout << guten::color::yellow << "Closing...";
+	cout << guten::color::yellow << "Closing...";
 	//this_thread::sleep_for(chrono::seconds(1));
-	cout << "Press any key..." << endl;
-	cin.get();
+	//cout << "Press any key..." << endl;
+	//cin.get();
 	return 0;
 }

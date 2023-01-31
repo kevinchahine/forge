@@ -14,6 +14,14 @@ namespace forge
 		virtual void reset() override { m_nodeTree.reset(); }
 
 		virtual MovePositionPair getMove(const Position& position) override {
+			// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
+			auto & sm = m_searchMonitor;
+			sm.selection.reset();
+			sm.evaluation.reset();
+			sm.expansion.reset();
+			sm.backprop.reset();
+			// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 			m_searchMonitor.start();
 
 			m_nodeTree.reset();
@@ -23,8 +31,8 @@ namespace forge
 
 			m_searchMonitor.stop();	// stop the clock so we can record exact search time.
 
-			//MovePositionPair bestMove = selectBestMove();
-			MovePositionPair bestMove = selectBestStochasticMove();
+			MovePositionPair bestMove = selectBestMove();
+			//MovePositionPair bestMove = selectBestStochasticMove();
 
 			m_history.push_back(bestMove);
 
@@ -41,6 +49,7 @@ namespace forge
 		MovePositionPair selectBestMove() {
 			MCTS_Node::iterator bestIt = m_nodeTree.root();
 
+			//bestIt.toBestAverage();
 			bestIt.toMostVisited();
 
 			MovePositionPair solution {
