@@ -37,7 +37,7 @@ namespace forge
 		return curr;
 	}
 
-	MCTS_Sequential::EvalVisitsPair MCTS_Sequential::expandAndEvaluate(MCTS_Node::iterator curr) {
+	MCTS_Base<composite>::EvalVisitsPair MCTS_Sequential::expandAndEvaluate(MCTS_Node::iterator curr) {
 		auto & sm = m_searchMonitor;
 
 		EvalVisitsPair evalVisits;
@@ -50,7 +50,7 @@ namespace forge
 
 		GameState gstate;
 		gstate.init(*curr);// Pass in number of children. Use more efficient overload.
-
+		
 		// --- Is Terminal or Intermediate? ---
 		if (gstate.isGameOn() /*&& curr.hasChildren()*/) {
 			bool maximizeWhite = (*curr).position().isWhitesTurn();
@@ -92,7 +92,7 @@ namespace forge
 		heuristic_t eval = evalVisits.eval;
 
 		while (curr.isRoot() == false) {
-			(*curr).update(eval, evalVisits.visits);
+			(*curr).update(eval);//, evalVisits.visits);
 			eval = -eval;
 			curr.toParent();
 			(*curr).sort();

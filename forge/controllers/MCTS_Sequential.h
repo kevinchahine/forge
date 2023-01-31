@@ -7,15 +7,7 @@
 namespace forge
 {
 	class MCTS_Sequential : public MCTS_Base<forge::composite>
-	{
-	protected:// ------------------------- NESTED CLASS --------------------------
-		class EvalVisitsPair
-		{
-		public:
-			heuristic_t eval = 0;
-			int visits = 0;
-		};
-
+	{	
 	public:
 		virtual std::string getNameVariant() const override { return "Sequential"; }
 

@@ -10,6 +10,22 @@ namespace forge
 	template< template< typename T, typename... > class AC, typename... Args >
 	class MCTS_Base : public SolverBaseTemplate<AC>
 	{
+	protected:// ------------------------- NESTED CLASS --------------------------
+		class EvalVisitsPair
+		{
+		public:
+			heuristic_t eval = 0;
+			int visits = 0;
+		};
+
+		class NodeEvalVisits
+		{
+		public:
+			MCTS_Node node;
+			heuristic_t eval = 0;
+			int visits = 0;
+		};
+
 	public:
 		virtual void reset() override { m_nodeTree.reset(); }
 
