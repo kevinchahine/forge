@@ -108,7 +108,13 @@ namespace forge
 		{
 		public:
 			iterator() = default;
+			iterator(const iterator &) = default;
+			iterator(iterator &&) noexcept = default;
 			iterator(MCTS_Node * nodePtr) : p_node(nodePtr) {}
+			~iterator() noexcept = default;
+			iterator & operator=(const iterator &) = default;
+			iterator & operator=(iterator &&) noexcept = default;
+
 			bool operator==(const iterator & it) const { return this->p_node == it.p_node; }
 			bool operator!=(const iterator & it) const { return this->p_node != it.p_node; }
 			const MCTS_Node & operator*() const { return *p_node; }

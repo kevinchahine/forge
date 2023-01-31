@@ -12,116 +12,114 @@ namespace forge
 	MCTS_Node::iterator MCTS_Sequential::select(MCTS_Node::iterator curr) {
 		auto & sm = m_searchMonitor;
 
-		// --- Selection ---
 		sm.selection.resume();
-
-		// --- Move DOWN the tree ---
-		while (curr.isExpanded()) {
-			if (curr.hasChildren()) {
-				curr.toBestUCB();
-			}
-			else {
-				cout << "bad visit" << endl;
-				// We reached a terminal node (expended but without children).
-				
-				curr = m_nodeTree.root();	// Causes a deadlock without checking the exit condition.
-
-				if (sm.exitConditionReached()) {
-					break;
-				}
-			} // if (curr.isExpanded())
-		} // while (true)
-
+		while (curr.hasChildren()) {
+			curr.toBestUCB();
+		}
 		sm.selection.pause();
 
 		return curr;
 	}
 
-	MCTS_Base<composite>::EvalVisitsPair MCTS_Sequential::expandAndEvaluate(MCTS_Node::iterator curr) {
+	void MCTS_Sequential::expand(MCTS_Node::iterator curr) {
 		auto & sm = m_searchMonitor;
-
-		EvalVisitsPair evalVisits;
 
 		sm.expansion.resume();
 		curr.expand();
 		sm.expansion.pause();
+	}
+
+	MCTS_Base<composite>::EvalVisits MCTS_Sequential::evaluate(MCTS_Node::iterator curr) {
+		auto & sm = m_searchMonitor;
 
 		sm.evaluation.resume();
 
+		EvalVisits ret;
+
 		GameState gstate;
 		gstate.init(*curr);// Pass in number of children. Use more efficient overload.
-		
+		// TODO: ^^^ do we need to also pass game_history ^^^
+
 		// --- Is Terminal or Intermediate? ---
 		if (gstate.isGameOn() /*&& curr.hasChildren()*/) {
+			// Intermediate Node. Evaluate using Heuristic.
+
 			bool maximizeWhite = (*curr).position().isWhitesTurn();
 
 			vector<const Position *> pChildren = (*curr).getChildrenPositions();
 
 			vector<heuristic_t> evals = this->m_heuristicPtr->eval(pChildren, maximizeWhite);
 
-			evalVisits.eval = -(*curr).updateChildrenUCB(evals);
+			ret.eval = -(*curr).updateChildrenUCB(evals);
 
-			evalVisits.visits = evals.size();
+			ret.visits = evals.size();
 		}
 		else {
 			// Terminal Node. Evaluate using Game State.
 			bool maximizeWhite = (*curr).position().isBlacksTurn();
-
-			evalVisits.eval = (float) UCB::WINNING_EVAL * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
-
-			evalVisits.visits = 1;
+			ret.eval = (float) UCB::WINNING_EVAL * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
+			ret.visits = 1;
 
 			(*curr).lastVisit();
 		}
 
-		// TODO: This code might be redundant.
-		// If this node is terminal, we don't want to visit it again.
 		if (curr.hasChildren() == false) {
 			(*curr).lastVisit();
 		}
+
 		sm.evaluation.pause();
 
-		return evalVisits;
+		return ret;
 	}
 
-	void MCTS_Sequential::backPropagate(MCTS_Node::iterator curr, const EvalVisitsPair & evalVisits) {
+	void MCTS_Sequential::backPropagate(MCTS_Node::iterator curr, EvalVisits ev) {
 		auto & sm = m_searchMonitor;
-
+		
 		sm.backprop.resume();
-
-		heuristic_t eval = evalVisits.eval;
-
+		
 		while (curr.isRoot() == false) {
-			(*curr).update(eval);//, evalVisits.visits);
-			eval = -eval;
+			(*curr).update(ev.eval);//, ev.visits);	// ??? For some reason this does better with visits set to 1 ???
+			ev.eval = -ev.eval;
 			curr.toParent();
 			(*curr).sort();
 		}
-
-		// *** Now curr is at the root ***
-
-		sm.nodeCount.add(evalVisits.visits);
-
+		
 		sm.backprop.pause();
 	}
 
 	void MCTS_Sequential::solve() {
 		// --- Start ---
-		m_nodeTree.root().expand();// TODO: this might be redundant
+		m_nodeTree.root().expand();// This code is not redundant
+		
+		// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
+		auto & sm = m_searchMonitor;
+		sm.selection.reset();
+		sm.evaluation.reset();
+		sm.expansion.reset();
+		sm.backprop.reset();
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-		// Search until exit condition is reached
-		while (m_searchMonitor.exitConditionReached() == false) {
-			// --- 1.) Start traversal at Root ---
+		while (true) {
 			MCTS_Node::iterator curr = m_nodeTree.root();
-
-			// --- 2.) Select "Best" Leaf ---
-			curr = this->select(curr);
-
-			// --- 3.) Expand and Evaluate "Best" Leaf ---
-			EvalVisitsPair evalVisits = this->expandAndEvaluate(curr);
-
-			// --- 4.) Back Propagate Evals to Root ---
-			this->backPropagate(curr, evalVisits);
-		}
+		
+			// --- Selection ---
+			curr = select(curr);
+			
+			// --- Expand ---
+			expand(curr);
+			
+			// --- Evaluate ---
+			EvalVisits ev = evaluate(curr);
+			
+			// --- BackPropagate ---
+			backPropagate(curr, ev);
+			
+			// --- Exit Condition ---
+			sm.nodeCount.add(ev.visits);
+			if (sm.exitConditionReached()) {
+				sm.stop();	// stop the clock so we can record exact search time.
+				break;
+			}
+		} // while (true)
 	}
 } // namespace forge

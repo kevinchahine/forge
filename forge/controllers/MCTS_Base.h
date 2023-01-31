@@ -11,19 +11,19 @@ namespace forge
 	class MCTS_Base : public SolverBaseTemplate<AC>
 	{
 	protected:// ------------------------- NESTED CLASS --------------------------
-		class EvalVisitsPair
+		class EvalVisits
 		{
 		public:
-			heuristic_t eval = 0;
-			int visits = 0;
+			float eval = 0.0f;
+			size_t visits = 0;
 		};
 
 		class NodeEvalVisits
 		{
 		public:
 			MCTS_Node node;
-			heuristic_t eval = 0;
-			int visits = 0;
+			float eval = 0.0f;
+			size_t visits = 0;
 		};
 
 	public:
@@ -65,8 +65,8 @@ namespace forge
 		MovePositionPair selectBestMove() {
 			MCTS_Node::iterator bestIt = m_nodeTree.root();
 
-			//bestIt.toBestAverage();
-			bestIt.toMostVisited();
+			bestIt.toBestAverage();
+			//bestIt.toMostVisited();
 
 			MovePositionPair solution {
 				(*bestIt).move(),

@@ -14,9 +14,11 @@ namespace forge
 	protected:
 		MCTS_Node::iterator select(MCTS_Node::iterator curr);
 
-		EvalVisitsPair expandAndEvaluate(MCTS_Node::iterator curr);
+		void expand(MCTS_Node::iterator curr);
 
-		void backPropagate(MCTS_Node::iterator curr, const EvalVisitsPair & evalVisits);
+		EvalVisits evaluate(MCTS_Node::iterator curr);
+
+		void backPropagate(MCTS_Node::iterator curr, EvalVisits ev);
 
 	public:
 		virtual void solve() override;
