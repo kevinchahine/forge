@@ -53,9 +53,6 @@ namespace forge
 			shared_ptr<MCTS_Node> & childPtr = children.at(i);
 			shared_ptr<MCTS_Node> & nextPtr = children.at(i + 1);
 
-			// --- Set Address of Siblings ---
-			childPtr->m_nextPtr = nextPtr.get();
-
 			// --- Default UCB Score ---
 			// All children will initially have the same UCB score.
 			childPtr->ucbScore = UCB::INIT;
@@ -108,13 +105,6 @@ namespace forge
 
 				c.at(j + 1) = key;
 			}
-
-			// --- Reset Sibling Ptrs ---
-			for (int i = 0; i < nChildren - 1; ++i) {
-				c.at(i)->m_nextPtr = c.at(i + 1)->m_nextPtr;
-			}
-
-			c.back()->m_nextPtr = nullptr;
 		}
 	}
 

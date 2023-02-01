@@ -28,7 +28,7 @@ namespace forge
 
 	protected:
 
-		void solveOneThread();
+		//void solveOneThread();
 
 	public:
 		virtual void solve() override;

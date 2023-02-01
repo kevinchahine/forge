@@ -18,10 +18,10 @@ namespace forge
 			size_t visits = 0;
 		};
 
-		class NodeEvalVisits
+		class NodeItEvalVisits
 		{
 		public:
-			MCTS_Node node;
+			MCTS_Node::iterator nodeIt;
 			float eval = 0.0f;
 			size_t visits = 0;
 		};
@@ -47,8 +47,9 @@ namespace forge
 
 			m_searchMonitor.stop();	// stop the clock so we can record exact search time.
 
-			MovePositionPair bestMove = selectBestMove();
-			//MovePositionPair bestMove = selectBestStochasticMove();
+			MovePositionPair bestMove = 
+				selectBestMove();
+			//selectBestStochasticMove();
 
 			m_history.push_back(bestMove);
 

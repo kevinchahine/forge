@@ -9,34 +9,9 @@ using namespace std;
 
 namespace forge
 {
-	void MCTS_ProducerConsumer::reset()
-	{
-		m_nodeTree.reset();
+	void search(MCTS_Node::iterator it) {
+
 	}
-
-	MovePositionPair MCTS_ProducerConsumer::getMove(const Position& position)
-	{
-		return MovePositionPair();
-	}
-	
-	MovePositionPair MCTS_ProducerConsumer::selectBestMove()
-	{
-		MCTS_Node::iterator bestIt = m_nodeTree.root();
-
-		bool maximize = m_nodeTree.position().isWhitesTurn();
-
-		//bestIt.toBestUCB(maximize);	// Stochastic selection
-		//bestIt.toBestAverage(maximize);		// Best selection
-		bestIt.toMostVisited();
-
-		MovePositionPair solution{
-			(*bestIt).move(),
-			(*bestIt).position()
-		};
-
-		return solution;
-	}
-	
 //	void MCTS_ProducerConsumer::select(WorkQueue& evalExpandWork)
 //	{
 //		//selectionQueue.push(nodes);
@@ -97,51 +72,98 @@ namespace forge
 //			break;
 //		}
 //	}
-	
-	MovePositionPair MCTS_ProducerConsumer::solve(const Position& position)
-	{
-		// // Selector finds leaf nodes, then puts them in this work queue.
-		// // Other threads then expand and eval the leaf nodes.
-		// WorkQueue evalExpandWork;
-		// 
-		// // When threads evaluate leaf nodes, they put those nodes in this work queue.
-		// // The back propagation thread works on this work queue.
-		// WorkQueue backpropWork;
-		// 
-		// // --- Spawn Selection Threads (Producers) ---
-		// boost::thread selector = boost::thread{
-		// 	[&]() { select(evalExpandWork); }
-		// };
-		// 
-		// // --- Spawn Expand and Evaluate Threads (Producers/Consumers) ---
-		// const size_t N_THREADS = boost::thread::hardware_concurrency();
-		// 
-		// vector<boost::thread> expanderPool;
-		// 
-		// for (size_t t = 0; t < N_THREADS - 2; t++) {
-		// 	expanderPool.emplace_back(
-		// 		[&]() { expandAndEvaluate(evalExpandWork, backpropWork); }
-		// 	);
-		// }
-		// 
-		// // --- Spawn Back Propagation Threads (Consumers) ---
-		// boost::thread backpropagater = boost::thread{
-		// 	[&]() { backpropagate(backpropWork); }
-		// };
-		// 
-		// // --- Join Threads ---
-		// 
-		// selector.join();
-		// 
-		// for (size_t t = 0; t < expanderPool.size(); t++) {
-		// 	expanderPool.at(t).join();
-		// }
-		// 
-		// backpropagater.join();
-		// 
-		// // *** TODO: Optimize: let main thread do backpropagation. Then we will have one less thread to spawn.
 
-		return selectBestMove();
+	MovePositionPair MCTS_ProducerConsumer::solve(const Position & position) {
+		auto & sm = m_searchMonitor;
+
+		WorkQueueA workA;
+		WorkQueueB workB;
+
+		boost::atomic_int workASize = 0;
+
+		// --- Spawn Worker Threads ---
+		vector<boost::thread> pool;
+		pool.reserve(m_nThreads);
+
+		for (size_t t = 0; t < m_nThreads; t++) {
+			MCTS_Node::iterator it;
+			pool.emplace_back([&]() { search(it); });
+		}
+
+		while (!sm.exitConditionReached()) {
+			// --- 1.) Select Leaf Nodes (Produce) ---
+			if (workASize < m_nThreads) {
+				MCTS_Node::iterator leaf; // = selectNextBest();
+
+				workA.push(leaf);
+
+				workASize++;
+			}
+
+			// --- 2.) Back Propagate (Consume) ---
+			NodeItEvalVisits nev;
+
+			bool isPopped = workB.pop(nev);
+
+			if (isPopped) {
+				// Call back propagate
+				// backPropagate(nev);
+			}
+
+		} // while(
+
+		// --- Join Threads ---
+		for (boost::thread & t : pool) {
+			t.join();
+		}
+
+		return MovePositionPair();
 	}
+
+	//MovePositionPair MCTS_ProducerConsumer::solve(const Position& position)
+	//{
+	//	// // Selector finds leaf nodes, then puts them in this work queue.
+	//	// // Other threads then expand and eval the leaf nodes.
+	//	// WorkQueue evalExpandWork;
+	//	// 
+	//	// // When threads evaluate leaf nodes, they put those nodes in this work queue.
+	//	// // The back propagation thread works on this work queue.
+	//	// WorkQueue backpropWork;
+	//	// 
+	//	// // --- Spawn Selection Threads (Producers) ---
+	//	// boost::thread selector = boost::thread{
+	//	// 	[&]() { select(evalExpandWork); }
+	//	// };
+	//	// 
+	//	// // --- Spawn Expand and Evaluate Threads (Producers/Consumers) ---
+	//	// const size_t N_THREADS = boost::thread::hardware_concurrency();
+	//	// 
+	//	// vector<boost::thread> expanderPool;
+	//	// 
+	//	// for (size_t t = 0; t < N_THREADS - 2; t++) {
+	//	// 	expanderPool.emplace_back(
+	//	// 		[&]() { expandAndEvaluate(evalExpandWork, backpropWork); }
+	//	// 	);
+	//	// }
+	//	// 
+	//	// // --- Spawn Back Propagation Threads (Consumers) ---
+	//	// boost::thread backpropagater = boost::thread{
+	//	// 	[&]() { backpropagate(backpropWork); }
+	//	// };
+	//	// 
+	//	// // --- Join Threads ---
+	//	// 
+	//	// selector.join();
+	//	// 
+	//	// for (size_t t = 0; t < expanderPool.size(); t++) {
+	//	// 	expanderPool.at(t).join();
+	//	// }
+	//	// 
+	//	// backpropagater.join();
+	//	// 
+	//	// // *** TODO: Optimize: let main thread do backpropagation. Then we will have one less thread to spawn.
+	//
+	//	return selectBestMove();
+	//}
 } // namespace forge
 

@@ -87,18 +87,9 @@ namespace forge
 		sm.backprop.pause();
 	}
 
-	void MCTS_Sequential::solve() {
-		// --- Start ---
+	void MCTS_Sequential::solve() {	
 		m_nodeTree.root().expand();// This code is not redundant
 		
-		// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
-		auto & sm = m_searchMonitor;
-		sm.selection.reset();
-		sm.evaluation.reset();
-		sm.expansion.reset();
-		sm.backprop.reset();
-		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 		while (true) {
 			MCTS_Node::iterator curr = m_nodeTree.root();
 		
@@ -115,6 +106,7 @@ namespace forge
 			backPropagate(curr, ev);
 			
 			// --- Exit Condition ---
+			auto & sm = m_searchMonitor;
 			sm.nodeCount.add(ev.visits);
 			if (sm.exitConditionReached()) {
 				sm.stop();	// stop the clock so we can record exact search time.

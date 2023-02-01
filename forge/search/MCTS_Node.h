@@ -32,9 +32,6 @@ namespace forge
 
 		float ucb() const { return ucbScore; }
 
-		boost::mutex & mutex() { return m_mutex; }
-		const boost::mutex & mutex() const { return m_mutex; }
-
 		void expand();
 
 		// Adds score to total score
@@ -51,9 +48,6 @@ namespace forge
 		// Does not need to be called after update() if the order doesn't change.
 		// Performs an insertion sort which works faster when elements are already mostly in order.
 		void sort();
-
-		MCTS_Node * nextPtr() const { return m_nextPtr; }
-		bool hasNext() const { return m_nextPtr != nullptr; }
 
 		// Get the Positions of children that this iterator currently points to.
 		// Stores positions as a vector of pointers
@@ -88,20 +82,6 @@ namespace forge
 
 		// Stored here to prevent recalculating between updates.
 		float ucbScore = 0.0f;
-
-		// Address of next child node if one exists
-		// Otherwise null
-		// Do not deallocated
-		MCTS_Node * m_nextPtr = nullptr;
-
-		// Used by multithreaded version of MCTS
-		boost::mutex m_mutex;
-
-	public:// remove
-		boost::mutex m_expandMutex; // remove
-
-	public:
-		int nBadVisits = 0;	// TODO: remove, this was only used for debugging
 
 	public: // ---------------------------- ITERATOR -----------------------------
 		class iterator
