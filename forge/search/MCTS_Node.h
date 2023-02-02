@@ -32,6 +32,11 @@ namespace forge
 
 		float ucb() const { return ucbScore; }
 
+		void setFlag() { flag = true; }
+		void clearFlag() { flag = false; }
+		bool flagIsSet() const { return flag == true; }
+		bool flagIsCleared() const { return flag == false; }
+
 		void expand();
 
 		// Adds score to total score
@@ -78,6 +83,10 @@ namespace forge
 		// ex: terminal nodes should be marked with -inf by calling this->lastVisit()
 		float mark = 0.0f;
 
+		// true - this node is being searched by some thread
+		// false - else
+		bool flag = false;
+
 		static const float temperature;
 
 		// Stored here to prevent recalculating between updates.
@@ -107,7 +116,7 @@ namespace forge
 			bool isLeaf() const { return p_node->isLeaf(); }
 
 			void expand() { p_node->expand(); }
-			
+
 			// Moves iterator to parent node
 			// Can move to a null parent.
 			// If called on root, this iterator will be invalidated.
@@ -138,6 +147,9 @@ namespace forge
 			void toFirstChild();
 
 			void toBestStochastic();
+
+			bool isNull() const { return p_node == nullptr; }
+			bool isNotNull() const { return !isNull(); }
 
 		private:
 			// node which iterator is currently referencing

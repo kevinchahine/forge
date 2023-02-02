@@ -3,167 +3,137 @@
 #include <forge/core/GameState.h>
 
 #include <boost/thread/thread_only.hpp>		// for boost::thread class
-#include <boost/lockfree/queue.hpp>
 
 using namespace std;
 
 namespace forge
 {
-	void search(MCTS_Node::iterator it) {
+	// !!! children of MCTS_Nodes must be sorted in order of decending UCB scores for this to work !!!
+	MCTS_Node::iterator selectMaster(MCTS_Node::iterator begin) {
+		// Use stack to iterate a DFS traversal.
+		// As long as children nodes are sorted by UCB score in decending order, 
+		// then the search will iterate in a Best First Search (BFS) order traversal.
+		stack<MCTS_Node *> frontier;
+		frontier.push(&(*begin));
 
+		// Search tree for the "Best" leaf
+		// Ignore nodes (and their subtrees) which are flagged.
+		// If no leaves are found, return a null iterator.
+		while (frontier.size()) {
+			// Get next node
+			MCTS_Node * node = frontier.top();
+			frontier.pop();
+
+			// Scan each child from greatest UCB score to least.
+			// Skip the ones which are flagged.
+			// Look for the 1st unflagged leaf.
+			for (const auto & child : node->children()) {
+				if (child->flagIsCleared()) {
+					if (child->isLeaf()) {
+						// We have found the best unflagged leaf!!! :)
+						return MCTS_Node::iterator(child.get());
+					}
+					else {
+						// This node is not a leaf. Keep looking.
+						frontier.push(child.get());
+					}
+				}
+			}
+		}
+
+		// No unflagged leaves were found :(
+		return MCTS_Node::iterator{};// null iterator
 	}
-//	void MCTS_ProducerConsumer::select(WorkQueue& evalExpandWork)
-//	{
-//		//selectionQueue.push(nodes);
-//
-//		// Mark nodes as already being selected
-//	}
-//	
-//	void MCTS_ProducerConsumer::expandAndEvaluate(WorkQueue& evalExpandWork, WorkQueue& backpropWork)
-//	{
-//		while (true) {
-//
-//			MCTS_Node::iterator it;
-//			
-//			/////evalExpandWork.pop(it);
-//
-//			// -- -Expand or Evaluate ---
-//			if ((*it).nVisits() == 0) {
-//				// Evaluate
-//				heuristic_t eval = this->m_heuristicPtr->eval((*it).position());
-//			}
-//			else if ((*it).nVisits() == 1) {
-//				// Expand then Evaluate 1st Child
-//				(*it).expand();
-//
-//				it.toFirstChild();
-//
-//				heuristic_t eval = this->m_heuristicPtr->eval((*it).position());
-//			}
-//			else {
-//				// Error:
-//				cout << "Error: " << __FILE__ << " line " << __LINE__ << " this node has already been evaluated." << endl;
-//			}
-//
-//			// TODO: Mark nodes as evaluated (thats nvisites)
-//
-//			/////backpropWork.push(it);
-//
-//			break;// todo: REMOVE THIS
-//		}
-//	}
-//	
-//	void MCTS_ProducerConsumer::backpropagate(WorkQueue& backpropWork)
-//	{
-//		while (true) {
-//			MCTS_Node::iterator it;
-//
-//			/////backpropWork.pop(it);
-//
-//			int score = (*it).totalScore();
-//
-//			while (it.isRoot() == false) {
-//				// TODO: synchronize
-//				(*it).update(score);
-//
-//				it.toParent();
-//			}
-//
-//			break;
-//		}
-//	}
 
-	MovePositionPair MCTS_ProducerConsumer::solve(const Position & position) {
+	void MCTS_ProducerConsumer::searchOneThread() {
+		while (boost::this_thread::interruption_requested() == false) {
+			MCTS_Node::iterator it;
+
+			// --- 1.) State: Waiting for Work ---
+			while (m_workA.pop(it) == false) {
+				boost::this_thread::sleep_for(boost::chrono::microseconds(10));// TODO: optimize this to make it smarter
+			}
+
+			m_workASize--;
+
+			// --- 2.) State: Working ---
+			it.expand();// This code is not redundant
+
+			// Do a MCTS for 10'000 nodes
+			int nodeCount = 0;
+			while (nodeCount++ < 10'000 && boost::this_thread::interruption_requested() == false) {
+				MCTS_Node::iterator curr = it;
+
+				// --- Selection ---
+				curr = select(curr);
+
+				// --- Expand ---
+				expand(curr);
+
+				// --- Evaluate ---
+				EvalVisits ev = evaluate(curr);
+
+				// --- BackPropagate ---
+				backPropagate(curr, m_nodeTree.root(), ev);
+
+				// --- Exit Condition ---
+				// TODO: implement some exit condition here.
+			} // while (true) 
+
+			// --- 3.) State: Produce Work ---
+			m_workB.push(it);
+		} // while (true)
+	} // searchOneThread(
+
+	void MCTS_ProducerConsumer::solve() {
 		auto & sm = m_searchMonitor;
-
-		WorkQueueA workA;
-		WorkQueueB workB;
-
-		boost::atomic_int workASize = 0;
 
 		// --- Spawn Worker Threads ---
 		vector<boost::thread> pool;
 		pool.reserve(m_nThreads);
 
 		for (size_t t = 0; t < m_nThreads; t++) {
-			MCTS_Node::iterator it;
-			pool.emplace_back([&]() { search(it); });
+			pool.emplace_back([&] () { this->searchOneThread(); });
 		}
 
 		while (!sm.exitConditionReached()) {
 			// --- 1.) Select Leaf Nodes (Produce) ---
-			if (workASize < m_nThreads) {
-				MCTS_Node::iterator leaf; // = selectNextBest();
+			if (m_workASize < m_nThreads) {
+				MCTS_Node::iterator leafIt = selectMaster(m_nodeTree.root());
 
-				workA.push(leaf);
+				if (leafIt.isNotNull()) {
+					MCTS_Node & leaf = (*leafIt);
 
-				workASize++;
+					leaf.setFlag();
+
+					m_workA.push(leafIt);
+
+					m_workASize++;
+				}
 			}
 
 			// --- 2.) Back Propagate (Consume) ---
-			NodeItEvalVisits nev;
+			MCTS_Node::iterator it;
 
-			bool isPopped = workB.pop(nev);
+			bool succeeded = m_workB.pop(it);
 
-			if (isPopped) {
+			if (succeeded) {
+				MCTS_Node & node = (*it);
+
+				node.clearFlag();
+
 				// Call back propagate
-				// backPropagate(nev);
+				EvalVisits ev{ node.totalScore(), node.nVisits() };
+				backPropagate(it, m_nodeTree.root(), ev);
 			}
-
 		} // while(
 
 		// --- Join Threads ---
 		for (boost::thread & t : pool) {
+			t.interrupt();
+			
 			t.join();
 		}
-
-		return MovePositionPair();
 	}
-
-	//MovePositionPair MCTS_ProducerConsumer::solve(const Position& position)
-	//{
-	//	// // Selector finds leaf nodes, then puts them in this work queue.
-	//	// // Other threads then expand and eval the leaf nodes.
-	//	// WorkQueue evalExpandWork;
-	//	// 
-	//	// // When threads evaluate leaf nodes, they put those nodes in this work queue.
-	//	// // The back propagation thread works on this work queue.
-	//	// WorkQueue backpropWork;
-	//	// 
-	//	// // --- Spawn Selection Threads (Producers) ---
-	//	// boost::thread selector = boost::thread{
-	//	// 	[&]() { select(evalExpandWork); }
-	//	// };
-	//	// 
-	//	// // --- Spawn Expand and Evaluate Threads (Producers/Consumers) ---
-	//	// const size_t N_THREADS = boost::thread::hardware_concurrency();
-	//	// 
-	//	// vector<boost::thread> expanderPool;
-	//	// 
-	//	// for (size_t t = 0; t < N_THREADS - 2; t++) {
-	//	// 	expanderPool.emplace_back(
-	//	// 		[&]() { expandAndEvaluate(evalExpandWork, backpropWork); }
-	//	// 	);
-	//	// }
-	//	// 
-	//	// // --- Spawn Back Propagation Threads (Consumers) ---
-	//	// boost::thread backpropagater = boost::thread{
-	//	// 	[&]() { backpropagate(backpropWork); }
-	//	// };
-	//	// 
-	//	// // --- Join Threads ---
-	//	// 
-	//	// selector.join();
-	//	// 
-	//	// for (size_t t = 0; t < expanderPool.size(); t++) {
-	//	// 	expanderPool.at(t).join();
-	//	// }
-	//	// 
-	//	// backpropagater.join();
-	//	// 
-	//	// // *** TODO: Optimize: let main thread do backpropagation. Then we will have one less thread to spawn.
-	//
-	//	return selectBestMove();
-	//}
 } // namespace forge
 

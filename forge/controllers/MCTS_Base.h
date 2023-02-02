@@ -30,14 +30,6 @@ namespace forge
 		virtual void reset() override { m_nodeTree.reset(); }
 
 		virtual MovePositionPair getMove(const Position& position) override {
-			// vvvvvvvvvvv benchmarking vvvvvvvvvvvvvvvvv
-			auto & sm = m_searchMonitor;
-			sm.selection.reset();
-			sm.evaluation.reset();
-			sm.expansion.reset();
-			sm.backprop.reset();
-			// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 			m_searchMonitor.start();
 
 			m_nodeTree.reset();
@@ -88,6 +80,71 @@ namespace forge
 			};
 
 			return solution;
+		}
+
+	protected:
+		MCTS_Node::iterator select(MCTS_Node::iterator curr) {
+			while (curr.hasChildren()) {
+				curr.toBestUCB();
+			}
+
+			return curr;
+		}
+
+		void expand(MCTS_Node::iterator curr) {
+			curr.expand();
+		}
+
+		EvalVisits evaluate(MCTS_Node::iterator curr) {
+			EvalVisits ret;
+
+			GameState gstate;
+			gstate.init(*curr);// Pass in number of children. Use more efficient overload.
+			// TODO: ^^^ do we need to also pass game_history ^^^
+
+			// --- Is Terminal or Intermediate? ---
+			if (gstate.isGameOn() /*&& curr.hasChildren()*/) {
+				// Intermediate Node. Evaluate using Heuristic.
+
+				bool maximizeWhite = (*curr).position().isWhitesTurn();
+
+				vector<const Position *> pChildren = (*curr).getChildrenPositions();
+
+				vector<heuristic_t> evals = this->m_heuristicPtr->eval(pChildren, maximizeWhite);
+
+				ret.eval = -(*curr).updateChildrenUCB(evals);
+
+				ret.visits = evals.size();
+			}
+			else {
+				//#define _DEBUG 
+				if ((*curr).isVisited()) {
+					cout << "Error: Terminal node is revisited." << endl;
+				}
+				//#endif // _DEBUG
+
+				// Terminal Node. Evaluate using Game State.
+				bool maximizeWhite = (*curr).position().isBlacksTurn();
+				ret.eval = (float) UCB::WINNING_EVAL * gstate.getValue(maximizeWhite);	// count a win as 15 pawns
+				ret.visits = 1;
+
+				(*curr).lastVisit();
+			}
+
+			if (curr.hasChildren() == false) {
+				(*curr).lastVisit();
+			}
+
+			return ret;
+		}
+
+		void backPropagate(MCTS_Node::iterator begin, MCTS_Node::iterator end, EvalVisits ev) {
+			while (begin != end) {
+				(*begin).update(ev.eval);//, ev.visits);	// ??? For some reason this does better with visits set to 1 ???
+				ev.eval = -ev.eval;
+				begin.toParent();
+				(*begin).sort();
+			}
 		}
 
 	public:

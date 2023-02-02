@@ -106,12 +106,5 @@ namespace forge
 
 		// Can be used to terminate search from outside algorithm.
 		AC<bool, Args... > stopFlag = false;
-
-		// vvvvvvvvvvvvvvv FOR BENCHMARK TESTING ONLY CAN BE REMOVED VVVVV
-		StopWatch selection;
-		StopWatch evaluation;
-		StopWatch expansion;
-		StopWatch backprop;
-		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	};
 } // namespace forge
