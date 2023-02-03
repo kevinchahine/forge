@@ -62,10 +62,10 @@ namespace forge
 			// Do a MCTS for 10'000 nodes
 			int nodeCount = 0;
 			while (nodeCount++ < 10'000 && boost::this_thread::interruption_requested() == false) {
-				MCTS_Node::iterator curr = it;
+				MCTS_Node::iterator curr;
 
 				// --- Selection ---
-				curr = select(curr);
+				curr = select(it);
 
 				// --- Expand ---
 				expand(curr);
@@ -74,12 +74,14 @@ namespace forge
 				EvalVisits ev = evaluate(curr);
 
 				// --- BackPropagate ---
-				backPropagate(curr, m_nodeTree.root(), ev);
+				backPropagate(curr, it, ev);
 
 				// --- Exit Condition ---
 				// TODO: implement some exit condition here.
 			} // while (true) 
 
+			cout << (*it).totalScore() << " " << (*it).nVisits() << endl;
+			
 			// --- 3.) State: Produce Work ---
 			m_workB.push(it);
 		} // while (true)
@@ -88,17 +90,20 @@ namespace forge
 	void MCTS_ProducerConsumer::solve() {
 		auto & sm = m_searchMonitor;
 
-		// --- Spawn Worker Threads ---
-		vector<boost::thread> pool;
-		pool.reserve(m_nThreads);
+		m_nodeTree.expand();
 
-		for (size_t t = 0; t < m_nThreads; t++) {
+		// --- Spawn Worker Threads ---
+		size_t nThreads = (m_nThreads == 0 ? boost::thread::hardware_concurrency() : m_nThreads);
+		vector<boost::thread> pool;
+		pool.reserve(nThreads);
+
+		for (size_t t = 0; t < nThreads; t++) {
 			pool.emplace_back([&] () { this->searchOneThread(); });
 		}
 
 		while (!sm.exitConditionReached()) {
 			// --- 1.) Select Leaf Nodes (Produce) ---
-			if (m_workASize < m_nThreads) {
+			if (m_workASize < pool.size() + 2) {
 				MCTS_Node::iterator leafIt = selectMaster(m_nodeTree.root());
 
 				if (leafIt.isNotNull()) {
@@ -131,7 +136,9 @@ namespace forge
 		// --- Join Threads ---
 		for (boost::thread & t : pool) {
 			t.interrupt();
-			
+		}
+
+		for (boost::thread & t : pool) {
 			t.join();
 		}
 	}

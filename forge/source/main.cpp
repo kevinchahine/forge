@@ -27,8 +27,9 @@ Designed to be compatible with a variety of displays including:
 
 //#include "forge/test/Benchmark.h"
 //#include "forge/test/heuristics.h"
-//#include "forge/test/Test.h"
+#include "forge/test/mcts.h"
 //#include "forge/test/positions.h"
+//#include "forge/test/Test.h"
 //#include "forge/test/Test.h"
 
 // #include "TestFeatureExtractor.h"
@@ -51,7 +52,7 @@ int main(int argc, char ** argv)
 	forge::initGlobalsTorch();
 
 	//forge::drivers::split_dataset(90.0f, R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData.csv)dil");
-	forge::drivers::play_chess_match();
+	//forge::drivers::play_chess_match();
 
 	//forge::drivers::train_nn();
 
@@ -64,6 +65,7 @@ int main(int argc, char ** argv)
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
+	forge::test::mcts::producerConsumer();
 	//forge::test::piece::allToFen();
 	//forge::test::direction::pointingTo();
 	//forge::test::keyboardController();
@@ -127,7 +129,7 @@ int main(int argc, char ** argv)
 
 	cout << guten::color::yellow << "Closing...";
 	//this_thread::sleep_for(chrono::seconds(1));
-	//cout << "Press any key..." << endl;
-	//cin.get();
+	cout << "Press any key..." << endl;
+	cin.get();
 	return 0;
 }

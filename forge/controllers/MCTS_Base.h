@@ -103,7 +103,7 @@ namespace forge
 			// TODO: ^^^ do we need to also pass game_history ^^^
 
 			// --- Is Terminal or Intermediate? ---
-			if (gstate.isGameOn() /*&& curr.hasChildren()*/) {
+			if (gstate.isGameOn() && curr.hasChildren()) {
 				// Intermediate Node. Evaluate using Heuristic.
 
 				bool maximizeWhite = (*curr).position().isWhitesTurn();
@@ -117,12 +117,6 @@ namespace forge
 				ret.visits = evals.size();
 			}
 			else {
-				//#define _DEBUG 
-				if ((*curr).isVisited()) {
-					cout << "Error: Terminal node is revisited." << endl;
-				}
-				//#endif // _DEBUG
-
 				// Terminal Node. Evaluate using Game State.
 				bool maximizeWhite = (*curr).position().isBlacksTurn();
 				ret.eval = (float) UCB::WINNING_EVAL * gstate.getValue(maximizeWhite);	// count a win as 15 pawns

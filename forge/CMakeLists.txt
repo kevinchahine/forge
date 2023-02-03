@@ -153,6 +153,8 @@ set(TEST
 	test/Benchmark.h
 	test/heuristics.cpp
 	test/heuristics.h
+	test/mcts.cpp
+	test/mcts.h
 	test/positions.cpp
 	test/positions.h
 	test/Test.cpp
