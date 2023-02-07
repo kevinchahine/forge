@@ -165,6 +165,8 @@ set(TEST
 	test/TestML.h
 	#test/TestUci.cpp
 	#test/TestUci.h
+	test/tree.cpp
+	test/tree.h
 )
 
 set(THIRD_PARTY

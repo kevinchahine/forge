@@ -31,6 +31,7 @@ Designed to be compatible with a variety of displays including:
 //#include "forge/test/positions.h"
 //#include "forge/test/Test.h"
 //#include "forge/test/Test.h"
+#include "forge/test/tree.h"
 
 // #include "TestFeatureExtractor.h"
 
@@ -65,7 +66,7 @@ int main(int argc, char ** argv)
 	//forge::test::boardSquare();
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
-	forge::test::mcts::producerConsumer();
+	//forge::test::mcts::producerConsumer();
 	//forge::test::piece::allToFen();
 	//forge::test::direction::pointingTo();
 	//forge::test::keyboardController();
@@ -106,6 +107,7 @@ int main(int argc, char ** argv)
 	//forge::test::csvParser();
 	//forge::test::dataSetPipeline();
 	//forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
+	forge::test::tree::print();
 
 	//forge::test::gameHistory();
 
