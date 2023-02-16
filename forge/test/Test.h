@@ -56,7 +56,7 @@ namespace forge
 
 		namespace piece
 		{
-			void allToFen();
+			void all();
 		} // namespace pieces
 
 		namespace direction

@@ -41,7 +41,14 @@ namespace forge
 
 		// Adds score to total score
 		// Increments number of visits
+		// Warning: Do not call this method on a root node (node that has no parent)
+		// Instead call updateRoot() See below
 		void update(float score, float nEvals = 1);
+
+		// Adds score to total score
+		// Increments number of visits
+		// This is intended for updating a root node (a node with no parents)
+		void updateRoot(float score, float nEvals = 1);
 
 		// Accumulates t and n from 'node'
 		// ucb and temperature are left unchanged
@@ -158,5 +165,7 @@ namespace forge
 		}; // end class iterator
 
 		iterator root() { return iterator(this); }
+		iterator parent() { return iterator(this->m_parentPtr); }
+
 	}; // end class MCTS_Node
 } // namespace forge

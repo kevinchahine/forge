@@ -98,6 +98,8 @@ namespace forge
 		EvalVisits evaluate(MCTS_Node::iterator curr) {
 			EvalVisits ret;
 
+			// Check game state of current node (win/loss/draw)
+			// This determines how we are to evaluate it.
 			GameState gstate;
 			gstate.init(*curr);// Pass in number of children. Use more efficient overload.
 			// TODO: ^^^ do we need to also pass game_history ^^^
@@ -106,12 +108,15 @@ namespace forge
 			if (gstate.isGameOn() && curr.hasChildren()) {
 				// Intermediate Node. Evaluate using Heuristic.
 
+				// Does curr belong to the maximizing or minimizing player?
 				bool maximizeWhite = (*curr).position().isWhitesTurn();
 
+				// Evaluate all the children nodes all at once.
 				vector<const Position *> pChildren = (*curr).getChildrenPositions();
 
 				vector<heuristic_t> evals = this->m_heuristicPtr->eval(pChildren, maximizeWhite);
 
+				// Now update the UCB scores of the children nodes with the new evals
 				ret.eval = -(*curr).updateChildrenUCB(evals);
 
 				ret.visits = evals.size();
@@ -139,6 +144,9 @@ namespace forge
 				begin.toParent();
 				(*begin).sort();
 			}
+
+			// Update one more time for the end node (usually the root node)
+			//(*begin).updateRoot(ev.eval);// update UCB score of end node
 		}
 
 	public:

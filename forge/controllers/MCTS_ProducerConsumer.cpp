@@ -6,6 +6,8 @@
 
 using namespace std;
 
+mutex l_cout;
+
 namespace forge
 {
 	// !!! children of MCTS_Nodes must be sorted in order of decending UCB scores for this to work !!!
@@ -46,7 +48,12 @@ namespace forge
 	}
 
 	void MCTS_ProducerConsumer::searchOneThread() {
+		l_cout.lock();
+		cout << "Spawned thread " << boost::this_thread::get_id() << endl;
+		l_cout.unlock();
+
 		while (boost::this_thread::interruption_requested() == false) {
+
 			MCTS_Node::iterator it;
 
 			// --- 1.) State: Waiting for Work ---
@@ -56,8 +63,18 @@ namespace forge
 
 			m_workASize--;
 
+			l_cout.lock();
+			cout << "Worker " << boost::this_thread::get_id() << ": Consuming work\t0x" << &(*it) << endl;
+			l_cout.unlock();
+
 			// --- 2.) State: Working ---
 			it.expand();// This code is not redundant
+
+			// --- Evaluate ---
+			EvalVisits ev = evaluate(it);
+			
+			////////////////////////////// --- BackPropagate ---
+			////////////////////////////backPropagate(it, it, ev);
 
 			// Do a MCTS for 10'000 nodes
 			int nodeCount = 0;
@@ -74,22 +91,27 @@ namespace forge
 				EvalVisits ev = evaluate(curr);
 
 				// --- BackPropagate ---
-				backPropagate(curr, it, ev);
+				backPropagate(curr, (*it).parent(), ev);
 
 				// --- Exit Condition ---
 				// TODO: implement some exit condition here.
 			} // while (true) 
 
-			cout << (*it).totalScore() << " " << (*it).nVisits() << endl;
+			//cout << (*it).totalScore() << " " << (*it).nVisits() << endl;
 			
 			// --- 3.) State: Produce Work ---
 			m_workB.push(it);
 		} // while (true)
+
+		l_cout.lock();
+		cout << "Closing thread " << boost::this_thread::get_id() << endl;
+		l_cout.unlock();
 	} // searchOneThread(
 
 	void MCTS_ProducerConsumer::solve() {
 		auto & sm = m_searchMonitor;
 
+		// Start with a small tree (sapling)
 		m_nodeTree.expand();
 
 		// --- Spawn Worker Threads ---
@@ -110,6 +132,10 @@ namespace forge
 					MCTS_Node & leaf = (*leafIt);
 
 					leaf.setFlag();
+
+					l_cout.lock();
+					cout << "Master: Produced work:\t0x" << &(*leafIt) << endl;
+					l_cout.unlock(); 
 
 					m_workA.push(leafIt);
 

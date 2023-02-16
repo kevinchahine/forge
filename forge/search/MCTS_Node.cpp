@@ -73,6 +73,15 @@ namespace forge
 		);
 	}
 
+	void MCTS_Node::updateRoot(float score, float nEvals) {
+	// --- Update UCB values ---
+		this->t += score;
+		this->n += nEvals;
+
+		// !!! Do not calculate the UCB Score !!!
+		// Root nodes do not have UCB scores 
+	}
+
 	void MCTS_Node::merge(const MCTS_Node & node) {
 		this->t += node.t;
 		this->n += node.n;

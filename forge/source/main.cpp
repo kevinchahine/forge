@@ -63,11 +63,15 @@ int main(int argc, char ** argv)
 
 	//forge::test::init();
 	//forge::test::initTestBoards();
+	
 	//forge::test::boardSquare();
+	
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
-	//forge::test::mcts::producerConsumer();
-	//forge::test::piece::allToFen();
+	
+	forge::test::mcts::producerConsumer();
+	
+	//forge::test::piece::all();
 	//forge::test::direction::pointingTo();
 	//forge::test::keyboardController();
 	//forge::test::clock();
@@ -107,7 +111,7 @@ int main(int argc, char ** argv)
 	//forge::test::csvParser();
 	//forge::test::dataSetPipeline();
 	//forge::test::trainNN();				// ttttttttttttttttttttttttttttttttt
-	forge::test::tree::print();
+	//forge::test::tree::print();
 
 	//forge::test::gameHistory();
 

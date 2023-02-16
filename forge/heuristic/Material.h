@@ -43,7 +43,7 @@ namespace forge
 		//			- #Knight Defenders * defendedKnightWeight
 		//			- #Pawn Defenders * defendedPawnWeight
 		//		Protected King:
-		//			- Number of pieces that surround (Block) King from allToFen sides by friendly pieces
+		//			- Number of pieces that surround (Block) King from all sides by friendly pieces
 		//		Attacking Pieces:
 		//			- Number of times that each piece attacks an opponents pieces.
 		//			- nAttacks * attackerPieceTypeWeight

@@ -7,6 +7,8 @@
 
 namespace forge
 {
+	// User interface.
+	// Displays game interface on a terminal/console interface.
 	class TextView : public ViewBase
 	{
 	public:
