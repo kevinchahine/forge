@@ -15,7 +15,7 @@ namespace forge
 				
 				agent.makeHeuristic<heuristic::Material>();
 
-				agent.searchMonitor().timeLimit = chrono::seconds(5);
+				agent.searchMonitor().timeLimit = chrono::seconds(500);
 
 				agent.threadCount() = 1;
 

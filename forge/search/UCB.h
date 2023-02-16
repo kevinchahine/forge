@@ -1,6 +1,6 @@
 #pragma once
 
-#include <numeric>
+#include <limits>
 
 #include "forge/heuristic/Base.h"
 
@@ -12,8 +12,8 @@ namespace forge
 		// Units: Centi Pawns
 		const heuristic_t WINNING_EVAL = 1'500;
 		
-		// Initial value before evaluation
-		const heuristic_t INIT = std::numeric_limits<heuristic_t>::max();
+		// Initial UCB score before 1st visit
+		const float INIT = std::numeric_limits<float>::infinity();
 
 		const float MARK_LAST_VISIT = -std::numeric_limits<float>::infinity();
 

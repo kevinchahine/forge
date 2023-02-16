@@ -15,7 +15,6 @@ namespace forge
 	class MCTS_ProducerConsumer : public MCTS_Base<boost::atomic>
 	{
 		using WorkQueueA = boost::lockfree::queue<MCTS_Node::iterator>;
-		//using WorkQueueB = boost::lockfree::queue<NodeItEvalVisits>;
 		using WorkQueueB = boost::lockfree::queue<MCTS_Node::iterator>;
 
 	public:

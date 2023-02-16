@@ -49,12 +49,11 @@ namespace forge
 
 		const int nChildren = (int) children.size();
 
-		for (int i = 0; i < nChildren - 1; ++i) {
+		for (int i = 0; i < nChildren; ++i) {
 			shared_ptr<MCTS_Node> & childPtr = children.at(i);
-			shared_ptr<MCTS_Node> & nextPtr = children.at(i + 1);
-
+			
 			// --- Default UCB Score ---
-			// All children will initially have the same UCB score.
+			// All children will initially have the same (maxed out) UCB score.
 			childPtr->ucbScore = UCB::INIT;
 		}
 	}

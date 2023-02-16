@@ -53,7 +53,7 @@ int main(int argc, char ** argv)
 	forge::initGlobalsTorch();
 
 	//forge::drivers::split_dataset(90.0f, R"dil(C:/Users/kchah/ownCloud/Datasets/stockfish_evals/chessData.csv)dil");
-	//forge::drivers::play_chess_match();
+	forge::drivers::play_chess_match();
 
 	//forge::drivers::train_nn();
 
@@ -69,7 +69,7 @@ int main(int argc, char ** argv)
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
 	
-	forge::test::mcts::producerConsumer();
+	///////////forge::test::mcts::producerConsumer();
 	
 	//forge::test::piece::all();
 	//forge::test::direction::pointingTo();

@@ -146,7 +146,7 @@ namespace forge
 			}
 
 			// Update one more time for the end node (usually the root node)
-			//(*begin).updateRoot(ev.eval);// update UCB score of end node
+			//(*begin).updateRoot(ev.eval);// update t and n values of end node without the UCB score
 		}
 
 	public:

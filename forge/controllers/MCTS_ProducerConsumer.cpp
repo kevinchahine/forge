@@ -12,10 +12,10 @@ namespace forge
 {
 	// !!! children of MCTS_Nodes must be sorted in order of decending UCB scores for this to work !!!
 	MCTS_Node::iterator selectMaster(MCTS_Node::iterator begin) {
-		// Use stack to iterate a DFS traversal.
+		// Use queue to iterate a BFS traversal.
 		// As long as children nodes are sorted by UCB score in decending order, 
-		// then the search will iterate in a Best First Search (BFS) order traversal.
-		stack<MCTS_Node *> frontier;
+		// then the search will iterate in a Best First Search (BFS) order traversal also.
+		queue<MCTS_Node *> frontier;
 		frontier.push(&(*begin));
 
 		// Search tree for the "Best" leaf
@@ -23,13 +23,16 @@ namespace forge
 		// If no leaves are found, return a null iterator.
 		while (frontier.size()) {
 			// Get next node
-			MCTS_Node * node = frontier.top();
+			MCTS_Node * node = frontier.front();
 			frontier.pop();
 
-			// Scan each child from greatest UCB score to least.
+			// Scan each child from greatest UCB score to least. (Scan backwards)
 			// Skip the ones which are flagged.
-			// Look for the 1st unflagged leaf.
-			for (const auto & child : node->children()) {
+			// In other words, look for the 1st unflagged leaf.
+			const vector<shared_ptr<MCTS_Node>> & children = node->children();
+			for (int c = children.size() - 1; c >= 0; c--) {
+				const shared_ptr<MCTS_Node> & child = children.at(c);
+
 				if (child->flagIsCleared()) {
 					if (child->isLeaf()) {
 						// We have found the best unflagged leaf!!! :)
@@ -48,9 +51,9 @@ namespace forge
 	}
 
 	void MCTS_ProducerConsumer::searchOneThread() {
-		l_cout.lock();
-		cout << "Spawned thread " << boost::this_thread::get_id() << endl;
-		l_cout.unlock();
+		/////l_cout.lock();
+		/////cout << "Spawned thread " << boost::this_thread::get_id() << endl;
+		/////l_cout.unlock();
 
 		while (boost::this_thread::interruption_requested() == false) {
 
@@ -58,27 +61,27 @@ namespace forge
 
 			// --- 1.) State: Waiting for Work ---
 			while (m_workA.pop(it) == false) {
-				boost::this_thread::sleep_for(boost::chrono::microseconds(10));// TODO: optimize this to make it smarter
+				boost::this_thread::sleep_for(boost::chrono::microseconds(1));// TODO: optimize this to make it smarter
 			}
 
 			m_workASize--;
 
-			l_cout.lock();
-			cout << "Worker " << boost::this_thread::get_id() << ": Consuming work\t0x" << &(*it) << endl;
-			l_cout.unlock();
+			/////l_cout.lock();
+			/////cout << "Worker " << boost::this_thread::get_id() << ": Consuming work\t0x" << &(*it) << endl;
+			/////cout << "queue size: " << m_workASize << endl;
+			/////l_cout.unlock();
 
 			// --- 2.) State: Working ---
 			it.expand();// This code is not redundant
 
 			// --- Evaluate ---
-			EvalVisits ev = evaluate(it);
+			//////EvalVisits ev = evaluate(it);
 			
-			////////////////////////////// --- BackPropagate ---
-			////////////////////////////backPropagate(it, it, ev);
-
+			// TODO: Do we need to backpropagate? I don't think so.
+			
 			// Do a MCTS for 10'000 nodes
 			int nodeCount = 0;
-			while (nodeCount++ < 10'000 && boost::this_thread::interruption_requested() == false) {
+			while (nodeCount++ < 1'000 && boost::this_thread::interruption_requested() == false) {
 				MCTS_Node::iterator curr;
 
 				// --- Selection ---
@@ -99,17 +102,34 @@ namespace forge
 
 			//cout << (*it).totalScore() << " " << (*it).nVisits() << endl;
 			
+			//////////l_cout.lock();
+			//////////cout << "Worker " << boost::this_thread::get_id() << ": Consumed: \t0x" << &(*it) << endl;
+			//////////l_cout.unlock();
+
 			// --- 3.) State: Produce Work ---
 			m_workB.push(it);
 		} // while (true)
 
-		l_cout.lock();
-		cout << "Closing thread " << boost::this_thread::get_id() << endl;
-		l_cout.unlock();
+		/////l_cout.lock();
+		/////cout << "Closing thread " << boost::this_thread::get_id() << endl;
+		/////l_cout.unlock();
 	} // searchOneThread(
 
 	void MCTS_ProducerConsumer::solve() {
 		auto & sm = m_searchMonitor;
+
+		// --- Clear the work queues ---
+		while (m_workA.empty() == false) {
+			MCTS_Node::iterator it;
+			m_workA.pop(it);
+		}
+
+		while (m_workB.empty() == false) {
+			MCTS_Node::iterator it;
+			m_workB.pop(it);
+		}
+
+		m_workASize = 0;
 
 		// Start with a small tree (sapling)
 		m_nodeTree.expand();
@@ -124,8 +144,8 @@ namespace forge
 		}
 
 		while (!sm.exitConditionReached()) {
-			// --- 1.) Select Leaf Nodes (Produce) ---
-			if (m_workASize < pool.size() + 2) {
+			// --- 1.) Selection (Produce) ---
+			if (m_workASize < pool.size()/* + 2*/) {
 				MCTS_Node::iterator leafIt = selectMaster(m_nodeTree.root());
 
 				if (leafIt.isNotNull()) {
@@ -133,9 +153,9 @@ namespace forge
 
 					leaf.setFlag();
 
-					l_cout.lock();
-					cout << "Master: Produced work:\t0x" << &(*leafIt) << endl;
-					l_cout.unlock(); 
+					/////////l_cout.lock();
+					/////////cout << "Master: Produced work:\t0x" << &(*leafIt) << endl;
+					/////////l_cout.unlock(); 
 
 					m_workA.push(leafIt);
 
@@ -143,29 +163,39 @@ namespace forge
 				}
 			}
 
-			// --- 2.) Back Propagate (Consume) ---
+			// --- 2.) Back Propagation (Consume) ---
 			MCTS_Node::iterator it;
 
 			bool succeeded = m_workB.pop(it);
 
 			if (succeeded) {
+				/////l_cout.lock();
+				/////cout << "Master " << ": Pulled work\t0x" << &(*it) << endl;
+				/////l_cout.unlock();
+
 				MCTS_Node & node = (*it);
+
+				//l_cout.lock();
+				//cout << "Master: BP: " << node.totalScore() << ", " << node.nVisits() << endl;
+				//l_cout.unlock();
 
 				node.clearFlag();
 
 				// Call back propagate
 				EvalVisits ev{ node.totalScore(), node.nVisits() };
 				backPropagate(it, m_nodeTree.root(), ev);
+
+				sm.nodeCount += ev.visits;
 			}
 		} // while(
 
 		// --- Join Threads ---
 		for (boost::thread & t : pool) {
-			t.interrupt();
+			t.interrupt();// Tell thread to return
 		}
 
 		for (boost::thread & t : pool) {
-			t.join();
+			t.join();// Wait for 
 		}
 	}
 } // namespace forge
