@@ -12,13 +12,13 @@ namespace forge
 {
 	// !!! children of MCTS_Nodes must be sorted in order of decending UCB scores for this to work !!!
 	MCTS_Node::iterator selectMaster(MCTS_Node::iterator begin) {
-		// Use queue to iterate a BFS traversal.
+		// Use queue to iterate a Breadth First Search (BFS) traversal.
 		// As long as children nodes are sorted by UCB score in decending order, 
-		// then the search will iterate in a Best First Search (BFS) order traversal also.
+		// then the search will iterate in a Best First Search order traversal also.
 		queue<MCTS_Node *> frontier;
 		frontier.push(&(*begin));
 
-		// Search tree for the "Best" leaf
+		// Search tree for the "Best" leaf (Make sure we select a leaf)
 		// Ignore nodes (and their subtrees) which are flagged.
 		// If no leaves are found, return a null iterator.
 		while (frontier.size()) {
@@ -26,13 +26,10 @@ namespace forge
 			MCTS_Node * node = frontier.front();
 			frontier.pop();
 
-			// Scan each child from greatest UCB score to least. (Scan backwards)
+			// Scan each child from greatest UCB score to least.
 			// Skip the ones which are flagged.
 			// In other words, look for the 1st unflagged leaf.
-			const vector<shared_ptr<MCTS_Node>> & children = node->children();
-			for (int c = children.size() - 1; c >= 0; c--) {
-				const shared_ptr<MCTS_Node> & child = children.at(c);
-
+			for (const auto & child : node->children()) {
 				if (child->flagIsCleared()) {
 					if (child->isLeaf()) {
 						// We have found the best unflagged leaf!!! :)
@@ -76,9 +73,9 @@ namespace forge
 
 			// --- Evaluate ---
 			//////EvalVisits ev = evaluate(it);
-			
+
 			// TODO: Do we need to backpropagate? I don't think so.
-			
+
 			// Do a MCTS for 10'000 nodes
 			int nodeCount = 0;
 			while (nodeCount++ < 1'000 && boost::this_thread::interruption_requested() == false) {
@@ -101,7 +98,7 @@ namespace forge
 			} // while (true) 
 
 			//cout << (*it).totalScore() << " " << (*it).nVisits() << endl;
-			
+
 			//////////l_cout.lock();
 			//////////cout << "Worker " << boost::this_thread::get_id() << ": Consumed: \t0x" << &(*it) << endl;
 			//////////l_cout.unlock();
@@ -116,6 +113,9 @@ namespace forge
 	} // searchOneThread(
 
 	void MCTS_ProducerConsumer::solve() {
+		solveTest();// TODO: remove this
+		return;// TODO: remove this
+
 		auto & sm = m_searchMonitor;
 
 		// --- Clear the work queues ---
@@ -198,5 +198,54 @@ namespace forge
 			t.join();// Wait for 
 		}
 	}
+
+	void MCTS_ProducerConsumer::solveTest() {
+
+		// --- Master Selection ---
+
+		// Start with a small tree (sapling)
+		m_nodeTree.expand();
+
+		m_nodeTree.children().resize(4);// remove all but 4 nodes
+
+		while (true) {
+			MCTS_Node::iterator selection = selectMaster(m_nodeTree.root());
+
+			// --- Worker Search ---
+
+			MCTS_Node::iterator it = selection;
+			while ((*selection).nVisits() < 1'000 && boost::this_thread::interruption_requested() == false) {
+				MCTS_Node::iterator curr;
+
+				// --- Selection ---
+				curr = select(it);
+
+				// --- Expand ---
+				expand(curr);
+
+				// --- Evaluate ---
+				EvalVisits ev = evaluate(curr);
+
+				// --- BackPropagate ---
+				backPropagate(curr, (*it).parent(), ev);
+
+				// --- Exit Condition ---
+				// TODO: implement some exit condition here.
+			} // while (true) 
+
+			// --- Master BackPropagate ---
+			MCTS_Node & node = (*it);
+
+			node.clearFlag();
+
+			// Call back propagate
+			// TODO: Fix Bug: PB is not suppost to increment nVisits of the selected node
+			EvalVisits ev{ -node.totalScore(), node.nVisits() };
+			it.toParent();
+			backPropagate(it, m_nodeTree.root(), ev);
+
+			continue;
+		} // end while()
+	} // class MCTS_ProducerConsumer
 } // namespace forge
 

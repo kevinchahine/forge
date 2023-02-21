@@ -28,17 +28,17 @@ namespace forge
 			auto whiteController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Sequential>();
+				make_unique<MCTS_Sequential>();
 				//make_unique<MCTS_Concurrent>();
-				make_unique<MCTS_ProducerConsumer>();
+				//make_unique<MCTS_ProducerConsumer>();
 				//make_unique<KeyboardController>();
 
 			auto blackController =
 				//make_unique<RandomSolver>();
 				//make_unique<MinimaxSolver>();
-				//make_unique<MCTS_Sequential>();
+				make_unique<MCTS_Sequential>();
 				//make_unique<MCTS_Concurrent>();
-				make_unique<MCTS_ProducerConsumer>();
+				//make_unique<MCTS_ProducerConsumer>();
 				//make_unique<KeyboardController>();
 
 			string networkFile = R"dil("C:\Users\kchah\ownCloud\ML\forge\checkpoints\networkC\networkC_00001.pt")dil";
@@ -66,8 +66,8 @@ namespace forge
 			//whiteController->searchMonitor().nodeLimit = nodeLimit;
 			//blackController->searchMonitor().nodeLimit = nodeLimit;
 
-			whiteController->threadCount() = 1;// 16;
-			blackController->threadCount() = 1;// 16;
+			//whiteController->threadCount() = 1;// 16;
+			//blackController->threadCount() = 1;// 16;
 
 			match.whiteController() = std::move(whiteController);
 			match.blackController() = std::move(blackController);

@@ -69,7 +69,7 @@ int main(int argc, char ** argv)
 	//forge::test::bitboard::allShifts();
 	//forge::test::bitboard::allMasks();
 	
-	///////////forge::test::mcts::producerConsumer();
+	//forge::test::mcts::producerConsumer();
 	
 	//forge::test::piece::all();
 	//forge::test::direction::pointingTo();

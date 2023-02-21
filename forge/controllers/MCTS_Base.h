@@ -119,6 +119,9 @@ namespace forge
 				// Now update the UCB scores of the children nodes with the new evals
 				ret.eval = -(*curr).updateChildrenUCB(evals);
 
+				(*curr).sort();
+
+				// TODO: Is it better to make this 1 (nVisits)
 				ret.visits = evals.size();
 			}
 			else {
@@ -139,14 +142,15 @@ namespace forge
 
 		void backPropagate(MCTS_Node::iterator begin, MCTS_Node::iterator end, EvalVisits ev) {
 			while (begin != end) {
-				(*begin).update(ev.eval);//, ev.visits);	// ??? For some reason this does better with visits set to 1 ???
-				ev.eval = -ev.eval;
+				(*begin).update(ev.eval, ev.visits);	// ??? For some reason this does better with visits set to 1 ???
 				begin.toParent();
 				(*begin).sort();
+				ev.eval = -ev.eval;
 			}
 
 			// Update one more time for the end node (usually the root node)
-			//(*begin).updateRoot(ev.eval);// update t and n values of end node without the UCB score
+			if (begin.isRoot())
+				(*begin).updateRoot(ev.eval, ev.visits);// update t and n values of end node without the UCB score
 		}
 
 	public:

@@ -23,7 +23,7 @@ namespace forge
 		// Only stores moves made by this agent (not opponent).
 		// This is used to detect draw by repetitions during search. 
 		// Each subclass must push its next move during each call to getMove()
-		game_history m_history;
+		game_history m_history;// TODO: Are we using this field or can we remove it?
 	};
 
 	template< template< typename T, typename... > class AC, typename... Args >

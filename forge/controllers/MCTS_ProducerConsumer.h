@@ -30,6 +30,8 @@ namespace forge
 	public:
 		virtual void solve() override;
 
+		void solveTest();
+
 	protected:
 		size_t m_nThreads = 0;	// 0 means search will determine thread count based on hardware concurrency
 

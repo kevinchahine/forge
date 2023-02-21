@@ -63,7 +63,7 @@ namespace forge
 				(stopFlag == true);
 		}
 
-		double nodesPerSecond() const {
+		int nodesPerSecond() const {
 			return
 				static_cast<double>(nodeCount.value()) /
 				std::chrono::duration<double, std::ratio<1, 1>>(searchTime.elapsed()).count();
@@ -79,11 +79,11 @@ namespace forge
 		{
 			cout << "Searched:\n"
 				<< "\t" << formatted_int(nodeCount.value()) << " nodes\n"
-				<< "\t" << nodesPerSecond() << " nodes per second\n"
-				<< "\t" << formatted_int(plyCount.value()) << " plys\n"
-				<< "\t" << plysPerSecond() << " plys per second\n"
+				<< "\t" << formatted_int(nodesPerSecond()) << " nodes per second\n"
+				//<< "\t" << formatted_int(plyCount.value()) << " plys\n"
+				//<< "\t" << plysPerSecond() << " plys per second\n"
 				<< "\t" << "Search time: "
-				/******/ << std::chrono::duration<float, std::ratio<1, 1>>(searchTime.elapsed()).count()
+				/******/ << std::chrono::duration<float, std::ratio<1, 1>>(searchTime.elapsed()).count() // TODO: Print this to 3 decimal places
 				/******/ << " seconds\n"
 				<< '\n';
 		}

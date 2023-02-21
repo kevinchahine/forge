@@ -14,7 +14,7 @@ namespace forge
 {
 	// ----------------------------------- STATIC --------------------------------
 
-	const float MCTS_Node::temperature = 1.5f;
+	const float MCTS_Node::temperature = 2.0f;// 1.5f;
 
 	bool compAverage(
 		const shared_ptr<MCTS_Node> & left,
