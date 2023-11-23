@@ -14,8 +14,8 @@ namespace forge
 {
 	class MCTS_ProducerConsumer : public MCTS_Base<boost::atomic>
 	{
-		using WorkQueueA = boost::lockfree::queue<MCTS_Node::iterator>;
-		using WorkQueueB = boost::lockfree::queue<MCTS_Node::iterator>;
+		using WorkQueueA = boost::lockfree::queue<MCTS_Node::iterator, boost::lockfree::capacity<20>>;
+		using WorkQueueB = boost::lockfree::queue<MCTS_Node::iterator, boost::lockfree::capacity<20>>;
 
 	public:
 		virtual std::string getNameVariant() const override { return "ProducerConsumer"; }

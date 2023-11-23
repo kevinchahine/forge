@@ -77,8 +77,7 @@ namespace forge
 			// TODO: Do we need to backpropagate? I don't think so.
 
 			// Do a MCTS for 10'000 nodes
-			int nodeCount = 0;
-			while (nodeCount++ < 1'000 && boost::this_thread::interruption_requested() == false) {
+			while ((*it).nVisits() < 1'000 && boost::this_thread::interruption_requested() == false) {
 				MCTS_Node::iterator curr;
 
 				// --- Selection ---
@@ -113,9 +112,6 @@ namespace forge
 	} // searchOneThread(
 
 	void MCTS_ProducerConsumer::solve() {
-		solveTest();// TODO: remove this
-		return;// TODO: remove this
-
 		auto & sm = m_searchMonitor;
 
 		// --- Clear the work queues ---
@@ -145,7 +141,7 @@ namespace forge
 
 		while (!sm.exitConditionReached()) {
 			// --- 1.) Selection (Produce) ---
-			if (m_workASize < pool.size()/* + 2*/) {
+			if (m_workASize < pool.size() + 2) {
 				MCTS_Node::iterator leafIt = selectMaster(m_nodeTree.root());
 
 				if (leafIt.isNotNull()) {
@@ -158,7 +154,8 @@ namespace forge
 					/////////l_cout.unlock(); 
 
 					m_workA.push(leafIt);
-
+					cout << "WorkA: " << m_workA.empty();
+					
 					m_workASize++;
 				}
 			}
@@ -195,8 +192,10 @@ namespace forge
 		}
 
 		for (boost::thread & t : pool) {
-			t.join();// Wait for 
+			t.join();// Wait for threads to return
 		}
+
+		return;
 	}
 
 	void MCTS_ProducerConsumer::solveTest() {

@@ -103,7 +103,8 @@ namespace forge
 			GameState gstate;
 			gstate.init(*curr);// Pass in number of children. Use more efficient overload.
 			// TODO: ^^^ do we need to also pass game_history ^^^
-
+			// TODO: Fix this ^^^ It does not work ^^^
+			
 			// --- Is Terminal or Intermediate? ---
 			if (gstate.isGameOn() && curr.hasChildren()) {
 				// Intermediate Node. Evaluate using Heuristic.

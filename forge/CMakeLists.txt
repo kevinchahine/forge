@@ -180,6 +180,10 @@ set(UTIL
 )
 
 set(VIEWS
+	views/MultiView.cpp
+	views/MultiView.h
+	views/RecordedTextView.cpp
+	views/RecordedTextView.h
 	views/TextView.cpp
 	views/TextView.h
 	views/ViewBase.cpp
