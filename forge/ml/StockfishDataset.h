@@ -105,9 +105,9 @@ namespace forge
 			void batchSize(size_t batchSize) { _batchSize = batchSize; }
 			size_t batchSize() { return _batchSize; }
 
-			torch::data::Example<> get(size_t index);
+			virtual torch::data::Example<> get(size_t index) override;
 
-			torch::optional<size_t> size() const { return _nSamples; }
+			virtual torch::optional<size_t> size() const override { return _nSamples; }
 
 			void print();
 

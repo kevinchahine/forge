@@ -84,7 +84,7 @@ public:
 		torch::nn::SequentialImpl::push_back(torch::nn::Linear(64, 1));
 	}
 };
-TORCH_MODULE(NetworkB);
+TORCH_MODULE(NetowrkB);
 
 class NetworkCImpl : public torch::nn::SequentialImpl
 {
